@@ -8,7 +8,8 @@ import { fileURLToPath } from 'url'
 
 import { Users } from './collections/Users'
 import { Pages } from './collections/Pages'
-import Settings from './globals/settings'
+import Settings from './globals/Settings'
+import { Header } from './globals/Header'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -17,7 +18,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Pages],
-  globals: [Settings],
+  globals: [Settings, Header],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
