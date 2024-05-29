@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload/types'
-import link from '@/fields/link'
+import link from '@/app/(payload)/fields/link'
 
 export const Header: GlobalConfig = {
   access: {

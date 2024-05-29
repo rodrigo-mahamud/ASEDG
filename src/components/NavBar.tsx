@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react'
-import { cn } from '@/utils/utils'
+import { cn } from '@/app/(payload)/utils/utils'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'

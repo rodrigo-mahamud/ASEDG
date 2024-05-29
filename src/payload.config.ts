@@ -6,10 +6,10 @@ import { buildConfig } from 'payload/config'
 // import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Users } from './collections/Users'
-import { Pages } from './collections/Pages'
-import Settings from './globals/Settings'
-import { Header } from './globals/Header'
+import { Users } from './app/(payload)/collections/Users'
+import { Pages } from './app/(payload)/collections/Pages'
+import Settings from './app/(payload)/globals/Settings'
+import { Header } from './app/(payload)/globals/Header'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 

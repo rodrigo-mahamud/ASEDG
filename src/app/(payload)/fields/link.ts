@@ -1,6 +1,8 @@
 import type { Field } from 'payload/types'
-import deepMerge from '@/utils/deepMerge'
+import deepMerge from '@/app/(payload)/utils/deepMerge'
+import validateMaxAllowed from '@/app/(payload)/hooks/validateMaxAllowed'
 
+// Definir las opciones de apariencia
 export const appearanceOptions = {
   default: {
     label: 'Default',
@@ -16,15 +18,13 @@ export const appearanceOptions = {
   },
 }
 
-export type LinkAppearances = 'default' | 'primary' | 'secondary'
+// Definir el tipo para la función LinkType
+interface LinkType {
+  (options?: { disableLabel?: boolean; overrides?: Record<string, unknown> }): Field
+}
 
-type LinkType = (options?: {
-  appearances?: LinkAppearances[] | false
-  disableLabel?: boolean
-  overrides?: Record<string, unknown>
-}) => Field
-
-const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+// Crear la función LinkType
+const link: LinkType = ({ overrides = {} } = {}) => {
   const linkResult: Field = {
     name: 'linkGroup',
     label: ' ',
@@ -42,28 +42,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
     type: 'group',
   }
 
-  if (appearances !== false) {
-    let appearanceOptionsToUse = [
-      appearanceOptions.default,
-      appearanceOptions.primary,
-      appearanceOptions.secondary,
-    ]
-
-    if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
-    }
-
-    linkResult.fields.push({
-      name: 'appearance',
-      admin: {
-        description: 'Choose how the link should be rendered.',
-      },
-      defaultValue: 'default',
-      options: appearanceOptionsToUse,
-      type: 'select',
-    })
-  }
-
+  // Definir el campo de enlaces
   linkResult.fields.push({
     name: 'childLinks',
     label: 'Enlaces',
@@ -90,7 +69,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
         defaultValue: 'reference',
       },
       {
-        type: 'row', // required
+        type: 'row',
         fields: [
           {
             name: 'title',
@@ -132,10 +111,17 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
       {
         name: 'highlighted',
         type: 'checkbox',
-        unique: true,
         label: 'Destacar este enlace',
+        // hooks: {
+        //   beforeChange: [
+        //     validateMaxAllowed({ field: 'highlighted', max: 1, collectionSlug: 'link' }),
+        //   ],
+        // },
       },
     ],
+    admin: {
+      components: {},
+    },
   })
 
   return deepMerge(linkResult, overrides)
