@@ -74,45 +74,47 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
     type: 'array',
     fields: [
       {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-
-        required: true,
-      },
-      {
-        name: 'text',
-        type: 'text',
-        label: 'Text',
-        required: true,
-      },
-      {
-        name: 'highlighted',
-        type: 'checkbox',
-        label: 'Highlighted',
-      },
-      {
         name: 'linkType',
+        label: 'Tipo de enlace',
         type: 'radio',
         options: [
           {
-            label: 'Internal link',
+            label: 'Interno',
             value: 'reference',
           },
           {
-            label: 'Custom URL',
+            label: 'Externo',
             value: 'custom',
           },
         ],
         defaultValue: 'reference',
-        label: 'Link Type',
+      },
+      {
+        type: 'row', // required
+        fields: [
+          {
+            name: 'title',
+            type: 'text',
+            admin: {
+              className: 'hola',
+            },
+            label: 'Titulo',
+            required: true,
+          },
+          {
+            name: 'text',
+            type: 'text',
+            label: 'Descripción',
+            required: true,
+          },
+        ],
       },
       {
         name: 'reference',
         admin: {
           condition: (_, siblingData) => siblingData?.linkType === 'reference',
         },
-        label: 'Enlace a: ',
+        label: 'Enlazar a la página: ',
         maxDepth: 1,
         relationTo: ['pages'],
         required: true,
@@ -123,9 +125,15 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
         admin: {
           condition: (_, siblingData) => siblingData?.linkType === 'custom',
         },
-        label: 'Custom URL',
+        label: 'Enlace externo:',
         required: true,
         type: 'text',
+      },
+      {
+        name: 'highlighted',
+        type: 'checkbox',
+        unique: true,
+        label: 'Destacar este enlace',
       },
     ],
   })

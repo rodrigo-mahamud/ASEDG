@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import '@/app/styles/globals.css'
+import '@/app/(frontend)/styles/globals.css'
 import { NavBar } from '@/components/NavBar'
 import { GeistSans } from 'geist/font/sans'
 import SmoothScrolling from '@/components/SmoothScrolling'
