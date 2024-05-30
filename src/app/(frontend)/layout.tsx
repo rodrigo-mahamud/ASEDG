@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import '@/app/(frontend)/styles/globals.css'
-import { NavBar } from '@/components/NavBar'
+import NavBar from '@/components/NavBar'
 import { GeistSans } from 'geist/font/sans'
 import SmoothScrolling from '@/components/SmoothScrolling'
 import Footer from '@/components/Footer'
@@ -18,11 +18,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={GeistSans.className}>
       <body className="overflow-x-hidden">
-        <SmoothScrolling>
-          <NavBar />
-          {children}
-          <Footer></Footer>
-        </SmoothScrolling>
+        <NavBar />
+        {children}
+        <Footer></Footer>
       </body>
     </html>
   )

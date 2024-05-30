@@ -1,5 +1,7 @@
 import { GlobalConfig } from 'payload/types'
-
+export type GlobalConfigTypes = {
+  homePage: string
+}
 const Settings: GlobalConfig = {
   slug: 'settings',
   label: 'Settings',

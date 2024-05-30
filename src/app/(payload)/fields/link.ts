@@ -2,22 +2,6 @@ import type { Field } from 'payload/types'
 import deepMerge from '@/app/(payload)/utils/deepMerge'
 import validateMaxAllowed from '@/app/(payload)/hooks/validateMaxAllowed'
 
-// Definir las opciones de apariencia
-export const appearanceOptions = {
-  default: {
-    label: 'Default',
-    value: 'default',
-  },
-  primary: {
-    label: 'Primary Button',
-    value: 'primary',
-  },
-  secondary: {
-    label: 'Secondary Button',
-    value: 'secondary',
-  },
-}
-
 // Definir el tipo para la función LinkType
 interface LinkType {
   (options?: { disableLabel?: boolean; overrides?: Record<string, unknown> }): Field
@@ -119,9 +103,6 @@ const link: LinkType = ({ overrides = {} } = {}) => {
         // },
       },
     ],
-    admin: {
-      components: {},
-    },
   })
 
   return deepMerge(linkResult, overrides)
