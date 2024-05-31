@@ -22,7 +22,7 @@ const IndexHero: React.FC<Type> = ({
     <header className="h-screen flex items-center">
       <div className="absolute w-full z-10">
         <div className="container relative">
-          <div className="w-full flex gap-16 items-start">
+          <div className="w-full flex gap-16 items-center">
             <div className="w-1/2">
               <MotionDiv
                 animate={{ y: 0, opacity: 1 }}
@@ -118,7 +118,7 @@ const IndexHero: React.FC<Type> = ({
         }}
         className=" flex items-end h-full"
       >
-        <div className="h-[21vh] skew-y-[350deg] -translate-y-[8rem] overflow-hidden -z-10">
+        <div className="h-[25vh] skew-y-[348deg] -translate-y-[1rem] overflow-hidden -z-10">
           <Zenitho></Zenitho>
         </div>
       </MotionDiv>

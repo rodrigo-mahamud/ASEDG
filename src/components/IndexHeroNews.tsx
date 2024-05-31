@@ -15,9 +15,9 @@ export function IndexHeroNews({ children }: IndexHeroNewsProps) {
   return (
     <Carousel
       opts={{
-        align: 'start',
+        align: 'center',
       }}
-      className="w-10/12 flex"
+      className="w-10/12 flex justify-center"
     >
       <CarouselPrevious className="rotate-180" />
       <CarouselContent className="w-[inherit] shadow-[0_25px_70px_0px_rgba(50,50,93,0.25)] rounded-xl bg-secondary">

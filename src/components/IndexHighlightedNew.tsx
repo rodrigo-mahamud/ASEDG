@@ -56,7 +56,7 @@ export default function IndexHighlightedNew({
           ></ShareButton>
         </div>
       </CardContent>
-      <div className="h-[35rem] relative overflow-hidden rounded-md">
+      <div className="h-[28rem] relative overflow-hidden rounded-md">
         <Image src={image.url} fill alt={image.alt} className=" object-cover w-full h-full"></Image>
       </div>
     </Card>
