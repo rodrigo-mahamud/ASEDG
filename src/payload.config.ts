@@ -11,6 +11,7 @@ import { Pages } from './app/(payload)/collections/Pages'
 import Settings from './app/(payload)/globals/Settings'
 import { Header } from './app/(payload)/globals/Header'
 import Media from './app/(payload)/collections/Media'
+import { News } from './app/(payload)/collections/News'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -18,7 +19,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Pages, Media],
+  collections: [Users, Pages, Media, News],
   globals: [Settings, Header],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',

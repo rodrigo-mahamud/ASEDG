@@ -17,13 +17,29 @@ const IndexHero: Block = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          label: 'Titulo',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'pretitle',
+          label: 'Pretitulo',
+          type: 'text',
+          required: true,
+        },
+      ],
     },
     {
-      name: 'subtitle',
+      name: 'description',
+      label: 'Descripción',
       type: 'textarea',
+      admin: {
+        width: '100%',
+      },
       required: true,
     },
     {
