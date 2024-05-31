@@ -8,6 +8,8 @@ import { Zenitho } from 'uvcanvas'
 import { LinkButton } from '@/components/lib/linkButton'
 import { Type } from '.'
 import { MotionDiv } from '@/components/MotionDiv'
+import { IndexHeroNews } from '@/components/IndexHeroNews'
+import IndexHighlightedNew from '@/components/IndexHighlightedNew'
 
 const IndexHero: React.FC<Type> = ({
   pretitle,
@@ -94,48 +96,13 @@ const IndexHero: React.FC<Type> = ({
                 duration: 1.75,
                 delay: 0.15,
               }}
-              className="w-1/2 flex flex-col gap-5 "
+              className="w-1/2 flex gap-5 justify-center"
             >
-              <div className="w-full rounded-xl relative overflow-hidden ">
-                <Image
-                  src="/placeholder.jpg"
-                  fill
-                  alt="hola"
-                  className="object-cover  brightness-[.65]"
-                ></Image>
-                <div className="relative w-[inherit] p-8  items-center justify-between flex">
-                  <div className="flex flex-col w-10/12">
-                    <h2 className="font-bold text-lg text-white mb-2">
-                      Copy paste components like these in minutes.
-                    </h2>
-                    <h3 className="text-neutral-200 line-clamp-3">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem eaque
-                      facilis repudiandae eligendi aliquam rerum
-                    </h3>
-                    <Button
-                      variant="ghost"
-                      arrow
-                      asChild
-                      className="bg-white/10 text-white backdrop-blur-md"
-                    >
-                      <Link href="/login"></Link>
-                    </Button>
-                  </div>
-                  <div className="w-2/12 flex justify-center items-center">
-                    <LinkButton
-                      variant="ghost"
-                      href="/login"
-                      arrow
-                      className="bg-white/10 text-white backdrop-blur-md"
-                    ></LinkButton>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full flex gap-5 ">
+              <IndexHeroNews>
                 {newsSelection.map((newsItem: any) => (
-                  <NewsCard key={newsItem.id} {...newsItem} buttonVariant="secondary" />
+                  <IndexHighlightedNew key={newsItem.id} {...newsItem} buttonVariant="secondary" />
                 ))}
-              </div>
+              </IndexHeroNews>
             </MotionDiv>
           </div>
         </div>
