@@ -16,12 +16,24 @@ interface NewsCardTypes {
   badgeClass?: string
   shareClass?: string
   buttonVariant?: any
+  title: string
+  summary: string
+  image: Image
 }
+interface Image {
+  id: number
+  alt: string
+  url: string
+}
+
 export default function NewsCard({
   className,
   buttonVariant,
   badgeClass,
   shareClass,
+  title,
+  summary,
+  image,
 }: NewsCardTypes) {
   return (
     <Card className={`rounded-xl overflow-hidden ${className}`}>
@@ -32,19 +44,15 @@ export default function NewsCard({
         Secondary
       </Badge>
       <Image
-        src="/placeholder.jpg"
+        src={image.url}
         width={500}
         height={500}
-        alt="hola"
+        alt={image.alt}
         className="h-2/4 aspect-[4/3] object-cover"
       ></Image>
       <CardContent>
-        <CardTitle className="mt-6 mb-3">Create project</CardTitle>
-        <CardDescription className="line-clamp-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex voluptatum cupiditate quas
-          assumenda natus laboriosam totam autem facere. Tempora eius at sequi quaerat nam nihil ab
-          quisquam facere explicabo quas?
-        </CardDescription>
+        <CardTitle className="mt-6 mb-3 line-clamp-1">{title}</CardTitle>
+        <CardDescription className="line-clamp-4">{summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
             variant={buttonVariant}

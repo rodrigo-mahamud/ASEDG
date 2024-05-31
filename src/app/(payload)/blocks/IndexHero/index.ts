@@ -12,8 +12,8 @@ const IndexHero: Block = {
   slug: 'indexhero',
 
   labels: {
-    singular: 'Index Hero',
-    plural: 'Index Heroes',
+    singular: 'Portada Inicio',
+    plural: 'Portadas Inicio',
   },
   fields: [
     {
@@ -43,11 +43,21 @@ const IndexHero: Block = {
       required: true,
     },
     {
+      name: 'newsSelection',
+      label: 'Noticias destacadas',
+      type: 'relationship',
+      relationTo: 'noticias',
+      maxRows: 3,
+      hasMany: true,
+      required: true,
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
       required: true,
     },
+
     {
       name: 'buttons',
       type: 'array',

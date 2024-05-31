@@ -21,6 +21,7 @@ export default async function HomePage() {
   }
 
   const page = pageData
+
   const isHomepage = true // Marcar como página principal
 
   return (

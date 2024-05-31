@@ -3,13 +3,19 @@ import React, { FC } from 'react'
 import { Button } from '@/components/lib/button'
 import Link from 'next/link'
 // import { DotBackgroundDemo } from '@/components/lib/dotBackground'
-import NewsCard from '@/components/lib/newsCard'
+import NewsCard from '@/components/Card'
 import { Zenitho } from 'uvcanvas'
 import { LinkButton } from '@/components/lib/linkButton'
 import { Type } from '.'
 import { MotionDiv } from '@/components/MotionDiv'
 
-const IndexHero: React.FC<Type> = ({ pretitle, title, description, image, buttons }: any) => {
+const IndexHero: React.FC<Type> = ({
+  pretitle,
+  title,
+  description,
+  newsSelection,
+  buttons,
+}: any) => {
   return (
     <header className="h-screen flex items-center">
       <div className="absolute w-full z-10">
@@ -126,8 +132,9 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, image, button
                 </div>
               </div>
               <div className="w-full flex gap-5 ">
-                <NewsCard className="btnShadow h-fit" buttonVariant="secondary"></NewsCard>
-                <NewsCard className="btnShadow h-fit" buttonVariant="secondary"></NewsCard>
+                {newsSelection.map((newsItem: any) => (
+                  <NewsCard key={newsItem.id} {...newsItem} buttonVariant="secondary" />
+                ))}
               </div>
             </MotionDiv>
           </div>
