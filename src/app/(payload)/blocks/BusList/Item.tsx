@@ -5,6 +5,7 @@ import { Button } from '../../../../components/lib/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/lib/tooltip'
 import useGoogleCalendarLink from '@/app/(payload)/hooks/useGoogleCalendarLink' // Asegúrate de ajustar la ruta según sea necesario
 import dayjs from 'dayjs'
+
 interface Data {
   from: string
   fromRoad: string
@@ -12,7 +13,10 @@ interface Data {
   to: string
   toRoad: string
   toHour: string
-  companyImg: string
+  companyImg: {
+    url: string
+    alt: string
+  }
 }
 
 interface BusItemTypes {
@@ -34,7 +38,12 @@ export default function BusItem({ data }: BusItemTypes) {
   return (
     <div className="flex w-full gap-8 border border-[#8c9fb2a2] rounded-md px-8 py-4 hover:-translate-y-2 transform transition duration-200 hover:shadow-lg hover:bg-slate-100">
       <div className="w-1/6 relative">
-        <Image src={data.companyImg} className="object-contain" alt="g" fill></Image>
+        <Image
+          src={data.companyImg.url}
+          className="object-contain"
+          alt={data.companyImg.alt}
+          fill
+        ></Image>
       </div>
       <div className="w-5/6 relative flex justify-center gap-8 items-center">
         <div className="flex flex-col">

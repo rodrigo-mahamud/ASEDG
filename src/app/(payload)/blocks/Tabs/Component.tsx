@@ -12,6 +12,8 @@ type Props = {
 }
 
 const TabsBlock: React.FC<Props> = ({ tabs }) => {
+  console.log(tabs)
+
   return (
     <Tabs
       defaultValue={tabs[0]?.content[0]?.blockType || 'calendar-block'}
@@ -20,7 +22,9 @@ const TabsBlock: React.FC<Props> = ({ tabs }) => {
       <div className="flex justify-end absolute right-0 px-[inherit]">
         <TabsList className="flex space-x-4">
           {tabs.map((tab, i) => (
-            <TabsTrigger key={i} value={tab.content[0]?.blockType}></TabsTrigger>
+            <TabsTrigger key={i} value={tab.content[0]?.blockType}>
+              ssss
+            </TabsTrigger>
           ))}
         </TabsList>
       </div>

@@ -1,6 +1,5 @@
 import { Block } from 'payload/types'
-
-export type Type = {
+interface BusesDataType {
   from: string
   fromRoad: string
   fromHour: string
@@ -8,6 +7,9 @@ export type Type = {
   toRoad: string
   toHour: string
   companyImg: string
+}
+export type Type = {
+  buses: BusesDataType[]
 }
 const BusList: Block = {
   slug: 'buslist',

@@ -7,13 +7,7 @@ import { IndexHeroNews } from '@/components/IndexHeroNews'
 import IndexHighlightedNew from '@/components/IndexHighlightedNew'
 import Container from '@/components/Container'
 
-const IndexHero: React.FC<Type> = ({
-  pretitle,
-  title,
-  description,
-  newsSelection,
-  buttons,
-}: any) => {
+const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection }: any) => {
   return (
     <header className="h-screen flex items-center">
       <div className="absolute w-full z-10">

@@ -1,6 +1,7 @@
 import { Block } from 'payload/types'
 // import CalendarBlock from '../CalendarBlock';
-import BusList from '../../blocks/BusList'
+import BusList from '../BusList'
+import IndexHero from '../IndexHero'
 // import NewsGridBlock from '../NewsGridBlock';
 
 const TabsBlock: Block = {
@@ -22,7 +23,7 @@ const TabsBlock: Block = {
           type: 'blocks',
           label: 'Tab Content',
           required: true,
-          blocks: [BusList],
+          blocks: [BusList, IndexHero],
         },
       ],
     },
