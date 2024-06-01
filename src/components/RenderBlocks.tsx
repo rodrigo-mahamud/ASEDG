@@ -8,8 +8,6 @@ type Props = {
 }
 
 const RenderBlocks: React.FC<Props> = ({ layout, className }) => {
-  console.log('Layout:', layout)
-
   return (
     <div className={[className].filter(Boolean).join(' ')}>
       {layout.map((block, i) => {

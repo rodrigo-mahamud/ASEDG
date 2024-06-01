@@ -23,7 +23,7 @@ const TabsBlock: React.FC<Props> = ({ tabs }) => {
         <TabsList className="flex space-x-4">
           {tabs.map((tab, i) => (
             <TabsTrigger key={i} value={tab.content[0]?.blockType}>
-              ssss
+              {tab.label}
             </TabsTrigger>
           ))}
         </TabsList>
