@@ -5,24 +5,11 @@ import { components } from '@/app/(payload)/blocks'
 type Props = {
   layout: Layout[]
   className?: string
-  isHomepage: boolean
 }
 
-const RenderBlocks: React.FC<Props> = ({ layout, className, isHomepage }) => {
-  if (isHomepage) {
-    const Block: React.FC<any> = components[layout[0].blockType]
-    if (Block) {
-      return (
-        <section>
-          <Block {...layout[0]} />
-        </section>
-      )
-    }
+const RenderBlocks: React.FC<Props> = ({ layout, className }) => {
+  console.log('Layout:', layout)
 
-    if (!Block) {
-      return 'no hay bloque de inicio'
-    }
-  }
   return (
     <div className={[className].filter(Boolean).join(' ')}>
       {layout.map((block, i) => {
@@ -36,9 +23,12 @@ const RenderBlocks: React.FC<Props> = ({ layout, className, isHomepage }) => {
           )
         }
 
-        if (!Block) {
-          return 'no hay bloque'
-        }
+        console.error(`No component found for block type: ${block.blockType}`)
+        return (
+          <section key={i}>
+            <p>No block found for type: {block.blockType}</p>
+          </section>
+        )
       })}
     </div>
   )

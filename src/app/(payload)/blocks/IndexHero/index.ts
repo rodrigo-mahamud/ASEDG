@@ -51,13 +51,6 @@ const IndexHero: Block = {
       required: true,
     },
     {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-
-    {
       name: 'buttons',
       type: 'array',
       fields: [buton()],

@@ -1,5 +1,4 @@
 import { Block } from 'payload/types'
-import BusItem from './Item'
 
 export type Type = {
   from: string
@@ -11,7 +10,7 @@ export type Type = {
   companyImg: string
 }
 const BusList: Block = {
-  slug: 'bus-block',
+  slug: 'buslist',
   fields: [
     {
       name: 'buses',

@@ -1,54 +1,36 @@
-// import React from 'react'
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/lib/tabs'
-// import Title from '@/components/lib/title'
-// import CalendarComponent from './ui/calendarComponent'
-// import { IconBus, IconCalendarEvent, IconNews } from '@tabler/icons-react'
-// import BusList from './ui/busList'
-// import NewsGrid from './ui/newsGrid'
+import React from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/lib/tabs'
+import { IconBus, IconCalendarEvent, IconNews } from '@tabler/icons-react'
+import RenderBlocks from '@/components/RenderBlocks'
+import { Layout } from '@/app/(payload)/collections/Pages'
 
-// export default function TabsBlock() {
-//   return (
-//     <Tabs defaultValue="calendar" className="container mx-auto py-32 relative">
-//       <div className="flex justify-end absolute right-0 px-[inherit]">
-//         <TabsList className="flex space-x-4">
-//           <TabsTrigger value="news">
-//             <IconNews className="w-4 h-4 mr-1"></IconNews>Novedades
-//           </TabsTrigger>
-//           <TabsTrigger value="calendar">
-//             <IconCalendarEvent className="w-4 h-4 mr-1"></IconCalendarEvent> Calendario
-//           </TabsTrigger>
-//           <TabsTrigger value="transports">
-//             <IconBus className="w-4 h-4 mr-1"></IconBus>Transportes
-//           </TabsTrigger>
-//         </TabsList>
-//       </div>
-//       <TabsContent value="news">
-//         <Title
-//           title="News"
-//           subtitle={
-//             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores suscipit facilis in nobis ut nesciunt doloremque dolor quae rem est, ducimus ratione nisi magnam aliquid esse quo accusamus nihil quidem!'
-//           }
-//         ></Title>
-//         <NewsGrid></NewsGrid>
-//       </TabsContent>
-//       <TabsContent value="calendar">
-//         <Title
-//           title="Calendario de Eventos"
-//           subtitle={
-//             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores suscipit facilis in nobis ut nesciunt doloremque dolor quae rem est, ducimus ratione nisi magnam aliquid esse quo accusamus nihil quidem!'
-//           }
-//         ></Title>
-//         <CalendarComponent></CalendarComponent>
-//       </TabsContent>
-//       <TabsContent value="transports">
-//         <Title
-//           title="Autobuses San Esteban de Gormaz"
-//           subtitle={
-//             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores suscipit facilis in nobis ut nesciunt doloremque dolor quae rem est, ducimus ratione nisi magnam aliquid esse quo accusamus nihil quidem!'
-//           }
-//         ></Title>
-//         <BusList></BusList>
-//       </TabsContent>
-//     </Tabs>
-//   )
-// }
+type Props = {
+  tabs: {
+    label: string
+    content: Layout[]
+  }[]
+}
+
+const TabsBlock: React.FC<Props> = ({ tabs }) => {
+  return (
+    <Tabs
+      defaultValue={tabs[0]?.content[0]?.blockType || 'calendar-block'}
+      className="container mx-auto py-32 relative"
+    >
+      <div className="flex justify-end absolute right-0 px-[inherit]">
+        <TabsList className="flex space-x-4">
+          {tabs.map((tab, i) => (
+            <TabsTrigger key={i} value={tab.content[0]?.blockType}></TabsTrigger>
+          ))}
+        </TabsList>
+      </div>
+      {tabs.map((tab, i) => (
+        <TabsContent key={i} value={tab.content[0]?.blockType}>
+          <RenderBlocks layout={tab.content} />
+        </TabsContent>
+      ))}
+    </Tabs>
+  )
+}
+
+export default TabsBlock
