@@ -1,7 +1,12 @@
+import BusList from './BusList/Component'
+import CalendarBlock from './Calendar/Component'
+import CalendarComponent from './Calendar/Component'
 import IndexHero from './IndexHero/Component'
-import Tabs from './Tabs/Component'
+// import TabsBlock from './Tabs/Component'
 
 export const components = {
   indexhero: IndexHero,
-  tabs: Tabs,
+  // tabsblock: TabsBlock,
+  busList: BusList,
+  clendar: CalendarBlock,
 }

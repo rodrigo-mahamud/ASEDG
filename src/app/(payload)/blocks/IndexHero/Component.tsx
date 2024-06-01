@@ -1,15 +1,11 @@
-import Image from 'next/image'
-import React, { FC } from 'react'
 import { Button } from '@/components/lib/button'
-import Link from 'next/link'
-// import { DotBackgroundDemo } from '@/components/lib/dotBackground'
-import NewsCard from '@/components/Card'
 import { Zenitho } from 'uvcanvas'
 import { LinkButton } from '@/components/lib/linkButton'
 import { Type } from '.'
 import { MotionDiv } from '@/components/MotionDiv'
 import { IndexHeroNews } from '@/components/IndexHeroNews'
 import IndexHighlightedNew from '@/components/IndexHighlightedNew'
+import Container from '@/components/Container'
 
 const IndexHero: React.FC<Type> = ({
   pretitle,
@@ -21,8 +17,8 @@ const IndexHero: React.FC<Type> = ({
   return (
     <header className="h-screen flex items-center">
       <div className="absolute w-full z-10">
-        <div className="container relative">
-          <div className="w-full flex gap-16 items-center">
+        <Container>
+          <div className="w-full flex gap-16 items-start">
             <div className="w-1/2">
               <MotionDiv
                 animate={{ y: 0, opacity: 1 }}
@@ -31,7 +27,7 @@ const IndexHero: React.FC<Type> = ({
                   ease: [0.14, 1, 0.34, 1],
                   duration: 1.75,
                 }}
-                className="uppercase text-primary font-semibold"
+                className="text-primary font-semibold tracking-tight"
               >
                 {pretitle}
               </MotionDiv>
@@ -105,8 +101,9 @@ const IndexHero: React.FC<Type> = ({
               </IndexHeroNews>
             </MotionDiv>
           </div>
-        </div>
+        </Container>
       </div>
+
       {/* <DotBackgroundDemo></DotBackgroundDemo> */}
       <MotionDiv
         animate={{ y: 0, opacity: 1 }}

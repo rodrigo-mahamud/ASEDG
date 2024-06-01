@@ -1,8 +1,9 @@
+import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
-import slug from '../fields/slug'
+import BusList, { Type as BusListTypes } from '../blocks/BusList'
 
-export type Layout = IndexHeroTypes
+export type Layout = IndexHeroTypes | BusListTypes
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -26,10 +27,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [
-        IndexHero,
-        // otros bloques aquí
-      ],
+      blocks: [IndexHero, BusList],
     },
     {
       name: 'publishedDate',

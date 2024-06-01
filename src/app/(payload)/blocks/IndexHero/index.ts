@@ -1,6 +1,5 @@
 // blocks/IndexHero.ts
 import { Block } from 'payload/types'
-import link from '../../fields/link'
 import buton, { ButtonType as butonTypes } from '../../fields/button'
 
 export type Type = {
