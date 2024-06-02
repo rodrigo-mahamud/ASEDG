@@ -20,22 +20,27 @@ const BusList: Block = {
       label: 'Buses',
       fields: [
         {
-          name: 'from',
-          type: 'text',
-          label: 'From',
-          required: true,
-        },
-        {
-          name: 'fromRoad',
-          type: 'text',
-          label: 'From Road',
-          required: true,
-        },
-        {
-          name: 'fromHour',
-          type: 'text',
-          label: 'From Hour',
-          required: true,
+          type: 'row',
+          fields: [
+            {
+              name: 'from',
+              type: 'text',
+              label: 'From',
+              required: true,
+            },
+            {
+              name: 'fromRoad',
+              type: 'text',
+              label: 'From Road',
+              required: true,
+            },
+            {
+              name: 'fromHour',
+              type: 'text',
+              label: 'From Hour',
+              required: true,
+            },
+          ],
         },
         {
           name: 'to',
