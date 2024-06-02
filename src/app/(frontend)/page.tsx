@@ -22,9 +22,5 @@ export default async function HomePage() {
 
   const page = pageData
 
-  return (
-    <main>
-      <RenderBlocks layout={page.layout} />
-    </main>
-  )
+  return <main>{<RenderBlocks layout={page.layout} />}</main>
 }

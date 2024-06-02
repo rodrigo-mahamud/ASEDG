@@ -31,7 +31,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [IndexHero, BusList, TabsBlock],
+      blocks: [IndexHero, TabsBlock],
     },
     {
       name: 'publishedDate',

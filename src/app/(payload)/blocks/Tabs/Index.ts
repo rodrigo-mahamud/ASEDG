@@ -6,24 +6,29 @@ import IndexHero from '../IndexHero'
 
 const TabsBlock: Block = {
   slug: 'tabsblock',
+  labels: {
+    singular: 'Pestaña',
+    plural: 'Pestañas',
+  },
   fields: [
     {
       name: 'tabs',
       type: 'array',
-      label: 'Tabs',
+      label: ' ',
       fields: [
         {
           name: 'label',
           type: 'text',
-          label: 'Tab Label',
+          label: 'Nombre de la pestaña',
           required: true,
         },
         {
           name: 'content',
           type: 'blocks',
-          label: 'Tab Content',
+          label: 'Contenido de la pestaña',
           required: true,
-          blocks: [BusList, IndexHero],
+          maxRows: 4,
+          blocks: [BusList],
         },
       ],
     },
