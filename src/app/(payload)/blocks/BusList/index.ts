@@ -43,22 +43,27 @@ const BusList: Block = {
           ],
         },
         {
-          name: 'to',
-          type: 'text',
-          label: 'To',
-          required: true,
-        },
-        {
-          name: 'toRoad',
-          type: 'text',
-          label: 'To Road',
-          required: true,
-        },
-        {
-          name: 'toHour',
-          type: 'text',
-          label: 'To Hour',
-          required: true,
+          type: 'row',
+          fields: [
+            {
+              name: 'to',
+              type: 'text',
+              label: 'To',
+              required: true,
+            },
+            {
+              name: 'toRoad',
+              type: 'text',
+              label: 'To Road',
+              required: true,
+            },
+            {
+              name: 'toHour',
+              type: 'text',
+              label: 'To Hour',
+              required: true,
+            },
+          ],
         },
         {
           name: 'companyImg',
