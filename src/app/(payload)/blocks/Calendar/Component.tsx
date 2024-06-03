@@ -31,64 +31,7 @@ interface CustomEvent {
 
 const colors = ['#635bff']
 
-const events: CustomEvent[] = [
-  {
-    title: 'Jornassssdas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 4, 10, 0),
-    end: new Date(2024, 4, 4, 12, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-  {
-    title: 'Jornadas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 17, 9, 0),
-    end: new Date(2024, 4, 17, 11, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-  {
-    title: 'Jornadas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 23, 14, 0),
-    end: new Date(2024, 4, 23, 16, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-  {
-    title: 'Jornadas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 1, 10, 0),
-    end: new Date(2024, 4, 3, 12, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-  {
-    title: 'Jornadas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 20, 8, 0),
-    end: new Date(2024, 4, 23, 17, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-  {
-    title: 'Jornadas de cultura en el centro juvenil',
-    start: new Date(2024, 4, 28, 13, 0),
-    end: new Date(2024, 4, 28, 15, 0),
-    description:
-      'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, velit. Eligendi, velit vitae dicta ducimus nemo enim accusantium quas eius officia officiis molestias, odit labore expedita repellat quaerat sit. Aut?',
-    location: 'Plaza mayor san esteban de gormaz',
-    img: 'placeholder2.jpg',
-  },
-].map((event, index) => ({ ...event, color: colors[index % colors.length] }))
-
-const CalendarBlock: React.FC = () => {
+const CalendarBlock: React.FC = (events) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [selectedEvent, setSelectedEvent] = useState<CustomEvent | null>(null)
   const [open, setOpen] = useState(false)

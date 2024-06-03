@@ -17,8 +17,8 @@ const TabsBlock: React.FC<Props> = ({ tabs }) => {
       defaultValue={tabs[0]?.content[0]?.blockType || 'calendar-block'}
       className="container mx-auto py-32 relative"
     >
-      <div className="flex justify-end absolute right-0 px-[inherit]">
-        <TabsList className="flex space-x-4">
+      <div className="flex justify-end absolute right-0 px-[inherit] ">
+        <TabsList className="flex space-x-4 ">
           {tabs.map((tab, i) => (
             <TabsTrigger key={i} value={tab.content[0]?.blockType}>
               {tab.label}
@@ -27,7 +27,7 @@ const TabsBlock: React.FC<Props> = ({ tabs }) => {
         </TabsList>
       </div>
       {tabs.map((tab, i) => (
-        <TabsContent key={i} value={tab.content[0]?.blockType}>
+        <TabsContent className="mt-16" key={i} value={tab.content[0]?.blockType}>
           <RenderBlocks layout={tab.content} />
         </TabsContent>
       ))}

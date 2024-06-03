@@ -1,7 +1,8 @@
 import { Block } from 'payload/types'
-// import CalendarBlock from '../CalendarBlock';
+import CalendarBlock from '../Calendar'
 import BusList from '../BusList'
 import IndexHero from '../IndexHero'
+
 // import NewsGridBlock from '../NewsGridBlock';
 
 const TabsBlock: Block = {
@@ -12,9 +13,27 @@ const TabsBlock: Block = {
   },
   fields: [
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'TabTitle',
+          type: 'text',
+          label: 'Titulo de la seccion',
+          required: true,
+        },
+        {
+          name: 'TabSubtitle',
+          type: 'text',
+          label: 'Subtitulo de la seccion',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'tabs',
       type: 'array',
       label: ' ',
+
       fields: [
         {
           name: 'label',
@@ -27,8 +46,10 @@ const TabsBlock: Block = {
           type: 'blocks',
           label: 'Contenido de la pestaña',
           required: true,
-          maxRows: 4,
-          blocks: [BusList],
+          admin: {
+            initCollapsed: true,
+          },
+          blocks: [BusList, CalendarBlock],
         },
       ],
     },

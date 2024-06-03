@@ -8,5 +8,5 @@ export const components = {
   indexhero: IndexHero,
   tabsblock: TabsBlock,
   buslist: BusList,
-  // clendar: CalendarBlock,
+  calendarblock: CalendarBlock,
 }

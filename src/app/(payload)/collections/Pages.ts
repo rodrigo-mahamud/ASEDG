@@ -1,10 +1,10 @@
 import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
-import BusList, { Type as BusListTypes } from '../blocks/BusList'
+
 import TabsBlock from '../blocks/Tabs'
 
-export type Layout = IndexHeroTypes | BusListTypes
+export type Layout = IndexHeroTypes
 export type Type = {
   layout: Layout[]
   blockType: any
