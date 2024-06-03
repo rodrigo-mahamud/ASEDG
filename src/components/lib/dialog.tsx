@@ -4,7 +4,7 @@ import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import { cn } from '@/app/(frontend)/utils/utils'
-import { IconCross } from '@tabler/icons-react'
+import { IconCross, IconX } from '@tabler/icons-react'
 
 const Dialog = DialogPrimitive.Root
 
@@ -45,7 +45,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close className="absolute backdrop-blur-md rounded-full right-4 top-4 focus:outline-none text-white font-semibold bg-black/25 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <IconCross className="h-4 w-4" />
+        <IconX className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

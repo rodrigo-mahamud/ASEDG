@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Calendar, dayjsLocalizer, ToolbarProps } from 'react-big-calendar'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
@@ -31,17 +31,17 @@ interface CustomEvent {
 
 const colors = ['#635bff']
 
-const CalendarBlock: React.FC = ({ title, start, end, description, location, img }: any) => {
-  const events = [
-    {
-      title: title,
-      start: new Date(start),
-      end: new Date(end),
-      description: description,
-      location: location,
-      img: img,
-    },
-  ].map((event, index) => ({ ...event, color: colors[index % colors.length] }))
+const CalendarBlock: React.FC<any> = ({ events }) => {
+  const mappedEvents = events.map((event: any, index: number) => ({
+    title: event.title,
+    start: new Date(event.start),
+    end: new Date(event.end),
+    description: event.description,
+    location: event.location,
+    img: event.img,
+    color: colors[index % colors.length],
+  }))
+
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [selectedEvent, setSelectedEvent] = useState<CustomEvent | null>(null)
   const [open, setOpen] = useState(false)
@@ -70,7 +70,7 @@ const CalendarBlock: React.FC = ({ title, start, end, description, location, img
     <div className="calendar-container">
       <Calendar
         localizer={localizer}
-        events={events}
+        events={mappedEvents}
         className="h-full"
         date={currentDate}
         onNavigate={handleNavigate}
@@ -82,12 +82,14 @@ const CalendarBlock: React.FC = ({ title, start, end, description, location, img
         }}
         onSelectEvent={handleSelectEvent}
       />
-      <CalendarDrawer
-        selectedEvent={selectedEvent}
-        open={open}
-        setOpen={setOpen}
-        isDesktop={isDesktop}
-      />
+      {selectedEvent && (
+        <CalendarDrawer
+          selectedEvent={selectedEvent}
+          open={open}
+          setOpen={setOpen}
+          isDesktop={isDesktop}
+        />
+      )}
     </div>
   )
 }
@@ -102,12 +104,14 @@ const CustomEventComponent: React.FC<CustomEventComponentProps> = ({ event }) =>
 
 const CustomToolbar: React.FC<ToolbarProps> = ({ date, onNavigate }) => {
   const goToBack = () => {
-    const newDate = new Date(date.setMonth(date.getMonth() - 1))
+    const newDate = new Date(date)
+    newDate.setMonth(newDate.getMonth() - 1)
     onNavigate('PREV', newDate)
   }
 
   const goToNext = () => {
-    const newDate = new Date(date.setMonth(date.getMonth() + 1))
+    const newDate = new Date(date)
+    newDate.setMonth(newDate.getMonth() + 1)
     onNavigate('NEXT', newDate)
   }
 
