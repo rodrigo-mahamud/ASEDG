@@ -19,15 +19,7 @@ interface BusListProps {
   }
 }
 
-const BusList: React.FC<BusListProps> = ({
-  from,
-  fromRoad,
-  fromHour,
-  to,
-  toRoad,
-  toHour,
-  companyImg,
-}) => {
+const BusList: React.FC<BusListProps> = (content) => {
   return (
     <div className="w-full flex flex-col gap-6">
       {/* const fromDateTime = dayjs()
@@ -44,19 +36,24 @@ const BusList: React.FC<BusListProps> = ({
 
       <div className="flex w-full gap-8 border border-[#8c9fb2a2] rounded-md px-8 py-4 hover:-translate-y-2 transform transition duration-200 hover:shadow-lg hover:bg-slate-100">
         <div className="w-1/6 relative">
-          <Image src={companyImg.url} className="object-contain" alt={companyImg.alt} fill />
+          <Image
+            src={content.companyImg.url}
+            className="object-contain"
+            alt={content.companyImg.alt}
+            fill
+          />
         </div>
         <div className="w-5/6 relative flex justify-center gap-8 items-center">
           <div className="flex flex-col">
-            <h4 className="font-bold text-lg">{fromHour}</h4>
-            <h5>{from}</h5>
-            <h5>{fromRoad}</h5>
+            <h4 className="font-bold text-lg">{content.fromHour}</h4>
+            <h5>{content.from}</h5>
+            <h5>{content.fromRoad}</h5>
           </div>
           <IconArrowNarrowRight className="w-24 h-24 stroke-[0.5] scale-y-75 scale-x-110" />
           <div className="flex flex-col">
-            <h4 className="font-bold text-lg">{toHour}</h4>
-            <h5>{to}</h5>
-            <h5>{toRoad}</h5>
+            <h4 className="font-bold text-lg">{content.toHour}</h4>
+            <h5>{content.to}</h5>
+            <h5>{content.toRoad}</h5>
           </div>
         </div>
         <TooltipProvider>

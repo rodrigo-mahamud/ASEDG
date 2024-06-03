@@ -31,7 +31,17 @@ interface CustomEvent {
 
 const colors = ['#635bff']
 
-const CalendarBlock: React.FC = (events) => {
+const CalendarBlock: React.FC = ({ title, start, end, description, location, img }: any) => {
+  const events = [
+    {
+      title: title,
+      start: new Date(start),
+      end: new Date(end),
+      description: description,
+      location: location,
+      img: img,
+    },
+  ].map((event, index) => ({ ...event, color: colors[index % colors.length] }))
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [selectedEvent, setSelectedEvent] = useState<CustomEvent | null>(null)
   const [open, setOpen] = useState(false)

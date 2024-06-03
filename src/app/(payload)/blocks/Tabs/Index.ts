@@ -33,7 +33,9 @@ const TabsBlock: Block = {
       name: 'tabs',
       type: 'array',
       label: ' ',
-
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
           name: 'label',
