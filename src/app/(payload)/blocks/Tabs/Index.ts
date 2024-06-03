@@ -24,7 +24,7 @@ const TabsBlock: Block = {
           type: 'row',
           fields: [
             {
-              name: 'TabTitle',
+              name: 'tabTitle',
               type: 'text',
               label: 'Titulo de la pestaña',
               required: true,
@@ -38,7 +38,7 @@ const TabsBlock: Block = {
           ],
         },
         {
-          name: 'TabSubtitle',
+          name: 'tabSubtitle',
           type: 'text',
           label: 'Descripción de la pestaña',
           required: true,

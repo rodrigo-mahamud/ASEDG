@@ -9,7 +9,7 @@ import Container from '@/components/Container'
 
 const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection }: any) => {
   return (
-    <header className="h-screen flex items-center">
+    <header className="h-screen flex items-center mb-80">
       <div className="absolute w-full z-10">
         <Container>
           <div className="w-full flex gap-16 items-start">

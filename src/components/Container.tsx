@@ -4,5 +4,5 @@ interface containerTypes {
   className?: string
 }
 export default function Container({ children, className }: containerTypes) {
-  return <div className={`container relative ${className}`}>{children}</div>
+  return <div className={`container relative my-32 ${className}`}>{children}</div>
 }
