@@ -6,21 +6,19 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import useGoogleCalendarLink from '@/app/(payload)/hooks/useGoogleCalendarLink' // Asegúrate de ajustar la ruta según sea necesario
 import dayjs from 'dayjs'
 
-interface Data {
-  from: string
-  fromRoad: string
-  fromHour: string
-  to: string
-  toRoad: string
-  toHour: string
-  companyImg: {
-    url: string
-    alt: string
-  }
-}
-
 interface BusItemTypes {
-  data: Data
+  data: {
+    from: string
+    fromRoad: string
+    fromHour: string
+    to: string
+    toRoad: string
+    toHour: string
+    companyImg: {
+      url: string
+      alt: string
+    }
+  }
 }
 
 export default function BusItem({ data }: BusItemTypes) {
