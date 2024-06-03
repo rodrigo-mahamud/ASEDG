@@ -3,13 +3,17 @@ import { Block } from 'payload/types'
 const CalendarBlock: Block = {
   slug: 'calendarblock',
   labels: {
-    singular: 'Evento',
-    plural: 'Eventos',
+    singular: 'Calendario',
+    plural: 'Calendario',
   },
   fields: [
     {
       type: 'array',
       name: 'events',
+      label: ' ',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
           type: 'row',

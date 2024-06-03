@@ -13,23 +13,6 @@ const TabsBlock: Block = {
   },
   fields: [
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'TabTitle',
-          type: 'text',
-          label: 'Titulo de la seccion',
-          required: true,
-        },
-        {
-          name: 'TabSubtitle',
-          type: 'text',
-          label: 'Subtitulo de la seccion',
-          required: true,
-        },
-      ],
-    },
-    {
       name: 'tabs',
       type: 'array',
       label: ' ',
@@ -38,9 +21,26 @@ const TabsBlock: Block = {
       },
       fields: [
         {
-          name: 'label',
+          type: 'row',
+          fields: [
+            {
+              name: 'TabTitle',
+              type: 'text',
+              label: 'Titulo de la pestaña',
+              required: true,
+            },
+            {
+              name: 'label',
+              type: 'text',
+              label: 'Etiqueta de la pestaña',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'TabSubtitle',
           type: 'text',
-          label: 'Nombre de la pestaña',
+          label: 'Descripción de la pestaña',
           required: true,
         },
         {
