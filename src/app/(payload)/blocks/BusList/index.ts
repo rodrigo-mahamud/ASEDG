@@ -79,7 +79,7 @@ const BusList: Block = {
         {
           name: 'companyImg',
           type: 'upload',
-          label: 'Company Image',
+          label: 'Logo de la empresa',
           relationTo: 'media', // Suponiendo que tienes una colección de medios llamada 'media'
           required: true,
         },

@@ -11,6 +11,10 @@ const CalendarBlock: Block = {
       type: 'array',
       name: 'events',
       label: ' ',
+      labels: {
+        singular: 'Evento',
+        plural: 'Eventos',
+      },
       admin: {
         initCollapsed: true,
       },
