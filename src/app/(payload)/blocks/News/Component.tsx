@@ -4,7 +4,7 @@ import { Type } from '.'
 
 const NewsList: React.FC<Type> = ({ news }) => {
   return (
-    <div>
+    <div className="grid grid-cols-4 gap-8">
       {news.map((item, index) => (
         <NewsCard key={index} data={item} />
       ))}

@@ -1,7 +1,7 @@
 import { Block } from 'payload/types'
 interface NewsItem {
   title: string
-  description: string
+  summary: string
   img: string
   buttonVariant?: string
   className?: string

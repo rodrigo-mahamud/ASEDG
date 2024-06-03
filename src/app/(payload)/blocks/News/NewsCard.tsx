@@ -15,7 +15,7 @@ interface NewsCardTypes {
   data: {
     className?: string
     title: string
-    description: string
+    summary: string
     badgeClass?: string
     shareClass?: string
     buttonVariant?: any
@@ -42,8 +42,8 @@ export default function NewsCard({ data }: NewsCardTypes) {
         className="h-2/4 aspect-[4/3] object-cover"
       ></Image>
       <CardContent>
-        <CardTitle className="mt-6 mb-3">{data.title}</CardTitle>
-        <CardDescription className="line-clamp-4">{data.description}</CardDescription>
+        <CardTitle className="mt-6 mb-3 line-clamp-1">{data.title}</CardTitle>
+        <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
             variant={data.buttonVariant}
