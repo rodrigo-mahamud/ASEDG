@@ -6,7 +6,7 @@ const NewsList: React.FC<Type> = ({ news }) => {
   return (
     <div className="grid grid-cols-4 gap-8">
       {news.map((item, index) => (
-        <NewsCard key={index} data={item} />
+        <NewsCard className="btnShadow h-fit" buttonVariant="secondary" key={index} data={item} />
       ))}
     </div>
   )

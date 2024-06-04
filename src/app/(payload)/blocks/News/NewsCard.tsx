@@ -12,8 +12,8 @@ import Image from 'next/image'
 import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
 interface NewsCardTypes {
+  className?: string
   data: {
-    className?: string
     title: string
     summary: string
     badgeClass?: string
@@ -25,9 +25,11 @@ interface NewsCardTypes {
     }
   }
 }
-export default function NewsCard({ data }: NewsCardTypes) {
+export default function NewsCard({ data, className }: NewsCardTypes) {
   return (
-    <Card className="rounded-xl overflow-hidden">
+    <Card
+      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}
+    >
       <Badge
         variant="secondary"
         className="w-fit m-6 absolute bg-primary/50 backdrop-blur-md text-white"
@@ -41,7 +43,7 @@ export default function NewsCard({ data }: NewsCardTypes) {
         alt={data.image.alt}
         className="h-2/4 aspect-[4/3] object-cover"
       ></Image>
-      <CardContent>
+      <CardContent className="p-6 pt-0">
         <CardTitle className="mt-6 mb-3 line-clamp-1">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">

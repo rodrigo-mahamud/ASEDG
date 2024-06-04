@@ -1,7 +1,9 @@
 import { Block } from 'payload/types'
 import CalendarBlock from '../Calendar'
+
 import BusList from '../BusList'
 import NewsList from '../News'
+import { IconsField } from '../../fields/Icons'
 
 // import NewsGridBlock from '../NewsGridBlock';
 
