@@ -43,11 +43,7 @@ export default function IndexHighlightedNew({
           <CardDescription className="line-clamp-3 mb-3">{summary}</CardDescription>
         </div>
         <div className="flex w-full gap-3">
-          <Button
-            variant={buttonVariant}
-            className="flex gap-1 hover:bg-secondaryAlt/75 w-5/6"
-            arrow
-          >
+          <Button variant="shine" className="flex gap-1 hover:bg-secondaryAlt/75 w-5/6">
             Ver más
           </Button>
           <ShareButton

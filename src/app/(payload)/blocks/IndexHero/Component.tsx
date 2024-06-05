@@ -65,13 +65,14 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
               >
                 <Button
                   variant="expandIcon"
+                  size="lg"
                   Icon={IconArrowRight}
                   iconPlacement="right"
-                  className="text-lg px-10 py-8 rounded-full stroke-[1.5] flex gap-1"
+                  className="text-lg"
                 >
                   ¿Qué ver?
                 </Button>
-                <Button variant="linkHover2" className="text-lg px-10 flex gap-1">
+                <Button variant="linkHover2" size="lg" className="text-lg ">
                   Explorar
                 </Button>
               </MotionDiv>
