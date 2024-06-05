@@ -6,6 +6,7 @@ import { MotionDiv } from '@/components/MotionDiv'
 import { IndexHeroNews } from '@/components/IndexHeroNews'
 import IndexHighlightedNew from '@/components/IndexHighlightedNew'
 import Container from '@/components/Container'
+import { IconArrowRight } from '@tabler/icons-react'
 
 const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection }: any) => {
   return (
@@ -63,17 +64,14 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
                 className="flex gap-5"
               >
                 <Button
-                  variant="main"
-                  arrow
+                  variant="expandIcon"
+                  Icon={IconArrowRight}
+                  iconPlacement="right"
                   className="text-lg px-10 py-8 rounded-full stroke-[1.5] flex gap-1"
                 >
                   ¿Qué ver?
                 </Button>
-                <Button
-                  variant="outline"
-                  arrow
-                  className="text-lg px-10 py-8 rounded-full stroke-[1.5] flex gap-1"
-                >
+                <Button variant="linkHover2" className="text-lg px-10 flex gap-1">
                   Explorar
                 </Button>
               </MotionDiv>

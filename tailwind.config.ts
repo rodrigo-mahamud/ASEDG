@@ -66,6 +66,10 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        shine: {
+          from: { backgroundPosition: '200% 0' },
+          to: { backgroundPosition: '-200% 0' },
+        },
         meteor: {
           '0%': { transform: 'rotate(215deg) translateX(0)', opacity: '1' },
           '70%': { opacity: '1' },
@@ -125,6 +129,7 @@ const config = {
         },
       },
       animation: {
+        shine: 'shine 8s ease-in-out infinite',
         'meteor-effect': 'meteor 5s linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
