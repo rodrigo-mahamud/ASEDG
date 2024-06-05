@@ -5,8 +5,9 @@ import { Meteors } from '@/components/lib/meteors'
 import { Button } from '@/components/lib/button'
 import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
-export default function CallToAction({ title, text, img, link, linkText, style }: Type) {
+export default function CallToAction({ title, text, image, link, linkText, style }: Type) {
   return (
     <section className="w-full relative h-96 my-32 bg-[#030122] overflow-hidden">
       <div
@@ -48,8 +49,11 @@ export default function CallToAction({ title, text, img, link, linkText, style }
             <Link href={link.slug}>{linkText}</Link>
           </Button>
         </div>
-        <Meteors number={20} />
+        <Meteors className="opacity-25" number={20} />
       </div>
+      {image && (
+        <Image src={image.url} alt={image.alt} fill className="object-cover opacity-25"></Image>
+      )}
     </section>
   )
 }

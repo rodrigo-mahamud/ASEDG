@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload/types'
-import link from '@/app/(payload)/fields/link'
+import headerLink from '../fields/headerLink'
 
 export const Header: GlobalConfig = {
   access: {
@@ -13,11 +13,7 @@ export const Header: GlobalConfig = {
         plural: 'Grupo',
         singular: 'Grupos',
       },
-      fields: [
-        link({
-          appearances: false,
-        }),
-      ],
+      fields: [headerLink({})],
       maxRows: 6,
       type: 'array',
     },

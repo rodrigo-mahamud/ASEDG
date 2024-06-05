@@ -1,4 +1,5 @@
 import { Block } from 'payload/types'
+import link from '../../fields/link'
 export type Type = {
   style: string
   title: string
@@ -6,7 +7,10 @@ export type Type = {
   link: {
     slug: string
   }
-  img: string
+  image?: {
+    url: string
+    alt: string
+  }
   linkText: string
 }
 const CallToAction: Block = {
@@ -17,26 +21,31 @@ const CallToAction: Block = {
   },
   fields: [
     {
-      name: 'style',
-      type: 'select',
-      label: 'Estilo',
-      options: [
+      type: 'row',
+      fields: [
         {
-          label: 'Izquierda',
-          value: 'left',
+          name: 'title',
+          type: 'text',
+          label: 'Título',
+          required: true,
         },
         {
-          label: 'Centro',
-          value: 'center',
+          name: 'style',
+          type: 'select',
+          label: 'Estilo',
+          options: [
+            {
+              label: 'Izquierda',
+              value: 'left',
+            },
+            {
+              label: 'Centro',
+              value: 'center',
+            },
+          ],
+          required: true,
         },
       ],
-      required: true,
-    },
-    {
-      name: 'title',
-      type: 'text',
-      label: 'Título',
-      required: true,
     },
     {
       name: 'text',
@@ -44,25 +53,13 @@ const CallToAction: Block = {
       label: 'Texto',
       required: true,
     },
+    link,
     {
-      name: 'link',
-      type: 'relationship',
-      label: 'Enlace',
-      relationTo: 'pages',
-      required: true,
-    },
-    {
-      name: 'img',
+      name: 'image',
       type: 'upload',
       label: 'Imagen',
       relationTo: 'media',
       required: false,
-    },
-    {
-      name: 'linkText',
-      type: 'text',
-      label: 'Texto del Enlace',
-      required: true,
     },
   ],
 }

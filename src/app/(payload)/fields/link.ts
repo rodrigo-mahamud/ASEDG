@@ -1,111 +1,65 @@
 import type { Field } from 'payload/types'
-import deepMerge from '@/app/(payload)/utils/deepMerge'
-import validateMaxAllowed from '@/app/(payload)/hooks/validateMaxAllowed'
 
-// Definir el tipo para la función LinkType
-interface LinkType {
-  (options?: { disableLabel?: boolean; overrides?: Record<string, unknown> }): Field
-}
+const link: Field = {
+  name: 'link',
+  label: ' ',
 
-// Crear la función LinkType
-const link: LinkType = ({ overrides = {} } = {}) => {
-  const linkResult: Field = {
-    name: 'linkGroup',
-    label: ' ',
-    admin: {
-      hideGutter: true,
-    },
-    fields: [
-      {
-        name: 'label',
-        type: 'text',
-        label: 'Nombre del grupo',
-        required: true,
-      },
-    ],
-    type: 'group',
-  }
-
-  // Definir el campo de enlaces
-  linkResult.fields.push({
-    name: 'childLinks',
-    label: 'Enlaces',
-    labels: {
-      plural: 'Enlaces',
-      singular: 'Enlace',
-    },
-    type: 'array',
-    fields: [
-      {
-        name: 'linkType',
-        label: 'Tipo de enlace',
-        type: 'radio',
-        options: [
-          {
-            label: 'Interno',
-            value: 'reference',
-          },
-          {
-            label: 'Externo',
-            value: 'custom',
-          },
-        ],
-        defaultValue: 'reference',
-      },
-      {
-        type: 'row',
-        fields: [
-          {
-            name: 'title',
-            type: 'text',
-            admin: {
-              className: 'hola',
-            },
-            label: 'Titulo',
-            required: true,
-          },
-          {
-            name: 'text',
-            type: 'text',
-            label: 'Descripción',
-            required: true,
-          },
-        ],
-      },
-      {
-        name: 'reference',
-        admin: {
-          condition: (_, siblingData) => siblingData?.linkType === 'reference',
+  type: 'group',
+  fields: [
+    {
+      name: 'linkType',
+      label: 'Tipo de enlace',
+      type: 'radio',
+      options: [
+        {
+          label: 'Interno',
+          value: 'reference',
         },
-        label: 'Enlazar a la página: ',
-        maxDepth: 1,
-        relationTo: ['pages'],
-        required: true,
-        type: 'relationship',
-      },
-      {
-        name: 'url',
-        admin: {
-          condition: (_, siblingData) => siblingData?.linkType === 'custom',
+        {
+          label: 'Externo',
+          value: 'custom',
         },
-        label: 'Enlace externo:',
-        required: true,
-        type: 'text',
+      ],
+      defaultValue: 'reference', // "Interno" por defecto
+      required: true,
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Título',
+          required: true,
+        },
+        {
+          name: 'text',
+          type: 'text',
+          label: 'Descripción',
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'reference',
+      label: 'Enlazar a la página:',
+      type: 'relationship',
+      relationTo: 'pages',
+      required: true,
+      admin: {
+        condition: (data, siblingData) => siblingData?.linkType === 'reference',
       },
-      {
-        name: 'highlighted',
-        type: 'checkbox',
-        label: 'Destacar este enlace',
-        // hooks: {
-        //   beforeChange: [
-        //     validateMaxAllowed({ field: 'highlighted', max: 1, collectionSlug: 'link' }),
-        //   ],
-        // },
+    },
+    {
+      name: 'url',
+      label: 'Enlace externo:',
+      type: 'text',
+      required: true,
+      admin: {
+        condition: (data, siblingData) => siblingData?.linkType === 'custom',
       },
-    ],
-  })
-
-  return deepMerge(linkResult, overrides)
+    },
+  ],
 }
 
 export default link
