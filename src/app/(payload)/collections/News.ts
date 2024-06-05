@@ -25,6 +25,14 @@ export const News: CollectionConfig = {
       required: true,
     },
     {
+      name: 'categorias',
+      type: 'relationship',
+      relationTo: 'categorias',
+      hasMany: true,
+      maxRows: 2,
+      required: true,
+    },
+    {
       name: 'image',
       type: 'upload',
       label: 'Imagen',

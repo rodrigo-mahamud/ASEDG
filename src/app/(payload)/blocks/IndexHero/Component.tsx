@@ -68,7 +68,7 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
                   size="lg"
                   Icon={IconArrowRight}
                   iconPlacement="right"
-                  className="text-lg"
+                  className="text-lg bg-primary hover:bg-primary/90 rounded-full"
                 >
                   ¿Qué ver?
                 </Button>

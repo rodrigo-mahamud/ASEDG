@@ -12,6 +12,7 @@ import Settings from './app/(payload)/globals/Settings'
 import { Header } from './app/(payload)/globals/Header'
 import Media from './app/(payload)/collections/Media'
 import { News } from './app/(payload)/collections/News'
+import Categorias from './app/(payload)/collections/Categorias'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -19,7 +20,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Pages, Media, News],
+  collections: [Users, Pages, Media, News, Categorias],
   globals: [Settings, Header],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',

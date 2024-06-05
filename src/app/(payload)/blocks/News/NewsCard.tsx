@@ -11,6 +11,7 @@ import {
 import Image from 'next/image'
 import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
+import { IconArrowRight } from '@tabler/icons-react'
 interface NewsCardTypes {
   className?: string
   data: {
@@ -18,7 +19,6 @@ interface NewsCardTypes {
     summary: string
     badgeClass?: string
     shareClass?: string
-    buttonVariant?: any
     image: {
       url: string
       alt: string
@@ -32,7 +32,7 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
     >
       <Badge
         variant="secondary"
-        className="w-fit m-6 absolute bg-primary/50 backdrop-blur-md text-white"
+        className="w-fit m-6 absolute backdrop-blur-md font-medium text-white bg-secondaryAlt/15"
       >
         Secondary
       </Badge>
@@ -48,9 +48,10 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
-            variant={data.buttonVariant}
-            className="w-full flex gap-1 hover:bg-secondaryAlt/75 h-full"
-            arrow
+            variant="expandIcon"
+            Icon={IconArrowRight}
+            iconPlacement="right"
+            className="w-4/5 flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md h-full"
           >
             Ver más
           </Button>
