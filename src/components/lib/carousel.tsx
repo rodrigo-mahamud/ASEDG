@@ -160,7 +160,7 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
         role="group"
         aria-roledescription="slide"
         className={cn(
-          'min-w-0 shrink-0 grow-0',
+          'min-w-0 shrink-0 grow-0 btnShadow',
           orientation === 'horizontal' ? 'pl-4' : 'pt-4',
           className,
         )}
@@ -181,13 +181,12 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         variant="arrow"
         size={size}
         className={cn(
-          'absolute h-8 w-8 rounded-full',
+          'absolute h-8 w-8 rounded-full rotate-180 btnShadow',
           orientation === 'horizontal'
             ? '-left-12 top-1/2 -translate-y-1/2'
             : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
           className,
         )}
-        arrow
         disabled={!canScrollPrev}
         onClick={scrollPrev}
         {...props}
@@ -209,7 +208,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         variant="arrow"
         size={size}
         className={cn(
-          'absolute h-8 w-8 rounded-full',
+          'absolute h-8 w-8 rounded-full btnShadow',
           orientation === 'horizontal'
             ? '-right-12 top-1/2 -translate-y-1/2'
             : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',

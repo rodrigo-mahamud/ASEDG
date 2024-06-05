@@ -1,8 +1,13 @@
 import { Block } from 'payload/types'
+interface CatTypes {
+  title: string
+  description: string
+}
 interface NewsItem {
   title: string
   summary: string
   img: string
+  categorias: CatTypes[]
   buttonVariant?: string
   className?: string
   badgeClass?: string
@@ -20,8 +25,8 @@ export type Type = {
 const NewsList: Block = {
   slug: 'newslist',
   labels: {
-    singular: 'News Card Block',
-    plural: 'News Card Blocks',
+    singular: 'Bloque de Noticias',
+    plural: 'Bloque de Noticias',
   },
   fields: [
     {
@@ -29,7 +34,7 @@ const NewsList: Block = {
       label: 'Noticias destacadas',
       type: 'relationship',
       relationTo: 'noticias',
-      maxRows: 12,
+      maxRows: 4,
       hasMany: true,
       required: true,
     },

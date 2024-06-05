@@ -2,6 +2,7 @@ import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
 import TabsBlock from '../blocks/Tabs'
+import CallToAction from '../blocks/CallToAction'
 
 export type Layout = IndexHeroTypes
 export type Type = {
@@ -30,7 +31,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [IndexHero, TabsBlock],
+      blocks: [IndexHero, TabsBlock, CallToAction],
     },
     {
       name: 'publishedDate',

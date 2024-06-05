@@ -124,11 +124,11 @@ const CustomToolbar: React.FC<ToolbarProps> = ({ date, onNavigate }) => {
       <div className="flex justify-between items-center">
         <h4 className="font-semibold capitalize text-lg">{dayjs(date).format('MMMM YYYY')}</h4>
         <div className="items-center flex">
-          <Button onClick={goToBack} className="rotate-180" variant="link" arrow></Button>
+          <Button onClick={goToBack} className="rotate-180" variant="arrow"></Button>
           <button onClick={goToCurrent} className="font-semibold text-lg ">
             Hoy
           </button>
-          <Button onClick={goToNext} variant="link" arrow></Button>
+          <Button onClick={goToNext} variant="arrow"></Button>
         </div>
       </div>
     </div>

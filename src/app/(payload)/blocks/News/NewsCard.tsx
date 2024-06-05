@@ -12,9 +12,14 @@ import Image from 'next/image'
 import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
 import { IconArrowRight } from '@tabler/icons-react'
+interface CatTypes {
+  title: string
+  description: string
+}
 interface NewsCardTypes {
   className?: string
   data: {
+    categorias: CatTypes[]
     title: string
     summary: string
     badgeClass?: string
@@ -34,7 +39,7 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
         variant="secondary"
         className="w-fit m-6 absolute backdrop-blur-md font-medium text-white bg-secondaryAlt/15"
       >
-        Secondary
+        {data.categorias[0].title}
       </Badge>
       <Image
         src={data.image.url}

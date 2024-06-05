@@ -10,7 +10,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 
 const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection }: any) => {
   return (
-    <header className="h-screen flex items-center mb-80">
+    <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">
         <Container>
           <div className="w-full flex gap-16 items-start">
