@@ -3,7 +3,7 @@ import CalendarBlock from '../Calendar'
 
 import BusList from '../BusList'
 import NewsList from '../News'
-import { IconsField } from '../../fields/Icons'
+import IconField from '../../fields/Icons'
 
 // import NewsGridBlock from '../NewsGridBlock';
 
@@ -35,6 +35,7 @@ const TabsBlock: Block = {
               label: 'Titulo de la pestaña',
               required: true,
             },
+
             {
               name: 'label',
               type: 'text',

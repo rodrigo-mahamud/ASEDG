@@ -1,12 +1,15 @@
 import { Field } from 'payload/types'
-import { Icons } from './Component'
+import IconSelector from './Component' // Ajusta la ruta según la ubicación de tu componente
 
-export const IconsField: Field = {
-  name: 'customSelectField',
+const IconField: Field = {
+  name: 'icon',
+  label: 'Icono',
   type: 'text',
   admin: {
     components: {
-      Field: Icons,
+      Field: IconSelector,
     },
   },
 }
+
+export default IconField

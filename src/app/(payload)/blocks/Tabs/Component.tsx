@@ -16,8 +16,6 @@ type Props = {
 }
 
 const TabsBlock: React.FC<Props> = ({ tabs }) => {
-  // console.log(tabs)
-
   return (
     <Container>
       <Tabs defaultValue={tabs[0]?.content[0]?.blockType || 'calendar-block'}>
