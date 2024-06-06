@@ -18,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="es" className={GeistSans.className}>
       <body className="overflow-x-hidden">
-        <NavBar />
-        {children}
-        <Footer></Footer>
+        <SmoothScrolling>
+          <NavBar />
+          {children}
+          <Footer></Footer>
+        </SmoothScrolling>
       </body>
     </html>
   )

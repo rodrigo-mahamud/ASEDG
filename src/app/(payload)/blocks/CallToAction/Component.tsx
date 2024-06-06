@@ -9,9 +9,17 @@ import dynamic from 'next/dynamic'
 import ParallaxItem from '@/components/ParallaxItem'
 // const ParallaxItem = dynamic(() => import('@/components/ParallaxItem'), { ssr: false })
 
-export default function CallToAction({ title, text, image, link, speed, style, decoration }: Type) {
+export default function CallToAction({
+  title,
+  text,
+  image,
+  link,
+  speed = 1.15,
+  style,
+  decoration,
+}: Type) {
   return (
-    <section className="w-full relative h-[45rem] clip-path-cta bg-[#030122] overflow-hidden">
+    <section className="w-full relative h-[40rem] clip-path-cta bg-[#030122] overflow-hidden">
       <div className="absolute w-full h-full">
         <div
           className={`container flex h-full ${
