@@ -1,3 +1,4 @@
+import BentoBlock from './Bento/Component'
 import BusList from './BusList/Component'
 import CalendarBlock from './Calendar/Component'
 import CallToAction from './CallToAction/Component'
@@ -12,4 +13,5 @@ export const components = {
   calendarblock: CalendarBlock,
   newslist: NewsList,
   calltoaction: CallToAction,
+  bentoblock: BentoBlock,
 }

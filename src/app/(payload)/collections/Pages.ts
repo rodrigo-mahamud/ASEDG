@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
 import TabsBlock from '../blocks/Tabs'
 import CallToAction from '../blocks/CallToAction'
+import BentoBlock from '../blocks/Bento'
 
 export type Layout = IndexHeroTypes
 export type Type = {
@@ -31,7 +32,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [IndexHero, TabsBlock, CallToAction],
+      blocks: [IndexHero, TabsBlock, CallToAction, BentoBlock],
     },
     {
       name: 'publishedDate',

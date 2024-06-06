@@ -1,35 +1,21 @@
 'use client'
 import { cn } from '@/app/(frontend)/utils/utils'
-import { LinkButton } from './linkButton'
+import { LinkButton } from '@/components/lib/linkButton'
 import React, { useRef, useState } from 'react'
 import Link from 'next/link'
-export const BentoGrid = ({
-  className,
-  children,
-}: {
-  className?: string
-  children?: React.ReactNode
-}) => {
-  return (
-    <div className={cn('grid md:auto-rows-[24rem] grid-cols-1 md:grid-cols-3 gap-6 ', className)}>
-      {children}
-    </div>
-  )
+import Image from 'next/image'
+interface DataTypes {
+  className: string
+  data: {
+    title: string
+    description: string
+    image: {
+      url: string
+      alt: string
+    }
+  }
 }
-
-export const BentoGridItem = ({
-  className,
-  title,
-  description,
-  header,
-  icon,
-}: {
-  className?: string
-  title?: string | React.ReactNode
-  description?: string | React.ReactNode
-  header?: React.ReactNode
-  icon?: React.ReactNode
-}) => {
+export default function BentoGridItem({ data, className }: DataTypes) {
   const divRef = useRef<HTMLDivElement>(null)
   const [isFocused, setIsFocused] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -74,12 +60,14 @@ export const BentoGridItem = ({
         className,
       )}
     >
-      <div className="bg-white absolute group-hover:bg-white/90 gap-4 backdrop-blur-md p-6 flex flex-col h-full justify-between clip-path rounded-[13px]">
-        {header}
+      <div className="bg-white absolute group-hover:bg-white/90 gap-4 backdrop-blur-md p-6 w-full flex flex-col h-full justify-between clip-path rounded-[13px]">
+        <div className="flex flex-1 w-full h-full relative min-h-[6rem] rounded-md bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 overflow-hidden">
+          <Image src={data.image.url} alt={data.image.alt} fill className="object-cover"></Image>
+        </div>
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col">
-            <div className="font-sans font-bold my-2">{title}</div>
-            <div className="font-sans font-normal line-clamp-2">{description}</div>
+            <div className="font-sans font-bold my-2">{data.title}</div>
+            <div className="font-sans font-normal line-clamp-2">{data.description}</div>
           </div>
           <LinkButton
             href="/hola"
