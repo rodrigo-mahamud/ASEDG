@@ -13,50 +13,50 @@ const link: Field = {
       options: [
         {
           label: 'Interno',
-          value: 'reference',
+          value: 'internal',
         },
         {
           label: 'Externo',
-          value: 'custom',
+          value: 'external',
         },
       ],
-      defaultValue: 'reference', // "Interno" por defecto
+      defaultValue: 'internal', // "Interno" por defecto
       required: true,
     },
     {
       type: 'row',
       fields: [
         {
-          name: 'title',
+          name: 'linkText',
           type: 'text',
-          label: 'Título',
+          label: 'Texto del enlace',
           required: true,
         },
         {
-          name: 'text',
+          name: 'description',
           type: 'text',
-          label: 'Descripción',
+          label: 'Descripción del enlace',
           required: false,
         },
       ],
     },
     {
-      name: 'reference',
+      name: 'internal',
       label: 'Enlazar a la página:',
       type: 'relationship',
       relationTo: 'pages',
       required: true,
       admin: {
-        condition: (data, siblingData) => siblingData?.linkType === 'reference',
+        condition: (data, siblingData) => siblingData?.linkType === 'internal',
       },
     },
     {
-      name: 'url',
+      name: 'external',
       label: 'Enlace externo:',
       type: 'text',
       required: true,
       admin: {
-        condition: (data, siblingData) => siblingData?.linkType === 'custom',
+        condition: (data, siblingData) => siblingData?.linkType === 'external',
       },
     },
   ],

@@ -5,8 +5,17 @@ export type Type = {
   title: string
   text: string
   link: {
-    slug: string
+    linkText?: string
+    description: string
+    internal?: {
+      slug?: string
+    }
+    external?: {
+      slug?: string
+    }
   }
+  speed: number
+  decoration?: boolean
   image?: {
     url: string
     alt: string
@@ -54,6 +63,18 @@ const CallToAction: Block = {
       required: true,
     },
     link,
+    {
+      name: 'speed',
+      type: 'number',
+      label: 'Velocidad de efecto parallax. (1.15 por defecto)',
+      required: false,
+    },
+    {
+      name: 'decoration',
+      type: 'checkbox',
+      label: '¿Añadir decoración al fondo?',
+      required: false,
+    },
     {
       name: 'image',
       type: 'upload',

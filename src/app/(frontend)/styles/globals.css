@@ -84,6 +84,9 @@
 .clip-path {
   clip-path: inset(2px);
 }
+.clip-path-cta {
+  clip-path: inset(8rem 0);
+}
 .btnShadow:hover,
 .btnMainShadow:hover {
   box-shadow: 0 0 0 1px #0e3f7e0a, 0 1px 1px -0.5px #2a33450a, 0 3px 3px -1.5px #2a33460a,
