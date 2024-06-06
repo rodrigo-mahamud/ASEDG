@@ -1,15 +1,21 @@
 import { Block } from 'payload/types'
-export type Types = {
-  isReversed: string
+interface ListTypes {
+  text: string
+  icon: string
+}
+export type Type = {
+  isReversed: boolean
   title: string
   body: string
-  image: string
-  list: {
-    icon: string
-    text: string
+  image: {
+    url: string
+    alt: string
   }
+  list: ListTypes[]
   linkText: string
-  link: string
+  link: {
+    slug: string
+  }
 }
 const TextImagesBlock: Block = {
   slug: 'textimagesblock',

@@ -4,25 +4,7 @@ import Link from 'next/link'
 import ParallaxItem from '@/components/ParallaxItem'
 import * as Icons from '@tabler/icons-react' // Importa todos los iconos
 import { Button } from '@/components/lib/button'
-
-interface ListTypes {
-  text: string
-  icon: string
-}
-
-interface ImageTextProps {
-  isReversed: string
-  title: string
-  body: string
-  image: {
-    url: string
-  }
-  list: ListTypes[]
-  linkText: string
-  link: {
-    slug: string
-  }
-}
+import { Type } from '.'
 
 export default function TextImagesBlock({
   isReversed,
@@ -32,13 +14,11 @@ export default function TextImagesBlock({
   list,
   linkText,
   link,
-}: ImageTextProps) {
-  const shouldReverse = isReversed === 'true'
-
+}: Type) {
   return (
     <section
       className={`flex container py-32 flex-col gap-8 md:gap-16 ${
-        shouldReverse ? 'md:flex-row-reverse' : 'md:flex-row'
+        isReversed ? 'md:flex-row-reverse' : 'md:flex-row'
       }`}
     >
       <div className="flex md:w-1/2 overflow-hidden rounded-xl">
@@ -46,10 +26,10 @@ export default function TextImagesBlock({
           <Image
             src={image.url}
             fill
-            className="mt-10 w-full object-cover md:mt-0 scale-110 translate-y-8"
+            className="mt-10 w-full object-cover scale-125 "
             quality={50}
             sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
-            alt={title}
+            alt={image.alt}
           />
         </ParallaxItem>
       </div>
