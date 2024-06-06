@@ -1,11 +1,7 @@
 import { Block } from 'payload/types'
 import CalendarBlock from '../Calendar'
-
 import BusList from '../BusList'
 import NewsList from '../News'
-import IconField from '../../fields/Icons'
-
-// import NewsGridBlock from '../NewsGridBlock';
 
 const TabsBlock: Block = {
   slug: 'tabsblock',

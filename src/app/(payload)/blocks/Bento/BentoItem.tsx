@@ -1,14 +1,17 @@
 'use client'
 import { cn } from '@/app/(frontend)/utils/utils'
-import { LinkButton } from '@/components/lib/linkButton'
 import React, { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Button } from '@/components/lib/button'
 interface DataTypes {
   className: string
   data: {
     title: string
     description: string
+    link: {
+      slug: string
+    }
     image: {
       url: string
       alt: string
@@ -60,24 +63,23 @@ export default function BentoGridItem({ data, className }: DataTypes) {
         className,
       )}
     >
-      <div className="bg-white absolute group-hover:bg-white/90 gap-4 backdrop-blur-md p-6 w-full flex flex-col h-full justify-between clip-path rounded-[13px]">
-        <div className="flex flex-1 w-full h-full relative min-h-[6rem] rounded-md bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 overflow-hidden">
-          <Image src={data.image.url} alt={data.image.alt} fill className="object-cover"></Image>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <div className="font-sans font-bold my-2">{data.title}</div>
-            <div className="font-sans font-normal line-clamp-2">{data.description}</div>
+      <Link prefetch href={data.link.slug}>
+        <div className="bg-white absolute group-hover:bg-white/90 gap-4 backdrop-blur-md p-6 w-full flex flex-col h-full justify-between clip-path rounded-[13px]">
+          <div className="flex flex-1 w-full h-full relative min-h-[6rem] rounded-md bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100 overflow-hidden">
+            <Image src={data.image.url} alt={data.image.alt} fill className="object-cover"></Image>
           </div>
-          <LinkButton
-            href="/hola"
-            variant="default"
-            className="p-4 bg-secondaryAlt/5 hover:bg-secondaryAlt/10 text-secondaryAlt stroke-[1.5] hover:translate-y-[none] hover:shadow-none"
-            arrow
-          ></LinkButton>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <div className="font-sans font-bold my-2">{data.title}</div>
+              <div className="font-sans font-normal line-clamp-2">{data.description}</div>
+            </div>
+            <Button
+              className="w-5 h-5 p-6 bg-secondaryAlt/5 hover:bg-secondaryAlt/10 text-secondaryAlt stroke-[1.5] hover:translate-y-[none] hover:shadow-none"
+              variant="arrow"
+            ></Button>
+          </div>
         </div>
-      </div>
-
+      </Link>
       <div
         className="-z-10 h-full w-full absolute transition duration-300 rounded-lg"
         style={{

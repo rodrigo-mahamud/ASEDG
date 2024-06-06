@@ -1,9 +1,10 @@
 import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
-import TabsBlock from '../blocks/Tabs'
+
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
+import TabsBlock from '../blocks/Tabs'
 
 export type Layout = IndexHeroTypes
 export type Type = {

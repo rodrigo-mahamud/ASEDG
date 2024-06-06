@@ -56,7 +56,7 @@ export default function CallToAction({
                 size="lg"
                 Icon={IconArrowRight}
                 iconPlacement="right"
-                className="text-lg bg-primary hover:bg-primary/90 rounded-full"
+                className="text-lg bg-primary hover:bg-primary/90 rounded-full w-[inherit]"
               >
                 <Link
                   href={link.internal.slug}
