@@ -5,7 +5,6 @@ import { Button } from '@/components/lib/button'
 import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
 import ParallaxItem from '@/components/ParallaxItem'
 // const ParallaxItem = dynamic(() => import('@/components/ParallaxItem'), { ssr: false })
 
