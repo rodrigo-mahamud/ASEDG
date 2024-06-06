@@ -47,7 +47,7 @@ const BentoBlock: Block = {
       name: 'tarjeta',
       label: ' ',
       minRows: 3,
-      maxRows: 8,
+      maxRows: 7,
       admin: {
         initCollapsed: true,
       },

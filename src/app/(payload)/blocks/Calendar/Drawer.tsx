@@ -28,6 +28,7 @@ import {
 import 'dayjs/locale/es'
 import useGoogleCalendarLink from '@/app/(payload)/hooks/useGoogleCalendarLink' // Ajusta la ruta según sea necesario
 import { LinkButton } from '@/components/lib/linkButton'
+import Link from 'next/link'
 
 dayjs.locale('es')
 
@@ -136,14 +137,15 @@ const CalendarDrawer: React.FC<CalendarDrawerProps> = ({
                   {dayjs(selectedEvent.end).format('HH:mm')}
                 </li>
               </ul>
-              <LinkButton
-                href={googleCalendarLink}
-                variant="secondary"
-                className="w-full flex gap-1 hover:bg-secondaryAlt/75 h-fit py-3"
-              >
-                <IconTablePlus className="w-4 h-4 mr-1"></IconTablePlus>
-                Añadir a mi calendario
-              </LinkButton>
+              <Button variant="shine" className="flex gap-1 hover:bg-secondaryAlt/75 w-5/6" asChild>
+                <Link
+                  href={googleCalendarLink}
+                  className="w-full flex gap-1 hover:bg-secondaryAlt/75 h-fit py-3"
+                >
+                  <IconTablePlus className="w-4 h-4 mr-1"></IconTablePlus>
+                  Añadir a mi calendario
+                </Link>
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -180,7 +182,7 @@ const CalendarDrawer: React.FC<CalendarDrawerProps> = ({
               </ul>
             </DrawerHeader>
             <DrawerFooter className="pt-2">
-              <Button variant="secondary" asChild>
+              <Button variant="shine" className="flex gap-1 hover:bg-secondaryAlt/75 w-5/6" asChild>
                 <a
                   className="w-full flex items-center"
                   href={googleCalendarLink}
