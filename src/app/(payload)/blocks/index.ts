@@ -5,6 +5,7 @@ import CallToAction from './CallToAction/Component'
 import IndexHero from './IndexHero/Component'
 import NewsList from './News/Component'
 import TabsBlock from './Tabs/Component'
+import TextImagesBlock from './TextImages/Component'
 
 export const components = {
   indexhero: IndexHero,
@@ -14,4 +15,5 @@ export const components = {
   newslist: NewsList,
   calltoaction: CallToAction,
   bentoblock: BentoBlock,
+  textimagesblock: TextImagesBlock,
 }
