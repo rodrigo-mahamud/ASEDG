@@ -2,6 +2,7 @@ import BentoBlock from './Bento/Component'
 import BusList from './BusList/Component'
 import CalendarBlock from './Calendar/Component'
 import CallToAction from './CallToAction/Component'
+import CardsBlock from './Cards/Component'
 import IndexHero from './IndexHero/Component'
 import NewsList from './News/Component'
 import TabsBlock from './Tabs/Component'
@@ -16,4 +17,5 @@ export const components = {
   calltoaction: CallToAction,
   bentoblock: BentoBlock,
   textimagesblock: TextImagesBlock,
+  cardsblock: CardsBlock,
 }
