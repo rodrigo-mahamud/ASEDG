@@ -19,6 +19,8 @@ interface CardTypes {
   }
 }
 export type Type = {
+  title: string
+  description: string
   cards: CardTypes[]
 }
 const CardsBlock: Block = {
@@ -29,6 +31,23 @@ const CardsBlock: Block = {
   },
 
   fields: [
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Título de la sección',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'text',
+          label: 'Descripción de la sección',
+          required: true,
+        },
+      ],
+    },
     {
       type: 'array',
       name: 'cards',
@@ -41,6 +60,7 @@ const CardsBlock: Block = {
       admin: {
         initCollapsed: true,
       },
+
       fields: [
         {
           name: 'title',
