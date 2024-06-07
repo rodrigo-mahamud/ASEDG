@@ -1,4 +1,6 @@
 import { Block } from 'payload/types'
+import IconField from '../../fields/Icons/Component'
+import Icon from '../../fields/Icons'
 interface ListTypes {
   text: string
   icon: string
@@ -67,6 +69,7 @@ const TextImagesBlock: Block = {
       relationTo: 'media',
       required: true,
     },
+    Icon,
 
     {
       name: 'list',
@@ -74,12 +77,6 @@ const TextImagesBlock: Block = {
       maxRows: 3,
       label: 'Lista',
       fields: [
-        {
-          name: 'icon',
-          type: 'text',
-          label: 'Icono',
-          required: true,
-        },
         {
           name: 'text',
           type: 'text',
