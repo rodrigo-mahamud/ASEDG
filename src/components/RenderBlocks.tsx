@@ -1,17 +1,29 @@
 import React from 'react'
-import { Layout } from '@/app/(payload)/collections/Pages'
 import { components } from '@/app/(payload)/blocks'
+
+// Define the type for the block components
+interface BlockComponents {
+  [key: string]: React.FC<any>
+}
+
+interface Layout {
+  block: any
+  blockType: keyof BlockComponents
+}
 
 type Props = {
   layout: Layout[]
   className?: string
 }
 
-const RenderBlocks: React.FC<Props> = ({ layout, className }) => {
+// Ensure `components` has the correct type
+const typedComponents: BlockComponents = components
+
+const RenderBlocks = ({ layout, className }: Props) => {
   return (
     <div className={[className].filter(Boolean).join(' ')}>
       {layout.map((block, i) => {
-        const Block: React.FC<any> = components[block.blockType]
+        const Block = typedComponents[block.blockType]
 
         if (Block) {
           return (

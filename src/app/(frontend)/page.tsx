@@ -1,9 +1,10 @@
+import React from 'react'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-
 import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import IndexHero from '@/components/IndexHero'
 import Hero from '@/components/Hero'
+
 // TODO:  fix the types in findGlobal and pageData
 export default async function HomePage() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -26,12 +27,11 @@ export default async function HomePage() {
 
   return (
     <main>
-      {page.header.style == 'inicio' ? (
-        <IndexHero data={page.header}></IndexHero>
+      {page.header.style === 'inicio' ? (
+        <IndexHero data={page.header} />
       ) : (
-        <Hero data={page.header}></Hero>
+        <Hero data={page.header} />
       )}
-
       <RenderBlocks layout={page.body.layout} />
     </main>
   )
