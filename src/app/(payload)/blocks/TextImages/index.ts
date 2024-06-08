@@ -69,7 +69,6 @@ const TextImagesBlock: Block = {
       relationTo: 'media',
       required: true,
     },
-    Icon,
 
     {
       name: 'list',

@@ -1,7 +1,6 @@
 import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
 import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
-
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
 import TabsBlock from '../blocks/Tabs'
@@ -23,19 +22,41 @@ export const Pages: CollectionConfig = {
   },
   fields: [
     {
-      name: 'title',
-      required: true,
-      type: 'text',
-    },
-    {
-      name: 'content',
-      required: true,
-      type: 'text',
-    },
-    {
-      name: 'layout',
-      type: 'blocks',
-      blocks: [IndexHero, TabsBlock, CallToAction, BentoBlock, TextImagesBlock, CardsBlock],
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Cabecera',
+          name: 'header',
+          fields: [
+            {
+              name: 'title',
+              required: true,
+              type: 'text',
+            },
+            {
+              name: 'content',
+              required: true,
+              type: 'text',
+            },
+          ],
+        },
+        {
+          label: 'Cuerpo',
+          name: 'body',
+          fields: [
+            {
+              name: 'layout',
+              label: ' ',
+              labels: {
+                singular: 'Seccion',
+                plural: 'Secciones',
+              },
+              type: 'blocks',
+              blocks: [IndexHero, TabsBlock, CallToAction, BentoBlock, TextImagesBlock, CardsBlock],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'publishedDate',
