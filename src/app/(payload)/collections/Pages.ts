@@ -12,7 +12,7 @@ export const Pages: CollectionConfig = {
     drafts: true,
   },
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'slug',
   },
   fields: [
     {

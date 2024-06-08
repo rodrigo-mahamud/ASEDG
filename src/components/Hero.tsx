@@ -2,8 +2,12 @@ import React, { FC } from 'react'
 import { AuroraBackground } from './lib/auroraBackground'
 import Container from './Container'
 import { BreadcrumbDemo } from './BreadcrumbDemo'
-
-const Hero = ({ data }) => {
+interface HeroTypes {
+  data: {
+    title: any
+  }
+}
+const Hero = ({ data }: HeroTypes) => {
   return (
     <header className="h-[30rem]">
       <AuroraBackground className="h-[inherit]">

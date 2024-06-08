@@ -6,7 +6,7 @@ import 'dayjs/locale/es'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import '@/app/(frontend)/styles/calendar.css'
 import { Button } from '@/components/lib/button'
-import { useMediaQuery } from '@/app/(payload)/hooks/useMediaQuery'
+import { useMediaQuery } from '@/app/(frontend)/hooks/useMediaQuery'
 import CalendarDrawer from '../Calendar/Drawer' // Ajusta la ruta según sea necesario
 
 dayjs.locale('es')

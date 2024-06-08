@@ -32,7 +32,7 @@ export default async function HomePage() {
         <Hero data={page.header}></Hero>
       )}
 
-      {/* {<RenderBlocks layout={page.body.layout} />} */}
+      <RenderBlocks layout={page.body.layout} />
     </main>
   )
 }

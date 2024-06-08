@@ -54,7 +54,7 @@ const IconField: React.FC<{ path: string }> = ({ path }) => {
 
   return (
     <div className="icon-field">
-      <button onClick={toggleDropdown} className="icon-button">
+      {/* <button onClick={toggleDropdown} className="icon-button">
         {value ? React.createElement(TablerIcons[value]) : 'Select Icon'}
       </button>
       {isDropdownOpen && (
@@ -84,7 +84,7 @@ const IconField: React.FC<{ path: string }> = ({ path }) => {
             })}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
