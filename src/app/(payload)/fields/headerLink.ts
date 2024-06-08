@@ -10,7 +10,7 @@ interface LinkType {
 // Crear la función LinkType
 const headerLink: LinkType = ({ overrides = {} } = {}) => {
   const linkResult: Field = {
-    name: 'linkGroup',
+    name: 'item',
     label: ' ',
     admin: {
       hideGutter: true,
@@ -28,7 +28,7 @@ const headerLink: LinkType = ({ overrides = {} } = {}) => {
 
   // Definir el campo de enlaces
   linkResult.fields.push({
-    name: 'childLinks',
+    name: 'child',
     label: 'Enlaces',
     labels: {
       plural: 'Enlaces',

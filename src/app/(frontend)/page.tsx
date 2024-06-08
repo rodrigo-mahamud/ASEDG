@@ -26,8 +26,12 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* <IndexHero data={page.body}></IndexHero> */}
-      <Hero data={page.header}></Hero>
+      {page.header.style == 'inicio' ? (
+        <IndexHero data={page.header}></IndexHero>
+      ) : (
+        <Hero data={page.header}></Hero>
+      )}
+
       {/* {<RenderBlocks layout={page.body.layout} />} */}
     </main>
   )

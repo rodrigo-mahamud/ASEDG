@@ -21,12 +21,14 @@ interface NewsTypes {
   }
 }
 interface IndexHeroTypes {
-  pretitle: string
-  title: string
-  description: string
-  newsSelection: NewsTypes[]
+  data: {
+    pretitleIndex: string
+    titleIndex: string
+    description: string
+    newsSelection: NewsTypes[]
+  }
 }
-const IndexHero = ({ ...data }: IndexHeroTypes) => {
+const IndexHero = ({ data }: IndexHeroTypes) => {
   return (
     <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">
@@ -42,7 +44,7 @@ const IndexHero = ({ ...data }: IndexHeroTypes) => {
                 }}
                 className="text-primary font-semibold tracking-tight"
               >
-                {data.pretitle}
+                {data.pretitleIndex}
               </MotionDiv>
               <MotionDiv
                 animate={{ y: 0, opacity: 1 }}
@@ -54,7 +56,7 @@ const IndexHero = ({ ...data }: IndexHeroTypes) => {
                 }}
               >
                 <h1 className="text-2xl mt-8 md:text-3xl lg:text-7xl font-cal text-balance pr-10 lg:leading-[72px] tracking-wide">
-                  {data.title}
+                  {data.titleIndex}
                 </h1>
               </MotionDiv>
 
