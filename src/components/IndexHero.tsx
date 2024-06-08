@@ -1,14 +1,32 @@
 import { Button } from '@/components/lib/button'
 import { Zenitho } from 'uvcanvas'
 import { LinkButton } from '@/components/lib/linkButton'
-import { Type } from '.'
 import { MotionDiv } from '@/components/MotionDiv'
 import { IndexHeroNews } from '@/components/IndexHeroNews'
 import IndexHighlightedNew from '@/components/IndexHighlightedNew'
 import Container from '@/components/Container'
 import { IconArrowRight } from '@tabler/icons-react'
-
-const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection }: any) => {
+interface NewsTypes {
+  id: string
+  className?: string
+  badgeClass?: string
+  shareClass?: string
+  buttonVariant?: string
+  title: string
+  summary: string
+  image: {
+    id: number
+    alt: string
+    url: string
+  }
+}
+interface IndexHeroTypes {
+  pretitle: string
+  title: string
+  description: string
+  newsSelection: NewsTypes[]
+}
+const IndexHero = ({ ...data }: IndexHeroTypes) => {
   return (
     <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">
@@ -24,7 +42,7 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
                 }}
                 className="text-primary font-semibold tracking-tight"
               >
-                {pretitle}
+                {data.pretitle}
               </MotionDiv>
               <MotionDiv
                 animate={{ y: 0, opacity: 1 }}
@@ -36,7 +54,7 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
                 }}
               >
                 <h1 className="text-2xl mt-8 md:text-3xl lg:text-7xl font-cal text-balance pr-10 lg:leading-[72px] tracking-wide">
-                  {title}
+                  {data.title}
                 </h1>
               </MotionDiv>
 
@@ -50,7 +68,7 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
                 }}
               >
                 <h2 className="text-xl mt-8 mb-10 text-balance text-foreground leading-9">
-                  {description}
+                  {data.description}
                 </h2>
               </MotionDiv>
               <MotionDiv
@@ -88,7 +106,7 @@ const IndexHero: React.FC<Type> = ({ pretitle, title, description, newsSelection
               className="w-1/2 flex gap-5 justify-center"
             >
               <IndexHeroNews>
-                {newsSelection.map((newsItem: any) => (
+                {data.newsSelection.map((newsItem) => (
                   <IndexHighlightedNew key={newsItem.id} {...newsItem} buttonVariant="secondary" />
                 ))}
               </IndexHeroNews>

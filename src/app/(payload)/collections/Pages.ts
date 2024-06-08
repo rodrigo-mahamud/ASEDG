@@ -1,17 +1,11 @@
 import slug from '../fields/slug'
 import type { CollectionConfig } from 'payload/types'
-import IndexHero, { Type as IndexHeroTypes } from '../blocks/IndexHero'
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
 import TabsBlock from '../blocks/Tabs'
 import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
 
-export type Layout = IndexHeroTypes
-export type Type = {
-  layout: Layout[]
-  blockType: any
-}
 export const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
@@ -29,14 +23,85 @@ export const Pages: CollectionConfig = {
           name: 'header',
           fields: [
             {
-              name: 'title',
+              name: 'style',
+              label: 'Tipo de cabecera.',
+              type: 'select',
+              options: [
+                {
+                  label: 'Cabecera de Inicio',
+                  value: 'inicio',
+                },
+                {
+                  label: 'Cabecera de Página',
+                  value: 'pagina',
+                },
+              ],
               required: true,
-              type: 'text',
             },
             {
-              name: 'content',
+              type: 'row',
+              fields: [
+                {
+                  name: 'titleIndex',
+                  label: 'Titulo',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData.style === 'inicio',
+                  },
+                },
+                {
+                  name: 'pretitleIndex',
+                  label: 'Pretitulo',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    condition: (_, siblingData) => siblingData.style === 'inicio',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'description',
+              label: 'Descripción',
+              type: 'textarea',
+              admin: {
+                width: '100%',
+                condition: (_, siblingData) => siblingData.style === 'inicio',
+              },
               required: true,
-              type: 'text',
+            },
+            {
+              name: 'newsSelection',
+              label: 'Noticias destacadas',
+              type: 'relationship',
+              relationTo: 'noticias',
+              maxRows: 3,
+              hasMany: true,
+              admin: {
+                condition: (_, siblingData) => siblingData.style === 'inicio',
+              },
+              required: true,
+            },
+            {
+              type: 'row',
+              admin: {
+                condition: (_, siblingData) => siblingData.style === 'pagina',
+              },
+              fields: [
+                {
+                  name: 'title',
+                  required: true,
+                  label: 'Titulo de la cabecera',
+                  type: 'text',
+                },
+                {
+                  name: 'pretitle',
+                  required: true,
+                  label: 'Preitulo de la cabecera',
+                  type: 'text',
+                },
+              ],
             },
           ],
         },
@@ -52,7 +117,7 @@ export const Pages: CollectionConfig = {
                 plural: 'Secciones',
               },
               type: 'blocks',
-              blocks: [IndexHero, TabsBlock, CallToAction, BentoBlock, TextImagesBlock, CardsBlock],
+              blocks: [TabsBlock, CallToAction, BentoBlock, TextImagesBlock, CardsBlock],
             },
           ],
         },

@@ -5,7 +5,7 @@ import path from 'path'
 import { buildConfig } from 'payload/config'
 // import sharp from 'sharp'
 import { fileURLToPath } from 'url'
-
+// import seoPlugin from '@payloadcms/plugin-seo'
 import { Users } from './app/(payload)/collections/Users'
 import { Pages } from './app/(payload)/collections/Pages'
 import Settings from './app/(payload)/globals/Settings'
@@ -21,6 +21,14 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Pages, Media, News, Categorias],
+  // plugins: [
+  //   seoPlugin({
+  //     collections: ['pages'],
+  //     uploadsCollection: 'media',
+  //     generateTitle: ({ doc }) => `Website.com — ${doc.title.value}`,
+  //     generateDescription: ({ doc }) => doc.excerpt,
+  //   }),
+  // ],
   globals: [Settings, Header],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || '',
