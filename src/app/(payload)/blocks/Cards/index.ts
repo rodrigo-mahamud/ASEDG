@@ -14,7 +14,7 @@ interface cardAtributess {
       slug?: string
     }
   }
-  image: {
+  cardImage: {
     url: string
     alt: string
   }
