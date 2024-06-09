@@ -9,7 +9,7 @@ interface HeroTypes {
 }
 const Hero = ({ data }: HeroTypes) => {
   return (
-    <header className="h-[30rem]">
+    <header className="h-[35rem] bg-secondary">
       <AuroraBackground className="h-[inherit]">
         <Container>
           <div className="flex flex-col w-full items-center justify-center">

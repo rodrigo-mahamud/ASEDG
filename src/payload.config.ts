@@ -1,6 +1,12 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 // import { payloadCloud } from '@payloadcms/plugin-cloud'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import {
+  BlocksFeature,
+  FixedToolbarFeature,
+  LinkFeature,
+  UploadFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload/config'
 // import sharp from 'sharp'
@@ -13,6 +19,10 @@ import { Header } from './app/(payload)/globals/Header'
 import Media from './app/(payload)/collections/Media'
 import { News } from './app/(payload)/collections/News'
 import Categorias from './app/(payload)/collections/Categorias'
+import TextImagesBlock from './app/(payload)/blocks/TextImages'
+import CallToAction from './app/(payload)/blocks/CallToAction'
+import link from './app/(payload)/fields/link'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -21,16 +31,59 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Pages, Media, News, Categorias],
-  // plugins: [
+  //plugins: [
   //   seoPlugin({
   //     collections: ['pages'],
   //     uploadsCollection: 'media',
   //     generateTitle: ({ doc }) => `Website.com — ${doc.title.value}`,
   //     generateDescription: ({ doc }) => doc.excerpt,
   //   }),
-  // ],
+  //],
   globals: [Settings, Header],
-  editor: lexicalEditor({}),
+  editor: lexicalEditor({
+    // features: ({ defaultFeatures }) => [
+    //   ...defaultFeatures,
+    //   FixedToolbarFeature(),
+    //   LinkFeature({
+    //     // Example showing how to customize the built-in fields
+    //     // of the Link feature
+    //     fields: [
+    //       link,
+    //       {
+    //         name: 'rel',
+    //         label: 'Rel Attribute',
+    //         type: 'select',
+    //         hasMany: true,
+    //         options: ['noopener', 'noreferrer', 'nofollow'],
+    //         admin: {
+    //           description:
+    //             'The rel attribute defines the relationship between a linked resource and the current document. This is a custom link field.',
+    //         },
+    //       },
+    //     ],
+    //   }),
+    //   UploadFeature({
+    //     collections: {
+    //       uploads: {
+    //         // Example showing how to customize the built-in fields
+    //         // of the Upload feature
+    //         fields: [
+    //           {
+    //             name: 'caption',
+    //             type: 'richText',
+    //             editor: lexicalEditor(),
+    //           },
+    //         ],
+    //       },
+    //     },
+    //   }),
+    //   // This is incredibly powerful. You can re-use your Payload blocks
+    //   // directly in the Lexical editor as follows:
+    //   BlocksFeature({
+    //     blocks: [TextImagesBlock, CallToAction],
+    //   }),
+    // ],
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

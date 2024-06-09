@@ -3,7 +3,12 @@ import IconField from '../../fields/Icons/Component'
 import Icon from '../../fields/Icons'
 interface ListTypes {
   text: string
+  isblold: boolean
   icon: string
+  listImage: {
+    url: string
+    alt: string
+  }
 }
 export type Type = {
   isReversed: boolean
@@ -15,7 +20,7 @@ export type Type = {
   }
   list: ListTypes[]
   linkText: string
-  link: {
+  link?: {
     slug: string
   }
 }
@@ -45,20 +50,48 @@ const TextImagesBlock: Block = {
       required: true,
     },
     {
+      name: 'list',
+      type: 'array',
+      maxRows: 3,
+      label: 'Lista',
+      fields: [
+        {
+          name: 'isblold',
+          type: 'checkbox',
+          label: 'Destacar en Negrita',
+        },
+        {
+          name: 'text',
+          type: 'text',
+          label: 'Texto',
+          required: true,
+        },
+
+        {
+          name: 'listImage',
+          type: 'upload',
+          label: 'Imagen',
+          relationTo: 'media',
+          required: false,
+        },
+      ],
+      required: false,
+    },
+    {
       type: 'row',
       fields: [
         {
           name: 'linkText',
           type: 'text',
           label: 'Texto del Enlace',
-          required: true,
+          required: false,
         },
         {
           name: 'link',
           type: 'relationship',
           label: 'Enlace',
           relationTo: 'pages',
-          required: true,
+          required: false,
         },
       ],
     },
@@ -68,22 +101,6 @@ const TextImagesBlock: Block = {
       label: 'Imagen',
       relationTo: 'media',
       required: true,
-    },
-
-    {
-      name: 'list',
-      type: 'array',
-      maxRows: 3,
-      label: 'Lista',
-      fields: [
-        {
-          name: 'text',
-          type: 'text',
-          label: 'Texto',
-          required: true,
-        },
-      ],
-      required: false,
     },
   ],
 }
