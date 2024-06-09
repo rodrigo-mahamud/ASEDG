@@ -1,6 +1,7 @@
 import { Block } from 'payload/types'
 import link from '../../fields/link'
-interface CardTypes {
+
+interface cardAtributess {
   title: string
   description: string
   link: {
@@ -18,11 +19,13 @@ interface CardTypes {
     alt: string
   }
 }
+
 export type Type = {
   title: string
   description: string
-  cards: CardTypes[]
+  cards: cardAtributess[]
 }
+
 const CardsBlock: Block = {
   slug: 'cardsblock',
   labels: {
@@ -48,6 +51,7 @@ const CardsBlock: Block = {
         },
       ],
     },
+
     {
       type: 'array',
       name: 'cards',
@@ -63,27 +67,90 @@ const CardsBlock: Block = {
 
       fields: [
         {
-          name: 'title',
-          type: 'text',
-          label: 'Título de la tarjeta',
-          required: true,
+          type: 'row',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'Título de la tarjeta',
+              required: true,
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'Descripción de la tarjeta',
+              required: true,
+            },
+          ],
         },
         {
-          name: 'description',
-          type: 'textarea',
-          label: 'Descripción de la tarjeta',
-          required: true,
+          name: 'cardAtributes',
+          type: 'select',
+          label: 'Tipo de tarjeta',
+          hasMany: true,
+          options: [
+            {
+              label: 'Imagen',
+              value: 'image',
+            },
+
+            {
+              label: 'Categorías',
+              value: 'categories',
+            },
+            {
+              label: 'Enlaces',
+              value: 'links',
+            },
+          ],
+          required: false,
         },
         {
-          name: 'image',
+          name: 'cardImage',
           type: 'upload',
           label: 'Imagen',
           relationTo: 'media', // Suponiendo que tienes una colección de medios para subir archivos
           required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('image'),
+          },
         },
-        link,
+        {
+          name: 'imageFull',
+          label: 'Imagen con ancho completo',
+          type: 'checkbox',
+          admin: {
+            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('image'),
+          },
+        },
+        {
+          name: 'categories',
+          type: 'relationship',
+          label: 'Categorías',
+          relationTo: 'categorias', // Suponiendo que tienes una colección de categorías
+          hasMany: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('categories'),
+          },
+        },
+
+        {
+          name: 'links',
+          type: 'array',
+          label: ' ',
+          labels: {
+            singular: 'Enlace',
+            plural: 'Enlaces',
+          },
+
+          fields: [link],
+          admin: {
+            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('links'),
+          },
+        },
       ],
     },
   ],
 }
+
 export default CardsBlock

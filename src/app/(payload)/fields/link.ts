@@ -7,9 +7,27 @@ const link: Field = {
   type: 'group',
   fields: [
     {
+      name: 'linkStyle',
+      label: 'Estilo del enlace',
+      type: 'radio',
+      options: [
+        {
+          label: 'Con texto',
+          value: 'text',
+        },
+        {
+          label: 'Icono',
+          value: 'icon',
+        },
+      ],
+      defaultValue: 'text', // "Interno" por defecto
+      required: true,
+    },
+
+    {
       name: 'linkType',
       label: 'Tipo de enlace',
-      type: 'radio',
+      type: 'select',
       options: [
         {
           label: 'Interno',
@@ -19,10 +37,23 @@ const link: Field = {
           label: 'Externo',
           value: 'external',
         },
+        {
+          label: 'Correo Electrónico',
+          value: 'mail',
+        },
+        {
+          label: 'ubicación',
+          value: 'location',
+        },
+        {
+          label: 'Teléfono',
+          value: 'tel',
+        },
       ],
       defaultValue: 'internal', // "Interno" por defecto
       required: true,
     },
+
     {
       type: 'row',
       fields: [
@@ -31,6 +62,18 @@ const link: Field = {
           type: 'text',
           label: 'Texto del enlace',
           required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkStyle.includes('text'),
+          },
+        },
+        {
+          name: 'linkIcon',
+          type: 'text',
+          label: 'Icono del enlace',
+          required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkStyle.includes('icon'),
+          },
         },
         {
           name: 'description',
@@ -39,6 +82,33 @@ const link: Field = {
           required: false,
         },
       ],
+    },
+    {
+      name: 'mail',
+      type: 'text',
+      label: 'Email',
+      required: true,
+      admin: {
+        condition: (data, siblingData) => siblingData?.linkType.includes('mail'),
+      },
+    },
+    {
+      name: 'location',
+      type: 'text',
+      label: 'Ubicacion:',
+      required: true,
+      admin: {
+        condition: (data, siblingData) => siblingData?.linkType.includes('location'),
+      },
+    },
+    {
+      name: 'tel',
+      type: 'text',
+      label: 'Telefono:',
+      required: true,
+      admin: {
+        condition: (data, siblingData) => siblingData?.linkType.includes('tel'),
+      },
     },
     {
       name: 'internal',

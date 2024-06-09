@@ -6,3 +6,6 @@
   border: 0px solid var(--theme-elevation-800);
   line-height: calc(1.92308rem - 0px);
 }
+.field-type.textarea .textarea-outer {
+  min-height: auto;
+}

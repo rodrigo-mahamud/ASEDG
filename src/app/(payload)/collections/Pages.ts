@@ -10,6 +10,7 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
     drafts: true,
+    maxPerDoc: 2,
   },
   admin: {
     useAsTitle: 'slug',
