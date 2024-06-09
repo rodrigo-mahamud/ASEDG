@@ -9,8 +9,7 @@ import CardsBlock from '../blocks/Cards'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
-    drafts: true,
-    maxPerDoc: 2,
+    drafts: false,
   },
   admin: {
     useAsTitle: 'slug',
