@@ -67,7 +67,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <main>
-      <Hero data={page.header} />
+      <Hero data={page.header} publishedDate={page.publishedDate} />
       <RenderBlocks layout={page.body.layout} />
     </main>
   )

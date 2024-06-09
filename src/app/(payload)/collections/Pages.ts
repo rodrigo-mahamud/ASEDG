@@ -84,6 +84,15 @@ export const Pages: CollectionConfig = {
               required: true,
             },
             {
+              name: 'displaydate',
+              type: 'checkbox',
+              label: '¿Mostrar la fehca en la cabecera?',
+              required: false,
+              admin: {
+                condition: (_, siblingData) => siblingData.style === 'pagina',
+              },
+            },
+            {
               type: 'row',
               admin: {
                 condition: (_, siblingData) => siblingData.style === 'pagina',
@@ -125,10 +134,13 @@ export const Pages: CollectionConfig = {
     },
     {
       name: 'publishedDate',
+      label: 'Fecha de publicación',
+      type: 'date',
+      defaultValue: () => new Date().toISOString(), // Establecer la fecha actual por defecto
+      required: true,
       admin: {
         position: 'sidebar',
       },
-      type: 'date',
     },
     slug,
   ],

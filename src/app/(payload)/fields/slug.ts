@@ -3,7 +3,7 @@ import formatSlug from '../utils/formatSlug'
 
 const slug: Field = {
   name: 'slug',
-  label: 'Slug',
+  label: 'Slug (Url de esta página)',
   required: true,
   type: 'text',
   admin: {
