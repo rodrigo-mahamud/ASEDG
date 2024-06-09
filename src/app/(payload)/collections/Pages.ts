@@ -5,8 +5,9 @@ import BentoBlock from '../blocks/Bento'
 import TabsBlock from '../blocks/Tabs'
 import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
+import { pages } from 'next/dist/build/templates/app-page'
 
-export const Pages: CollectionConfig = {
+const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
     drafts: false,
@@ -145,3 +146,4 @@ export const Pages: CollectionConfig = {
     slug,
   ],
 }
+export default Pages

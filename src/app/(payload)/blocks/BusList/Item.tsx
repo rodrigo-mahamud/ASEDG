@@ -1,9 +1,9 @@
 import { IconArrowNarrowRight, IconBellPlus, IconTablePlus } from '@tabler/icons-react'
 import Image from 'next/image'
 import React from 'react'
-import { Button } from '../../../../components/lib/button'
+import { Button } from '@/components/lib/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/lib/tooltip'
-import useGoogleCalendarLink from '@/app/(payload)/hooks/useGoogleCalendarLink' // Asegúrate de ajustar la ruta según sea necesario
+import useGoogleCalendarLink from '@/hooks/useGoogleCalendarLink' // Asegúrate de ajustar la ruta según sea necesario
 import dayjs from 'dayjs'
 
 interface BusItemTypes {

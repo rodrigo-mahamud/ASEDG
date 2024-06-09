@@ -1,8 +1,7 @@
 'use client'
 import * as React from 'react'
-import { cn } from '@/app/(frontend)/utils/utils'
+import { cn } from '@/utils/utils'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {

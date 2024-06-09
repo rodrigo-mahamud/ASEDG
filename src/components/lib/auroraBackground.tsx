@@ -1,4 +1,4 @@
-import { cn } from '@/app/(frontend)/utils/utils'
+import { cn } from '@/utils/utils'
 
 import React, { ReactNode } from 'react'
 import { MotionDiv } from '../MotionDiv'

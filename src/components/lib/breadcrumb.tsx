@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 
-import { cn } from '@/app/(frontend)/utils/utils'
+import { cn } from '@/utils/utils'
 import { IconChevronRight, IconDots } from '@tabler/icons-react'
 
 const Breadcrumb = React.forwardRef<

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 
-import { cn } from '@/app/(frontend)/utils/utils'
+import { cn } from '@/utils/utils'
 import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react'
 
 const DropdownMenu = DropdownMenuPrimitive.Root

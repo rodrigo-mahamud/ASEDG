@@ -2,7 +2,7 @@ import { buildConfig } from 'payload/config'
 import { CollectionConfig } from 'payload/types'
 import path from 'path'
 
-export const News: CollectionConfig = {
+const News: CollectionConfig = {
   slug: 'noticias',
   labels: {
     singular: 'Noticia',
@@ -61,3 +61,4 @@ export const News: CollectionConfig = {
     },
   ],
 }
+export default News

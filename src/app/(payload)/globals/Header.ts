@@ -1,7 +1,7 @@
 import type { GlobalConfig } from 'payload/types'
 import headerLink from '../fields/headerLink'
 
-export const Header: GlobalConfig = {
+const Header: GlobalConfig = {
   slug: 'header',
   access: {
     read: () => true,
@@ -20,3 +20,4 @@ export const Header: GlobalConfig = {
     },
   ],
 }
+export default Header

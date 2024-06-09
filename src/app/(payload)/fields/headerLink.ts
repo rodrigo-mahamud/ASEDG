@@ -1,6 +1,5 @@
 import type { Field } from 'payload/types'
-import deepMerge from '@/app/(payload)/utils/deepMerge'
-import validateMaxAllowed from '@/app/(payload)/hooks/validateMaxAllowed'
+import deepMerge from '@/utils/deepMerge'
 
 // Definir el tipo para la función LinkType
 interface LinkType {

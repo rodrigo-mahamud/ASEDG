@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@/app/(frontend)/utils/utils'
+import { cn } from '@/utils/utils'
 import React, { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'

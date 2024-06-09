@@ -26,7 +26,7 @@ import {
   IconTablePlus,
 } from '@tabler/icons-react'
 import 'dayjs/locale/es'
-import useGoogleCalendarLink from '@/app/(payload)/hooks/useGoogleCalendarLink' // Ajusta la ruta según sea necesario
+import useGoogleCalendarLink from '@/hooks/useGoogleCalendarLink' // Ajusta la ruta según sea necesario
 import Link from 'next/link'
 
 dayjs.locale('es')
