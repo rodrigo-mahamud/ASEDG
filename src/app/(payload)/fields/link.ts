@@ -2,68 +2,60 @@ import type { Field } from 'payload/types'
 
 const link: Field = {
   name: 'link',
+  labels: {
+    singular: 'Enlace',
+    plural: 'Enlaces',
+  },
   label: ' ',
-
-  type: 'group',
+  type: 'array',
+  admin: {
+    initCollapsed: true,
+  },
   fields: [
-    {
-      name: 'linkStyle',
-      label: 'Estilo del enlace',
-      type: 'radio',
-      options: [
-        {
-          label: 'Con texto',
-          value: 'text',
-        },
-        {
-          label: 'Icono',
-          value: 'icon',
-        },
-      ],
-      defaultValue: 'text', // "Interno" por defecto
-      required: true,
-    },
-
-    {
-      name: 'linkType',
-      label: 'Tipo de enlace',
-      type: 'select',
-      options: [
-        {
-          label: 'Interno',
-          value: 'internal',
-        },
-        {
-          label: 'Externo',
-          value: 'external',
-        },
-        {
-          label: 'Correo Electrónico',
-          value: 'mail',
-        },
-        {
-          label: 'ubicación',
-          value: 'location',
-        },
-        {
-          label: 'Teléfono',
-          value: 'tel',
-        },
-      ],
-      defaultValue: 'internal', // "Interno" por defecto
-      required: true,
-    },
-
     {
       type: 'row',
       fields: [
+        {
+          name: 'linkType',
+          label: 'Tipo de enlace',
+          type: 'select',
+          admin: {
+            width: '50%',
+          },
+          options: [
+            {
+              label: 'Enlace Interno',
+              value: 'internal',
+            },
+            {
+              label: 'Enlace Externo',
+              value: 'external',
+            },
+            {
+              label: 'Correo Electrónico',
+              value: 'mail',
+            },
+            {
+              label: 'Ubicación',
+              value: 'location',
+            },
+            {
+              label: 'Teléfono',
+              value: 'tel',
+            },
+          ],
+          defaultValue: 'internal', // "Interno" por defecto
+          required: true,
+        },
         {
           name: 'linkText',
           type: 'text',
           label: 'Texto del enlace',
           required: true,
           admin: {
-            condition: (data, siblingData) => siblingData?.linkStyle.includes('text'),
+            width: '50%',
+            condition: (data, siblingData) =>
+              ['internal', 'external'].includes(siblingData?.linkType),
           },
         },
         {
@@ -72,14 +64,10 @@ const link: Field = {
           label: 'Icono del enlace',
           required: true,
           admin: {
-            condition: (data, siblingData) => siblingData?.linkStyle.includes('icon'),
+            width: '50%',
+            condition: (data, siblingData) =>
+              ['mail', 'location', 'tel'].includes(siblingData?.linkType),
           },
-        },
-        {
-          name: 'description',
-          type: 'text',
-          label: 'Descripción del enlace',
-          required: false,
         },
       ],
     },
@@ -95,7 +83,7 @@ const link: Field = {
     {
       name: 'location',
       type: 'text',
-      label: 'Ubicacion:',
+      label: 'Ubicación',
       required: true,
       admin: {
         condition: (data, siblingData) => siblingData?.linkType.includes('location'),
@@ -104,7 +92,7 @@ const link: Field = {
     {
       name: 'tel',
       type: 'text',
-      label: 'Telefono:',
+      label: 'Teléfono',
       required: true,
       admin: {
         condition: (data, siblingData) => siblingData?.linkType.includes('tel'),
@@ -112,7 +100,7 @@ const link: Field = {
     },
     {
       name: 'internal',
-      label: 'Enlazar a la página:',
+      label: 'Enlazar a la página',
       type: 'relationship',
       relationTo: 'pages',
       required: true,
@@ -122,7 +110,7 @@ const link: Field = {
     },
     {
       name: 'external',
-      label: 'Enlace externo:',
+      label: 'Enlace externo',
       type: 'text',
       required: true,
       admin: {

@@ -1,18 +1,20 @@
 import { Block } from 'payload/types'
 import link from '../../fields/link'
-
-interface cardAtributess {
+interface LinkItem {
+  linkText: string
+  linkType: string
+  description: string
+  internal: string
+  external: string
+  location: string
+  tel: string
+  linkIcon: string
+}
+interface CardAttributes {
   title: string
   description: string
-  link: {
-    linkText?: string
-    description: string
-    internal?: {
-      slug?: string
-    }
-    external?: {
-      slug?: string
-    }
+  links: {
+    link: LinkItem[]
   }
   cardImage: {
     url: string
@@ -23,9 +25,8 @@ interface cardAtributess {
 export type Type = {
   title: string
   description: string
-  cards: cardAtributess[]
+  cards: CardAttributes[]
 }
-
 const CardsBlock: Block = {
   slug: 'cardsblock',
   labels: {
@@ -60,7 +61,6 @@ const CardsBlock: Block = {
         plural: 'Tarjetas',
       },
       label: ' ',
-      maxRows: 4,
       admin: {
         initCollapsed: true,
       },
@@ -70,55 +70,48 @@ const CardsBlock: Block = {
           type: 'row',
           fields: [
             {
+              name: 'cardAtributes',
+              type: 'select',
+              label: 'Atributos de la Tarjeta',
+              hasMany: true,
+              options: [
+                {
+                  label: 'Imagen',
+                  value: 'image',
+                },
+
+                {
+                  label: 'Categorías',
+                  value: 'categories',
+                },
+                {
+                  label: 'Enlaces',
+                  value: 'links',
+                },
+              ],
+              required: false,
+            },
+            {
               name: 'title',
               type: 'text',
               label: 'Título de la tarjeta',
               required: true,
             },
-            {
-              name: 'description',
-              type: 'textarea',
-              label: 'Descripción de la tarjeta',
-              required: true,
-            },
           ],
         },
         {
-          name: 'cardAtributes',
-          type: 'select',
-          label: 'Tipo de tarjeta',
-          hasMany: true,
-          options: [
-            {
-              label: 'Imagen',
-              value: 'image',
-            },
-
-            {
-              label: 'Categorías',
-              value: 'categories',
-            },
-            {
-              label: 'Enlaces',
-              value: 'links',
-            },
-          ],
-          required: false,
+          name: 'description',
+          type: 'textarea',
+          label: 'Descripción de la tarjeta',
+          required: true,
         },
+
         {
           name: 'cardImage',
           type: 'upload',
           label: 'Imagen',
           relationTo: 'media', // Suponiendo que tienes una colección de medios para subir archivos
           required: true,
-          admin: {
-            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('image'),
-          },
-        },
-        {
-          name: 'imageFull',
-          label: 'Imagen con ancho completo',
-          type: 'checkbox',
           admin: {
             condition: (data, siblingData) => siblingData?.cardAtributes?.includes('image'),
           },
@@ -136,12 +129,8 @@ const CardsBlock: Block = {
 
         {
           name: 'links',
-          type: 'array',
+          type: 'group',
           label: ' ',
-          labels: {
-            singular: 'Enlace',
-            plural: 'Enlaces',
-          },
 
           fields: [link],
           admin: {
