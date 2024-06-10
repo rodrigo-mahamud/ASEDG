@@ -20,9 +20,9 @@ const PrevButton = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
-    className={`embla__button shadow-[0px_0px_20px_20px_#fff]  disabled:pointer-events-none disabled:opacity-0 ${
+    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] disabled:pointer-events-none disabled:opacity-0 ${
       enabled ? 'text-text-body' : 'text-detail-high-contrast'
-    } shadow-inner-custom bg-white rounded-none flex items-center justify-center  rotate-180`}
+    } shadow-inner-custom bg-white rounded-none flex items-center justify-start rotate-180`}
     onClick={onClick}
     disabled={!enabled}
   ></Button>
@@ -32,9 +32,9 @@ const NextButton = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
-    className={`embla__button shadow-[0px_0px_20px_20px_#fff] disabled:pointer-events-none disabled:opacity-0 ${
+    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] disabled:pointer-events-none disabled:opacity-0 ${
       enabled ? 'text-text-body' : 'text-detail-high-contrast'
-    } shadow-inner-custom bg-white rounded-none flex items-center justify-center w-12 h-12`}
+    } shadow-inner-custom bg-white rounded-none flex items-center justify-start `}
     onClick={onClick}
     disabled={!enabled}
   ></Button>
