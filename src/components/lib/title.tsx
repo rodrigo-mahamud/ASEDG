@@ -5,7 +5,7 @@ interface titleTypes {
 }
 export default function Title({ title, subtitle }: titleTypes) {
   return (
-    <div className="flex flex-col w-9/12 mb-12">
+    <div className="flex flex-col w-3/5 mb-12">
       <h2 className="text-4xl font-cal mb-4 line-clamp-1">{title}</h2>
       {subtitle && <h3 className="text-balance line-clamp-2">{subtitle}</h3>}
     </div>

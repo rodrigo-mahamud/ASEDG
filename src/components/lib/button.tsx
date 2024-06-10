@@ -44,38 +44,46 @@ const buttonVariants = cva(
 )
 
 interface IconProps {
-  Icon: React.ElementType
-  iconPlacement: 'left' | 'right'
-}
-
-interface IconRefProps {
-  Icon?: never
-  iconPlacement?: undefined
+  Icon?: React.ElementType
+  iconPlacement?: 'left' | 'right'
+  iconClass?: string
 }
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants>,
+    IconProps {
   asChild?: boolean
   arrow?: boolean
 }
 
-export type ButtonIconProps = IconProps | IconRefProps
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps & ButtonIconProps>(
-  ({ className, variant, size, asChild = false, Icon, iconPlacement, arrow, ...props }, ref) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      Icon,
+      iconPlacement,
+      iconClass = 'w-3.5 h-3.5',
+      arrow,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
         {Icon && iconPlacement === 'left' && (
           <div className="w-0 translate-x-[0%] pr-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-100 group-hover:pr-1 group-hover:opacity-100">
-            <Icon className="w-5 h-5" />
+            <Icon className={cn(iconClass)} />
           </div>
         )}
         <Slottable>{props.children}</Slottable>
         {Icon && iconPlacement === 'right' && (
           <div className="w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-200 group-hover:w-5 group-hover:translate-x-0 group-hover:pl-1 group-hover:opacity-100">
-            <Icon className="w-5 h-5" />
+            <Icon className={cn(iconClass)} />
           </div>
         )}
         {variant === 'arrow' && (
@@ -83,7 +91,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps & ButtonIconProps
             viewBox="0 0 6 9"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-3.5 h-3.5 transition-all overflow-visible duration-100 ease-in-out transform"
+            className={`${iconClass} transition-all overflow-visible duration-100 ease-in-out transform`}
           >
             <g className="transition-all duration-100 ease-in-out transform group-hover:translate-x-[0.15rem]">
               <path d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8" stroke="currentColor" />

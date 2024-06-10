@@ -7,11 +7,13 @@ import Title from '@/components/lib/title'
 import DynamicIcon from '@/components/DynamicIcon' // Asegúrate de ajustar la ruta según tu estructura de carpetas
 import { Type } from '.'
 import Link from 'next/link'
+import Filter from './Filter'
 
 export default function NewsCard({ cards, title, description }: Type) {
   return (
     <Container>
       <Title title={title} subtitle={description}></Title>
+      <Filter></Filter>
       <div className="grid grid-cols-4 w-full gap-8">
         {cards.map((item, index) => (
           <Card
