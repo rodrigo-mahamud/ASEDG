@@ -9,11 +9,11 @@ import { Type } from '.'
 import Link from 'next/link'
 import Filter from './Filter'
 
-export default function NewsCard({ cards, title, description }: Type) {
+export default function NewsCard({ cards, title, description, filter, categories }: Type) {
   return (
     <Container>
       <Title title={title} subtitle={description}></Title>
-      <Filter></Filter>
+      {filter && <Filter data={categories}></Filter>}
       <div className="grid grid-cols-4 w-full gap-8">
         {cards.map((item, index) => (
           <Card

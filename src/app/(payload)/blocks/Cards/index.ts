@@ -1,6 +1,5 @@
 import { Block } from 'payload/types'
 import link from '../../fields/link'
-import CategoriesSelectorBlock from '../Filter'
 interface LinkItem {
   linkText: string
   linkType: string

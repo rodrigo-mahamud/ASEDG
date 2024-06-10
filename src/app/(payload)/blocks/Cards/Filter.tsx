@@ -3,26 +3,13 @@ import React, { useState, useEffect } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Button } from '@/components/lib/button'
 
-const categories = [
-  'Archivos',
-  'Algoritmos',
-  'Hardware informático',
-  'Motores de videojuegos',
-  'Aterrizajes',
-  'PC de juegos',
-  'Call of Duty: Black Ops',
-  'Aviones de ala fija',
-  'Seguridad',
-  'En directo',
-]
-
 const PrevButton = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
-    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] disabled:pointer-events-none disabled:opacity-0 ${
+    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] -mr-5 disabled:pointer-events-none disabled:opacity-0 ${
       enabled ? 'text-text-body' : 'text-detail-high-contrast'
-    } shadow-inner-custom bg-white rounded-none flex items-center justify-start rotate-180`}
+    } shadow-inner-custom bg-white rounded-none flex items-center justify-start z-10 rotate-180`}
     onClick={onClick}
     disabled={!enabled}
   ></Button>
@@ -32,15 +19,15 @@ const NextButton = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
-    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] disabled:pointer-events-none disabled:opacity-0 ${
+    className={`embla__button shadow-[0px_0px_20px_20px_#fff] px-[2px] -ml-5 disabled:pointer-events-none disabled:opacity-0 ${
       enabled ? 'text-text-body' : 'text-detail-high-contrast'
-    } shadow-inner-custom bg-white rounded-none flex items-center justify-start `}
+    } shadow-inner-custom bg-white rounded-none flex items-center justify-start z-10 `}
     onClick={onClick}
     disabled={!enabled}
   ></Button>
 )
 
-const Filter = () => {
+const Filter = ({ data }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
@@ -59,25 +46,23 @@ const Filter = () => {
 
   return (
     <div className="embla max-w-carousel mx-auto mb-12">
-      <div className="relative w-5/6 flex">
+      <div className="relative w-full flex">
+        <PrevButton onClick={() => emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
         <div className="embla__viewport overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex backface-hidden touch-pan-y gap-2">
-            {categories.map((category, index) => (
+            {data.subcategories.map((category) => (
               <div
-                key={index}
+                key={category.id} // Utiliza category.id para la clave
                 className="embla__slide flex-shrink-0 w-slide-size min-w-0 pl-slide-spacing"
               >
                 <div className="py-2 px-4 bg-secondary text-foreground rounded-md text-center">
-                  {category}
+                  {category.title}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="absolute w-full h-full z-10 flex justify-between items-center overflow-hidden">
-          <PrevButton onClick={() => emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
-          <NextButton onClick={() => emblaApi.scrollNext()} enabled={nextBtnEnabled} />
-        </div>
+        <NextButton onClick={() => emblaApi.scrollNext()} enabled={nextBtnEnabled} />
       </div>
     </div>
   )
