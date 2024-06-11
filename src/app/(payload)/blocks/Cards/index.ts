@@ -3,21 +3,22 @@ import link from '../../fields/link'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 
-interface LinkItem {
+export interface LinkItem {
   linkText: string
-
-  linkType: string
-  description: string
-  internal: string
-  external: string
-  location: string
-  tel: string
-  linkIcon: string
+  linkType: 'internal' | 'external' | 'location' | 'tel'
+  description?: string
+  internal?: string
+  external?: string
+  location?: string
+  tel?: string
+  linkIcon?: string
 }
+
 interface CategoriesTypes {
   title: string
   id: string
 }
+
 interface CardAttributes {
   categories: CategoriesTypes[]
   filter: boolean

@@ -120,7 +120,7 @@ export default function NavBar({ data }: NavBarTypes) {
                     {menuItem.item.child &&
                       menuItem.item.child.map((childItem, childIndex) =>
                         childItem.highlighted ? (
-                          <li key={childIndex} className="row-span-4">
+                          <li key={childIndex} className="row-span-5">
                             <NavigationMenuLink asChild>
                               <a
                                 className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"

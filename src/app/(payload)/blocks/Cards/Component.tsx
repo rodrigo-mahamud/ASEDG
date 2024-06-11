@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/
 import Image from 'next/image'
 import Container from '@/components/Container'
 import Title from '@/components/lib/title'
-import DynamicIcon from '@/components/DynamicIcon' // Asegúrate de ajustar la ruta según tu estructura de carpetas
+import DynamicIcon from '@/components/DynamicIcon'
 import { Type } from '.'
 import Link from 'next/link'
 import Filter from './Filter'
 import { Badge } from '@/components/lib/badge'
+import CardButtons from './CardButtons' // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
 export default function NewsCard({ cards, title, description, filter }: Type) {
   const [filteredCards, setFilteredCards] = React.useState(cards)
@@ -69,64 +70,10 @@ export default function NewsCard({ cards, title, description, filter }: Type) {
 
               <CardTitle className="mb-3 line-clamp-1">{item.title}</CardTitle>
               <CardDescription className="line-clamp-4">{item.description}</CardDescription>
-              <div className="flex items-center justify-between gap-2 mt-6 h-10">
-                {item.links.link.map((linkItem, linkIndex) => {
-                  switch (linkItem.linkType) {
-                    case 'internal':
-                      return (
-                        <Button
-                          key={linkIndex}
-                          variant="ringHover"
-                          className="w-full flex gap-1 bg-secondaryAlt hover:ring-secondaryAlt rounded-md h-full"
-                        >
-                          <Link href={linkItem.internal}>{linkItem.linkText}</Link>
-                        </Button>
-                      )
-                    case 'external':
-                      return (
-                        <Button
-                          key={linkIndex}
-                          variant="ringHover"
-                          className="w-full flex gap-1 bg-secondaryAlt hover:ring-secondaryAlt rounded-md h-full"
-                        >
-                          <Link href={linkItem.external} rel="noopener noreferrer" target="_blank">
-                            {linkItem.linkText}
-                          </Link>
-                        </Button>
-                      )
-                    case 'location':
-                      return (
-                        <Button
-                          key={linkIndex}
-                          variant="ringHover"
-                          className="w-10 flex gap-1 bg-secondary hover:ring-secondaryAlt rounded-md h-[inherit] text-foreground"
-                        >
-                          <Link
-                            href={generateGoogleMapsLink(linkItem.location)}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            <DynamicIcon iconName={linkItem.linkIcon} />
-                          </Link>
-                        </Button>
-                      )
-                    case 'tel':
-                      return (
-                        <Button
-                          key={linkIndex}
-                          variant="ringHover"
-                          className="w-10 flex gap-1 bg-secondary hover:ring-secondaryAlt rounded-md h-[inherit] text-foreground"
-                        >
-                          <Link href={`tel:${linkItem.tel}`}>
-                            <DynamicIcon iconName={linkItem.linkIcon} />
-                          </Link>
-                        </Button>
-                      )
-                    default:
-                      return null
-                  }
-                })}
-              </div>
+              <CardButtons
+                links={item.links.link}
+                generateGoogleMapsLink={generateGoogleMapsLink}
+              />
             </CardContent>
           </Card>
         ))}
