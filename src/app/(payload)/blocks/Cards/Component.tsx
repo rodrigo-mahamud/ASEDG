@@ -9,16 +9,16 @@ import { Type } from '.'
 import Link from 'next/link'
 import Filter from './Filter'
 
-export default function NewsCard({ cards, title, description, filter, categories }: Type) {
+export default function NewsCard({ cards, title, description, filter }: Type) {
   return (
     <Container>
       <Title title={title} subtitle={description}></Title>
-      {filter && <Filter data={categories}></Filter>}
+      {filter && <Filter data={cards}></Filter>}
       <div className="grid grid-cols-4 w-full gap-8">
         {cards.map((item, index) => (
           <Card
             key={index}
-            className="rounded-xl  h-full overflow-hidden hover:-translate-y-2 transform transition duration-300 btnShadow"
+            className="rounded-xl h-full overflow-hidden hover:-translate-y-2 transform transition duration-300 btnShadow"
           >
             <div className="aspect-[4/3] relative">
               <Image
@@ -30,6 +30,11 @@ export default function NewsCard({ cards, title, description, filter, categories
               />
             </div>
             <CardContent className="p-5">
+              {item.categories.map((category, catIndex) => (
+                <span key={catIndex} className="text-sm text-gray-500 ml-2">
+                  {category.title}
+                </span>
+              ))}
               <CardTitle className="mb-3 line-clamp-1">{item.title}</CardTitle>
               <CardDescription className="line-clamp-4">{item.description}</CardDescription>
               <div className="flex items-center justify-between gap-2 mt-6 h-10">
@@ -74,7 +79,7 @@ export default function NewsCard({ cards, title, description, filter, categories
                           variant="secondary"
                           className="w-10 flex gap-1 bg-secondary hover:bg-secondary/90 rounded-md h-[inherit] text-foreground"
                         >
-                          <Link href={linkItem.tel}>
+                          <Link href={`tel:${linkItem.tel}`}>
                             <DynamicIcon iconName={linkItem.linkIcon} />
                           </Link>
                         </Button>

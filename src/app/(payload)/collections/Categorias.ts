@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload/types'
 
 const Categorias: CollectionConfig = {
-  slug: 'categorias',
+  slug: 'cat',
   labels: {
     singular: 'Categoria',
     plural: 'Categorias',
@@ -15,11 +15,6 @@ const Categorias: CollectionConfig = {
       label: 'Nombre',
       type: 'text',
       required: true,
-    },
-    {
-      name: 'description',
-      label: 'Descripción',
-      type: 'textarea',
     },
   ],
 }

@@ -50,16 +50,18 @@ const Filter = ({ data }) => {
         <PrevButton onClick={() => emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
         <div className="embla__viewport overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex backface-hidden touch-pan-y gap-2">
-            {data.subcategories.map((category) => (
-              <div
-                key={category.id} // Utiliza category.id para la clave
-                className="embla__slide flex-shrink-0 w-slide-size min-w-0 pl-slide-spacing"
-              >
-                <div className="py-2 px-4 bg-secondary text-foreground rounded-md text-center">
-                  {category.title}
+            {data.map((item) =>
+              item.categories.map((category) => (
+                <div
+                  key={category.id}
+                  className="embla__slide flex-shrink-0 w-slide-size min-w-0 pl-slide-spacing"
+                >
+                  <div className="py-2 px-4 bg-secondary text-foreground rounded-md text-center">
+                    {category.title}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )),
+            )}
           </div>
         </div>
         <NextButton onClick={() => emblaApi.scrollNext()} enabled={nextBtnEnabled} />

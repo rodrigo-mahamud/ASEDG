@@ -1,5 +1,8 @@
 import { Block } from 'payload/types'
 import link from '../../fields/link'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
+
 interface LinkItem {
   linkText: string
   linkType: string
@@ -10,6 +13,7 @@ interface LinkItem {
   tel: string
   linkIcon: string
 }
+
 interface CardAttributes {
   title: string
   description: string
@@ -27,13 +31,13 @@ export type Type = {
   description: string
   cards: CardAttributes[]
 }
+
 const CardsBlock: Block = {
   slug: 'cardsblock',
   labels: {
     singular: 'Sección de Tarjetas',
     plural: 'Sección de Tarjetas',
   },
-
   fields: [
     {
       type: 'row',
@@ -52,7 +56,12 @@ const CardsBlock: Block = {
         },
       ],
     },
-
+    {
+      name: 'filter',
+      type: 'checkbox',
+      label: 'Filtrar por categorías',
+      admin: {},
+    },
     {
       type: 'array',
       name: 'cards',
@@ -64,7 +73,6 @@ const CardsBlock: Block = {
       admin: {
         initCollapsed: true,
       },
-
       fields: [
         {
           type: 'row',
@@ -79,14 +87,13 @@ const CardsBlock: Block = {
                   label: 'Imagen',
                   value: 'image',
                 },
-
-                {
-                  label: 'Categorías',
-                  value: 'categories',
-                },
                 {
                   label: 'Enlaces',
                   value: 'links',
+                },
+                {
+                  label: 'Categorías',
+                  value: 'cat',
                 },
               ],
               required: false,
@@ -105,12 +112,11 @@ const CardsBlock: Block = {
           label: 'Descripción de la tarjeta',
           required: true,
         },
-
         {
           name: 'cardImage',
           type: 'upload',
           label: 'Imagen',
-          relationTo: 'media', // Suponiendo que tienes una colección de medios para subir archivos
+          relationTo: 'media',
           required: true,
           admin: {
             condition: (data, siblingData) => siblingData?.cardAtributes?.includes('image'),
@@ -118,20 +124,18 @@ const CardsBlock: Block = {
         },
         {
           name: 'categories',
-          type: 'relationship',
           label: 'Categorías',
-          relationTo: 'categorias', // Suponiendo que tienes una colección de categorías
+          type: 'relationship',
+          relationTo: 'cat',
           hasMany: true,
           admin: {
-            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('categories'),
+            condition: (data, siblingData) => siblingData?.cardAtributes?.includes('cat'),
           },
         },
-
         {
           name: 'links',
           type: 'group',
           label: ' ',
-
           fields: [link],
           admin: {
             condition: (data, siblingData) => siblingData?.cardAtributes?.includes('links'),

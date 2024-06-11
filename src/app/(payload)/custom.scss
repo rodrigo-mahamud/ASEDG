@@ -1,3 +1,10 @@
 .radio-group ul {
   gap: 10px;
 }
+.subcatGrid .array-field__draggable-rows {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.subcatGrid .collapsible__header-wrap--has-drag-handle {
+  display: none;
+}
