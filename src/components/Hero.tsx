@@ -5,7 +5,7 @@ import Container from './Container'
 import { BreadcrumbDemo } from './BreadcrumbDemo'
 
 interface HeroTypes {
-  publishedDate: string
+  publishedDate?: string
   data: {
     title: any
     displaydate?: boolean
