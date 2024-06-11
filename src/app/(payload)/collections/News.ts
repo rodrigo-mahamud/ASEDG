@@ -1,9 +1,10 @@
 import { buildConfig } from 'payload/config'
 import { CollectionConfig } from 'payload/types'
 import path from 'path'
+import useUpdateNews from '@/hooks/useUpdateNews'
 
 const News: CollectionConfig = {
-  slug: 'noticias',
+  slug: 'news',
   labels: {
     singular: 'Noticia',
     plural: 'Noticias',
@@ -60,5 +61,8 @@ const News: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [useUpdateNews],
+  },
 }
 export default News

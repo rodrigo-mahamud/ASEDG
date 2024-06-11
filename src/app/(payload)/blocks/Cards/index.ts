@@ -65,11 +65,11 @@ const CardsBlock: Block = {
         },
       ],
     },
+
     {
       name: 'filter',
       type: 'checkbox',
       label: 'Filtrar por categorías',
-      admin: {},
     },
     {
       type: 'array',

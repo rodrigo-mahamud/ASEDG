@@ -1,4 +1,8 @@
 import { Block } from 'payload/types'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config' // Ubicación de la configuración de Payload
+import addAllNewsToRelationship from '@/hooks/addAllNewsToRelationship'
+
 interface CatTypes {
   title: string
   description: string
@@ -30,11 +34,9 @@ const NewsList: Block = {
   },
   fields: [
     {
-      name: 'news',
-      label: 'Noticias destacadas',
+      name: 'newsRelationship',
       type: 'relationship',
-      relationTo: 'noticias',
-      maxRows: 4,
+      relationTo: 'news',
       hasMany: true,
       required: true,
     },
