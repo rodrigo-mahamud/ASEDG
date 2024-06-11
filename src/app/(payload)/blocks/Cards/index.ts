@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 
 interface LinkItem {
   linkText: string
+
   linkType: string
   description: string
   internal: string
@@ -13,8 +14,13 @@ interface LinkItem {
   tel: string
   linkIcon: string
 }
-
+interface CategoriesTypes {
+  title: string
+  id: string
+}
 interface CardAttributes {
+  categories: CategoriesTypes[]
+  filter: boolean
   title: string
   description: string
   links: {
@@ -29,7 +35,9 @@ interface CardAttributes {
 export type Type = {
   title: string
   description: string
+  filter: boolean
   cards: CardAttributes[]
+  data: CardAttributes[]
 }
 
 const CardsBlock: Block = {

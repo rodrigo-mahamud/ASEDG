@@ -15,7 +15,7 @@ export default function NewsCard({ cards, title, description, filter }: Type) {
   const [filteredCards, setFilteredCards] = React.useState(cards)
   const [selectedCategory, setSelectedCategory] = React.useState(null)
 
-  const handleFilterChange = (category) => {
+  const handleFilterChange = (category: any) => {
     if (selectedCategory === category) {
       setSelectedCategory(null)
       setFilteredCards(cards)

@@ -1,9 +1,16 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Button } from '@/components/lib/button'
+import { Type } from '.' // Importa los tipos del componente padre
 
-const PrevButton = ({ enabled, onClick }) => (
+interface FilterProps {
+  data: Type['cards']
+  onFilterChange: (category: string) => void
+  selectedCategory: string | null
+}
+
+const PrevButton: React.FC<{ enabled: boolean; onClick: () => void }> = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
@@ -15,7 +22,7 @@ const PrevButton = ({ enabled, onClick }) => (
   ></Button>
 )
 
-const NextButton = ({ enabled, onClick }) => (
+const NextButton: React.FC<{ enabled: boolean; onClick: () => void }> = ({ enabled, onClick }) => (
   <Button
     variant="arrow"
     iconClass="w-4 h-4 stroke-1"
@@ -27,25 +34,25 @@ const NextButton = ({ enabled, onClick }) => (
   ></Button>
 )
 
-const Filter = ({ data, onFilterChange, selectedCategory }) => {
+const Filter: React.FC<FilterProps> = ({ data, onFilterChange, selectedCategory }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
 
-  const onSelect = () => {
+  const onSelect = useCallback(() => {
     if (!emblaApi) return
     setPrevBtnEnabled(emblaApi.canScrollPrev())
     setNextBtnEnabled(emblaApi.canScrollNext())
-  }
+  }, [emblaApi])
 
   useEffect(() => {
     if (!emblaApi) return
     emblaApi.on('select', onSelect)
     onSelect()
-  }, [emblaApi])
+  }, [emblaApi, onSelect])
 
   // Create a set to track unique categories
-  const uniqueCategories = new Set()
+  const uniqueCategories = new Set<string>()
   const filteredData = data.flatMap((item) =>
     item.categories.filter((category) => {
       if (uniqueCategories.has(category.id)) {
@@ -60,7 +67,7 @@ const Filter = ({ data, onFilterChange, selectedCategory }) => {
   return (
     <div className="embla max-w-carousel mx-auto mb-12">
       <div className="relative w-full flex">
-        <PrevButton onClick={() => emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
+        <PrevButton onClick={() => emblaApi && emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
         <div className="embla__viewport overflow-hidden py-3 -my-3" ref={emblaRef}>
           <div className="embla__container flex backface-hidden touch-pan-y gap-2">
             {filteredData.map((category) => (
@@ -79,7 +86,7 @@ const Filter = ({ data, onFilterChange, selectedCategory }) => {
             ))}
           </div>
         </div>
-        <NextButton onClick={() => emblaApi.scrollNext()} enabled={nextBtnEnabled} />
+        <NextButton onClick={() => emblaApi && emblaApi.scrollNext()} enabled={nextBtnEnabled} />
       </div>
     </div>
   )
