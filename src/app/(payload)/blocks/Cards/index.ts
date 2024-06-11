@@ -128,6 +128,8 @@ const CardsBlock: Block = {
           type: 'relationship',
           relationTo: 'cat',
           hasMany: true,
+          required: true,
+          maxRows: 2,
           admin: {
             condition: (data, siblingData) => siblingData?.cardAtributes?.includes('cat'),
           },
