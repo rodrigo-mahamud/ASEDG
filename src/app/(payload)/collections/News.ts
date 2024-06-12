@@ -59,6 +59,7 @@ const News: CollectionConfig = {
         plural: 'Secciones',
       },
       type: 'blocks',
+      maxRows: 1,
       blocks: [RichText],
     },
 

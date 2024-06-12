@@ -1,3 +1,4 @@
+import RenderBlocks from '@/components/RenderBlocks'
 import escapeHTML from 'escape-html'
 import React, { Fragment } from 'react'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
@@ -133,6 +134,10 @@ export default function serializeLexicalRichText({ children, customClassNames, p
             {serializeLexicalRichText({ children: node.children })}
           </li>
         )
+      }
+
+      if (node.type === 'block') {
+        return <RenderBlocks key={i} layout={[node.fields]} />
       }
 
       switch (node.type) {

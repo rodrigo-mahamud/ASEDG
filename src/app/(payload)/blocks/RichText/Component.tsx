@@ -1,11 +1,10 @@
+import Container from '@/components/Container'
 import RichTextParser from '@/utils/richTextParser'
 import React from 'react'
 export default function RichText({ richtxtcontent }) {
-  console.log(richtxtcontent.root)
-
   return (
-    <div>
+    <Container>
       <RichTextParser content={richtxtcontent}></RichTextParser>
-    </div>
+    </Container>
   )
 }
