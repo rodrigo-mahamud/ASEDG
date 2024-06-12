@@ -4,8 +4,6 @@ import { Type } from '.'
 import Container from '@/components/Container'
 
 const NewsList: React.FC<Type> = ({ newsRelationship }) => {
-  console.log(newsRelationship)
-
   return (
     <Container>
       <div className="grid grid-cols-4 gap-8">

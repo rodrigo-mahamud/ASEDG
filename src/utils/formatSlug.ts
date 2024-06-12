@@ -12,11 +12,7 @@ const formatSlug =
     if (typeof value === 'string') {
       return format(value)
     }
-
-    // Obtén el valor de `header[fallback]`
-    const fallbackData =
-      (data && data.header && data.header[fallback]) ||
-      (originalDoc && originalDoc.header && originalDoc.header[fallback])
+    const fallbackData = (data && data[fallback]) || (originalDoc && originalDoc[fallback])
 
     if (fallbackData && typeof fallbackData === 'string') {
       return format(fallbackData)

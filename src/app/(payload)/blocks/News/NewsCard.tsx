@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
 import { IconArrowRight } from '@tabler/icons-react'
+import Link from 'next/link'
 interface CatTypes {
   title: string
   description: string
@@ -19,6 +20,7 @@ interface CatTypes {
 interface NewsCardTypes {
   className?: string
   data: {
+    slug: string
     categorias: CatTypes[]
     title: string
     summary: string
@@ -31,6 +33,8 @@ interface NewsCardTypes {
   }
 }
 export default function NewsCard({ data, className }: NewsCardTypes) {
+  console.log(data)
+
   return (
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}
@@ -51,12 +55,13 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
+            asChild
             variant="expandIcon"
             Icon={IconArrowRight}
             iconPlacement="right"
             className="w-4/5 flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md h-full"
           >
-            Ver más
+            <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}></Link>
           </Button>
           <ShareButton
             className="w-1/5 h-full outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-md"

@@ -20,8 +20,6 @@ export default async function RootLayout({
   const header = (await payload.findGlobal({ slug: 'header' })) as any
   const settings = (await payload.findGlobal({ slug: 'settings' })) as any
 
-  console.log(settings.navMenu)
-
   return (
     <html lang="es" className={GeistSans.className}>
       <body className="overflow-x-hidden">

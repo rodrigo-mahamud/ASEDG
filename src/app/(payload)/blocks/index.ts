@@ -7,6 +7,7 @@ import IndexHero from '../../../components/IndexHero'
 import NewsList from './News/Component'
 import TabsBlock from './Tabs/Component'
 import TextImagesBlock from './TextImages/Component'
+import RichText from './RichText/Component'
 
 export const components = {
   indexhero: IndexHero,
@@ -18,4 +19,5 @@ export const components = {
   bentoblock: BentoBlock,
   textimagesblock: TextImagesBlock,
   cardsblock: CardsBlock,
+  richtext: RichText,
 }
