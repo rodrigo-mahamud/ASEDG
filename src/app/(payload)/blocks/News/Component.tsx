@@ -3,11 +3,13 @@ import NewsCard from './NewsCard'
 import { Type } from '.'
 import Container from '@/components/Container'
 
-const NewsList: React.FC<Type> = ({ news }) => {
+const NewsList: React.FC<Type> = ({ newsRelationship }) => {
+  console.log(newsRelationship)
+
   return (
     <Container>
       <div className="grid grid-cols-4 gap-8">
-        {news.map((item, index) => (
+        {newsRelationship.reverse().map((item, index) => (
           <NewsCard className="btnShadow h-fit" key={index} data={item} />
         ))}
       </div>

@@ -8,7 +8,6 @@ const useUpdateNews: CollectionAfterChangeHook = async ({ doc, req }) => {
   console.log('Ejecutando useUpdateNews Hook')
   console.log('Documento de noticia:', doc)
 
-  // Obtén las páginas que contienen el bloque `newslist`
   const pages = await payload.find({
     collection: 'pages',
     where: {
@@ -20,18 +19,20 @@ const useUpdateNews: CollectionAfterChangeHook = async ({ doc, req }) => {
 
   console.log('Páginas encontradas:', pages.docs)
 
-  // Itera sobre las páginas encontradas y actualiza el bloque `newslist`
   for (const page of pages.docs) {
     const updatedLayout = page.body.layout.map((block: any) => {
       if (block.blockType === 'newslist') {
-        // Limpia cualquier objeto de noticia existente en `newsRelationship`
-        const updatedNewsList = (block.newsRelationship || []).map((news: any) =>
+        let updatedNewsList = (block.newsRelationship || []).map((news: any) =>
           typeof news === 'string' ? news : news.id,
         )
 
-        // Agrega solo el ID de la nueva noticia a la relación si no está ya presente
         if (!updatedNewsList.includes(doc.id)) {
-          updatedNewsList.push(doc.id)
+          updatedNewsList = [doc.id, ...updatedNewsList]
+        }
+
+        if (block.newsLimit !== 'all') {
+          const limit = parseInt(block.newsLimit, 10)
+          updatedNewsList = updatedNewsList.slice(0, limit)
         }
 
         console.log('Actualizando bloque newslist con:', updatedNewsList)

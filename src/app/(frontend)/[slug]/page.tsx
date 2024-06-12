@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
   if (!page) {
     return <div>Page not found</div>
   }
-
+  console.log(page)
   return (
     <main>
       <Hero data={page.header} publishedDate={page.publishedDate} />

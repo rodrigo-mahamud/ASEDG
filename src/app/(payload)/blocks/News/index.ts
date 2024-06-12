@@ -40,6 +40,31 @@ const NewsList: Block = {
       hasMany: true,
       required: true,
     },
+    {
+      name: 'newsLimit',
+      label: 'Número de Noticias a Mostrar',
+      type: 'select',
+      options: [
+        {
+          label: '4',
+          value: '4',
+        },
+        {
+          label: '8',
+          value: '8',
+        },
+        {
+          label: '12',
+          value: '12',
+        },
+        {
+          label: 'Todas',
+          value: 'all',
+        },
+      ],
+      defaultValue: 'all',
+      required: true,
+    },
   ],
 }
 

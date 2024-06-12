@@ -35,21 +35,19 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}
     >
-      <Badge
-        variant="secondary"
-        className="w-fit m-6 absolute backdrop-blur-md font-medium text-white bg-secondaryAlt/15"
-      >
-        {data.categorias[0].title}
-      </Badge>
-      <Image
-        src={data.image.url}
-        width={500}
-        height={500}
-        alt={data.image.alt}
-        className="h-2/4 aspect-[4/3] object-cover"
-      ></Image>
-      <CardContent className="p-6 pt-0">
-        <CardTitle className="mt-6 mb-3 line-clamp-1">{data.title}</CardTitle>
+      <div className="relative w-full aspect-[4/3]">
+        <Image
+          src={data.image.url}
+          fill
+          alt={data.image.alt}
+          className="w-full -z-10 object-cover"
+        ></Image>
+      </div>
+      <CardContent className="p-6">
+        <Badge className="mb-3 rounded-sm text-gray-800/70" variant="secondary">
+          {data.categorias[0].title}
+        </Badge>
+        <CardTitle className="mb-3 line-clamp-1">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
