@@ -1,11 +1,11 @@
+import RichTextParser from '@/utils/richTextParser'
 import React from 'react'
-import parse from 'react-html-parser'
-export default function RichText(richtxtcontent) {
+export default function RichText({ richtxtcontent }) {
   console.log(richtxtcontent.root)
 
   return (
     <div>
-      <div>{parse(richtxtcontent.root.children)}</div>
+      <RichTextParser content={richtxtcontent}></RichTextParser>
     </div>
   )
 }
