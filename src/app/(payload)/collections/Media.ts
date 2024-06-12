@@ -3,6 +3,7 @@ import { CollectionConfig } from 'payload/types'
 
 const Media: CollectionConfig = {
   slug: 'media',
+
   admin: {
     description: 'Media files like images, videos, etc.',
   },

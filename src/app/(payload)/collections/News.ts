@@ -1,6 +1,4 @@
-import { buildConfig } from 'payload/config'
 import { CollectionConfig } from 'payload/types'
-import path from 'path'
 import { afterChange, afterDelete } from '@/utils/updateNews'
 import slug from '../fields/slug'
 import NewsList from '../blocks/News'
@@ -46,6 +44,7 @@ const News: CollectionConfig = {
     {
       name: 'image',
       type: 'upload',
+
       label: 'Imagen',
       relationTo: 'media', // Suponiendo que tienes una colección de medios para subir archivos
       required: true,

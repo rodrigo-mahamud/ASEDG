@@ -42,24 +42,32 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
           src={data.image.url}
           fill
           alt={data.image.alt}
+          quality={15}
+          sizes="(max-width: 1200px) 25vw, 50vw"
           className="w-full -z-10 object-cover"
         ></Image>
       </div>
       <CardContent className="p-6">
-        <Badge className="mb-3 rounded-sm text-gray-800/70" variant="secondary">
-          {data.categorias[0].title}
-        </Badge>
-        <CardTitle className="mb-3 line-clamp-1">{data.title}</CardTitle>
+        <div className="flex gap-2 mb-6">
+          {data.categorias.map((cat, index) => (
+            <Badge key={index} className=" rounded-sm text-gray-800/70" variant="secondary">
+              {cat.title}
+            </Badge>
+          ))}
+        </div>
+
+        <CardTitle className="mb-3 line-clamp-1 leading-[0.7]">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button
             asChild
             variant="expandIcon"
+            iconClass="w-4 h-4"
             Icon={IconArrowRight}
             iconPlacement="right"
             className="w-4/5 flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md h-full"
           >
-            <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}></Link>
+            <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>Ver Más</Link>
           </Button>
           <ShareButton
             className="w-1/5 h-full outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-md"
