@@ -1,8 +1,9 @@
 import { CollectionConfig } from 'payload/types'
-import { afterChange, afterDelete } from '@/utils/updateNews'
+import updateNews from '@/utils/updateNews'
 import slug from '../fields/slug'
-import NewsList from '../blocks/News'
+import NewsList from '../blocks/NewsFeatured'
 import RichText from '../blocks/RichText'
+import updateNewsFeatured from '@/utils/updateNewsFeatured'
 
 const News: CollectionConfig = {
   slug: 'news',
@@ -93,8 +94,8 @@ const News: CollectionConfig = {
     slug,
   ],
   hooks: {
-    afterChange: [afterChange],
-    afterDelete: [afterDelete],
+    afterChange: [updateNewsFeatured],
+    afterDelete: [updateNewsFeatured],
   },
 }
 

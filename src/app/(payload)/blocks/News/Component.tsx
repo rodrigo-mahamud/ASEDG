@@ -1,15 +1,14 @@
 import React from 'react'
-import NewsCard from './NewsCard'
+import NewsCard from '@/components/NewsCard'
 import { Type } from '.'
 import Container from '@/components/Container'
 import Title from '@/components/lib/title'
 
-const NewsList: React.FC<Type> = ({ newsRelationship, title, subtitle }) => {
+const NewsBlock: React.FC<Type> = ({ allNews }) => {
   return (
     <Container>
-      <Title title={title} subtitle={subtitle}></Title>
       <div className="grid grid-cols-4 gap-8">
-        {newsRelationship.reverse().map((item, index) => (
+        {allNews.map((item, index) => (
           <NewsCard className="btnShadow h-fit" key={index} data={item} />
         ))}
       </div>
@@ -17,4 +16,4 @@ const NewsList: React.FC<Type> = ({ newsRelationship, title, subtitle }) => {
   )
 }
 
-export default NewsList
+export default NewsBlock

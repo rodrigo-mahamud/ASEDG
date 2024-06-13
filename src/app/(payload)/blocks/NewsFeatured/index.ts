@@ -22,38 +22,23 @@ interface NewsItem {
 }
 
 export type Type = {
-  allNews: NewsItem[]
+  newsFour: NewsItem[]
 }
-const NewsBlock: Block = {
-  slug: 'newsblock',
+const NewsFeatured: Block = {
+  slug: 'newsfeatured',
   labels: {
-    singular: 'Sección de Noticias',
-    plural: 'Sección de Noticias',
+    singular: 'Bloque de Noticias',
+    plural: 'Bloque de Noticias',
   },
   fields: [
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          label: 'Titulo de la seccion',
-        },
-
-        {
-          name: 'subtitle',
-          type: 'text',
-          label: 'Descripción de la sección',
-        },
-      ],
-    },
-    {
-      name: 'allNews',
+      name: 'newsFour',
       type: 'relationship',
       relationTo: 'news',
       hasMany: true,
+      maxRows: 4,
     },
   ],
 }
 
-export default NewsBlock
+export default NewsFeatured

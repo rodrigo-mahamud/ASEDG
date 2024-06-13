@@ -1,81 +1,52 @@
-import { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload/types'
+// hooks/updateNews.ts
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import configPromise from '@payload-config'
+import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
 
-const updateNewsLists = async (docId: string, addNews: boolean) => {
+const updateNews = async () => {
   const payload = await getPayloadHMR({ config: configPromise })
 
-  console.log('Ejecutando updateNewsLists Hook')
+  // Obtener todas las noticias
+  const allNews = await payload.find({ collection: 'news' })
 
-  // Obtén las páginas que contienen el bloque `newslist`
+  // Buscar todas las páginas que contienen los bloques 'newsblock'
   const pages = await payload.find({
     collection: 'pages',
     where: {
-      'body.layout.blockType': {
-        equals: 'newslist',
-      },
+      'body.layout.blockType': 'newsblock',
     },
   })
 
-  console.log('Páginas encontradas:', pages.docs)
+  console.log('Pages found:', pages.docs.length)
 
-  // Itera sobre las páginas encontradas y actualiza el bloque `newslist`
+  // Actualizar cada página que contiene los bloques 'newsblock'
   for (const page of pages.docs) {
-    const updatedLayout = page.body.layout.map((block: any) => {
-      if (block.blockType === 'newslist') {
-        // Limpia cualquier objeto de noticia existente en `newsRelationship`
-        let updatedNewsList = (block.newsRelationship || []).map((news: any) =>
-          typeof news === 'string' ? news : news.id,
-        )
+    let updated = false
 
-        if (addNews) {
-          // Agrega solo el ID de la nueva noticia al inicio de la relación si no está ya presente
-          if (!updatedNewsList.includes(docId)) {
-            updatedNewsList = [docId, ...updatedNewsList]
-          }
-
-          // Limita el número de noticias a mostrar basado en `newsLimit`
-          if (block.newsLimit !== 'all') {
-            const limit = parseInt(block.newsLimit, 10)
-            updatedNewsList = updatedNewsList.slice(0, limit)
-          }
-        } else {
-          // Elimina el ID de la noticia de la relación
-          updatedNewsList = updatedNewsList.filter((id) => id !== docId)
-        }
-
-        console.log('Actualizando bloque newslist con:', updatedNewsList)
-
+    const updatedLayout = page.body.layout.map((block) => {
+      console.log('Checking block:', block.blockType)
+      if (block.blockType === 'newsblock') {
+        updated = true
+        console.log('Updating newsblock:', block)
         return {
           ...block,
-          newsRelationship: updatedNewsList,
+          allNews: allNews.docs.map((news) => news.id), // Asignar solo los IDs de las noticias
         }
       }
       return block
     })
 
-    console.log('Layout actualizado:', updatedLayout)
-
-    await payload.update({
-      collection: 'pages',
-      id: page.id,
-      data: {
-        body: {
-          layout: updatedLayout,
-        },
-      },
-    })
-
-    console.log('Página actualizada:', page.id)
+    // Si se realizó alguna actualización, guardar la página
+    if (updated) {
+      console.log('Updating page:', page.id)
+      await payload.update({
+        collection: 'pages',
+        id: page.id,
+        data: { body: { layout: updatedLayout } },
+      })
+    } else {
+      console.log('No updates for page:', page.id)
+    }
   }
 }
 
-const afterChange: CollectionAfterChangeHook = async ({ doc }) => {
-  await updateNewsLists(doc.id, true)
-}
-
-const afterDelete: CollectionAfterDeleteHook = async ({ doc }) => {
-  await updateNewsLists(doc.id, false)
-}
-
-export { afterChange, afterDelete }
+export default updateNews

@@ -4,17 +4,19 @@ import CalendarBlock from './Calendar/Component'
 import CallToAction from './CallToAction/Component'
 import CardsBlock from './Cards/Component'
 import IndexHero from '../../../components/IndexHero'
-import NewsList from './News/Component'
+import NewsFeatured from './NewsFeatured/Component'
 import TabsBlock from './Tabs/Component'
 import TextImagesBlock from './TextImages/Component'
 import RichText from './RichText/Component'
+import NewsBlock from './News/Component'
 
 export const components = {
   indexhero: IndexHero,
   tabsblock: TabsBlock,
   buslist: BusList,
   calendarblock: CalendarBlock,
-  newslist: NewsList,
+  newsfeatured: NewsFeatured,
+  newsblock: NewsBlock,
   calltoaction: CallToAction,
   bentoblock: BentoBlock,
   textimagesblock: TextImagesBlock,

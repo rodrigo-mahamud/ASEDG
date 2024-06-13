@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react'
 import { Button } from '@/components/lib/button'
 import {
@@ -33,6 +34,8 @@ interface NewsCardTypes {
   }
 }
 export default function NewsCard({ data, className }: NewsCardTypes) {
+  console.log(data)
+
   return (
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}
@@ -42,8 +45,8 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
           src={data.image.url}
           fill
           alt={data.image.alt}
-          quality={15}
-          sizes="(max-width: 1200px) 25vw, 50vw"
+          quality={10}
+          sizes="(max-width: 1200px) 20vw, 35vw"
           className="w-full -z-10 object-cover"
         ></Image>
       </div>
@@ -56,7 +59,7 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
           ))}
         </div>
 
-        <CardTitle className="mb-3 line-clamp-1 leading-[0.7]">{data.title}</CardTitle>
+        <CardTitle className="mb-3 line-clamp-1 leading-[0.85]">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button

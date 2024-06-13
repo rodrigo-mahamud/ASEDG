@@ -1,7 +1,7 @@
 import { Block } from 'payload/types'
 import CalendarBlock from '../Calendar'
 import BusList from '../BusList'
-import NewsList from '../News'
+import NewsFeatured from '../NewsFeatured'
 
 const TabsBlock: Block = {
   slug: 'tabsblock',
@@ -55,7 +55,7 @@ const TabsBlock: Block = {
           admin: {
             initCollapsed: true,
           },
-          blocks: [BusList, CalendarBlock, NewsList],
+          blocks: [BusList, CalendarBlock, NewsFeatured],
         },
       ],
     },
