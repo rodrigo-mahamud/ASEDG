@@ -1,6 +1,6 @@
 import RenderBlocks from '@/components/RenderBlocks'
 import escapeHTML from 'escape-html'
-import React, { Fragment } from 'react'
+import React, { Fragment, ReactNode } from 'react'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
 
 export const IS_BOLD = 1
@@ -12,16 +12,37 @@ export const IS_SUBSCRIPT = 1 << 5
 export const IS_SUPERSCRIPT = 1 << 6
 export const IS_HIGHLIGHT = 1 << 7
 
-function generateTextAlign(node) {
-  if (node.format === 'right') return 'text-right'
-  if (node.format === 'center') return 'text-center'
-  else return ''
+interface Node {
+  type: string
+  text?: string
+  format?: number
+  tag?: keyof JSX.IntrinsicElements
+  listType?: 'bullet' | 'check' | 'number'
+  checked?: boolean
+  fields?: { [key: string]: any }
+  children?: Node[]
 }
 
-export default function serializeLexicalRichText({ children, customClassNames, parentNode = {} }) {
+interface SerializeProps {
+  children: Node[]
+  customClassNames?: { [key: string]: string }
+  parentNode?: Node
+}
+
+function generateTextAlign(node: Node): string {
+  if (node.format === 'right') return 'text-right'
+  if (node.format === 'center') return 'text-center'
+  return ''
+}
+
+export default function serializeLexicalRichText({
+  children,
+  customClassNames,
+  parentNode,
+}: SerializeProps): ReactNode {
   return children
     ?.map((node, i) => {
-      const classNames = {
+      const classNames: { [key: string]: string } = {
         h1: 'mt-6 text-5xl font-bold',
         h2: 'mt-5 text-4xl font-bold',
         h3: 'mt-4 text-3xl font-bold',
@@ -36,26 +57,30 @@ export default function serializeLexicalRichText({ children, customClassNames, p
         a: 'text-blue-500 underline',
       }
 
+      if (!node) {
+        return null
+      }
+
       if (node.type === 'text') {
-        let text = node.text ? (
+        let text: ReactNode = node.text ? (
           <span className="">{node.text}</span>
         ) : (
           <span className="opacity-0">&nbsp;</span>
         )
 
-        if (node.format & IS_BOLD) {
+        if (node.format !== undefined && node.format & IS_BOLD) {
           text = <strong key={i}>{text}</strong>
         }
 
-        if (node.format & IS_CODE) {
+        if (node.format !== undefined && node.format & IS_CODE) {
           text = <code key={i}>{text}</code>
         }
 
-        if (node.format & IS_ITALIC) {
+        if (node.format !== undefined && node.format & IS_ITALIC) {
           text = <em key={i}>{text}</em>
         }
 
-        if (node.format & IS_UNDERLINE) {
+        if (node.format !== undefined && node.format & IS_UNDERLINE) {
           text = (
             <span className="underline" key={i}>
               {text}
@@ -63,7 +88,7 @@ export default function serializeLexicalRichText({ children, customClassNames, p
           )
         }
 
-        if (node.format & IS_STRIKETHROUGH) {
+        if (node.format !== undefined && node.format & IS_STRIKETHROUGH) {
           text = (
             <span className="line-through" key={i}>
               {text}
@@ -74,15 +99,12 @@ export default function serializeLexicalRichText({ children, customClassNames, p
         return <Fragment key={i}>{text}</Fragment>
       }
 
-      if (!node) {
-        return null
-      }
-
-      if (node.type === 'heading') {
+      if (node.type === 'heading' && node.tag) {
+        const Tag = node.tag
         return (
-          <node.tag className={`${classNames[node.tag]} ${generateTextAlign(node)}`} key={i}>
-            {serializeLexicalRichText({ children: node.children })}
-          </node.tag>
+          <Tag className={`${classNames[node.tag]} ${generateTextAlign(node)}`} key={i}>
+            {serializeLexicalRichText({ children: node.children || [] })}
+          </Tag>
         )
       }
 
@@ -90,50 +112,52 @@ export default function serializeLexicalRichText({ children, customClassNames, p
         if (node.listType === 'bullet') {
           return (
             <ul className={`${classNames.ul}`} key={i}>
-              {serializeLexicalRichText({ children: node.children, parentNode: node })}
+              {serializeLexicalRichText({ children: node.children || [], parentNode: node })}
             </ul>
           )
         } else if (node.listType === 'check') {
           return (
             <ul className={`${classNames.ul} list-none`} key={i}>
-              {serializeLexicalRichText({ children: node.children, parentNode: node })}
+              {serializeLexicalRichText({ children: node.children || [], parentNode: node })}
             </ul>
           )
         } else if (node.listType === 'number') {
           return (
             <ol className={`${classNames.ol}`} key={i}>
-              {serializeLexicalRichText({ children: node.children, parentNode: node })}
+              {serializeLexicalRichText({ children: node.children || [], parentNode: node })}
             </ol>
           )
         }
       }
 
-      if (node.type === 'listitem' && node.checked) {
-        return (
-          <li className={`${classNames.li} flex gap-1`} key={i}>
-            <div>
-              <MdCheckBox className="w-4 h-4 text-green-500" />
-            </div>
-            <div className="line-through">
-              {serializeLexicalRichText({ children: node.children })}
-            </div>
-          </li>
-        )
-      } else if (node.type === 'listitem' && parentNode.listType === 'check') {
-        return (
-          <li className={`${classNames.li} flex gap-1`} key={i}>
-            <div>
-              <MdCheckBoxOutlineBlank className="w-4 h-4 text-green-500" />
-            </div>
-            <div className="">{serializeLexicalRichText({ children: node.children })}</div>
-          </li>
-        )
-      } else if (node.type === 'listitem') {
-        return (
-          <li className={`${classNames.li}`} key={i}>
-            {serializeLexicalRichText({ children: node.children })}
-          </li>
-        )
+      if (node.type === 'listitem') {
+        if (node.checked) {
+          return (
+            <li className={`${classNames.li} flex gap-1`} key={i}>
+              <div>
+                <MdCheckBox className="w-4 h-4 text-green-500" />
+              </div>
+              <div className="line-through">
+                {serializeLexicalRichText({ children: node.children || [] })}
+              </div>
+            </li>
+          )
+        } else if (parentNode?.listType === 'check') {
+          return (
+            <li className={`${classNames.li} flex gap-1`} key={i}>
+              <div>
+                <MdCheckBoxOutlineBlank className="w-4 h-4 text-green-500" />
+              </div>
+              <div className="">{serializeLexicalRichText({ children: node.children || [] })}</div>
+            </li>
+          )
+        } else {
+          return (
+            <li className={`${classNames.li}`} key={i}>
+              {serializeLexicalRichText({ children: node.children || [] })}
+            </li>
+          )
+        }
       }
 
       if (node.type === 'block') {
@@ -144,7 +168,7 @@ export default function serializeLexicalRichText({ children, customClassNames, p
         case 'quote':
           return (
             <blockquote className={`${classNames.blockquote}`} key={i}>
-              {serializeLexicalRichText({ children: node.children })}
+              {serializeLexicalRichText({ children: node.children || [] })}
             </blockquote>
           )
 
@@ -156,14 +180,14 @@ export default function serializeLexicalRichText({ children, customClassNames, p
               target={node.fields?.newTab ? '_blank' : '_self'}
               key={i}
             >
-              {serializeLexicalRichText({ children: node.children })}
+              {serializeLexicalRichText({ children: node.children || [] })}
             </a>
           )
 
         default:
           return (
             <p className={`${classNames.p} ${generateTextAlign(node)}`} key={i}>
-              {serializeLexicalRichText({ children: node.children })}
+              {serializeLexicalRichText({ children: node.children || [] })}
             </p>
           )
       }
