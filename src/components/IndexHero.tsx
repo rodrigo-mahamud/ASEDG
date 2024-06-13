@@ -25,7 +25,7 @@ interface IndexHeroTypes {
     pretitleIndex: string
     titleIndex: string
     description: string
-    newsSelection: NewsTypes[]
+    newsRelationship: NewsTypes[]
   }
 }
 const IndexHero = ({ data }: IndexHeroTypes) => {
@@ -108,7 +108,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
               className="w-1/2 flex gap-5 justify-center"
             >
               <IndexHeroNews>
-                {data.newsSelection.map((newsItem) => (
+                {data.newsRelationship.map((newsItem) => (
                   <IndexHighlightedNew key={newsItem.id} {...newsItem} buttonVariant="secondary" />
                 ))}
               </IndexHeroNews>

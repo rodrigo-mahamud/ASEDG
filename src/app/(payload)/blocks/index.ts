@@ -8,7 +8,6 @@ import NewsList from './News/Component'
 import TabsBlock from './Tabs/Component'
 import TextImagesBlock from './TextImages/Component'
 import RichText from './RichText/Component'
-import Title from './Title/Component'
 
 export const components = {
   indexhero: IndexHero,
@@ -21,5 +20,4 @@ export const components = {
   textimagesblock: TextImagesBlock,
   cardsblock: CardsBlock,
   richtext: RichText,
-  title: Title,
 }

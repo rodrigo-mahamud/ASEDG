@@ -52,8 +52,27 @@ const NewsList: Block = {
           value: 'all',
         },
       ],
-      defaultValue: 'all',
+      defaultValue: '4',
       required: true,
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Titulo de la seccion',
+        },
+
+        {
+          name: 'subtitle',
+          type: 'text',
+          label: 'Descripción de la sección',
+        },
+      ],
+      admin: {
+        condition: (_, siblingData) => siblingData.newsLimit === 'all',
+      },
     },
     {
       name: 'newsRelationship',
