@@ -1,36 +1,69 @@
+// hooks/updateNewsFeatured.ts
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import configPromise from '@payload-config'
+import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
+import type { Payload } from 'payload'
+
+interface News {
+  id: string
+  title: string
+  content: string
+  createdAt: string
+  // Añade más campos según sea necesario
+}
+
+interface NewsFeaturedBlock {
+  blockType: 'newsfeatured'
+  newsFour: string[]
+}
+
+interface Tab {
+  content: (NewsFeaturedBlock | Record<string, unknown>)[]
+}
+
+interface Layout {
+  tabs: Tab[]
+}
+
+interface Page {
+  id: string
+  body: {
+    layout: Layout[]
+  }
+}
 
 const updateNewsFeatured = async () => {
   const payload = await getPayloadHMR({ config: configPromise })
 
-  const pages = await payload.find({
+  const pagesResponse = await payload.find({
     collection: 'pages',
     where: {
       'body.layout.tabs.content.blockType': { equals: 'newsfeatured' },
     },
   })
 
-  if (pages.docs.length > 0) {
-    const news = await payload.find({
+  const pages = pagesResponse.docs as any
+
+  if (pages.length > 0) {
+    const newsResponse = await payload.find({
       collection: 'news',
       limit: 4, // Obtén las 4 noticias más recientes
       sort: '-createdAt',
     })
 
-    const newsIds = news.docs.map((newsItem) => newsItem.id)
+    const news = newsResponse.docs as any
+    const newsIds = news.map((newsItem: any) => newsItem.id)
 
-    const page = pages.docs[0]
+    const page = pages[0]
 
     // Encuentra el bloque `newsfeatured` dentro del contenido de la página
-    const updatedContent = page.body.layout.map((layout) => {
+    const updatedContent = page.body.layout.map((layout: any) => {
       return {
         ...layout,
-        tabs: layout.tabs.map((tab) => {
+        tabs: layout.tabs.map((tab: any) => {
           return {
             ...tab,
-            content: tab.content.map((block) => {
-              if (block.blockType === 'newsfeatured') {
+            content: tab.content.map((block: any) => {
+              if ((block as any).blockType === 'newsfeatured') {
                 return {
                   ...block,
                   newsFour: newsIds,

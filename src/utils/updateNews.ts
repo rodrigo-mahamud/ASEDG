@@ -1,36 +1,66 @@
 // hooks/updateNews.ts
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
+import type { Payload } from 'payload'
+
+interface News {
+  id: string
+  title: string
+  content: string
+  // Añade más campos según sea necesario
+}
+
+interface NewsBlock {
+  blockType: 'newsblock'
+  allNews: string[]
+  // Otros campos según sea necesario
+}
+
+type LayoutBlock = NewsBlock | Record<string, unknown>
+
+interface Page {
+  id: string
+  body: {
+    layout: LayoutBlock[]
+  }
+  // Añade más campos según sea necesario
+}
 
 const updateNews = async () => {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload: Payload = await getPayloadHMR({ config: configPromise })
 
   // Obtener todas las noticias
-  const allNews = await payload.find({ collection: 'news' })
+  const allNewsResponse = await payload.find({
+    collection: 'news',
+  })
+  const allNews = allNewsResponse.docs as any
 
   // Buscar todas las páginas que contienen los bloques 'newsblock'
-  const pages = await payload.find({
+  const pagesResponse = await payload.find({
     collection: 'pages',
     where: {
-      'body.layout.blockType': 'newsblock',
+      'body.layout.blockType': {
+        equals: 'newsblock',
+      },
     },
   })
+  const pages = pagesResponse.docs as any
 
-  console.log('Pages found:', pages.docs.length)
+  console.log('Pages found:', pages.length)
 
   // Actualizar cada página que contiene los bloques 'newsblock'
-  for (const page of pages.docs) {
+  for (const page of pages) {
     let updated = false
 
-    const updatedLayout = page.body.layout.map((block) => {
-      console.log('Checking block:', block.blockType)
-      if (block.blockType === 'newsblock') {
+    const updatedLayout = page.body.layout.map((block: any) => {
+      console.log('Checking block:', (block as any).blockType)
+      if ((block as any).blockType === 'newsblock') {
         updated = true
         console.log('Updating newsblock:', block)
         return {
           ...block,
-          allNews: allNews.docs.map((news) => news.id), // Asignar solo los IDs de las noticias
-        }
+          allNews: allNews.map((news: any) => news.id), // Asignar solo los IDs de las noticias
+        } as NewsBlock
       }
       return block
     })

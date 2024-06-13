@@ -34,8 +34,6 @@ interface NewsCardTypes {
   }
 }
 export default function NewsCard({ data, className }: NewsCardTypes) {
-  console.log(data)
-
   return (
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}

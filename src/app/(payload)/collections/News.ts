@@ -94,8 +94,8 @@ const News: CollectionConfig = {
     slug,
   ],
   hooks: {
-    afterChange: [updateNewsFeatured],
-    afterDelete: [updateNewsFeatured],
+    afterChange: [updateNews, updateNewsFeatured],
+    afterDelete: [updateNews, updateNewsFeatured],
   },
 }
 

@@ -73,4 +73,4 @@ export default async function Page({ params }: PageProps) {
   )
 }
 
-export const revalidate = 60 // Revalidate every 60 seconds
+export const revalidate = 10 // Revalidate every 60 seconds
