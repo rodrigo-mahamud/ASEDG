@@ -16,6 +16,7 @@ interface Node {
   type: string
   text?: string
   format?: number
+  textAlign?: 'left' | 'right' | 'center'
   tag?: keyof JSX.IntrinsicElements
   listType?: 'bullet' | 'check' | 'number'
   checked?: boolean
@@ -30,8 +31,8 @@ interface SerializeProps {
 }
 
 function generateTextAlign(node: Node): string {
-  if (node.format === 'right') return 'text-right'
-  if (node.format === 'center') return 'text-center'
+  if (node.textAlign === 'right') return 'text-right'
+  if (node.textAlign === 'center') return 'text-center'
   return ''
 }
 
