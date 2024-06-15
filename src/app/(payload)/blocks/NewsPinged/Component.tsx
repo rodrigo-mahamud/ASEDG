@@ -1,5 +1,14 @@
+'use client'
+import Container from '@/components/Container'
 import useEmblaCarousel from 'embla-carousel-react'
 import React from 'react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/lib/carousel'
 const sliderData = [
   {
     id: 1,
@@ -26,31 +35,49 @@ const sliderData = [
     title: 'Majestic Tree in Vibrant Autumn Colors',
     url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
   },
+  {
+    id: 6,
+    title: 'Majestic Tree in Vibrant Autumn Colors',
+    url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+  },
+  {
+    id: 7,
+    title: 'Majestic Tree in Vibrant Autumn Colors',
+    url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+  },
+  {
+    id: 8,
+    title: 'Majestic Tree in Vibrant Autumn Colors',
+    url: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
+  },
 ]
 
 export default function NewsPinged() {
   const [emblaRef] = useEmblaCarousel({ loop: false })
 
   return (
-    <div
-      className="overflow-hidden bg-gray-200 w-full mx-auto flex items-center justify-center h-screen"
-      ref={emblaRef}
+    <Carousel
+      opts={{
+        align: 'center',
+      }}
+      className="w-full flex justify-center"
     >
-      <div className="flex">
-        {sliderData?.map((item) => {
-          return (
-            <div className="embla__slide relative h-full w-full" key={item.id}>
+      <CarouselPrevious />
+      <CarouselContent className="w-[inherit] bg-secondary">
+        {sliderData.map((item, index) => (
+          <CarouselItem key={index} className="md:basis-1/3 relative">
+            <div className="embla__slide flex relative w-full " key={item.id}>
+              <div className="absolute w-full h-full blurMask"></div>
               {/* the image */}
               <img className="w-full h-full" src={item.url} alt="" />
 
               {/* title/subtitle */}
-              <h1 className="absolute top-1/2 left-1/2 w-full md:w-auto transform -translate-x-1/2 translate-y-[3rem] md:translate-y-[9rem]  lg:translate-y-48 bg-cyan-600 py-2 lg:py-4 px-2 lg:px-8 text-xl lg:text-2xl text-white font-extrabold">
-                {item.title}
-              </h1>
+              <h1 className="absolute ">{item.title}</h1>
             </div>
-          )
-        })}
-      </div>
-    </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselNext />
+    </Carousel>
   )
 }
