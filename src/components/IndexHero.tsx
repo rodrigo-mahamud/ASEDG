@@ -25,10 +25,12 @@ interface IndexHeroTypes {
     pretitleIndex: string
     titleIndex: string
     description: string
-    newsRelationship: NewsTypes[]
+    newsfeatured: NewsTypes[]
   }
 }
 const IndexHero = ({ data }: IndexHeroTypes) => {
+  console.log(data)
+
   return (
     <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">
@@ -108,7 +110,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
               className="w-1/2 flex gap-5 justify-center"
             >
               <IndexHeroNews>
-                {data.newsRelationship.map((newsItem) => (
+                {data.newsfeatured.map((newsItem) => (
                   <IndexHighlightedNew key={newsItem.id} {...newsItem} buttonVariant="secondary" />
                 ))}
               </IndexHeroNews>
