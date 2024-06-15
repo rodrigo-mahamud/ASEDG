@@ -77,7 +77,7 @@ const Pages: CollectionConfig = {
 
               fields: [
                 {
-                  name: 'newsfeatured',
+                  name: 'newsFour',
                   type: 'relationship',
                   relationTo: 'news',
                   label: 'Noticias destacadas (4 ultimas por defecto)',
