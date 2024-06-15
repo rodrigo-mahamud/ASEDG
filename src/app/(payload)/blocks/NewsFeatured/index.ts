@@ -24,7 +24,7 @@ interface NewsItem {
 export type Type = {
   newsFour: NewsItem[]
 }
-const NewsFeatured: Block = {
+const NewsPinged: Block = {
   slug: 'newsfeatured',
   labels: {
     singular: 'Bloque de Noticias',
@@ -41,4 +41,4 @@ const NewsFeatured: Block = {
   ],
 }
 
-export default NewsFeatured
+export default NewsPinged

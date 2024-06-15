@@ -6,6 +6,7 @@ import TabsBlock from '../blocks/Tabs'
 import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
 import NewsBlock from '../blocks/News'
+import NewsPinged from '../blocks/NewsPinged'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -132,7 +133,15 @@ const Pages: CollectionConfig = {
                 plural: 'Secciones',
               },
               type: 'blocks',
-              blocks: [TabsBlock, CallToAction, BentoBlock, TextImagesBlock, CardsBlock, NewsBlock],
+              blocks: [
+                TabsBlock,
+                CallToAction,
+                BentoBlock,
+                TextImagesBlock,
+                CardsBlock,
+                NewsBlock,
+                NewsPinged,
+              ],
             },
           ],
         },
