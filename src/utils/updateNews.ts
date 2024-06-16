@@ -1,77 +1,124 @@
-// hooks/updateNewsFeatured.ts
+// hooks/updateNews.ts
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
+import type { Payload } from 'payload'
 
-const updateNewsFeatured = async () => {
-  const payload = await getPayloadHMR({ config: configPromise })
+// ... (Mantén las interfaces y tipos existentes)
 
+const updateNews = async () => {
+  const payload: Payload = await getPayloadHMR({ config: configPromise })
+
+  // Obtener todas las noticias
+  const allNewsResponse = await payload.find({
+    collection: 'news',
+  })
+  const allNews = allNewsResponse.docs as any
+
+  // Obtener las noticias fijas (fixed)
+  const fixedNewsResponse = await payload.find({
+    collection: 'news',
+    where: {
+      fixed: { equals: true },
+    },
+  })
+  const fixedNews = fixedNewsResponse.docs as any
+
+  // Verificar si ya hay 8 noticias fijadas
+  if (fixedNews.length >= 8) {
+    console.log('Ya hay 8/8 noticias fijadas, no se pueden fijar más.')
+    return
+  }
+
+  // Buscar todas las páginas que contienen los bloques 'newsblock', 'newsfeatured' o 'newspinged'
   const pagesResponse = await payload.find({
     collection: 'pages',
     where: {
-      'body.layout.tabs.content.blockType': { equals: 'newsfeatured' },
+      or: [
+        {
+          'body.layout.blockType': {
+            in: ['newsblock', 'newspinged'],
+          },
+        },
+        {
+          'body.layout.tabs.content.blockType': {
+            equals: 'newsfeatured',
+          },
+        },
+      ],
     },
   })
-
   const pages = pagesResponse.docs as any
 
-  if (pages.length > 0) {
-    const newsResponse = await payload.find({
-      collection: 'news',
-      limit: 4, // Obtén las 4 noticias más recientes
-      sort: '-createdAt',
-    })
+  console.log('Pages found:', pages.length)
 
-    const news = newsResponse.docs as any
-    const newsIds = news.map((newsItem: any) => newsItem.id)
+  // Actualizar cada página que contiene los bloques 'newsblock', 'newsfeatured' o 'newspinged'
+  for (const page of pages) {
+    let updated = false
 
-    const page = pages[0]
-
-    // Actualiza los bloques `newsfeatured` dentro del contenido de la página
-    const updatedContent = page.body.layout.map((layout: any) => {
-      if (layout.tabs) {
+    const updatedLayout = page.body.layout.map((block: any) => {
+      console.log('Checking block:', (block as any).blockType)
+      if ((block as any).blockType === 'newsblock') {
+        updated = true
+        console.log('Updating newsblock:', block)
         return {
-          ...layout,
-          tabs: layout.tabs.map((tab: any) => {
+          ...block,
+          allNews: allNews.map((news: any) => news.id), // Asignar solo los IDs de las noticias
+        } as NewsBlock
+      }
+      if ((block as any).blockType === 'newspinged') {
+        updated = true
+        console.log('Updating newspinged:', block)
+        return {
+          ...block,
+          newspinged: fixedNews.map((news: any) => news.id), // Asignar los IDs de las noticias fijas
+        } as NewsPingedBlock
+      }
+      if (block.tabs) {
+        updated = true
+        return {
+          ...block,
+          tabs: block.tabs.map((tab: any) => {
             return {
               ...tab,
-              content: tab.content.map((block: any) => {
-                if ((block as any).blockType === 'newsfeatured') {
+              content: tab.content.map((contentBlock: any) => {
+                if ((contentBlock as any).blockType === 'newsfeatured') {
                   return {
-                    ...block,
-                    newsFour: newsIds,
+                    ...contentBlock,
+                    newsFour: allNews.slice(0, 4).map((news: any) => news.id),
                   }
                 }
-                return block
+                return contentBlock
               }),
             }
           }),
         }
       }
-
-      return layout
+      return block
     })
 
-    // Actualiza el campo `newsFour` en el header
-    const updatedHeader = {
-      ...page.header,
-      newsFour: newsIds,
-    }
+    // Actualiza el campo `newsFour` en el header si existe
+    const updatedHeader = page.header
+      ? {
+          ...page.header,
+          newsFour: allNews.slice(0, 4).map((news: any) => news.id),
+        }
+      : page.header
 
-    const updatedPage = await payload.update({
-      collection: 'pages',
-      id: page.id,
-      data: {
-        body: {
-          layout: updatedContent,
+    // Si se realizó alguna actualización, guardar la página
+    if (updated) {
+      console.log('Updating page:', page.id)
+      await payload.update({
+        collection: 'pages',
+        id: page.id,
+        data: {
+          body: { layout: updatedLayout },
+          ...(updatedHeader && { header: updatedHeader }),
         },
-        header: updatedHeader,
-      },
-    })
-
-    console.log('Page updated with new featured news:', updatedPage)
-  } else {
-    console.log('No page with newsfeatured block found')
+      })
+    } else {
+      console.log('No updates for page:', page.id)
+    }
   }
 }
 
-export default updateNewsFeatured
+export default updateNews

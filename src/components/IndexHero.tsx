@@ -88,6 +88,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
                 <Button
                   variant="expandIcon"
                   size="lg"
+                  iconClass="w-6 h-6"
                   Icon={IconArrowRight}
                   iconPlacement="right"
                   className="text-lg bg-primary hover:bg-primary/90 rounded-full"

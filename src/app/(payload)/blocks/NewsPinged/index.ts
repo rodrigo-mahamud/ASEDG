@@ -27,9 +27,11 @@ const NewsFeatured: Block = {
     {
       name: 'newspinged',
       type: 'relationship',
+      label: 'Noticias fijadas (8 max)',
       relationTo: 'news',
       hasMany: true,
       maxRows: 8,
+      admin: { readOnly: true },
     },
   ],
 }
