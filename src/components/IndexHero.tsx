@@ -29,8 +29,6 @@ interface IndexHeroTypes {
   }
 }
 const IndexHero = ({ data }: IndexHeroTypes) => {
-  console.log(data)
-
   return (
     <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">

@@ -11,10 +11,9 @@ import { Button } from '@/components/lib/button'
 import Title from '@/components/lib/title'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Type } from '.'
 
-export default function NewsPinged({ newspinged, title, subtitle }) {
-  console.log(newspinged)
-
+export default function NewsPinged({ newspinged, title, subtitle }: Type) {
   return (
     <>
       <section className="">

@@ -3,6 +3,7 @@ import slug from '../fields/slug'
 
 import RichText from '../blocks/RichText'
 import updateNews from '@/utils/updateNews'
+import validateNews from '@/utils/validateNews'
 
 const News: CollectionConfig = {
   slug: 'news',
@@ -101,6 +102,7 @@ const News: CollectionConfig = {
     slug,
   ],
   hooks: {
+    // beforeChange: [validateNews],
     afterChange: [updateNews],
     afterDelete: [updateNews],
   },

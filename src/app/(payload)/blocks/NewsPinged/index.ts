@@ -1,5 +1,19 @@
 import { Block } from 'payload/types'
+export type Type = {
+  newspinged: NewsItem[]
+  title: string
+  subtitle: string
+}
 
+type NewsItem = {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  image: {
+    url: string
+  }
+}
 const NewsFeatured: Block = {
   slug: 'newspinged',
   labels: {

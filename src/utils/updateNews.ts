@@ -23,12 +23,6 @@ const updateNews = async () => {
   })
   const fixedNews = fixedNewsResponse.docs as any
 
-  // Verificar si ya hay 8 noticias fijadas
-  if (fixedNews.length >= 8) {
-    console.log('Ya hay 8/8 noticias fijadas, no se pueden fijar más.')
-    return
-  }
-
   // Buscar todas las páginas que contienen los bloques 'newsblock', 'newsfeatured' o 'newspinged'
   const pagesResponse = await payload.find({
     collection: 'pages',
@@ -49,29 +43,26 @@ const updateNews = async () => {
   })
   const pages = pagesResponse.docs as any
 
-  console.log('Pages found:', pages.length)
-
   // Actualizar cada página que contiene los bloques 'newsblock', 'newsfeatured' o 'newspinged'
   for (const page of pages) {
     let updated = false
 
     const updatedLayout = page.body.layout.map((block: any) => {
-      console.log('Checking block:', (block as any).blockType)
       if ((block as any).blockType === 'newsblock') {
         updated = true
-        console.log('Updating newsblock:', block)
+
         return {
           ...block,
           allNews: allNews.map((news: any) => news.id), // Asignar solo los IDs de las noticias
-        } as NewsBlock
+        } as any
       }
       if ((block as any).blockType === 'newspinged') {
         updated = true
-        console.log('Updating newspinged:', block)
+
         return {
           ...block,
           newspinged: fixedNews.map((news: any) => news.id), // Asignar los IDs de las noticias fijas
-        } as NewsPingedBlock
+        } as any
       }
       if (block.tabs) {
         updated = true
@@ -106,7 +97,6 @@ const updateNews = async () => {
 
     // Si se realizó alguna actualización, guardar la página
     if (updated) {
-      console.log('Updating page:', page.id)
       await payload.update({
         collection: 'pages',
         id: page.id,
@@ -116,7 +106,6 @@ const updateNews = async () => {
         },
       })
     } else {
-      console.log('No updates for page:', page.id)
     }
   }
 }
