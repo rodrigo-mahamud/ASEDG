@@ -13,6 +13,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function NewsPinged({ newspinged, title, subtitle }) {
+  console.log(newspinged)
+
   return (
     <>
       <section className="">

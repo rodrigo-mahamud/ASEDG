@@ -79,6 +79,14 @@ const News: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'fixed',
+      type: 'checkbox',
+      label: 'Mantener noticia fijada',
+      admin: {
+        position: 'sidebar',
+      },
+    },
 
     {
       name: 'publishedDate',
