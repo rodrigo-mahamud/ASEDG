@@ -1,6 +1,5 @@
 'use client'
 import Container from '@/components/Container'
-import useEmblaCarousel from 'embla-carousel-react'
 import React from 'react'
 import {
   Carousel,
@@ -9,6 +8,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/lib/carousel'
+import { Button } from '@/components/lib/button'
+import Title from '@/components/lib/title'
 const sliderData = [
   {
     id: 1,
@@ -53,31 +54,43 @@ const sliderData = [
 ]
 
 export default function NewsPinged() {
-  const [emblaRef] = useEmblaCarousel({ loop: false })
-
   return (
-    <Carousel
-      opts={{
-        align: 'center',
-      }}
-      className="w-full flex justify-center"
-    >
-      <CarouselPrevious />
-      <CarouselContent className="w-[inherit] bg-secondary">
-        {sliderData.map((item, index) => (
-          <CarouselItem key={index} className="md:basis-1/3 relative">
-            <div className="embla__slide flex relative w-full " key={item.id}>
-              <div className="absolute w-full h-full blurMask"></div>
-              {/* the image */}
-              <img className="w-full h-full" src={item.url} alt="" />
+    <section className="py-32">
+      <Container className="py-0">
+        <Title title="hola" subtitle="ksd dsfa sfd asdf hsdfsdf sdfg gfdh arfs"></Title>
+      </Container>
+      <Carousel
+        opts={{
+          align: 'center',
+          startIndex: 1,
+          dragFree: true,
+          skipSnaps: true,
+        }}
+        className="w-full flex justify-center "
+      >
+        <CarouselPrevious />
+        <CarouselContent className="-ml-6">
+          {sliderData.map((item, index) => (
+            <CarouselItem key={index} className="md:basis-1/3 relative pl-6">
+              <div className="embla__slide flex relative w-full h-full items-end " key={item.id}>
+                <div className="absolute w-full h-full blurMask rounded-md"></div>
+                <div className="absolute z-10 pl-8 pb-8 flex items-center w-full">
+                  <div className="w-4/5 pr-10">
+                    <h2 className="text-white line-clamp-1 font-bold mb-1 text-lg">{item.title}</h2>
+                    <h2 className="text-white line-clamp-2">{item.title}</h2>
+                  </div>
+                  <div className="w-1/5 flex justify-center">
+                    <Button variant="arrow" className="text-white"></Button>
+                  </div>
+                </div>
 
-              {/* title/subtitle */}
-              <h1 className="absolute ">{item.title}</h1>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselNext />
-    </Carousel>
+                <img className="w-full h-full rounded-md" src={item.url} alt="" />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+      </Carousel>
+    </section>
   )
 }
