@@ -19,7 +19,7 @@ export function IndexHeroNews({ children }: IndexHeroNewsProps) {
       }}
       className="w-10/12 flex justify-center"
     >
-      <CarouselPrevious />
+      <CarouselPrevious className="absolute h-8 w-8 -left-12 top-1/2 -translate-y-1/2" />
       <CarouselContent className="w-[inherit] shadow-[0_25px_70px_0px_rgba(50,50,93,0.25)] rounded-xl bg-secondary">
         {React.Children.map(children, (child, index) => (
           <CarouselItem key={index} className="md:basis-full ">
@@ -27,7 +27,7 @@ export function IndexHeroNews({ children }: IndexHeroNewsProps) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselNext />
+      <CarouselNext className="absolute h-8 w-8 -right-12 top-1/2 -translate-y-1/2" />
     </Carousel>
   )
 }

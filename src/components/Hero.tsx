@@ -17,7 +17,7 @@ const Hero: FC<HeroTypes> = ({ data, publishedDate }) => {
   const formattedDate = dayjs(publishedDate).format('DD MMM YYYY')
 
   return (
-    <header className="h-[35rem] bg-secondary">
+    <header className="h-[35rem] bg-secondary mb-32">
       <AuroraBackground className="h-[inherit]">
         <Container>
           <div className="flex flex-col w-full items-center justify-center">

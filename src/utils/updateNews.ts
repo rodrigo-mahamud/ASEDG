@@ -1,38 +1,6 @@
 // hooks/updateNewsFeatured.ts
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
-import type { Payload } from 'payload'
-
-interface News {
-  id: string
-  title: string
-  content: string
-  createdAt: string
-  // Añade más campos según sea necesario
-}
-
-interface NewsFeaturedBlock {
-  blockType: 'newsfeatured'
-  newsFour: string[]
-}
-
-interface Tab {
-  content: (NewsFeaturedBlock | Record<string, unknown>)[]
-}
-
-interface Layout {
-  tabs?: Tab[]
-}
-
-interface Page {
-  id: string
-  body: {
-    layout: Layout[]
-  }
-  header: {
-    newsFour: string[]
-  }
-}
 
 const updateNewsFeatured = async () => {
   const payload = await getPayloadHMR({ config: configPromise })

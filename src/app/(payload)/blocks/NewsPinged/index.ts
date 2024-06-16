@@ -8,6 +8,23 @@ const NewsFeatured: Block = {
   },
   fields: [
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          label: 'Titulo de la sección',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'subtitle',
+          label: 'Descripción de la sección',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'newspinged',
       type: 'relationship',
       relationTo: 'news',

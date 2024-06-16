@@ -28,6 +28,7 @@ const buttonVariants = cva(
         linkHover2:
           'relative after:absolute after:bg-foreground after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:ease-in-out after:duration-300',
         arrow: 'group relative text-secondaryAlt bg-transparent rounded-full ',
+        arrowReversed: 'group relative text-secondaryAlt bg-transparent rounded-full',
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -91,12 +92,27 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             viewBox="0 0 6 9"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={`${iconClass} transition-all overflow-visible duration-100 ease-in-out transform`}
+            className={`${iconClass} transition-transform overflow-visible duration-100 ease-in-out transform`}
           >
-            <g className="transition-all duration-100 ease-in-out transform group-hover:translate-x-[0.15rem]">
+            <g className="transition-transform duration-100 ease-in-out transform group-hover:translate-x-[0.15rem]">
               <path d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8" stroke="currentColor" />
             </g>
-            <g className="opacity-0 transition-all duration-100 ease-in-out transform scale-x-100 group-hover:opacity-100 group-hover:scale-x-[2.2]">
+            <g className="opacity-0 transition-transform duration-100 ease-in-out transform scale-x-100 group-hover:opacity-100 group-hover:scale-x-[2.2]">
+              <path d="M3.5 4.5H0" stroke="currentColor" />
+            </g>
+          </svg>
+        )}
+        {variant === 'arrowReversed' && (
+          <svg
+            viewBox="0 0 6 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={`${iconClass} transition-transform overflow-visible duration-100 ease-in-out transform rotate-180`}
+          >
+            <g className="transition-transform duration-100 ease-in-out transform group-hover:translate-x-[0.15rem]">
+              <path d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8" stroke="currentColor" />
+            </g>
+            <g className="opacity-0 transition-transform duration-100 ease-in-out transform scale-x-100 group-hover:opacity-100 group-hover:scale-x-[2.2]">
               <path d="M3.5 4.5H0" stroke="currentColor" />
             </g>
           </svg>
