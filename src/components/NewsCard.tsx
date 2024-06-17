@@ -1,5 +1,6 @@
 'use client'
 import * as React from 'react'
+import { usePathname } from 'next/navigation'
 import { Button } from '@/components/lib/button'
 import {
   Card,
@@ -14,10 +15,12 @@ import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
 import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
+
 interface CatTypes {
   title: string
   description: string
 }
+
 interface NewsCardTypes {
   className?: string
   data: {
@@ -33,10 +36,24 @@ interface NewsCardTypes {
     }
   }
 }
+
 export default function NewsCard({ data, className }: NewsCardTypes) {
+  const pathname = usePathname()
+
+  const getCurrentUrl = () => {
+    if (typeof window !== 'undefined') {
+      const baseUrl = window.location.origin
+      const path = pathname
+      return `${baseUrl}${path}/${data.slug}`
+    }
+    return ''
+  }
+
+  const currentUrl = getCurrentUrl()
+
   return (
     <Card
-      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300  ${className}`}
+      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300 ${className}`}
     >
       <div className="relative w-full aspect-[4/3]">
         <Image
@@ -46,17 +63,16 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
           quality={10}
           sizes="(max-width: 1200px) 20vw, 35vw"
           className="w-full -z-10 object-cover"
-        ></Image>
+        />
       </div>
       <CardContent className="p-6">
         <div className="flex gap-2 mb-6">
           {data.categories.map((cat, index) => (
-            <Badge key={index} className=" rounded-sm text-gray-800/70" variant="secondary">
+            <Badge key={index} className="rounded-sm text-gray-800/70" variant="secondary">
               {cat.title}
             </Badge>
           ))}
         </div>
-
         <CardTitle className="mb-3 line-clamp-1 leading-[0.85]">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
@@ -72,8 +88,8 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
           </Button>
           <ShareButton
             className="w-1/5 h-full outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-md"
-            url="https://stupendous-capybara-079a5c.netlify.app/"
-          ></ShareButton>
+            url={currentUrl}
+          />
         </div>
       </CardContent>
     </Card>

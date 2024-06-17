@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Button } from '@/components/lib/button'
 import { Type } from '../../app/(payload)/blocks/Cards' // Importa los tipos del componente padre
@@ -69,7 +69,7 @@ const Filter: React.FC<FilterProps> = ({ data, onFilterChange, selectedCategory 
       <div className="relative w-full flex">
         <PrevButton onClick={() => emblaApi && emblaApi.scrollPrev()} enabled={prevBtnEnabled} />
         <div className="embla__viewport overflow-hidden py-3 -my-3" ref={emblaRef}>
-          <div className="embla__container flex backface-hidden touch-pan-y gap-2">
+          <div className="embla__container flex backface-hidden touch-pan-y gap-2 px-1">
             {filteredData.map((category) => (
               <Button
                 key={category.id}
