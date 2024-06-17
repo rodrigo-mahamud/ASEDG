@@ -39,7 +39,7 @@ export default function NewsPinged({ newspinged, title, subtitle }: Type) {
                   className="basis-[40%] relative ml-6 mainShadow transitionAlt hover:-translate-y-2 group rounded-lg"
                 >
                   <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
-                    <div className="embla__slide flex relative w-full h-80 items-end">
+                    <div className="embla__slide flex relative w-full h-[22rem] items-end">
                       <div className="absolute w-full h-full blurMask rounded-lg"></div>
                       <div className="absolute z-10 pl-8 pb-8 flex items-center w-full">
                         <div className="w-4/5 pr-10">
