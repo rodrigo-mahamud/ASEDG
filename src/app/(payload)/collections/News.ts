@@ -3,7 +3,6 @@ import { APIError } from 'payload/errors' // Importa APIError
 import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
 import updateNews from '@/utils/updateNews'
-import validateNews from '@/utils/validateNews'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Asegúrate de que esta ruta es correcta
 

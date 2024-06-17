@@ -16,7 +16,7 @@ import { Type } from '.'
 export default function NewsPinged({ newspinged, title, subtitle }: Type) {
   return (
     <>
-      <section className="">
+      <section className=" overflow-hidden">
         <Container className="py-32">
           <Carousel
             opts={{
