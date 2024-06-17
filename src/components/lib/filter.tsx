@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Button } from '@/components/lib/button'
-import { Type } from '.' // Importa los tipos del componente padre
+import { Type } from '../../app/(payload)/blocks/Cards' // Importa los tipos del componente padre
 
 interface FilterProps {
   data: Type['cards']

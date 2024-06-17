@@ -22,7 +22,7 @@ interface NewsCardTypes {
   className?: string
   data: {
     slug: string
-    categorias: CatTypes[]
+    categories: CatTypes[]
     title: string
     summary: string
     badgeClass?: string
@@ -50,7 +50,7 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
       </div>
       <CardContent className="p-6">
         <div className="flex gap-2 mb-6">
-          {data.categorias.map((cat, index) => (
+          {data.categories.map((cat, index) => (
             <Badge key={index} className=" rounded-sm text-gray-800/70" variant="secondary">
               {cat.title}
             </Badge>

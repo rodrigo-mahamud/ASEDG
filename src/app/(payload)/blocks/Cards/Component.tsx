@@ -7,26 +7,11 @@ import Container from '@/components/Container'
 import Title from '@/components/lib/title'
 import DynamicIcon from '@/components/DynamicIcon'
 import { Type } from '.'
-import Link from 'next/link'
-import Filter from './Filter'
 import { Badge } from '@/components/lib/badge'
 import CardButtons from './CardButtons' // Asegúrate de ajustar la ruta según tu estructura de carpetas
+import FilteredCards from '@/components/FilteredCards'
 
-export default function NewsCard({ cards, title, description, filter }: Type) {
-  const [filteredCards, setFilteredCards] = React.useState(cards)
-  const [selectedCategory, setSelectedCategory] = React.useState(null)
-
-  const handleFilterChange = (category: any) => {
-    if (selectedCategory === category) {
-      setSelectedCategory(null)
-      setFilteredCards(cards)
-    } else {
-      setSelectedCategory(category)
-      setFilteredCards(
-        cards.filter((card) => card.categories.some((cat) => cat.title === category)),
-      )
-    }
-  }
+export default function CardsBlock({ cards, title, description, filter }: Type) {
   const generateGoogleMapsLink = (location: string) => {
     const encodedLocation = encodeURIComponent(location)
     return `https://www.google.com/maps/dir//${encodedLocation}`
@@ -35,19 +20,9 @@ export default function NewsCard({ cards, title, description, filter }: Type) {
   return (
     <Container>
       <Title title={title} subtitle={description}></Title>
-      {filter && (
-        <Filter
-          data={cards}
-          onFilterChange={handleFilterChange}
-          selectedCategory={selectedCategory}
-        ></Filter>
-      )}
-      <div className="grid grid-cols-4 w-full gap-8">
-        {filteredCards.map((item, index) => (
-          <Card
-            key={index}
-            className="rounded-xl h-full overflow-hidden hover:-translate-y-2 transform transition duration-300 btnShadow"
-          >
+      <FilteredCards data={cards} filterEnabled={filter} className="grid grid-cols-4 w-full gap-8">
+        {(item) => (
+          <Card className="rounded-xl h-full overflow-hidden hover:-translate-y-2 transform transition duration-300 btnShadow">
             <div className="aspect-[4/3] relative">
               <Image
                 src={item.cardImage.url}
@@ -58,15 +33,17 @@ export default function NewsCard({ cards, title, description, filter }: Type) {
               />
             </div>
             <CardContent className="p-5">
-              {item.categories.slice(0, 1).map((category, catIndex) => (
-                <Badge
-                  className="mb-3 rounded-sm text-gray-800/70"
-                  key={catIndex}
-                  variant="secondary"
-                >
-                  {category.title}
-                </Badge>
-              ))}
+              <div className="flex gap-2 mb-6">
+                {item.categories.slice(0, 2).map((category: any, catIndex: any) => (
+                  <Badge
+                    className="mb-3 rounded-sm text-gray-800/70"
+                    key={catIndex}
+                    variant="secondary"
+                  >
+                    {category.title}
+                  </Badge>
+                ))}
+              </div>
 
               <CardTitle className="mb-3 line-clamp-1">{item.title}</CardTitle>
               <CardDescription className="line-clamp-4">{item.description}</CardDescription>
@@ -76,8 +53,8 @@ export default function NewsCard({ cards, title, description, filter }: Type) {
               />
             </CardContent>
           </Card>
-        ))}
-      </div>
+        )}
+      </FilteredCards>
     </Container>
   )
 }

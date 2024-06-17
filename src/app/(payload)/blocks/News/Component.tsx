@@ -1,18 +1,18 @@
+'use client'
 import React from 'react'
 import NewsCard from '@/components/NewsCard'
 import { Type } from '.'
 import Container from '@/components/Container'
 import Title from '@/components/lib/title'
+import FilteredCards from '@/components/FilteredCards'
 
-const NewsBlock: React.FC<Type> = ({ allNews, subtitle, title }) => {
+const NewsBlock: React.FC<Type> = ({ allNews, subtitle, title, filter }) => {
   return (
     <Container>
       <Title title={title} subtitle={subtitle} />
-      <div className="grid grid-cols-4 gap-8">
-        {allNews.map((item, index) => (
-          <NewsCard className="btnShadow h-fit" key={index} data={item} />
-        ))}
-      </div>
+      <FilteredCards data={allNews} filterEnabled={filter} className="grid grid-cols-4 gap-8">
+        {(item) => <NewsCard className="btnShadow h-fit" data={item} />}
+      </FilteredCards>
     </Container>
   )
 }

@@ -8,7 +8,7 @@ interface NewsItem {
   title: string
   summary: string
   img: string
-  categorias: CatTypes[]
+  categories: CatTypes[]
   buttonVariant?: string
   className?: string
   badgeClass?: string
@@ -22,6 +22,9 @@ interface NewsItem {
 }
 
 export type Type = {
+  title: string
+  subtitle: string
+  filter: boolean
   allNews: NewsItem[]
 }
 const NewsBlock: Block = {
@@ -46,6 +49,11 @@ const NewsBlock: Block = {
           label: 'Descripción de la sección',
         },
       ],
+    },
+    {
+      name: 'filter',
+      type: 'checkbox',
+      label: 'Mostrar filtro de noticias',
     },
     {
       name: 'allNews',

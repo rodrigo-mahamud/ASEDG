@@ -26,7 +26,7 @@ const News: CollectionConfig = {
           required: true,
         },
         {
-          name: 'categorias',
+          name: 'categories',
           type: 'relationship',
           relationTo: 'cat',
           hasMany: true,

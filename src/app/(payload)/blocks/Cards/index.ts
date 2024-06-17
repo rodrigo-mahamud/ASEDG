@@ -39,6 +39,7 @@ export type Type = {
   filter: boolean
   cards: CardAttributes[]
   data: CardAttributes[]
+  item: CategoriesTypes[]
 }
 
 const CardsBlock: Block = {
