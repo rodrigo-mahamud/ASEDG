@@ -15,8 +15,6 @@ export default function FilteredCards({
   className,
   filterEnabled,
 }: FilteredCardsProps) {
-  console.log(data)
-
   const [filteredData, setFilteredData] = useState(data)
   const [selectedCategory, setSelectedCategory] = useState(null)
 
