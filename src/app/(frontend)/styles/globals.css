@@ -180,6 +180,6 @@
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
 .mainShadow:hover .blurMask {
-  backdrop-filter: blur(3.5px);
+  backdrop-filter: blur(5px);
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
