@@ -137,15 +137,15 @@ export default function FilteredCards({
           </div>
           <div className="flex w-3/12 justify-end">
             <Select value={selectedYear} onValueChange={handleYearChange}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] bg-secondary">
                 <SelectValue placeholder="Select a year" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value={null}>Todos Años</SelectItem>
+                  <SelectItem value={null}>Ver todas</SelectItem>
                   {uniqueYears.map((year) => (
                     <SelectItem key={year} value={year.toString()}>
-                      {year}
+                      Año {year}
                     </SelectItem>
                   ))}
                 </SelectGroup>
