@@ -142,7 +142,7 @@ export default function FilteredCards({
               </SelectTrigger>
               <SelectContent className="text-foreground">
                 <SelectGroup>
-                  <SelectItem value={null}>Ver todas</SelectItem>
+                  <SelectItem value="Ver todas">Ver todas</SelectItem>
                   {uniqueYears.map((year) => (
                     <SelectItem key={year} value={year.toString()}>
                       Año {year}
