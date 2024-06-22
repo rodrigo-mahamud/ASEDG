@@ -9,7 +9,7 @@ export default function ReservationsBlock() {
         <div className=" group relative bg-white border-neutral-200/80 rounded-xl overflow-hidden ">
           <div className="h-full w-full flex flex-col sm:flex-row sm:items-center">
             <div className="w-2/5">
-              <Image src="/placeholder2.jpg" alt="sss" width={550} height={500}></Image>
+              <Image src="/placeholder.jpg" alt="sss" width={550} height={500}></Image>
             </div>
             <div className="w-3/5">rr</div>
           </div>
