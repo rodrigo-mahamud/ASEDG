@@ -11,7 +11,7 @@ export default function ReservationsBlock() {
             <div className="w-2/5">
               <Image src="/placeholder.jpg" alt="sss" width={550} height={500}></Image>
             </div>
-            <div className="w-3/5">rRr</div>
+            <div className="w-3/5">rRjr</div>
           </div>
         </div>
       </div>
