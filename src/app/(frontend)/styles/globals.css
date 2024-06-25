@@ -91,9 +91,11 @@
 .mainShadow:hover {
   box-shadow: 0 0 0 1px #0e3f7e0a, 0 1px 1px -0.5px #2a33450a, 0 3px 3px -1.5px #2a33460a,
     0 6px 6px -3px #2a33460a, 0 12px 12px -6px #0e3f7e0a, 0 24px 24px -12px #0e3f7e0a;
+  transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
 .btnShadow {
   box-shadow: 0 0 0 1px #0e3f7e16;
+  transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
 .transitionAlt {
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
