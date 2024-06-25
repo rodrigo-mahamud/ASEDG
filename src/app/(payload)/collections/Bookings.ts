@@ -5,8 +5,8 @@ import RichText from '../blocks/RichText'
 const Bookings: CollectionConfig = {
   slug: 'bookings',
   labels: {
-    singular: 'Reserva',
-    plural: 'Reservas',
+    singular: 'Instalaciones',
+    plural: 'Instalaciones',
   },
   admin: {
     useAsTitle: 'title',

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function ReservationsCard() {
+export default function BookingsCard() {
   return (
     <div className="group relative rounded-xl btnShadow overflow-hidden h-64">
       <div className="h-full w-full flex flex-col gap-5 sm:flex-row sm:items-center">
