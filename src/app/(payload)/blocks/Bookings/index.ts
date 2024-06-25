@@ -38,8 +38,8 @@ export type Type = {
   data: CardAttributes[]
 }
 
-const ReservationsBlock: Block = {
-  slug: 'reservationsblock',
+const BookingsBlock: Block = {
+  slug: 'bookingsblock',
   fields: [
     {
       type: 'text',
@@ -48,4 +48,4 @@ const ReservationsBlock: Block = {
     },
   ],
 }
-export default ReservationsBlock
+export default BookingsBlock

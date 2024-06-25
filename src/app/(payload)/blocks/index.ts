@@ -10,7 +10,7 @@ import TextImagesBlock from './TextImages/Component'
 import RichText from './RichText/Component'
 import NewsBlock from './News/Component'
 import NewsPinged from './NewsPinged/Component'
-import ReservationsBlock from './Reservations/Component'
+import BookingsBlock from './Bookings/Component'
 
 export const components = {
   indexhero: IndexHero,
@@ -25,5 +25,5 @@ export const components = {
   cardsblock: CardsBlock,
   richtext: RichText,
   newspinged: NewsPinged,
-  reservationsblock: ReservationsBlock,
+  bookingsblock: BookingsBlock,
 }

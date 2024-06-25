@@ -7,7 +7,7 @@ import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
 import NewsBlock from '../blocks/News'
 import NewsPinged from '../blocks/NewsPinged'
-import ReservationsBlock from '../blocks/Reservations'
+import BookingsBlock from '../blocks/Bookings'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -142,7 +142,7 @@ const Pages: CollectionConfig = {
                 CardsBlock,
                 NewsBlock,
                 NewsPinged,
-                ReservationsBlock,
+                BookingsBlock,
               ],
             },
           ],

@@ -23,6 +23,7 @@ import Users from './app/(payload)/collections/Users'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
 import TextImagesBlock from './app/(payload)/blocks/TextImages'
+import Bookings from './app/(payload)/collections/Bookings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,7 +32,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Pages, Media, News, Categorias],
+  collections: [Users, Pages, Media, News, Bookings, Categorias],
   globals: [Settings, Header],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
