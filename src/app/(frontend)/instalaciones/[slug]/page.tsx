@@ -4,6 +4,8 @@ import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import { Toaster } from 'sonner'
+import ImagesMasonry from '@/components/ImagesMasonry'
+import BookingSection from '@/components/BookingSection'
 
 type PageProps = {
   params: { slug: string }
@@ -25,8 +27,8 @@ export default async function BookingPage({ params }: PageProps) {
 
   return (
     <main>
-      <h1>{booking.title}</h1>
-
+      <ImagesMasonry></ImagesMasonry>
+      <BookingSection></BookingSection>
       <Toaster />
     </main>
   )
