@@ -12,7 +12,14 @@ const bookingSchema = z.object({
   telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
   dni: z.string().refine(validateDNI, { message: 'DNI español inválido' }),
   periodo: z.enum(['un_dia', 'un_mes', 'tres_meses']),
+  remarks: z.string().optional(),
 })
+
+function validateDNI(dni: string): boolean {
+  // Implementa la lógica de validación del DNI aquí
+  // Por ahora, retornamos true como placeholder
+  return true
+}
 
 async function handleCredentials() {
   try {
@@ -36,12 +43,6 @@ async function handleCredentials() {
   }
 }
 
-async function handleEmail(emailData: any) {
-  // Implementa la lógica de envío de email aquí
-  // Por ahora, solo simularemos el envío
-  console.log('Simulando envío de email:', emailData)
-}
-
 function calculatePeriodTimes(period: string): { startTime: number; endTime: number | null } {
   const periodMap = { un_dia: 1, un_mes: 30, tres_meses: 90 }
   const days = periodMap[period as keyof typeof periodMap]
@@ -62,7 +63,7 @@ function prepareVisitorData(
     last_name: data.apellidos,
     mobile_phone: data.telefono,
     email: data.email,
-    remarks: `Edad: ${data.edad} años - Terminos aceptados`,
+    remarks: `Edad: ${data.edad} años - ${data.remarks}`,
     start_time: startTime,
     end_time: endTime,
     visit_reason: 'Others',
@@ -133,6 +134,7 @@ export async function createBookingAndGrantAccess(formData: FormData) {
         fechaInicio: new Date(startTime * 1000).toLocaleString(),
         fechaFin: new Date(endTime * 1000).toLocaleString(),
         pinCode: pinCode,
+        remarks: validatedData.remarks,
       })
 
       return {
@@ -158,10 +160,4 @@ export async function createBookingAndGrantAccess(formData: FormData) {
       message: 'Error al procesar la reserva',
     }
   }
-}
-
-// Función para validar el DNI español (implementa esta función según tus necesidades)
-function validateDNI(dni: string): boolean {
-  // Implementa la lógica de validación del DNI aquí
-  return true // Placeholder
 }
