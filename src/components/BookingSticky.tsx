@@ -20,12 +20,48 @@ import { toast } from 'sonner'
 import { createBookingAndGrantAccess } from '@/app/actions/bookingActions'
 import { BookingPeriods } from './BookingPeriods'
 import { IconLoader2 } from '@tabler/icons-react'
-
+const prohibitedDomains = [
+  'mohmal.com',
+  'yopmail.com',
+  'emailondeck.com',
+  'tempail.com',
+  'bupmail.com',
+  'emailfake.com',
+  'guerrillamail.com',
+  'crazymailing.com',
+  'tempr.email',
+  'throwawaymail.com',
+  'maildrop.cc',
+  '10minutemail.com',
+  'getnada.com',
+  'mintemail.com',
+]
 const bookingSchema = z.object({
-  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  apellidos: z.string().min(2, 'Los apellidos deben tener al menos 2 caracteres'),
+  nombre: z
+    .string()
+    .min(1, 'El nombre debe tener al menos 2 caracteres')
+    .regex(
+      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+      'El nombre no puede contener números ni caracteres especiales',
+    ),
+  apellidos: z
+    .string()
+    .min(1, 'Los apellidos deben tener al menos 2 caracteres')
+    .regex(
+      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+      'Los apellidos no pueden contener números ni caracteres especiales',
+    ),
   edad: z.number().min(16, 'Debes ser mayor de 16 años'),
-  email: z.string().email('Correo electrónico inválido'),
+  email: z
+    .string()
+    .email('Correo electrónico inválido')
+    .refine(
+      (email) => !prohibitedDomains.some((domain) => email.toLowerCase().endsWith(`@${domain}`)),
+      {
+        message:
+          'Por favor, utiliza tu dirección de correo personal no se admiten mails temporales',
+      },
+    ),
   telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
   dni: z.string().refine(validateDNI, { message: 'DNI español inválido' }),
   periodo: z.enum(['un_dia', 'un_mes', 'tres_meses']),
@@ -41,11 +77,12 @@ export default function BookingSticky() {
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    mode: 'onBlur', // Esto activará la validación onBlur
+    mode: 'onChange', // Esto activará la validación onBlur
+    criteriaMode: 'firstError',
     defaultValues: {
       nombre: '',
       apellidos: '',
-      edad: undefined,
+      edad: 16,
       email: '',
       telefono: '',
       dni: '',
@@ -151,7 +188,7 @@ export default function BookingSticky() {
               <FormItem>
                 <FormLabel>Teléfono</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Ej: 666777888" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
