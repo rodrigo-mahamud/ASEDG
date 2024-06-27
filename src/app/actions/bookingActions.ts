@@ -4,76 +4,104 @@
 import { z } from 'zod'
 import dayjs from 'dayjs'
 
-// Función para validar el DNI español
-const validateDNI = (dni: string) => {
-  const dniRegex = /^(\d{8})([A-Z])$/
-  const validLetters = 'TRWAGMYFPDXBNJZSQVHLCKE'
-
-  const match = dni.match(dniRegex)
-  if (!match) return false
-
-  const number = parseInt(match[1])
-  const letter = match[2]
-
-  return validLetters.charAt(number % 23) === letter
-}
-
 const bookingSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   apellidos: z.string().min(2, 'Los apellidos deben tener al menos 2 caracteres'),
   edad: z.number().min(16, 'Debes ser mayor de 16 años'),
   email: z.string().email('Correo electrónico inválido'),
   telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
-  dni: z.string().refine(validateDNI, {
-    message: 'DNI español inválido',
-  }),
+  dni: z.string().refine(validateDNI, { message: 'DNI español inválido' }),
   periodo: z.enum(['un_dia', 'un_mes', 'tres_meses']),
 })
 
-async function createUnifiAccessToken(data: z.infer<typeof bookingSchema>) {
-  const UNIFI_ACCESS_API_URL = process.env.UNIFI_ACCESS_API_URL
-  const UNIFI_ACCESS_API_TOKEN = process.env.UNIFI_ACCESS_API_TOKEN
-
-  // Calcular la fecha de finalización basada en el período
-  const startDate = dayjs()
-  let endDate
-  switch (data.periodo) {
-    case 'un_dia':
-      endDate = startDate.add(1, 'day')
-      break
-    case 'un_mes':
-      endDate = startDate.add(1, 'month')
-      break
-    case 'tres_meses':
-      endDate = startDate.add(3, 'months')
-      break
-  }
-
-  const accessData = {
-    ...data,
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  }
-
+async function handleCredentials() {
   try {
-    const response = await fetch(`${UNIFI_ACCESS_API_URL}/access-tokens`, {
+    const response = await fetch(process.env.SECRET_GYM_CREDENTIALS_API_URL!, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${UNIFI_ACCESS_API_TOKEN}`,
         'Content-Type': 'application/json',
+        Authorization: process.env.SECRET_GYM_CREDENTIALS_API_TOKEN!,
       },
-      body: JSON.stringify(accessData),
     })
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`)
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    return await response.json()
+    const data = await response.json()
+    return data.data
   } catch (error) {
-    console.error('Error al crear el token de acceso:', error)
+    console.error('Error fetching gym credentials:', error)
     throw error
   }
+}
+
+async function handleEmail(emailData: any) {
+  // Implementa la lógica de envío de email aquí
+  // Por ahora, solo simularemos el envío
+  console.log('Simulando envío de email:', emailData)
+}
+
+function calculatePeriodTimes(period: string): { startTime: number; endTime: number | null } {
+  const periodMap = { un_dia: 1, un_mes: 30, tres_meses: 90 }
+  const days = periodMap[period as keyof typeof periodMap]
+  const now = dayjs()
+  const startTime = now.unix()
+  const endTime = days ? now.add(days, 'day').unix() : null
+  return { startTime, endTime }
+}
+
+function prepareVisitorData(
+  data: z.infer<typeof bookingSchema>,
+  startTime: number,
+  endTime: number,
+  pinCode: string,
+) {
+  return {
+    first_name: data.nombre,
+    last_name: data.apellidos,
+    mobile_phone: data.telefono,
+    email: data.email,
+    remarks: `Edad: ${data.edad} años - Terminos aceptados`,
+    start_time: startTime,
+    end_time: endTime,
+    visit_reason: 'Others',
+    week_schedule: defaultWeekSchedule(),
+    resources: [{ id: process.env.SECRET_GYM_DOOR_ID, type: 'door' }],
+    pin_code: pinCode,
+  }
+}
+
+function defaultWeekSchedule() {
+  const timeSlots = { start_time: '08:45:00', end_time: '22:45:59' }
+  return {
+    monday: [timeSlots],
+    tuesday: [timeSlots],
+    wednesday: [timeSlots],
+    thursday: [timeSlots],
+    friday: [timeSlots],
+    saturday: [timeSlots],
+    sunday: [timeSlots],
+  }
+}
+
+async function postVisitorData(visitorData: any) {
+  const apiURL = process.env.SECRET_GYM_REGISTER_API_URL!
+  const apiResponse = await fetch(apiURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: process.env.SECRET_GYM_REGISTER_API_TOKEN!,
+    },
+    body: JSON.stringify(visitorData),
+  })
+
+  if (!apiResponse.ok) {
+    const errorText = await apiResponse.text()
+    throw new Error(`Error en la respuesta de la API: ${errorText}`)
+  }
+
+  return await apiResponse.json()
 }
 
 export async function createBookingAndGrantAccess(formData: FormData) {
@@ -85,13 +113,35 @@ export async function createBookingAndGrantAccess(formData: FormData) {
       edad: parseInt(rawData.edad as string),
     })
 
-    // Crear token de acceso en Unifi Access
-    const accessToken = await createUnifiAccessToken(validatedData)
+    const { startTime, endTime } = calculatePeriodTimes(validatedData.periodo)
 
-    return {
-      success: true,
-      message: 'Reserva confirmada y acceso concedido',
-      accessToken,
+    if (endTime) {
+      const pinCode = await handleCredentials()
+      const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
+      const result = await postVisitorData(visitorData)
+
+      // Imprimir todos los datos del usuario y el código PIN por consola
+      console.log('Datos del usuario registrado:')
+      console.log({
+        nombre: validatedData.nombre,
+        apellidos: validatedData.apellidos,
+        edad: validatedData.edad,
+        email: validatedData.email,
+        telefono: validatedData.telefono,
+        dni: validatedData.dni,
+        periodo: validatedData.periodo,
+        fechaInicio: new Date(startTime * 1000).toLocaleString(),
+        fechaFin: new Date(endTime * 1000).toLocaleString(),
+        pinCode: pinCode,
+      })
+
+      return {
+        success: true,
+        message: 'Reserva confirmada y acceso concedido',
+        accessToken: result, // Asumiendo que el resultado de la API contiene el token de acceso
+      }
+    } else {
+      throw new Error('Período no válido proporcionado')
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -108,4 +158,10 @@ export async function createBookingAndGrantAccess(formData: FormData) {
       message: 'Error al procesar la reserva',
     }
   }
+}
+
+// Función para validar el DNI español (implementa esta función según tus necesidades)
+function validateDNI(dni: string): boolean {
+  // Implementa la lógica de validación del DNI aquí
+  return true // Placeholder
 }

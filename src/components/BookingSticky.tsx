@@ -38,7 +38,7 @@ const bookingSchema = z.object({
   apellidos: z.string().min(2, 'Los apellidos deben tener al menos 2 caracteres'),
   edad: z.number().min(16, 'Debes ser mayor de 16 años'),
   email: z.string().email('Correo electrónico inválido'),
-  telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
+  telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono inválido'),
   dni: z.string().refine(validateDNI, {
     message: 'DNI español inválido',
   }),

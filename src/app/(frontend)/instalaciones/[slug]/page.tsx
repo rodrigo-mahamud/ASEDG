@@ -23,7 +23,6 @@ export default async function BookingPage({ params }: PageProps) {
   if (!booking) {
     notFound()
   }
-  console.log(payload)
 
   return (
     <main>
