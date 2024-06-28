@@ -20,6 +20,7 @@ import { toast } from 'sonner'
 import { createBookingAndGrantAccess } from '@/app/actions/bookingActions'
 import { BookingPeriods } from './BookingPeriods'
 import { IconLoader2 } from '@tabler/icons-react'
+import { FloatingInput, FloatingLabel } from './lib/floatinglabel'
 const prohibitedDomains = [
   'mohmal.com',
   'yopmail.com',
@@ -132,7 +133,8 @@ export default function BookingSticky() {
               <FormItem>
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <FloatingInput {...field} />
+                  <FloatingLabel>Customize</FloatingLabel>
                 </FormControl>
                 <FormMessage />
               </FormItem>
