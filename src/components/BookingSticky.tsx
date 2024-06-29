@@ -1,11 +1,16 @@
 // components/BookingSticky.tsx
 'use client'
-
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import CheckoutPage from '@/components/CheckoutPage'
+import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button } from '@/components/lib/button'
+import { createBookingAndGrantAccess } from '@/app/actions'
+
 import {
   Form,
   FormControl,
@@ -16,7 +21,6 @@ import {
 } from '@/components/lib/form'
 import { Checkbox } from '@/components/lib/checkbox'
 import { toast } from 'sonner'
-import { createBookingAndGrantAccess } from '@/app/actions/bookingActions'
 import { BookingPeriods } from './BookingPeriods'
 import { IconLoader2 } from '@tabler/icons-react'
 import { FloatingLabelInput } from './lib/floatinglabel'
@@ -71,6 +75,10 @@ const bookingSchema = z.object({
 })
 
 type BookingFormData = z.infer<typeof bookingSchema>
+if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
+  throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined')
+}
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
 export default function BookingSticky() {
   const [isLoading, setIsLoading] = useState(false)
@@ -119,7 +127,7 @@ export default function BookingSticky() {
       setIsLoading(false)
     }
   }
-
+  const amount = 49.99
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
@@ -221,6 +229,16 @@ export default function BookingSticky() {
               </FormItem>
             )}
           />
+          <Elements
+            stripe={stripePromise}
+            options={{
+              mode: 'payment',
+              amount: convertToSubcurrency(amount),
+              currency: 'usd',
+            }}
+          >
+            <CheckoutPage amount={amount} />
+          </Elements>
           <Button type="submit" disabled={!isValid || isLoading}>
             {isLoading ? (
               <>
