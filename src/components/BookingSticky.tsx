@@ -229,16 +229,7 @@ export default function BookingSticky() {
               </FormItem>
             )}
           />
-          <Elements
-            stripe={stripePromise}
-            options={{
-              mode: 'payment',
-              amount: convertToSubcurrency(amount),
-              currency: 'usd',
-            }}
-          >
-            <CheckoutPage amount={amount} />
-          </Elements>
+
           <Button type="submit" disabled={!isValid || isLoading}>
             {isLoading ? (
               <>
@@ -251,6 +242,16 @@ export default function BookingSticky() {
           </Button>
         </form>
       </Form>
+      <Elements
+        stripe={stripePromise}
+        options={{
+          mode: 'payment',
+          amount: convertToSubcurrency(amount),
+          currency: 'eur',
+        }}
+      >
+        <CheckoutPage amount={amount} />
+      </Elements>
     </aside>
   )
 }

@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useEffect, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
@@ -10,6 +8,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
   const [errorMessage, setErrorMessage] = useState<string>()
   const [clientSecret, setClientSecret] = useState('')
   const [loading, setLoading] = useState(false)
+  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
 
   useEffect(() => {
     fetch('/api/create-payment-intent', {
@@ -20,19 +19,28 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
     })
       .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret))
+      .then((data) => {
+        setClientSecret(data.clientSecret)
+        setPaymentIntentId(data.paymentIntentId)
+      })
+      .catch((err) => {
+        console.error('Error creating PaymentIntent:', err)
+        setErrorMessage('Error al iniciar el proceso de pago. Por favor, inténtelo de nuevo.')
+      })
   }, [amount])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
+    setErrorMessage(undefined)
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
+      setErrorMessage('Error al cargar el formulario de pago. Por favor, recargue la página.')
+      setLoading(false)
       return
     }
 
     const { error: submitError } = await elements.submit()
-
     if (submitError) {
       setErrorMessage(submitError.message)
       setLoading(false)
@@ -43,17 +51,15 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://www.localhost:3000/payment-success`,
+        return_url: `${window.location.origin}/payment-success`,
       },
     })
 
     if (error) {
-      // This point is only reached if there's an immediate error when
-      // confirming the payment. Show the error to your customer (for example, payment details incomplete)
-      setErrorMessage(error.message)
+      setErrorMessage(error.message || 'Ha ocurrido un error al procesar el pago.')
     } else {
-      // The payment UI automatically closes with a success animation.
-      // Your customer is redirected to your `return_url`.
+      // El pago se ha procesado correctamente
+      // La redirección se manejará automáticamente por Stripe
     }
 
     setLoading(false)
@@ -67,7 +73,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
           role="status"
         >
           <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-            Loading...
+            Cargando...
           </span>
         </div>
       </div>
@@ -76,15 +82,15 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
-      {clientSecret && <PaymentElement />}
+      <PaymentElement />
 
-      {errorMessage && <div>{errorMessage}</div>}
+      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
 
       <button
         disabled={!stripe || loading}
         className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
       >
-        {!loading ? `Pay ${amount}` : 'Processing...'}
+        {!loading ? `Pagar ${amount}€` : 'Procesando...'}
       </button>
     </form>
   )
