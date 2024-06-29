@@ -14,13 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/lib/form'
-import { Input } from '@/components/lib/input'
 import { Checkbox } from '@/components/lib/checkbox'
 import { toast } from 'sonner'
 import { createBookingAndGrantAccess } from '@/app/actions/bookingActions'
 import { BookingPeriods } from './BookingPeriods'
 import { IconLoader2 } from '@tabler/icons-react'
-import { FloatingInput, FloatingLabel } from './lib/floatinglabel'
+import { FloatingLabelInput } from './lib/floatinglabel'
 const prohibitedDomains = [
   'mohmal.com',
   'yopmail.com',
@@ -83,7 +82,7 @@ export default function BookingSticky() {
     defaultValues: {
       nombre: '',
       apellidos: '',
-      edad: 16,
+      edad: undefined,
       email: '',
       telefono: '',
       dni: '',
@@ -131,10 +130,8 @@ export default function BookingSticky() {
             name="nombre"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <FloatingInput {...field} />
-                  <FloatingLabel>Customize</FloatingLabel>
+                  <FloatingLabelInput label="Nombre" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -145,9 +142,8 @@ export default function BookingSticky() {
             name="apellidos"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Apellidos</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <FloatingLabelInput label="Apellidos" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -158,9 +154,9 @@ export default function BookingSticky() {
             name="edad"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Edad</FormLabel>
                 <FormControl>
-                  <Input
+                  <FloatingLabelInput
+                    label="Edad"
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(parseInt(e.target.value))}
@@ -175,9 +171,8 @@ export default function BookingSticky() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Correo electrónico</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <FloatingLabelInput label="Correo Electrónico" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -188,9 +183,8 @@ export default function BookingSticky() {
             name="telefono"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Teléfono</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <FloatingLabelInput label="Teléfono" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -201,9 +195,8 @@ export default function BookingSticky() {
             name="dni"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>DNI</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Ej: 12345678Z" />
+                  <FloatingLabelInput label="D.N.I" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
