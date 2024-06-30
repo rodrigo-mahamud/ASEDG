@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -76,6 +76,7 @@ interface BookingFormProps {
 }
 
 export function BookingForm({ onSubmit }: BookingFormProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     mode: 'onChange',
@@ -104,9 +105,24 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           name="periodo"
           render={({ field }) => <BookingPeriods field={field} />}
         />
-        <Collapsible className="border border-gray-300 p-4">
-          <CollapsibleTrigger className="w-full flex justify-between gap-2 ">
-            Introducir datos <IconChevronDown></IconChevronDown>
+        <Collapsible
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          className="border-x border-b border-input p-4 mb-4 rounded-b-md"
+        >
+          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 ">
+            <div className="flex flex-col text-start justify-start w-10/12">
+              <h3 className=" font-semibold">Datos Personales</h3>
+              <h4 className="text-sm">Elige la duración de tu reserva.</h4>
+            </div>
+            <div className=" pr-2 ">
+              <IconChevronDown
+                stroke={1.5}
+                className={`h-5 w-5 transition-transform duration-300 text-secondaryAlt ${
+                  isOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </div>
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-4 mt-4">
             <div className="flex gap-4">
@@ -116,7 +132,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <FloatingLabelInput label="Nombre" {...field} />
+                      <FloatingLabelInput className="rounded-sm" label="Nombre" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,7 +144,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <FloatingLabelInput label="Apellidos" {...field} />
+                      <FloatingLabelInput className="rounded-sm" label="Apellidos" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +158,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem className="w-3/4">
                     <FormControl>
-                      <FloatingLabelInput label="D.N.I" {...field} />
+                      <FloatingLabelInput className="rounded-sm" label="D.N.I" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -174,7 +190,12 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FloatingLabelInput label="Correo Electrónico" {...field} />
+                    <FloatingLabelInput
+                      className="rounded-md"
+                      rounded-sm
+                      label="Correo Electrónico"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -186,33 +207,31 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FloatingLabelInput label="Teléfono" {...field} />
+                    <FloatingLabelInput className="rounded-sm" label="Teléfono" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="terminos"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={(checked) => field.onChange(checked)}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Acepto los términos y condiciones</FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
           </CollapsibleContent>
         </Collapsible>
-
+        <FormField
+          control={form.control}
+          name="terminos"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(checked)}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Acepto los términos y condiciones</FormLabel>
+              </div>
+            </FormItem>
+          )}
+        />
         <Button type="submit" className="w-full" disabled={!form.formState.isValid}>
           Continuar al pago
         </Button>
