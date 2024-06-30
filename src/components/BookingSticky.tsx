@@ -1,87 +1,13 @@
 'use client'
-import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
-import convertToSubcurrency from '@/utils/convertToSubcurrency'
-import React, { useState, useEffect, useCallback, Suspense } from 'react'
-import { Button } from '@/components/lib/button'
+import React, { useState, useEffect, Suspense } from 'react'
+import { Elements } from '@stripe/react-stripe-js'
 import { toast } from 'sonner'
-import { IconLoader2 } from '@tabler/icons-react'
-import { BookingForm, BookingFormData } from './BookingForm'
-import { Skeleton } from '@/components/lib/skeleton'
 import { useRouter } from 'next/navigation'
-
-if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
-  throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined')
-}
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
-
-const CheckoutForm = ({
-  amount,
-  onPaymentComplete,
-  clientSecret,
-}: {
-  amount: number
-  onPaymentComplete: () => Promise<void>
-  clientSecret: string
-}) => {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [errorMessage, setErrorMessage] = useState<string>()
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setLoading(true)
-    setErrorMessage(undefined)
-
-    if (!stripe || !elements || !clientSecret) {
-      setErrorMessage('Error al cargar el formulario de pago. Por favor, recargue la página.')
-      setLoading(false)
-      return
-    }
-
-    const { error: submitError } = await elements.submit()
-    if (submitError) {
-      setErrorMessage(submitError.message)
-      setLoading(false)
-      return
-    }
-
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      clientSecret,
-      redirect: 'if_required',
-    })
-
-    if (error) {
-      setErrorMessage(error.message || 'Ha ocurrido un error al procesar el pago.')
-      setLoading(false)
-    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-      await onPaymentComplete()
-    }
-  }
-
-  if (!stripe || !elements) {
-    return <PaymentFormSkeleton />
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
-      <PaymentElement />
-      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-      <Button type="submit" disabled={loading}>
-        {loading ? (
-          <>
-            <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-            Procesando...
-          </>
-        ) : (
-          'Pagar'
-        )}
-      </Button>
-    </form>
-  )
-}
+import { BookingForm, BookingFormData } from './BookingForm'
+import { BookingCheckout } from './BookingCheckout'
+import { Skeleton } from '@/components/lib/skeleton'
+import { stripePromise, createPaymentIntent } from '@/utils/stripeUtils'
+import { createBooking } from '@/utils/bookingUtils'
 
 const PaymentFormSkeleton = () => (
   <div className="space-y-3">
@@ -92,7 +18,7 @@ const PaymentFormSkeleton = () => (
   </div>
 )
 
-const StripePaymentForm = ({ amount, onPaymentComplete, clientSecret }) => (
+const StripePaymentForm = ({ onPaymentComplete, clientSecret }) => (
   <Suspense fallback={<PaymentFormSkeleton />}>
     <Elements
       stripe={stripePromise}
@@ -101,11 +27,7 @@ const StripePaymentForm = ({ amount, onPaymentComplete, clientSecret }) => (
         appearance: { theme: 'stripe' },
       }}
     >
-      <CheckoutForm
-        amount={amount}
-        onPaymentComplete={onPaymentComplete}
-        clientSecret={clientSecret}
-      />
+      <BookingCheckout onPaymentComplete={onPaymentComplete} clientSecret={clientSecret} />
     </Elements>
   </Suspense>
 )
@@ -120,28 +42,13 @@ export default function BookingSticky() {
 
   const amount = 49.99
 
-  const createPaymentIntent = useCallback(async () => {
-    try {
-      const response = await fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
-      })
-      const data = await response.json()
-      setClientSecret(data.clientSecret)
-    } catch (err) {
-      console.error('Error creating PaymentIntent:', err)
-      toast.error('Error al iniciar el proceso de pago. Por favor, inténtelo de nuevo.')
-    }
-  }, [amount])
-
   useEffect(() => {
     if (showPayment && !clientSecret) {
-      createPaymentIntent()
+      createPaymentIntent(amount)
+        .then(setClientSecret)
+        .catch((error) => toast.error(error.message))
     }
-  }, [showPayment, clientSecret, createPaymentIntent])
+  }, [showPayment, clientSecret, amount])
 
   const handleFormSubmit = (data: BookingFormData) => {
     setFormData(data)
@@ -154,27 +61,10 @@ export default function BookingSticky() {
     setIsLoading(true)
     setErrorDetails(null)
     try {
-      console.log('Iniciando proceso de registro después del pago...')
-      console.log('Datos del formulario preparados:', formData)
-
-      const response = await fetch('/api/create-booking', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      const result = await response.json()
-      console.log('Resultado de la API create-booking:', result)
-
-      if (result.success) {
-        toast.success(result.message)
-        console.log('Token de acceso:', result.accessToken)
-        router.push('/payment-success')
-      } else {
-        throw new Error(result.message)
-      }
+      const result = await createBooking(formData)
+      toast.success(result.message)
+      console.log('Token de acceso:', result.accessToken)
+      router.push('/payment-success')
     } catch (error) {
       console.error('Error en handlePaymentComplete:', error)
       let errorMessage = 'Error desconocido al procesar la reserva.'
@@ -197,7 +87,6 @@ export default function BookingSticky() {
         <Suspense fallback={<PaymentFormSkeleton />}>
           {clientSecret ? (
             <StripePaymentForm
-              amount={amount}
               onPaymentComplete={handlePaymentComplete}
               clientSecret={clientSecret}
             />
