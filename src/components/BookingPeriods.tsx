@@ -1,4 +1,3 @@
-// components/BookingPeriods.tsx
 import React, { useState, useEffect } from 'react'
 import {
   Select,
@@ -44,12 +43,21 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
     }
   }, [field.value])
 
+  const handleValueChange = (value: string) => {
+    field.onChange(value)
+  }
+
   return (
     <FormItem>
-      <Select onValueChange={field.onChange} defaultValue={field.value}>
+      <Select onValueChange={handleValueChange} value={field.value || ''}>
         <FormControl>
-          <SelectTrigger>
-            <SelectValue placeholder="Selecciona un periodo" />
+          <SelectTrigger className="p-4 h-auto rounded-b-none ">
+            <div className="flex flex-col text-start justify-start w-10/12">
+              <h3 className="text-lg">Duracción</h3>
+              <h4 className="text-xs">
+                Selecciona por cuanto tiempo deseas reservar esta instalación
+              </h4>
+            </div>
           </SelectTrigger>
         </FormControl>
         <SelectContent>
@@ -58,7 +66,6 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
           <SelectItem value="tres_meses">Tres meses</SelectItem>
         </SelectContent>
       </Select>
-      {/* {endDate && <p className="text-sm text-gray-500 mt-2">Valido hasta el: {endDate}</p>} */}
       <FormMessage />
     </FormItem>
   )

@@ -15,7 +15,8 @@ import { Checkbox } from '@/components/lib/checkbox'
 import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
 import { Button } from '@/components/lib/button'
-import { Popover, PopoverContent, PopoverTrigger } from './lib/popover'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
+import { IconChevronCompactUp, IconChevronDown } from '@tabler/icons-react'
 
 const prohibitedDomains = [
   'mohmal.com',
@@ -86,7 +87,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
       email: '',
       telefono: '',
       dni: '',
-      periodo: 'un_dia',
+      periodo: '',
       terminos: false,
     },
   })
@@ -97,15 +98,17 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="">
         <FormField
           control={form.control}
           name="periodo"
           render={({ field }) => <BookingPeriods field={field} />}
         />
-        <Popover>
-          <PopoverTrigger className="w-full">Open</PopoverTrigger>
-          <PopoverContent className="flex flex-col gap-4">
+        <Collapsible className="border border-gray-300 p-4">
+          <CollapsibleTrigger className="w-full flex justify-between gap-2 ">
+            Introducir datos <IconChevronDown></IconChevronDown>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-4 mt-4">
             <div className="flex gap-4">
               <FormField
                 control={form.control}
@@ -189,25 +192,27 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 </FormItem>
               )}
             />
-          </PopoverContent>
-        </Popover>
-        <FormField
-          control={form.control}
-          name="terminos"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(checked) => field.onChange(checked)}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Acepto los términos y condiciones</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+
+            <FormField
+              control={form.control}
+              name="terminos"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Acepto los términos y condiciones</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </CollapsibleContent>
+        </Collapsible>
+
         <Button type="submit" className="w-full" disabled={!form.formState.isValid}>
           Continuar al pago
         </Button>
