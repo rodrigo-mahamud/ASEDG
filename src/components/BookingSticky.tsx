@@ -2,12 +2,13 @@
 import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { Button } from '@/components/lib/button'
 import { createBookingAndGrantAccess } from '@/app/actions'
 import { toast } from 'sonner'
 import { IconLoader2 } from '@tabler/icons-react'
 import { BookingForm, BookingFormData } from './BookingForm'
+import { Skeleton } from '@/components/lib/skeleton'
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined')
@@ -64,18 +65,7 @@ const CheckoutForm = ({
   }
 
   if (!stripe || !elements) {
-    return (
-      <div className="flex items-center justify-center">
-        <div
-          className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
-          role="status"
-        >
-          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-            Cargando...
-          </span>
-        </div>
-      </div>
-    )
+    return <PaymentFormSkeleton />
   }
 
   return (
@@ -95,6 +85,33 @@ const CheckoutForm = ({
     </form>
   )
 }
+
+const PaymentFormSkeleton = () => (
+  <div className="space-y-3">
+    <Skeleton className="h-10 w-full" />
+    <Skeleton className="h-10 w-full" />
+    <Skeleton className="h-10 w-full" />
+    <Skeleton className="h-10 w-1/2" />
+  </div>
+)
+
+const StripePaymentForm = ({ amount, onPaymentComplete, clientSecret }) => (
+  <Suspense fallback={<PaymentFormSkeleton />}>
+    <Elements
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        appearance: { theme: 'stripe' },
+      }}
+    >
+      <CheckoutForm
+        amount={amount}
+        onPaymentComplete={onPaymentComplete}
+        clientSecret={clientSecret}
+      />
+    </Elements>
+  </Suspense>
+)
 
 export default function BookingSticky() {
   const [isLoading, setIsLoading] = useState(false)
@@ -150,12 +167,20 @@ export default function BookingSticky() {
       if (result.success) {
         toast.success(result.message)
         console.log('Token de acceso:', result.accessToken)
+        window.location.href = '/payment-success'
       } else {
         throw new Error(result.message)
       }
     } catch (error) {
-      toast.error('Error al procesar la reserva')
-      console.error(error)
+      console.error('Error details:', error)
+      if (error instanceof Error && error.message.includes('closed connection pool')) {
+        toast.success(
+          'El pago se ha procesado correctamente, pero ha habido un problema al registrar la reserva. Por favor, contacta con atención al cliente.',
+        )
+        window.location.href = '/payment-success?warning=booking-error'
+      } else {
+        toast.error('Error al procesar la reserva. Por favor, contacta con atención al cliente.')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -166,22 +191,18 @@ export default function BookingSticky() {
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
       {!showPayment ? (
         <BookingForm onSubmit={handleFormSubmit} />
-      ) : clientSecret ? (
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance: { theme: 'stripe' },
-          }}
-        >
-          <CheckoutForm
-            amount={amount}
-            onPaymentComplete={handlePaymentComplete}
-            clientSecret={clientSecret}
-          />
-        </Elements>
       ) : (
-        <div>Cargando formulario de pago...</div>
+        <Suspense fallback={<PaymentFormSkeleton />}>
+          {clientSecret ? (
+            <StripePaymentForm
+              amount={amount}
+              onPaymentComplete={handlePaymentComplete}
+              clientSecret={clientSecret}
+            />
+          ) : (
+            <PaymentFormSkeleton />
+          )}
+        </Suspense>
       )}
     </aside>
   )

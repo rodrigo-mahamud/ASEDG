@@ -1,4 +1,3 @@
-// app/actions/bookingActions.ts
 'use server'
 
 import { z } from 'zod'
@@ -39,7 +38,7 @@ async function handleCredentials() {
     return data.data
   } catch (error) {
     console.error('Error fetching gym credentials:', error)
-    throw error
+    throw new Error('Failed to fetch gym credentials')
   }
 }
 
@@ -88,21 +87,26 @@ function defaultWeekSchedule() {
 
 async function postVisitorData(visitorData: any) {
   const apiURL = process.env.SECRET_GYM_REGISTER_API_URL!
-  const apiResponse = await fetch(apiURL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: process.env.SECRET_GYM_REGISTER_API_TOKEN!,
-    },
-    body: JSON.stringify(visitorData),
-  })
+  try {
+    const apiResponse = await fetch(apiURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: process.env.SECRET_GYM_REGISTER_API_TOKEN!,
+      },
+      body: JSON.stringify(visitorData),
+    })
 
-  if (!apiResponse.ok) {
-    const errorText = await apiResponse.text()
-    throw new Error(`Error en la respuesta de la API: ${errorText}`)
+    if (!apiResponse.ok) {
+      const errorText = await apiResponse.text()
+      throw new Error(`Error en la respuesta de la API: ${errorText}`)
+    }
+
+    return await apiResponse.json()
+  } catch (error) {
+    console.error('Error posting visitor data:', error)
+    throw new Error('Failed to register visitor data')
   }
-
-  return await apiResponse.json()
 }
 
 export async function createBookingAndGrantAccess(formData: FormData) {
@@ -116,48 +120,66 @@ export async function createBookingAndGrantAccess(formData: FormData) {
 
     const { startTime, endTime } = calculatePeriodTimes(validatedData.periodo)
 
-    if (endTime) {
-      const pinCode = await handleCredentials()
-      const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
-      const result = await postVisitorData(visitorData)
-
-      // Imprimir todos los datos del usuario y el código PIN por consola
-      console.log('Datos del usuario registrado:')
-      console.log({
-        nombre: validatedData.nombre,
-        apellidos: validatedData.apellidos,
-        edad: validatedData.edad,
-        email: validatedData.email,
-        telefono: validatedData.telefono,
-        dni: validatedData.dni,
-        periodo: validatedData.periodo,
-        fechaInicio: new Date(startTime * 1000).toLocaleString(),
-        fechaFin: new Date(endTime * 1000).toLocaleString(),
-        pinCode: pinCode,
-        remarks: validatedData.remarks,
-      })
-
-      return {
-        success: true,
-        message: 'Reserva confirmada y acceso concedido',
-        accessToken: result, // Asumiendo que el resultado de la API contiene el token de acceso
-      }
-    } else {
+    if (!endTime) {
       throw new Error('Período no válido proporcionado')
     }
+
+    const pinCode = await handleCredentials()
+    const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
+    const result = await postVisitorData(visitorData)
+
+    // Imprimir todos los datos del usuario y el código PIN por consola
+    console.log('Datos del usuario registrado:', {
+      nombre: validatedData.nombre,
+      apellidos: validatedData.apellidos,
+      edad: validatedData.edad,
+      email: validatedData.email,
+      telefono: validatedData.telefono,
+      dni: validatedData.dni,
+      periodo: validatedData.periodo,
+      fechaInicio: new Date(startTime * 1000).toLocaleString(),
+      fechaFin: new Date(endTime * 1000).toLocaleString(),
+      pinCode: pinCode,
+      remarks: validatedData.remarks,
+    })
+
+    return {
+      success: true,
+      message: 'Reserva confirmada y acceso concedido',
+      accessToken: result, // Asumiendo que el resultado de la API contiene el token de acceso
+    }
   } catch (error) {
+    console.error('Error al procesar la reserva:', error)
+
     if (error instanceof z.ZodError) {
-      console.error('Error de validación:', error.errors)
       return {
         success: false,
         message: 'Error en los datos del formulario',
         errors: error.errors,
       }
     }
-    console.error('Error al procesar la reserva:', error)
+
+    // Manejar errores específicos
+    if (error instanceof Error) {
+      if (error.message === 'Failed to fetch gym credentials') {
+        return {
+          success: false,
+          message:
+            'Error al obtener las credenciales del gimnasio. Por favor, inténtelo de nuevo más tarde.',
+        }
+      }
+      if (error.message === 'Failed to register visitor data') {
+        return {
+          success: false,
+          message:
+            'Error al registrar los datos del visitante. Por favor, inténtelo de nuevo más tarde.',
+        }
+      }
+    }
+
     return {
       success: false,
-      message: 'Error al procesar la reserva',
+      message: 'Error al procesar la reserva. Por favor, inténtelo de nuevo más tarde.',
     }
   }
 }
