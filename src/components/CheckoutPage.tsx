@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 
-const CheckoutPage = ({ amount }: { amount: number }) => {
+interface CheckoutPageProps {
+  amount: number
+  onPaymentComplete: () => void
+}
+
+const CheckoutPage: React.FC<CheckoutPageProps> = ({ amount, onPaymentComplete }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState<string>()
@@ -59,7 +64,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       setErrorMessage(error.message || 'Ha ocurrido un error al procesar el pago.')
     } else {
       // El pago se ha procesado correctamente
-      // La redirección se manejará automáticamente por Stripe
+      onPaymentComplete()
     }
 
     setLoading(false)
@@ -83,15 +88,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
       <PaymentElement />
-
       {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-
-      <button
-        disabled={!stripe || loading}
-        className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
-      >
-        {!loading ? `Pagar ${amount}€` : 'Procesando...'}
-      </button>
     </form>
   )
 }

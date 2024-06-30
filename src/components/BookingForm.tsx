@@ -1,4 +1,3 @@
-// components/BookingForm.tsx
 'use client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -15,6 +14,7 @@ import {
 import { Checkbox } from '@/components/lib/checkbox'
 import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
+import { Button } from '@/components/lib/button'
 
 const prohibitedDomains = [
   'mohmal.com',
@@ -71,10 +71,9 @@ export type BookingFormData = z.infer<typeof bookingSchema>
 
 interface BookingFormProps {
   onSubmit: (data: BookingFormData) => void
-  onFormStateChange: (isValid: boolean) => void
 }
 
-export function BookingForm({ onSubmit, onFormStateChange }: BookingFormProps) {
+export function BookingForm({ onSubmit }: BookingFormProps) {
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     mode: 'onChange',
@@ -82,25 +81,22 @@ export function BookingForm({ onSubmit, onFormStateChange }: BookingFormProps) {
     defaultValues: {
       nombre: '',
       apellidos: '',
-      edad: undefined,
+      edad: 16,
       email: '',
       telefono: '',
       dni: '',
-      periodo: undefined,
+      periodo: 'un_dia',
       terminos: false,
     },
   })
 
-  React.useEffect(() => {
-    const subscription = form.watch(() => {
-      onFormStateChange(form.formState.isValid)
-    })
-    return () => subscription.unsubscribe()
-  }, [form, onFormStateChange])
+  const handleSubmit = (data: BookingFormData) => {
+    onSubmit(data)
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="nombre"
@@ -135,7 +131,7 @@ export function BookingForm({ onSubmit, onFormStateChange }: BookingFormProps) {
                   label="Edad"
                   type="number"
                   {...field}
-                  onChange={(e) => field.onChange(parseInt(e.target.value))}
+                  onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : '')}
                 />
               </FormControl>
               <FormMessage />
@@ -189,7 +185,10 @@ export function BookingForm({ onSubmit, onFormStateChange }: BookingFormProps) {
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
               <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(checked)}
+                />
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>Acepto los términos y condiciones</FormLabel>
@@ -197,6 +196,9 @@ export function BookingForm({ onSubmit, onFormStateChange }: BookingFormProps) {
             </FormItem>
           )}
         />
+        <Button type="submit" disabled={!form.formState.isValid}>
+          Continuar al pago
+        </Button>
       </form>
     </Form>
   )
