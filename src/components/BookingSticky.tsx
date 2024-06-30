@@ -4,11 +4,11 @@ import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { Button } from '@/components/lib/button'
-import { createBookingAndGrantAccess } from '@/app/actions'
 import { toast } from 'sonner'
 import { IconLoader2 } from '@tabler/icons-react'
 import { BookingForm, BookingFormData } from './BookingForm'
 import { Skeleton } from '@/components/lib/skeleton'
+import { useRouter } from 'next/navigation'
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined')
@@ -21,7 +21,7 @@ const CheckoutForm = ({
   clientSecret,
 }: {
   amount: number
-  onPaymentComplete: () => void
+  onPaymentComplete: () => Promise<void>
   clientSecret: string
 }) => {
   const stripe = useStripe()
@@ -47,21 +47,18 @@ const CheckoutForm = ({
       return
     }
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       clientSecret,
-      confirmParams: {
-        return_url: `${window.location.origin}/payment-success`,
-      },
+      redirect: 'if_required',
     })
 
     if (error) {
       setErrorMessage(error.message || 'Ha ocurrido un error al procesar el pago.')
-    } else {
-      onPaymentComplete()
+      setLoading(false)
+    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+      await onPaymentComplete()
     }
-
-    setLoading(false)
   }
 
   if (!stripe || !elements) {
@@ -114,10 +111,12 @@ const StripePaymentForm = ({ amount, onPaymentComplete, clientSecret }) => (
 )
 
 export default function BookingSticky() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [formData, setFormData] = useState<BookingFormData | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [errorDetails, setErrorDetails] = useState<string | null>(null)
 
   const amount = 49.99
 
@@ -153,34 +152,37 @@ export default function BookingSticky() {
     if (!formData) return
 
     setIsLoading(true)
+    setErrorDetails(null)
     try {
-      const formDataToSend = new FormData()
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key === 'terminos') {
-          formDataToSend.append('remarks', 'Ha aceptado los términos y condiciones')
-        } else {
-          formDataToSend.append(key, value.toString())
-        }
+      console.log('Iniciando proceso de registro después del pago...')
+      console.log('Datos del formulario preparados:', formData)
+
+      const response = await fetch('/api/create-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
 
-      const result = await createBookingAndGrantAccess(formDataToSend)
+      const result = await response.json()
+      console.log('Resultado de la API create-booking:', result)
+
       if (result.success) {
         toast.success(result.message)
         console.log('Token de acceso:', result.accessToken)
-        window.location.href = '/payment-success'
+        router.push('/payment-success')
       } else {
         throw new Error(result.message)
       }
     } catch (error) {
-      console.error('Error details:', error)
-      if (error instanceof Error && error.message.includes('closed connection pool')) {
-        toast.success(
-          'El pago se ha procesado correctamente, pero ha habido un problema al registrar la reserva. Por favor, contacta con atención al cliente.',
-        )
-        window.location.href = '/payment-success?warning=booking-error'
-      } else {
-        toast.error('Error al procesar la reserva. Por favor, contacta con atención al cliente.')
+      console.error('Error en handlePaymentComplete:', error)
+      let errorMessage = 'Error desconocido al procesar la reserva.'
+      if (error instanceof Error) {
+        errorMessage = error.message
       }
+      toast.error(errorMessage)
+      setErrorDetails(`Error detallado: ${JSON.stringify(error, null, 2)}`)
     } finally {
       setIsLoading(false)
     }
@@ -203,6 +205,17 @@ export default function BookingSticky() {
             <PaymentFormSkeleton />
           )}
         </Suspense>
+      )}
+      {errorDetails && (
+        <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          <h3 className="font-bold">Detalles del error:</h3>
+          <pre className="mt-2 whitespace-pre-wrap">{errorDetails}</pre>
+        </div>
+      )}
+      {isLoading && (
+        <div className="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+          <p>Procesando la reserva...</p>
+        </div>
       )}
     </aside>
   )

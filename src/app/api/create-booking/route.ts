@@ -1,5 +1,4 @@
-'use server'
-
+import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 
@@ -114,18 +113,18 @@ async function postVisitorData(visitorData: any) {
   }
 }
 
-export async function createBookingAndGrantAccess(formData: FormData) {
-  const rawData = Object.fromEntries(formData)
+export async function POST(request: Request) {
+  console.log('API Route: create-booking iniciada')
 
   try {
+    const body = await request.json()
+    console.log('Datos recibidos en la API:', body)
+
     console.log('Iniciando proceso de reserva y concesión de acceso...')
 
     console.log('Validando datos del formulario...')
-    const validatedData = bookingSchema.parse({
-      ...rawData,
-      edad: parseInt(rawData.edad as string),
-    })
-    console.log('Datos del formulario validados con éxito')
+    const validatedData = bookingSchema.parse(body)
+    console.log('Datos del formulario validados con éxito:', validatedData)
 
     console.log('Calculando tiempos del período...')
     const { startTime, endTime } = calculatePeriodTimes(validatedData.periodo)
@@ -161,51 +160,66 @@ export async function createBookingAndGrantAccess(formData: FormData) {
       remarks: validatedData.remarks,
     })
 
-    return {
+    return NextResponse.json({
       success: true,
       message: 'Reserva confirmada y acceso concedido',
-      accessToken: result, // Asumiendo que el resultado de la API contiene el token de acceso
-    }
+      accessToken: result,
+    })
   } catch (error) {
     console.error('Error al procesar la reserva:', error)
 
     if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        message: 'Error en los datos del formulario',
-        errors: error.errors,
-      }
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Error en los datos del formulario',
+          errors: error.errors,
+        },
+        { status: 400 },
+      )
     }
 
-    // Manejar errores específicos
     if (error instanceof Error) {
       if (error.message === 'Failed to fetch gym credentials') {
-        return {
-          success: false,
-          message:
-            'Error al obtener las credenciales del gimnasio. Por favor, inténtelo de nuevo más tarde.',
-          errorDetails: error.stack,
-        }
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              'Error al obtener las credenciales del gimnasio. Por favor, inténtelo de nuevo más tarde.',
+            errorDetails: error.stack,
+          },
+          { status: 500 },
+        )
       }
       if (error.message === 'Failed to register visitor data') {
-        return {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              'Error al registrar los datos del visitante. Por favor, inténtelo de nuevo más tarde.',
+            errorDetails: error.stack,
+          },
+          { status: 500 },
+        )
+      }
+      return NextResponse.json(
+        {
           success: false,
-          message:
-            'Error al registrar los datos del visitante. Por favor, inténtelo de nuevo más tarde.',
+          message: `Error al procesar la reserva: ${error.message}`,
           errorDetails: error.stack,
-        }
-      }
-      return {
-        success: false,
-        message: `Error al procesar la reserva: ${error.message}`,
-        errorDetails: error.stack,
-      }
+        },
+        { status: 500 },
+      )
     }
 
-    return {
-      success: false,
-      message: 'Error desconocido al procesar la reserva. Por favor, inténtelo de nuevo más tarde.',
-      errorDetails: JSON.stringify(error),
-    }
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          'Error desconocido al procesar la reserva. Por favor, inténtelo de nuevo más tarde.',
+        errorDetails: JSON.stringify(error),
+      },
+      { status: 500 },
+    )
   }
 }
