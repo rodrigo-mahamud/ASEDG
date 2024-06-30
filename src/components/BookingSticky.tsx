@@ -2,7 +2,7 @@
 import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/lib/button'
 import { createBookingAndGrantAccess } from '@/app/actions'
 import { toast } from 'sonner'
@@ -17,33 +17,16 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 const CheckoutForm = ({
   amount,
   onPaymentComplete,
+  clientSecret,
 }: {
   amount: number
   onPaymentComplete: () => void
+  clientSecret: string
 }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState<string>()
-  const [clientSecret, setClientSecret] = useState('')
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret)
-      })
-      .catch((err) => {
-        console.error('Error creating PaymentIntent:', err)
-        setErrorMessage('Error al iniciar el proceso de pago. Por favor, inténtelo de nuevo.')
-      })
-  }, [amount])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -74,14 +57,13 @@ const CheckoutForm = ({
     if (error) {
       setErrorMessage(error.message || 'Ha ocurrido un error al procesar el pago.')
     } else {
-      // El pago se ha procesado correctamente
       onPaymentComplete()
     }
 
     setLoading(false)
   }
 
-  if (!clientSecret || !stripe || !elements) {
+  if (!stripe || !elements) {
     return (
       <div className="flex items-center justify-center">
         <div
@@ -118,8 +100,32 @@ export default function BookingSticky() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [formData, setFormData] = useState<BookingFormData | null>(null)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
 
   const amount = 49.99
+
+  const createPaymentIntent = useCallback(async () => {
+    try {
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+      })
+      const data = await response.json()
+      setClientSecret(data.clientSecret)
+    } catch (err) {
+      console.error('Error creating PaymentIntent:', err)
+      toast.error('Error al iniciar el proceso de pago. Por favor, inténtelo de nuevo.')
+    }
+  }, [amount])
+
+  useEffect(() => {
+    if (showPayment && !clientSecret) {
+      createPaymentIntent()
+    }
+  }, [showPayment, clientSecret, createPaymentIntent])
 
   const handleFormSubmit = (data: BookingFormData) => {
     setFormData(data)
@@ -160,17 +166,22 @@ export default function BookingSticky() {
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
       {!showPayment ? (
         <BookingForm onSubmit={handleFormSubmit} />
-      ) : (
+      ) : clientSecret ? (
         <Elements
           stripe={stripePromise}
           options={{
-            mode: 'payment',
-            amount: convertToSubcurrency(amount),
-            currency: 'eur',
+            clientSecret,
+            appearance: { theme: 'stripe' },
           }}
         >
-          <CheckoutForm amount={amount} onPaymentComplete={handlePaymentComplete} />
+          <CheckoutForm
+            amount={amount}
+            onPaymentComplete={handlePaymentComplete}
+            clientSecret={clientSecret}
+          />
         </Elements>
+      ) : (
+        <div>Cargando formulario de pago...</div>
       )}
     </aside>
   )
