@@ -15,6 +15,7 @@ import { Checkbox } from '@/components/lib/checkbox'
 import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
 import { Button } from '@/components/lib/button'
+import { Popover, PopoverContent, PopoverTrigger } from './lib/popover'
 
 const prohibitedDomains = [
   'mohmal.com',
@@ -99,91 +100,102 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="nombre"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput label="Nombre" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="apellidos"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput label="Apellidos" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="edad"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput
-                  label="Edad"
-                  type="number"
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : '')}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput label="Correo Electrónico" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="telefono"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput label="Teléfono" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="dni"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput label="D.N.I" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="periodo"
           render={({ field }) => <BookingPeriods field={field} />}
         />
+        <Popover>
+          <PopoverTrigger className="w-full">Open</PopoverTrigger>
+          <PopoverContent className="flex flex-col gap-4">
+            <div className="flex gap-4">
+              <FormField
+                control={form.control}
+                name="nombre"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <FloatingLabelInput label="Nombre" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="apellidos"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <FloatingLabelInput label="Apellidos" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex gap-4">
+              <FormField
+                control={form.control}
+                name="dni"
+                render={({ field }) => (
+                  <FormItem className="w-3/4">
+                    <FormControl>
+                      <FloatingLabelInput label="D.N.I" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="edad"
+                render={({ field }) => (
+                  <FormItem className="w-1/4">
+                    <FormControl>
+                      <FloatingLabelInput
+                        label="Edad"
+                        type="number"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(e.target.value ? parseInt(e.target.value) : '')
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <FloatingLabelInput label="Correo Electrónico" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="telefono"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <FloatingLabelInput label="Teléfono" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </PopoverContent>
+        </Popover>
         <FormField
           control={form.control}
           name="terminos"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -196,7 +208,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!form.formState.isValid}>
+        <Button type="submit" className="w-full" disabled={!form.formState.isValid}>
           Continuar al pago
         </Button>
       </form>

@@ -58,7 +58,7 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
           <SelectItem value="tres_meses">Tres meses</SelectItem>
         </SelectContent>
       </Select>
-      {endDate && <p className="text-sm text-gray-500 mt-2">Valido hasta el: {endDate}</p>}
+      {/* {endDate && <p className="text-sm text-gray-500 mt-2">Valido hasta el: {endDate}</p>} */}
       <FormMessage />
     </FormItem>
   )

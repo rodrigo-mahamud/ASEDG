@@ -18,20 +18,6 @@ const PaymentFormSkeleton = () => (
   </div>
 )
 
-const StripePaymentForm = ({ onPaymentComplete, clientSecret }) => (
-  <Suspense fallback={<PaymentFormSkeleton />}>
-    <Elements
-      stripe={stripePromise}
-      options={{
-        clientSecret,
-        appearance: { theme: 'stripe' },
-      }}
-    >
-      <BookingCheckout onPaymentComplete={onPaymentComplete} clientSecret={clientSecret} />
-    </Elements>
-  </Suspense>
-)
-
 export default function BookingSticky() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -83,17 +69,18 @@ export default function BookingSticky() {
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
       {!showPayment ? (
         <BookingForm onSubmit={handleFormSubmit} />
+      ) : clientSecret ? (
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret,
+            appearance: { theme: 'stripe' },
+          }}
+        >
+          <BookingCheckout onPaymentComplete={handlePaymentComplete} clientSecret={clientSecret} />
+        </Elements>
       ) : (
-        <Suspense fallback={<PaymentFormSkeleton />}>
-          {clientSecret ? (
-            <StripePaymentForm
-              onPaymentComplete={handlePaymentComplete}
-              clientSecret={clientSecret}
-            />
-          ) : (
-            <PaymentFormSkeleton />
-          )}
-        </Suspense>
+        <PaymentFormSkeleton />
       )}
       {errorDetails && (
         <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
