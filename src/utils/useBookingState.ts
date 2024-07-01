@@ -25,52 +25,43 @@ const useFormStore = create<FormStore>((set) => ({
 
   setFormState: (newState) =>
     set((state) => {
-      console.log('State changed to:', newState)
       return { formState: newState }
     }),
 
   setEmptyState: () =>
     set((state) => {
-      console.log('State changed to: empty')
       return { formState: 'empty' }
     }),
   setDataState: () =>
     set((state) => {
-      console.log('State changed to: data')
       return { formState: 'data' }
     }),
   setPaymentState: () =>
     set((state) => {
-      console.log('State changed to: payment')
       return { formState: 'payment' }
     }),
   setSuccessState: () =>
     set((state) => {
-      console.log('State changed to: success')
       return { formState: 'success' }
     }),
   setErrorState: () =>
     set((state) => {
-      console.log('State changed to: error')
       return { formState: 'error' }
     }),
 
   updateFormData: (newData) =>
     set((state) => {
       const updatedFormData = { ...state.formData, ...newData }
-      console.log('Form data updated:', updatedFormData)
       return { formData: updatedFormData }
     }),
 
   resetForm: () =>
     set(() => {
-      console.log('Form reset. State changed to: empty')
       return { formState: 'empty', formData: {}, isLoading: false }
     }),
 
   setLoading: (loading) =>
     set(() => {
-      console.log('Loading state changed to:', loading)
       return { isLoading: loading }
     }),
 }))

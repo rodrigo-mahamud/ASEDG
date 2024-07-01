@@ -93,7 +93,12 @@ export default function BookingSticky() {
     switch (formState) {
       case 'empty':
       case 'data':
-        return <BookingForm onSubmit={handleFormSubmit} />
+        // return <BookingForm onSubmit={handleFormSubmit} />
+        return (
+          <BookingSuccess
+            message={successMessage || 'Tu reserva se ha completado correctamente.'}
+          />
+        )
       case 'payment':
         return clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
@@ -163,6 +168,20 @@ export default function BookingSticky() {
           disabled={isLoading}
         >
           {isLoading ? 'Procesando...' : 'Realizar Pago'}
+        </Button>
+      )}
+      {formState === 'success' && (
+        <Button
+          form="stripe-form"
+          type="submit"
+          className="w-full rounded-md py-3 h-auto bg-primary text-white"
+          variant="expandIcon"
+          iconClass="w-5 h-5"
+          iconPlacement="right"
+          Icon={isLoading ? IconLoader2 : IconArrowRight}
+          disabled={isLoading}
+        >
+          Ver otras instalacciones
         </Button>
       )}
       {errorDetails && formState !== 'error' && (
