@@ -88,7 +88,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
       email: '',
       telefono: '',
       dni: '',
-      periodo: '',
+
       terminos: false,
     },
   })

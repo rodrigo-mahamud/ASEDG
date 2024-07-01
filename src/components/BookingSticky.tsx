@@ -65,7 +65,7 @@ export default function BookingSticky() {
   }
 
   return (
-    <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
+    <aside className="border border-input bigShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
       {!showPayment ? (
         <BookingForm onSubmit={handleFormSubmit} />

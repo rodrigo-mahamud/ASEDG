@@ -57,7 +57,7 @@ export default function NavBar({ data }: NavBarTypes) {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      if (currentScrollY > 200) {
+      if (currentScrollY > 75) {
         // Ajusta este valor según tus necesidades
         setIsFixed(true)
       } else {

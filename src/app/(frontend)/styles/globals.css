@@ -185,3 +185,6 @@
   backdrop-filter: blur(5px);
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
+.bigShadow {
+  box-shadow: 0 5px 15px 1px #0e3f7e1a;
+}

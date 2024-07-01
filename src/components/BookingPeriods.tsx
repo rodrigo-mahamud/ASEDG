@@ -11,7 +11,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 dayjs.locale('es')
 
 interface BookingPeriodsProps {
-  field: ControllerRenderProps<FieldValues, string>
+  field: ControllerRenderProps<FieldValues, 'un_dia' | 'un_mes' | 'tres_meses'>
 }
 
 export function BookingPeriods({ field }: BookingPeriodsProps) {
@@ -71,7 +71,7 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
           <RadioGroup
             className="ml-2 pb-2 space-y-1"
             onValueChange={handleValueChange}
-            value={field.value || ''}
+            value={field.value || undefined}
           >
             {Object.entries(endDates).map(([period, date]) => (
               <div key={period} className="flex items-center space-x-3">
