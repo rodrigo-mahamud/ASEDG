@@ -16,30 +16,17 @@ interface BookingPeriodsProps {
 
 export function BookingPeriods({ field }: BookingPeriodsProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [endDate, setEndDate] = useState<string | null>(null)
+  const [endDates, setEndDates] = useState<{ [key: string]: string }>({})
 
   useEffect(() => {
-    if (field.value) {
-      const today = dayjs()
-      let end
-      switch (field.value) {
-        case 'un_dia':
-          end = today.add(1, 'day')
-          break
-        case 'un_mes':
-          end = today.add(1, 'month')
-          break
-        case 'tres_meses':
-          end = today.add(3, 'months')
-          break
-        default:
-          end = null
-      }
-      setEndDate(end ? end.format('DD/MM/YYYY') : null)
-    } else {
-      setEndDate(null)
+    const today = dayjs()
+    const dates = {
+      un_dia: today.add(1, 'day').format('DD MMMM YYYY'),
+      un_mes: today.add(1, 'month').format('DD MMMM YYYY'),
+      tres_meses: today.add(3, 'months').format('DD MMMM YYYY'),
     }
-  }, [field.value])
+    setEndDates(dates)
+  }, [])
 
   const handleValueChange = (value: string) => {
     field.onChange(value)
@@ -68,7 +55,7 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
       >
         <CollapsibleTrigger className="flex justify-between items-center w-full p-4 ">
           <div className="flex flex-col text-start justify-start w-10/12">
-            <h3 className="font-semibold">Duracción</h3>
+            <h3 className="font-semibold">Duración</h3>
             <h4 className="text-sm"> {getDisplayText()}</h4>
           </div>
           <div className=" pr-2 ">
@@ -82,44 +69,31 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
         </CollapsibleTrigger>
         <CollapsibleContent className="px-4 pb-4">
           <RadioGroup
-            className="ml-2 space-y-1"
+            className="ml-2 pb-2 space-y-1"
             onValueChange={handleValueChange}
             value={field.value || ''}
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                className="border-secondaryAlt text-secondaryAlt/75"
-                value="un_dia"
-                id="un_dia"
-              />
-              <Label className="font-normal" htmlFor="un_dia">
-                Un día
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                className="border-secondaryAlt text-secondaryAlt/75"
-                value="un_mes"
-                id="un_mes"
-              />
-              <Label className="font-normal" htmlFor="un_mes">
-                Un mes
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                className="border-secondaryAlt text-secondaryAlt/75"
-                value="tres_meses"
-                id="tres_meses"
-              />
-              <Label className="font-normal" htmlFor="tres_meses">
-                Tres meses
-              </Label>
-            </div>
+            {Object.entries(endDates).map(([period, date]) => (
+              <div key={period} className="flex items-center space-x-3">
+                <RadioGroupItem
+                  className="border-secondaryAlt text-secondaryAlt/75"
+                  value={period}
+                  id={period}
+                />
+                <Label className="font-normal" htmlFor={period}>
+                  <div>
+                    {period === 'un_dia' ? 'Un día' : period === 'un_mes' ? 'Un mes' : 'Tres meses'}
+                  </div>
+                  <div className="text-xs text-gray-500">Hasta el {date}</div>
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         </CollapsibleContent>
       </Collapsible>
-      {endDate && <p className="text-sm text-gray-500 mt-2">Válido hasta el: {endDate}</p>}
+      {/* {field.value && endDates[field.value] && (
+        <p className="text-sm text-gray-500 mt-2">Válido hasta el: {endDates[field.value]}</p>
+      )} */}
       <FormMessage />
     </FormItem>
   )

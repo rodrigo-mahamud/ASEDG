@@ -124,7 +124,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               />
             </div>
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 mt-4">
+          <CollapsibleContent className="space-y-4 mt-6">
             <div className="flex gap-4">
               <FormField
                 control={form.control}
@@ -132,7 +132,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <FloatingLabelInput className="rounded-sm" label="Nombre" {...field} />
+                      <FloatingLabelInput
+                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        label="Nombre"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,7 +148,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <FloatingLabelInput className="rounded-sm" label="Apellidos" {...field} />
+                      <FloatingLabelInput
+                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        label="Apellidos"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,7 +166,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 render={({ field }) => (
                   <FormItem className="w-3/4">
                     <FormControl>
-                      <FloatingLabelInput className="rounded-sm" label="D.N.I" {...field} />
+                      <FloatingLabelInput
+                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        label="D.N.I"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,6 +184,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                     <FormControl>
                       <FloatingLabelInput
                         label="Edad"
+                        className="rounded-sm focus-visible:border-secondaryAlt"
                         type="number"
                         {...field}
                         onChange={(e) =>
@@ -191,7 +204,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 <FormItem>
                   <FormControl>
                     <FloatingLabelInput
-                      className="rounded-md"
+                      className="rounded-sm focus-visible:border-secondaryAlt"
                       rounded-sm
                       label="Correo Electrónico"
                       {...field}
@@ -207,7 +220,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FloatingLabelInput className="rounded-sm" label="Teléfono" {...field} />
+                    <FloatingLabelInput
+                      className="rounded-sm focus-visible:border-secondaryAlt"
+                      label="Teléfono"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -219,10 +236,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           control={form.control}
           name="terminos"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0  py-4">
+            <FormItem className="flex flex-row items-start space-x-2 space-y-0 py-4">
               <FormControl>
                 <Checkbox
                   checked={field.value}
+                  className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-sm"
                   onCheckedChange={(checked) => field.onChange(checked)}
                 />
               </FormControl>
@@ -232,8 +250,13 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={!form.formState.isValid}>
-          Continuar al pago
+        <Button
+          type="submit"
+          className="w-full rounded-md py-3 h-auto"
+          variant="shine"
+          disabled={!form.formState.isValid}
+        >
+          Continuar con el pago
         </Button>
       </form>
     </Form>
