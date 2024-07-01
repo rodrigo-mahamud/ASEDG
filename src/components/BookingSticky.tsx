@@ -64,23 +64,37 @@ export default function BookingSticky() {
     }
   }
 
+  const handleGoBack = () => {
+    setShowPayment(false)
+    setClientSecret(null)
+    // No limpiamos formData aquí para mantener los datos introducidos
+  }
+
   return (
-    <aside className="border border-input bigShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
+    <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
       {!showPayment ? (
-        <BookingForm onSubmit={handleFormSubmit} />
-      ) : clientSecret ? (
-        <Elements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance: { theme: 'stripe' },
-          }}
-        >
-          <BookingCheckout onPaymentComplete={handlePaymentComplete} clientSecret={clientSecret} />
-        </Elements>
+        <BookingForm onSubmit={handleFormSubmit} initialData={formData} />
       ) : (
-        <PaymentFormSkeleton />
+        <Suspense fallback={<PaymentFormSkeleton />}>
+          {clientSecret ? (
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance: { theme: 'stripe' },
+              }}
+            >
+              <BookingCheckout
+                onPaymentComplete={handlePaymentComplete}
+                onGoBack={handleGoBack}
+                clientSecret={clientSecret}
+              />
+            </Elements>
+          ) : (
+            <PaymentFormSkeleton />
+          )}
+        </Suspense>
       )}
       {errorDetails && (
         <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">

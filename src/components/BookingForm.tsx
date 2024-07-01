@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -16,7 +16,7 @@ import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
 import { Button } from '@/components/lib/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
-import { IconChevronCompactUp, IconChevronDown } from '@tabler/icons-react'
+import { IconArrowRight, IconChevronCompactUp, IconChevronDown } from '@tabler/icons-react'
 
 const prohibitedDomains = [
   'mohmal.com',
@@ -73,13 +73,14 @@ export type BookingFormData = z.infer<typeof bookingSchema>
 
 interface BookingFormProps {
   onSubmit: (data: BookingFormData) => void
+  initialData: BookingFormData | null
 }
 
-export function BookingForm({ onSubmit }: BookingFormProps) {
+export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    mode: 'onChange',
+    mode: 'onBlur',
     criteriaMode: 'firstError',
     defaultValues: {
       nombre: '',
@@ -88,10 +89,18 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
       email: '',
       telefono: '',
       dni: '',
-
       terminos: false,
     },
   })
+  useEffect(() => {
+    if (initialData) {
+      Object.entries(initialData).forEach(([key, value]) => {
+        form.setValue(key as keyof BookingFormData, value)
+      })
+      setIsOpen(true)
+      form.trigger()
+    }
+  }, [initialData, form])
 
   const handleSubmit = (data: BookingFormData) => {
     onSubmit(data)
@@ -99,11 +108,13 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="">
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <FormField
           control={form.control}
           name="periodo"
-          render={({ field }) => <BookingPeriods field={field} />}
+          render={({ field }) => (
+            <BookingPeriods field={field} initiallyOpen={!!initialData?.periodo} />
+          )}
         />
         <Collapsible
           open={isOpen}
@@ -252,8 +263,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
         />
         <Button
           type="submit"
-          className="w-full rounded-md py-3 h-auto"
-          variant="shine"
+          className="w-full rounded-md py-3 h-auto bg-primary text-white "
+          variant="expandIcon"
+          iconClass="w-5 h-5"
+          iconPlacement="right"
+          Icon={IconArrowRight}
           disabled={!form.formState.isValid}
         >
           Continuar con el pago

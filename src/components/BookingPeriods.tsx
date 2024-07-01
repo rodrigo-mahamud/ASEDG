@@ -6,24 +6,25 @@ import { RadioGroup, RadioGroupItem } from '@/components/lib/radio-group'
 import { Label } from '@/components/lib/label'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react'
+import { IconChevronDown } from '@tabler/icons-react'
 
 dayjs.locale('es')
 
 interface BookingPeriodsProps {
   field: ControllerRenderProps<FieldValues, 'un_dia' | 'un_mes' | 'tres_meses'>
+  initiallyOpen?: boolean
 }
 
-export function BookingPeriods({ field }: BookingPeriodsProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsProps) {
+  const [isOpen, setIsOpen] = useState(initiallyOpen)
   const [endDates, setEndDates] = useState<{ [key: string]: string }>({})
 
   useEffect(() => {
     const today = dayjs()
     const dates = {
-      un_dia: today.add(1, 'day').format('DD MMMM YYYY'),
-      un_mes: today.add(1, 'month').format('DD MMMM YYYY'),
-      tres_meses: today.add(3, 'months').format('DD MMMM YYYY'),
+      un_dia: today.add(1, 'day').format('DD/MM/YYYY'),
+      un_mes: today.add(1, 'month').format('DD/MM/YYYY'),
+      tres_meses: today.add(3, 'months').format('DD/MM/YYYY'),
     }
     setEndDates(dates)
   }, [])
@@ -53,12 +54,12 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <CollapsibleTrigger className="flex justify-between items-center w-full p-4 ">
+        <CollapsibleTrigger className="flex justify-between items-center w-full p-4">
           <div className="flex flex-col text-start justify-start w-10/12">
             <h3 className="font-semibold">Duración</h3>
             <h4 className="text-sm"> {getDisplayText()}</h4>
           </div>
-          <div className=" pr-2 ">
+          <div className="pr-2">
             <IconChevronDown
               stroke={1.5}
               className={`h-5 w-5 transition-transform duration-300 text-secondaryAlt ${
@@ -69,12 +70,12 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
         </CollapsibleTrigger>
         <CollapsibleContent className="px-4 pb-4">
           <RadioGroup
-            className="ml-2 pb-2 space-y-1"
+            className="ml-2 space-y-1"
             onValueChange={handleValueChange}
-            value={field.value || undefined}
+            value={field.value || ''}
           >
             {Object.entries(endDates).map(([period, date]) => (
-              <div key={period} className="flex items-center space-x-3">
+              <div key={period} className="flex items-center space-x-2">
                 <RadioGroupItem
                   className="border-secondaryAlt text-secondaryAlt/75"
                   value={period}
@@ -84,16 +85,13 @@ export function BookingPeriods({ field }: BookingPeriodsProps) {
                   <div>
                     {period === 'un_dia' ? 'Un día' : period === 'un_mes' ? 'Un mes' : 'Tres meses'}
                   </div>
-                  <div className="text-xs text-gray-500">Hasta el {date}</div>
+                  <div className="text-xs text-gray-500">Válido hasta: {date}</div>
                 </Label>
               </div>
             ))}
           </RadioGroup>
         </CollapsibleContent>
       </Collapsible>
-      {/* {field.value && endDates[field.value] && (
-        <p className="text-sm text-gray-500 mt-2">Válido hasta el: {endDates[field.value]}</p>
-      )} */}
       <FormMessage />
     </FormItem>
   )
