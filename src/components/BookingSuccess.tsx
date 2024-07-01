@@ -9,7 +9,7 @@ interface BookingSuccessProps {
 
 export function BookingSuccess({ message }: BookingSuccessProps) {
   const [isConfettiActive, setIsConfettiActive] = useState(true)
-  const [play] = useSound('/sounds/success.mp3', { volume: 0.5 })
+  const [play] = useSound('/success.wav', { volume: 0.5 })
 
   useEffect(() => {
     play()

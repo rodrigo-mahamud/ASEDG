@@ -14,6 +14,7 @@ import { Button } from './lib/button'
 import { Elements } from '@stripe/react-stripe-js'
 import { stripePromise, createPaymentIntent } from '@/utils/stripeUtils'
 import { createBooking } from '@/utils/bookingUtils'
+import { BookingSuccess } from './BookingSuccess'
 
 export default function BookingSticky() {
   const {
@@ -107,10 +108,9 @@ export default function BookingSticky() {
         )
       case 'success':
         return (
-          <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded flex items-center">
-            <IconCheck className="mr-2 h-5 w-5" />
-            <p>{successMessage}</p>
-          </div>
+          <BookingSuccess
+            message={successMessage || 'Tu reserva se ha completado correctamente.'}
+          />
         )
       case 'error':
         return (
