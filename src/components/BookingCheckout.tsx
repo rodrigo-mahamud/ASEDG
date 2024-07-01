@@ -57,25 +57,27 @@ export function BookingCheckout({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
+    <>
       <Button type="button" variant="outline" onClick={onGoBack} className="mb-4">
         <IconArrowLeft className="mr-2 h-4 w-4" />
         Volver
       </Button>
-      <PaymentElement />
-      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-      <div className="flex justify-between mt-4">
-        <Button type="submit" disabled={loading}>
-          {loading ? (
-            <>
-              <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-              Procesando...
-            </>
-          ) : (
-            'Pagar'
-          )}
-        </Button>
-      </div>
-    </form>
+      <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
+        <PaymentElement />
+        {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
+        <div className="flex justify-between mt-4">
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
+                Procesando...
+              </>
+            ) : (
+              'Pagar'
+            )}
+          </Button>
+        </div>
+      </form>
+    </>
   )
 }

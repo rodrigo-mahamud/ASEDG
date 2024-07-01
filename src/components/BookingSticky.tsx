@@ -2,12 +2,12 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import { BookingForm, BookingFormData } from './BookingForm'
 import { BookingCheckout } from './BookingCheckout'
 import { Skeleton } from '@/components/lib/skeleton'
 import { stripePromise, createPaymentIntent } from '@/utils/stripeUtils'
 import { createBooking } from '@/utils/bookingUtils'
+import { IconCheck, IconAlertCircle } from '@tabler/icons-react'
 
 const PaymentFormSkeleton = () => (
   <div className="space-y-3">
@@ -19,12 +19,12 @@ const PaymentFormSkeleton = () => (
 )
 
 export default function BookingSticky() {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [formData, setFormData] = useState<BookingFormData | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [errorDetails, setErrorDetails] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const amount = 49.99
 
@@ -46,19 +46,18 @@ export default function BookingSticky() {
 
     setIsLoading(true)
     setErrorDetails(null)
+    setSuccessMessage(null)
     try {
       const result = await createBooking(formData)
-      toast.success(result.message)
+      setSuccessMessage('Tu reserva se ha completado correctamente')
       console.log('Token de acceso:', result.accessToken)
-      router.push('/payment-success')
     } catch (error) {
       console.error('Error en handlePaymentComplete:', error)
       let errorMessage = 'Error desconocido al procesar la reserva.'
       if (error instanceof Error) {
         errorMessage = error.message
       }
-      toast.error(errorMessage)
-      setErrorDetails(`Error detallado: ${JSON.stringify(error, null, 2)}`)
+      setErrorDetails(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -67,13 +66,19 @@ export default function BookingSticky() {
   const handleGoBack = () => {
     setShowPayment(false)
     setClientSecret(null)
-    // No limpiamos formData aquí para mantener los datos introducidos
+    setErrorDetails(null)
+    setSuccessMessage(null)
   }
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
       <h2 className="font-cal mb-4">Reserva tu instalación</h2>
-      {!showPayment ? (
+      {successMessage ? (
+        <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded flex items-center">
+          <IconCheck className="mr-2 h-5 w-5" />
+          <p>{successMessage}</p>
+        </div>
+      ) : !showPayment ? (
         <BookingForm onSubmit={handleFormSubmit} initialData={formData} />
       ) : (
         <Suspense fallback={<PaymentFormSkeleton />}>
@@ -97,9 +102,12 @@ export default function BookingSticky() {
         </Suspense>
       )}
       {errorDetails && (
-        <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-          <h3 className="font-bold">Detalles del error:</h3>
-          <pre className="mt-2 whitespace-pre-wrap">{errorDetails}</pre>
+        <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
+          <IconAlertCircle className="mr-2 h-5 w-5" />
+          <div>
+            <h3 className="font-bold">Error al procesar la reserva:</h3>
+            <p>{errorDetails}</p>
+          </div>
         </div>
       )}
       {isLoading && (

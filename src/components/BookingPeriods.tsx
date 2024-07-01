@@ -22,9 +22,9 @@ export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsP
   useEffect(() => {
     const today = dayjs()
     const dates = {
-      un_dia: today.add(1, 'day').format('DD/MM/YYYY'),
-      un_mes: today.add(1, 'month').format('DD/MM/YYYY'),
-      tres_meses: today.add(3, 'months').format('DD/MM/YYYY'),
+      un_dia: today.add(1, 'day').format('DD MMMM YYYY'),
+      un_mes: today.add(1, 'month').format('DD MMMM YYYY'),
+      tres_meses: today.add(3, 'months').format('DD MMMM YYYY'),
     }
     setEndDates(dates)
   }, [])
@@ -70,7 +70,7 @@ export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsP
         </CollapsibleTrigger>
         <CollapsibleContent className="px-4 pb-4">
           <RadioGroup
-            className="ml-2 space-y-1"
+            className="ml-2 mb-2 space-y-1"
             onValueChange={handleValueChange}
             value={field.value || ''}
           >
@@ -85,7 +85,7 @@ export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsP
                   <div>
                     {period === 'un_dia' ? 'Un día' : period === 'un_mes' ? 'Un mes' : 'Tres meses'}
                   </div>
-                  <div className="text-xs text-gray-500">Válido hasta: {date}</div>
+                  <div className="text-xs text-gray-500">Hasta el {date}</div>
                 </Label>
               </div>
             ))}
