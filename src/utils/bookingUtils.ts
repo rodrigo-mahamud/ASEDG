@@ -1,5 +1,3 @@
-import { BookingFormData } from '../components/BookingForm'
-
 export async function createBooking(formData: BookingFormData) {
   const response = await fetch('/api/create-booking', {
     method: 'POST',

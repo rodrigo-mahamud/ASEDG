@@ -1,8 +1,7 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import {
   Form,
   FormControl,
@@ -14,95 +13,45 @@ import {
 import { Checkbox } from '@/components/lib/checkbox'
 import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
-import { Button } from '@/components/lib/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
-import { IconArrowRight, IconChevronCompactUp, IconChevronDown } from '@tabler/icons-react'
-
-const prohibitedDomains = [
-  'mohmal.com',
-  'yopmail.com',
-  'emailondeck.com',
-  'tempail.com',
-  'bupmail.com',
-  'emailfake.com',
-  'guerrillamail.com',
-  'crazymailing.com',
-  'tempr.email',
-  'throwawaymail.com',
-  'maildrop.cc',
-  '10minutemail.com',
-  'getnada.com',
-  'mintemail.com',
-]
-
-const bookingSchema = z.object({
-  nombre: z
-    .string()
-    .min(1, 'El nombre debe tener al menos 2 caracteres')
-    .regex(
-      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-      'El nombre no puede contener números ni caracteres especiales',
-    ),
-  apellidos: z
-    .string()
-    .min(1, 'Los apellidos deben tener al menos 2 caracteres')
-    .regex(
-      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-      'Los apellidos no pueden contener números ni caracteres especiales',
-    ),
-  edad: z.number().min(16, 'Debes ser mayor de 16 años'),
-  email: z
-    .string()
-    .email('Correo electrónico inválido')
-    .refine(
-      (email) => !prohibitedDomains.some((domain) => email.toLowerCase().endsWith(`@${domain}`)),
-      {
-        message:
-          'Por favor, utiliza tu dirección de correo personal no se admiten mails temporales',
-      },
-    ),
-  telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
-  dni: z.string().refine(validateDNI, { message: 'DNI español inválido' }),
-  periodo: z.enum(['un_dia', 'un_mes', 'tres_meses']),
-  terminos: z.boolean().refine((val) => val === true, {
-    message: 'Debes aceptar los términos y condiciones',
-  }),
-})
-
-export type BookingFormData = z.infer<typeof bookingSchema>
+import { IconChevronDown } from '@tabler/icons-react'
+import { bookingSchema, BookingFormData } from '@/utils/bookingValidations'
+import useFormStore from '@/utils/useBookingState'
 
 interface BookingFormProps {
   onSubmit: (data: BookingFormData) => void
-  initialData: BookingFormData | null
 }
 
-export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export function BookingForm({ onSubmit }: BookingFormProps) {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const { formData, updateFormData, setDataState, setEmptyState } = useFormStore()
+
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    mode: 'onBlur',
-    criteriaMode: 'firstError',
-    defaultValues: {
-      nombre: '',
-      apellidos: '',
-      edad: 16,
-      email: '',
-      telefono: '',
-      dni: '',
-      terminos: false,
-    },
+    mode: 'onChange',
+    defaultValues: formData,
   })
+
   useEffect(() => {
-    if (initialData) {
-      Object.entries(initialData).forEach(([key, value]) => {
-        form.setValue(key as keyof BookingFormData, value)
-      })
-      setIsOpen(true)
-      form.trigger()
+    const subscription = form.watch((data) => {
+      updateFormData(data as BookingFormData)
+      validateForm(data as BookingFormData)
+    })
+    return () => subscription.unsubscribe()
+  }, [form, updateFormData])
+
+  const validateForm = async (data: BookingFormData) => {
+    try {
+      await bookingSchema.parseAsync(data)
+      setDataState()
+    } catch (error) {
+      console.log('Form is invalid', error)
+      setEmptyState()
     }
-  }, [initialData, form])
+  }
 
   const handleSubmit = (data: BookingFormData) => {
+    updateFormData(data)
     onSubmit(data)
   }
 
@@ -113,7 +62,7 @@ export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
           control={form.control}
           name="periodo"
           render={({ field }) => (
-            <BookingPeriods field={field} initiallyOpen={!!initialData?.periodo} />
+            <BookingPeriods field={field} initiallyOpen={!!formData.periodo} />
           )}
         />
         <Collapsible
@@ -121,12 +70,12 @@ export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
           onOpenChange={setIsOpen}
           className="border-x border-b border-input p-4 mb-4 rounded-b-md"
         >
-          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 ">
+          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2">
             <div className="flex flex-col text-start justify-start w-10/12">
-              <h3 className=" font-semibold">Datos Personales</h3>
-              <h4 className="text-sm">Elige la duración de tu reserva.</h4>
+              <h3 className="font-semibold">Datos Personales</h3>
+              <h4 className="text-sm">Completa tus datos personales.</h4>
             </div>
-            <div className=" pr-2 ">
+            <div className="pr-2">
               <IconChevronDown
                 stroke={1.5}
                 className={`h-5 w-5 transition-transform duration-300 text-secondaryAlt ${
@@ -216,7 +165,6 @@ export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
                   <FormControl>
                     <FloatingLabelInput
                       className="rounded-sm focus-visible:border-secondaryAlt"
-                      rounded-sm
                       label="Correo Electrónico"
                       {...field}
                     />
@@ -252,7 +200,7 @@ export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
                 <Checkbox
                   checked={field.value}
                   className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-sm"
-                  onCheckedChange={(checked) => field.onChange(checked)}
+                  onCheckedChange={field.onChange}
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
@@ -261,24 +209,7 @@ export function BookingForm({ onSubmit, initialData }: BookingFormProps) {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="w-full rounded-md py-3 h-auto bg-primary text-white "
-          variant="expandIcon"
-          iconClass="w-5 h-5"
-          iconPlacement="right"
-          Icon={IconArrowRight}
-          disabled={!form.formState.isValid}
-        >
-          Continuar con el pago
-        </Button>
       </form>
     </Form>
   )
-}
-
-// Función para validar el DNI español (implementa esta función según tus necesidades)
-function validateDNI(dni: string): boolean {
-  // Implementa la lógica de validación del DNI aquí
-  return true // Placeholder
 }
