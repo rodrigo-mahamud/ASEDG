@@ -134,20 +134,27 @@ export default function BookingSticky() {
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
-      <h2 className="font-cal mb-4">Reserva tu instalación</h2>
-      {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
-        <Button type="button" variant="outline" onClick={handleGoBack} className="mb-4">
-          <IconArrowLeft className="mr-2 h-4 w-4" />
-          Volver
-        </Button>
-      )}
+      <h2 className="font-cal leading-3">Reserva tu instalación</h2>
       {renderContent()}
-      <BookingButton
-        onDataSubmit={handleDataSubmit}
-        onPaymentSubmit={handlePaymentSubmit}
-        onSuccessAction={handleSuccessAction}
-        clientSecret={clientSecret}
-      />
+      <div className="flex gap-2">
+        {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
+          <div className="flex items-center">
+            <Button
+              type="button"
+              variant="arrowReversed"
+              onClick={handleGoBack}
+              iconClass="w-3 h-3"
+              className="bg-secondary rounded-md py-3 px-4 h-full"
+            ></Button>
+          </div>
+        )}
+        <BookingButton
+          onDataSubmit={handleDataSubmit}
+          onPaymentSubmit={handlePaymentSubmit}
+          onSuccessAction={handleSuccessAction}
+          clientSecret={clientSecret}
+        />
+      </div>
       {errorDetails && formState !== 'error' && (
         <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
           <p>{errorDetails}</p>

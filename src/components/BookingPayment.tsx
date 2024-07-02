@@ -15,25 +15,8 @@ export function BookingPayment({ clientSecret, onPaymentComplete, onError }: Boo
   const { isLoading } = useFormStore()
 
   const renderSkeleton = () => (
-    <div className="space-y-5 p-4">
-      <div className="flex flex-col gap-2">
-        <Skeleton className="h-4 w-1/4" />
-        <Skeleton className="h-10 w-full" />
-      </div>
-      <div className="flex gap-6">
-        <div className="flex flex-col gap-2 w-full">
-          <Skeleton className="h-4 w-1/4" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <Skeleton className="h-4 w-1/4" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <Skeleton className="h-4 w-1/4" />
-        <Skeleton className="h-10 w-full" />
-      </div>
+    <div className="space-y-5 py-4 h-full">
+      <Skeleton className="h-64 w-full" />
     </div>
   )
 
@@ -48,7 +31,7 @@ export function BookingPayment({ clientSecret, onPaymentComplete, onError }: Boo
   )
 
   return (
-    <div className="min-h-[250px] transition-all duration-300">
+    <div className="min-h-[252px] h-fit transition-all duration-300">
       {isLoading || !clientSecret ? renderSkeleton() : renderStripeForm()}
     </div>
   )

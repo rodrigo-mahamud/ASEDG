@@ -11,7 +11,7 @@ import { IconChevronDown } from '@tabler/icons-react'
 dayjs.locale('es')
 
 interface BookingPeriodsProps {
-  field: ControllerRenderProps<FieldValues, 'un_dia' | 'un_mes' | 'tres_meses'>
+  field: any
   initiallyOpen?: boolean
 }
 

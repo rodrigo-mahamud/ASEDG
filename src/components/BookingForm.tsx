@@ -57,7 +57,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-8">
         <FormField
           control={form.control}
           name="periodo"
@@ -68,7 +68,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="border-x border-b border-input p-4 mb-4 rounded-b-md"
+          className="border-x border-b border-input p-4 rounded-b-md"
         >
           <CollapsibleTrigger className="w-full flex justify-between items-center gap-2">
             <div className="flex flex-col text-start justify-start w-10/12">
@@ -189,26 +189,26 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="terminos"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-2 space-y-0 ">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-sm"
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Acepto los términos y condiciones</FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
           </CollapsibleContent>
         </Collapsible>
-        <FormField
-          control={form.control}
-          name="terminos"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-2 space-y-0 py-4">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-sm"
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Acepto los términos y condiciones</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
       </form>
     </Form>
   )
