@@ -9,15 +9,16 @@ interface BookingSuccessProps {
 
 export function BookingSuccess({ message }: BookingSuccessProps) {
   const [isConfettiRunning, setIsConfettiRunning] = useState(true)
-  const [play] = useSound('/sounds/success.mp3', { volume: 0.5 })
+  const [play] = useSound('/success.mp3', { volume: 0.5 })
 
   useEffect(() => {
+    play()
     const timer = setTimeout(() => {
       setIsConfettiRunning(false)
-    }, 1500) // Detiene el confeti después de 5 segundos
+    }, 1250) // Detiene el confeti después de 5 segundos
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [play])
 
   return (
     <div className="relative">
@@ -30,12 +31,14 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
         friction={1}
       />
       <div className="mt-4 p-6  flex flex-col items-center">
-        <div className="bg-green-500 text-white rounded-full p-3 mb-4">
-          <IconCheck className="h-6 w-6" />
-        </div>
+        <video src="/prueba.webm" className="w-24 h-24" autoPlay muted playsInline></video>
         <div className="text-center">
-          <h3 className="font-bold text-lg mb-2 ">¡Todo listo!</h3>
-          <p>{message}</p>
+          <h3 className="font-bold text-lg mb-2">¡Reserva confirmada!</h3>
+          <p>
+            Tu reserva en el Gimnasio Municipal se ha completado con éxito. Pronto recibirás un
+            email con tu código de acceso y los detalles de tu reserva.
+          </p>
+          <p>¡Nos vemos en el gimnasio!</p>
         </div>
       </div>
     </div>

@@ -2,19 +2,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { BookingForm } from './BookingForm'
 import { BookingCheckout } from './BookingCheckout'
-import {
-  IconCheck,
-  IconAlertCircle,
-  IconArrowLeft,
-  IconArrowRight,
-  IconLoader2,
-} from '@tabler/icons-react'
+import { BookingSuccess } from './BookingSuccess'
+import { BookingButton } from './BookingButton'
+import { IconAlertCircle, IconArrowLeft } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 import { Button } from './lib/button'
 import { Elements } from '@stripe/react-stripe-js'
 import { stripePromise, createPaymentIntent } from '@/utils/stripeUtils'
 import { createBooking } from '@/utils/bookingUtils'
-import { BookingSuccess } from './BookingSuccess'
 
 export default function BookingSticky() {
   const {
@@ -23,7 +18,6 @@ export default function BookingSticky() {
     setDataState,
     setPaymentState,
     updateFormData,
-    isLoading,
     setLoading,
     setSuccessState,
     setErrorState,
@@ -89,16 +83,27 @@ export default function BookingSticky() {
     setErrorState()
   }
 
+  const handleDataSubmit = () => {
+    setPaymentState()
+  }
+
+  const handlePaymentSubmit = () => {
+    const stripeForm = document.getElementById('stripe-form') as HTMLFormElement
+    if (stripeForm) {
+      stripeForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
+    }
+  }
+
+  const handleSuccessAction = () => {
+    // Aquí puedes añadir la lógica para ver otras instalaciones
+    console.log('Ver otras instalaciones')
+  }
+
   const renderContent = () => {
     switch (formState) {
       case 'empty':
       case 'data':
-        // return <BookingForm onSubmit={handleFormSubmit} />
-        return (
-          <BookingSuccess
-            message={successMessage || 'Tu reserva se ha completado correctamente.'}
-          />
-        )
+        return <BookingSuccess message={successMessage} />
       case 'payment':
         return clientSecret ? (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
@@ -112,11 +117,7 @@ export default function BookingSticky() {
           <div>Preparando el pago...</div>
         )
       case 'success':
-        return (
-          <BookingSuccess
-            message={successMessage || 'Tu reserva se ha completado correctamente.'}
-          />
-        )
+        return <BookingSuccess message={successMessage} />
       case 'error':
         return (
           <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
@@ -142,48 +143,12 @@ export default function BookingSticky() {
         </Button>
       )}
       {renderContent()}
-      {(formState === 'empty' || formState === 'data') && (
-        <Button
-          type="submit"
-          className="w-full rounded-md py-3 h-auto bg-primary text-white"
-          variant="expandIcon"
-          iconClass="w-5 h-5"
-          iconPlacement="right"
-          Icon={IconArrowRight}
-          onClick={() => formState === 'data' && setPaymentState()}
-          disabled={formState === 'empty'}
-        >
-          Continuar con el pago
-        </Button>
-      )}
-      {formState === 'payment' && clientSecret && (
-        <Button
-          form="stripe-form"
-          type="submit"
-          className="w-full rounded-md py-3 h-auto bg-primary text-white"
-          variant="expandIcon"
-          iconClass="w-5 h-5"
-          iconPlacement="right"
-          Icon={isLoading ? IconLoader2 : IconArrowRight}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Procesando...' : 'Realizar Pago'}
-        </Button>
-      )}
-      {formState === 'success' && (
-        <Button
-          form="stripe-form"
-          type="submit"
-          className="w-full rounded-md py-3 h-auto bg-primary text-white"
-          variant="expandIcon"
-          iconClass="w-5 h-5"
-          iconPlacement="right"
-          Icon={isLoading ? IconLoader2 : IconArrowRight}
-          disabled={isLoading}
-        >
-          Ver otras instalacciones
-        </Button>
-      )}
+      <BookingButton
+        onDataSubmit={handleDataSubmit}
+        onPaymentSubmit={handlePaymentSubmit}
+        onSuccessAction={handleSuccessAction}
+        clientSecret={clientSecret}
+      />
       {errorDetails && formState !== 'error' && (
         <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
           <p>{errorDetails}</p>
