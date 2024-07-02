@@ -1,14 +1,13 @@
 'use client'
 import React, { useState, useEffect, useCallback } from 'react'
 import { BookingForm } from './BookingForm'
-import { BookingCheckout } from './BookingCheckout'
+import { BookingPayment } from './BookingPayment'
 import { BookingSuccess } from './BookingSuccess'
 import { BookingButton } from './BookingButton'
 import { IconAlertCircle, IconArrowLeft } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 import { Button } from './lib/button'
-import { Elements } from '@stripe/react-stripe-js'
-import { stripePromise, createPaymentIntent } from '@/utils/stripeUtils'
+import { createPaymentIntent } from '@/utils/stripeUtils'
 import { createBooking } from '@/utils/bookingUtils'
 
 export default function BookingSticky() {
@@ -103,21 +102,21 @@ export default function BookingSticky() {
     switch (formState) {
       case 'empty':
       case 'data':
-        return <BookingSuccess message={successMessage} />
+        return <BookingForm onSubmit={handleFormSubmit} />
       case 'payment':
-        return clientSecret ? (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <BookingCheckout
-              onPaymentComplete={handlePaymentComplete}
-              onError={handleError}
-              clientSecret={clientSecret}
-            />
-          </Elements>
-        ) : (
-          <div>Preparando el pago...</div>
+        return (
+          <BookingPayment
+            clientSecret={clientSecret}
+            onPaymentComplete={handlePaymentComplete}
+            onError={handleError}
+          />
         )
       case 'success':
-        return <BookingSuccess message={successMessage} />
+        return (
+          <BookingSuccess
+            message={successMessage || 'Tu reserva se ha completado correctamente.'}
+          />
+        )
       case 'error':
         return (
           <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">

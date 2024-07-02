@@ -67,7 +67,7 @@ export function BookingButton({
       case 'success':
         return {
           ...baseProps,
-          children: 'Ver otras instalaciones',
+          children: 'Reservar de nuevo',
           Icon: IconArrowRight,
         }
       default:
