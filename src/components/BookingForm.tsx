@@ -15,18 +15,18 @@ import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './lib/floatinglabel'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
 import { IconChevronDown } from '@tabler/icons-react'
-import { bookingSchema, BookingFormData } from '@/utils/bookingValidations'
+import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 import useFormStore from '@/utils/useBookingState'
 
 interface BookingFormProps {
-  onSubmit: (data: BookingFormData) => void
+  onSubmit: (data: BookingFormTypes) => void
 }
 
 export function BookingForm({ onSubmit }: BookingFormProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const { formData, updateFormData, setDataState, setEmptyState } = useFormStore()
 
-  const form = useForm<BookingFormData>({
+  const form = useForm<BookingFormTypes>({
     resolver: zodResolver(bookingSchema),
     mode: 'onChange',
     defaultValues: formData,
@@ -34,13 +34,13 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
 
   useEffect(() => {
     const subscription = form.watch((data) => {
-      updateFormData(data as BookingFormData)
-      validateForm(data as BookingFormData)
+      updateFormData(data as BookingFormTypes)
+      validateForm(data as BookingFormTypes)
     })
     return () => subscription.unsubscribe()
   }, [form, updateFormData])
 
-  const validateForm = async (data: BookingFormData) => {
+  const validateForm = async (data: BookingFormTypes) => {
     try {
       await bookingSchema.parseAsync(data)
       setDataState()
@@ -50,7 +50,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
     }
   }
 
-  const handleSubmit = (data: BookingFormData) => {
+  const handleSubmit = (data: BookingFormTypes) => {
     updateFormData(data)
     onSubmit(data)
   }

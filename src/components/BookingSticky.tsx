@@ -1,61 +1,42 @@
 'use client'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { BookingForm } from './BookingForm'
 import { BookingPayment } from './BookingPayment'
 import { BookingSuccess } from './BookingSuccess'
 import { BookingButton } from './BookingButton'
 import { IconAlertCircle, IconArrowLeft } from '@tabler/icons-react'
-import useFormStore from '@/utils/useBookingState'
+import useBookingState from '@/utils/useBookingState'
 import { Button } from './lib/button'
 import { createPaymentIntent } from '@/utils/stripeUtils'
 import { createBooking, checkSystemAvailability } from '@/utils/bookingUtils'
+import { BookingFormTypes } from '@/utils/bookingValidations'
 
 export default function BookingSticky() {
   const {
     formState,
     formData,
+    isLoading,
+    price,
+    errorDetails,
+    successMessage,
+    clientSecret,
     setDataState,
     setPaymentState,
-    updateFormData,
-    setLoading,
     setSuccessState,
     setErrorState,
-    price,
-  } = useFormStore()
-  const [errorDetails, setErrorDetails] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [isSystemAvailable, setIsSystemAvailable] = useState(true)
-
-  const checkAvailability = useCallback(async () => {
-    try {
-      const result = await checkSystemAvailability()
-      setIsSystemAvailable(result.status === 'OK')
-      if (result.status !== 'OK') {
-        setErrorDetails(result.message)
-      }
-      return result.status === 'OK'
-    } catch (error) {
-      console.error('Error checking system availability:', error)
-      setIsSystemAvailable(false)
-      setErrorDetails(
-        'No se pudo verificar la disponibilidad del sistema. Por favor, inténtelo más tarde.',
-      )
-      return false
-    }
-  }, [])
+    updateFormData,
+    setLoading,
+    setErrorDetails,
+    setSuccessMessage,
+    setClientSecret,
+  } = useBookingState()
 
   const initializePayment = useCallback(async () => {
     if (formState === 'payment' && !clientSecret) {
       try {
         setLoading(true)
-
-        // Verificar disponibilidad antes de iniciar el pago
-        const isAvailable = await checkAvailability()
+        const isAvailable = await checkSystemAvailability()
         if (!isAvailable) {
-          setErrorDetails(
-            'El sistema no está disponible en este momento. Por favor, inténtelo más tarde.',
-          )
           setDataState()
           return
         }
@@ -65,18 +46,28 @@ export default function BookingSticky() {
       } catch (error) {
         console.error('Error creating payment intent:', error)
         setErrorDetails('Error al preparar el pago. Por favor, inténtelo de nuevo.')
+        setErrorState()
         setDataState()
       } finally {
         setLoading(false)
       }
     }
-  }, [formState, clientSecret, setLoading, setDataState, price, checkAvailability])
+  }, [
+    formState,
+    clientSecret,
+    setLoading,
+    setDataState,
+    price,
+    setErrorState,
+    setErrorDetails,
+    setClientSecret,
+  ])
 
   useEffect(() => {
     initializePayment()
   }, [initializePayment])
 
-  const handleFormSubmit = (data: BookingFormData) => {
+  const handleFormSubmit = (data: BookingFormTypes) => {
     updateFormData(data)
     setPaymentState()
   }
@@ -84,17 +75,17 @@ export default function BookingSticky() {
   const handlePaymentComplete = async () => {
     try {
       setLoading(true)
-      const result = await createBooking({ ...formData, price })
+      const result = await createBooking({ ...formData, price } as BookingFormTypes)
       console.log('Reserva completada con éxito:', result)
       setSuccessMessage('Tu reserva se ha completado correctamente')
       setSuccessState()
     } catch (error) {
       console.error('Error en handlePaymentComplete:', error)
-      let errorMessage = 'Error desconocido al procesar la reserva.'
       if (error instanceof Error) {
-        errorMessage = error.message
+        setErrorDetails(error.message)
+      } else {
+        setErrorDetails('Error desconocido al procesar la reserva.')
       }
-      setErrorDetails(errorMessage)
       setErrorState()
     } finally {
       setLoading(false)
@@ -105,9 +96,9 @@ export default function BookingSticky() {
     if (formState === 'payment') {
       setDataState()
     }
-    setErrorDetails(null)
     setSuccessMessage(null)
     setClientSecret(null)
+    setErrorDetails(null)
   }
 
   const handleError = (error: string) => {
@@ -125,9 +116,10 @@ export default function BookingSticky() {
       stripeForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
     }
   }
+
   const handleSuccessAction = () => {
-    // Aquí puedes añadir la lógica para ver otras instalaciones
-    console.log('Ver otras instalaciones')
+    // Aquí puedes añadir la lógica para ver otras instalaciones o reiniciar el proceso
+    console.log('Acción después del éxito')
   }
 
   const renderContent = () => {
@@ -166,10 +158,9 @@ export default function BookingSticky() {
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
-      <div className="flex justify-between items-center font-cal leading-3">
-        <h2 className="">Reserva tu instalación</h2>
-        <h3>{price > 0 ? ` ${price.toFixed(2)}€` : ''}</h3>
-      </div>
+      <h2 className="font-cal leading-3">
+        Reserva tu instalación {price > 0 ? `- ${price.toFixed(2)}€` : ''}
+      </h2>
       {renderContent()}
       <div className="flex gap-2">
         {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
@@ -188,6 +179,7 @@ export default function BookingSticky() {
           onPaymentSubmit={handlePaymentSubmit}
           onSuccessAction={handleSuccessAction}
           clientSecret={clientSecret}
+          disabled={formState === 'error' || isLoading}
         />
       </div>
       {errorDetails && formState !== 'error' && (

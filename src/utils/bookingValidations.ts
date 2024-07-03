@@ -52,7 +52,7 @@ export const bookingSchema = z.object({
   }),
 })
 
-export type BookingFormData = z.infer<typeof bookingSchema>
+export type BookingFormTypes = z.infer<typeof bookingSchema>
 
 // Función para validar el DNI español
 export function validateDNI(dni: string): boolean {
