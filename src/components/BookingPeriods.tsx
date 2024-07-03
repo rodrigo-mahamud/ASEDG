@@ -18,7 +18,7 @@ import 'dayjs/locale/es'
 dayjs.locale('es')
 
 interface BookingPeriodsProps {
-  field: ControllerRenderProps<FieldValues, 'periodo'>
+  field: any
   initiallyOpen?: boolean
 }
 
