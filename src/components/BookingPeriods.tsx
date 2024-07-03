@@ -1,23 +1,47 @@
 import React, { useState, useEffect } from 'react'
 import { ControllerRenderProps, FieldValues } from 'react-hook-form'
-import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/lib/form'
+import { FormItem, FormMessage } from '@/components/lib/form'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
-import { RadioGroup, RadioGroupItem } from '@/components/lib/radio-group'
-import { Label } from '@/components/lib/label'
+import {
+  IconChevronDown,
+  IconCalendarMonth,
+  IconCalendarEvent,
+  IconCheck,
+  IconHours24,
+  IconCalendarWeek,
+  IconStack2,
+} from '@tabler/icons-react'
+import useFormStore from '@/utils/useBookingState'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
-import { IconChevronDown } from '@tabler/icons-react'
 
 dayjs.locale('es')
 
 interface BookingPeriodsProps {
-  field: any
+  field: ControllerRenderProps<FieldValues, 'periodo'>
   initiallyOpen?: boolean
+}
+
+const PRICES = {
+  un_dia: 49.99,
+  un_mes: 199.99,
+  tres_meses: 499.99,
+}
+
+type PeriodKey = keyof typeof PRICES
+
+const PERIOD_INFO: Record<PeriodKey, { icon: React.ElementType; title: string }> = {
+  un_dia: { icon: IconHours24, title: 'Diario' },
+  un_mes: { icon: IconCalendarMonth, title: 'Mensual' },
+  tres_meses: { icon: IconStack2, title: 'Trimestral' },
 }
 
 export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen)
-  const [endDates, setEndDates] = useState<{ [key: string]: string }>({})
+  const [endDates, setEndDates] = useState<{ [key in PeriodKey]: string }>(
+    {} as { [key in PeriodKey]: string },
+  )
+  const { setPrice } = useFormStore()
 
   useEffect(() => {
     const today = dayjs()
@@ -29,35 +53,29 @@ export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsP
     setEndDates(dates)
   }, [])
 
-  const handleValueChange = (value: string) => {
+  const handleValueChange = (value: PeriodKey) => {
     field.onChange(value)
+    setPrice(PRICES[value])
     setIsOpen(false)
   }
-
   const getDisplayText = () => {
-    switch (field.value) {
-      case 'un_dia':
-        return 'Un día'
-      case 'un_mes':
-        return 'Un mes'
-      case 'tres_meses':
-        return 'Tres meses'
-      default:
-        return 'Elige la duración de tu reserva.'
+    if (field.value && PERIOD_INFO[field.value as PeriodKey]) {
+      const { title } = PERIOD_INFO[field.value as PeriodKey]
+      return `${title} - Hasta el ${endDates[field.value as PeriodKey]}`
     }
+    return 'Selecciona un período'
   }
-
   return (
     <FormItem>
       <Collapsible
-        className="border border-input rounded-t-md"
+        className="border border-input rounded-md"
         open={isOpen}
         onOpenChange={setIsOpen}
       >
         <CollapsibleTrigger className="flex justify-between items-center w-full p-4">
           <div className="flex flex-col text-start justify-start w-10/12">
-            <h3 className="font-semibold">Duración</h3>
-            <h4 className="text-sm"> {getDisplayText()}</h4>
+            <h3 className="text-lg font-semibold">Duración</h3>
+            <h4 className="text-sm">{getDisplayText()}</h4>
           </div>
           <div className="pr-2">
             <IconChevronDown
@@ -69,27 +87,30 @@ export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsP
           </div>
         </CollapsibleTrigger>
         <CollapsibleContent className="px-4 pb-4">
-          <RadioGroup
-            className="ml-2 mb-2 space-y-1"
-            onValueChange={handleValueChange}
-            value={field.value || ''}
-          >
-            {Object.entries(endDates).map(([period, date]) => (
-              <div key={period} className="flex items-center space-x-2">
-                <RadioGroupItem
-                  className="border-secondaryAlt text-secondaryAlt/75"
-                  value={period}
-                  id={period}
-                />
-                <Label className="font-normal" htmlFor={period}>
-                  <div>
-                    {period === 'un_dia' ? 'Un día' : period === 'un_mes' ? 'Un mes' : 'Tres meses'}
+          <div className="grid gap-3">
+            {(Object.keys(PRICES) as PeriodKey[]).map((period) => {
+              const { icon: Icon, title } = PERIOD_INFO[period]
+              return (
+                <div
+                  key={period}
+                  className={`w-full flex justify-between items-center rounded-sm p-3 transition-all hover:bg-secondary cursor-pointer ${
+                    field.value === period ? 'bg-secondary' : ''
+                  }`}
+                  onClick={() => handleValueChange(period)}
+                >
+                  <div className="flex space-x-4">
+                    <Icon stroke={1.5} className="mt-[3px] h-5 w-5" />
+                    <div className="flex flex-col">
+                      <p className=" font-semibold">
+                        {PRICES[period]}€ {title}
+                      </p>
+                      <p className="text-sm text-muted-foreground">Hasta el {endDates[period]}</p>
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-500">Hasta el {date}</div>
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
+                </div>
+              )
+            })}
+          </div>
         </CollapsibleContent>
       </Collapsible>
       <FormMessage />

@@ -7,6 +7,7 @@ interface FormStore {
   formState: FormState
   formData: Partial<BookingFormData>
   isLoading: boolean
+  price: number
   setFormState: (newState: FormState) => void
   setEmptyState: () => void
   setDataState: () => void
@@ -16,54 +17,26 @@ interface FormStore {
   updateFormData: (newData: Partial<BookingFormData>) => void
   resetForm: () => void
   setLoading: (loading: boolean) => void
+  setPrice: (price: number) => void
 }
 
 const useFormStore = create<FormStore>((set) => ({
   formState: 'empty',
   formData: {},
   isLoading: false,
+  price: 0,
 
-  setFormState: (newState) =>
-    set((state) => {
-      return { formState: newState }
-    }),
+  setFormState: (newState) => set({ formState: newState }),
+  setEmptyState: () => set({ formState: 'empty' }),
+  setDataState: () => set({ formState: 'data' }),
+  setPaymentState: () => set({ formState: 'payment' }),
+  setSuccessState: () => set({ formState: 'success' }),
+  setErrorState: () => set({ formState: 'error' }),
 
-  setEmptyState: () =>
-    set((state) => {
-      return { formState: 'empty' }
-    }),
-  setDataState: () =>
-    set((state) => {
-      return { formState: 'data' }
-    }),
-  setPaymentState: () =>
-    set((state) => {
-      return { formState: 'payment' }
-    }),
-  setSuccessState: () =>
-    set((state) => {
-      return { formState: 'success' }
-    }),
-  setErrorState: () =>
-    set((state) => {
-      return { formState: 'error' }
-    }),
-
-  updateFormData: (newData) =>
-    set((state) => {
-      const updatedFormData = { ...state.formData, ...newData }
-      return { formData: updatedFormData }
-    }),
-
-  resetForm: () =>
-    set(() => {
-      return { formState: 'empty', formData: {}, isLoading: false }
-    }),
-
-  setLoading: (loading) =>
-    set(() => {
-      return { isLoading: loading }
-    }),
+  updateFormData: (newData) => set((state) => ({ formData: { ...state.formData, ...newData } })),
+  resetForm: () => set({ formState: 'empty', formData: {}, isLoading: false, price: 0 }),
+  setLoading: (loading) => set({ isLoading: loading }),
+  setPrice: (price) => set({ price }),
 }))
 
 export default useFormStore

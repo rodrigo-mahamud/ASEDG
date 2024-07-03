@@ -8,7 +8,7 @@ import { IconAlertCircle, IconArrowLeft } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 import { Button } from './lib/button'
 import { createPaymentIntent } from '@/utils/stripeUtils'
-import { createBooking } from '@/utils/bookingUtils'
+import { createBooking, checkSystemAvailability } from '@/utils/bookingUtils'
 
 export default function BookingSticky() {
   const {
@@ -20,22 +20,47 @@ export default function BookingSticky() {
     setLoading,
     setSuccessState,
     setErrorState,
+    price,
   } = useFormStore()
   const [errorDetails, setErrorDetails] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [isSystemAvailable, setIsSystemAvailable] = useState(true)
 
-  const handleFormSubmit = (data: BookingFormData) => {
-    updateFormData(data)
-    setPaymentState()
-  }
+  const checkAvailability = useCallback(async () => {
+    try {
+      const result = await checkSystemAvailability()
+      setIsSystemAvailable(result.status === 'OK')
+      if (result.status !== 'OK') {
+        setErrorDetails(result.message)
+      }
+      return result.status === 'OK'
+    } catch (error) {
+      console.error('Error checking system availability:', error)
+      setIsSystemAvailable(false)
+      setErrorDetails(
+        'No se pudo verificar la disponibilidad del sistema. Por favor, inténtelo más tarde.',
+      )
+      return false
+    }
+  }, [])
 
   const initializePayment = useCallback(async () => {
     if (formState === 'payment' && !clientSecret) {
       try {
         setLoading(true)
-        const amount = 49.99 // Asegúrate de que este valor sea correcto para tu caso de uso
-        const secret = await createPaymentIntent(amount)
+
+        // Verificar disponibilidad antes de iniciar el pago
+        const isAvailable = await checkAvailability()
+        if (!isAvailable) {
+          setErrorDetails(
+            'El sistema no está disponible en este momento. Por favor, inténtelo más tarde.',
+          )
+          setDataState()
+          return
+        }
+
+        const secret = await createPaymentIntent(price)
         setClientSecret(secret)
       } catch (error) {
         console.error('Error creating payment intent:', error)
@@ -45,15 +70,21 @@ export default function BookingSticky() {
         setLoading(false)
       }
     }
-  }, [formState, clientSecret, setLoading, setDataState])
+  }, [formState, clientSecret, setLoading, setDataState, price, checkAvailability])
 
   useEffect(() => {
     initializePayment()
   }, [initializePayment])
 
+  const handleFormSubmit = (data: BookingFormData) => {
+    updateFormData(data)
+    setPaymentState()
+  }
+
   const handlePaymentComplete = async () => {
     try {
-      const result = await createBooking(formData)
+      setLoading(true)
+      const result = await createBooking({ ...formData, price })
       console.log('Reserva completada con éxito:', result)
       setSuccessMessage('Tu reserva se ha completado correctamente')
       setSuccessState()
@@ -65,6 +96,8 @@ export default function BookingSticky() {
       }
       setErrorDetails(errorMessage)
       setErrorState()
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -92,7 +125,6 @@ export default function BookingSticky() {
       stripeForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))
     }
   }
-
   const handleSuccessAction = () => {
     // Aquí puedes añadir la lógica para ver otras instalaciones
     console.log('Ver otras instalaciones')
@@ -134,7 +166,10 @@ export default function BookingSticky() {
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
-      <h2 className="font-cal leading-3">Reserva tu instalación</h2>
+      <div className="flex justify-between items-center font-cal leading-3">
+        <h2 className="">Reserva tu instalación</h2>
+        <h3>{price > 0 ? ` ${price.toFixed(2)}€` : ''}</h3>
+      </div>
       {renderContent()}
       <div className="flex gap-2">
         {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (

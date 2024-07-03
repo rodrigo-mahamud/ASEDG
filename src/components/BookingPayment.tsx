@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { stripePromise } from '@/utils/stripeUtils'
 import { BookingCheckout } from './BookingCheckout'
@@ -13,6 +13,13 @@ interface BookingPaymentProps {
 
 export function BookingPayment({ clientSecret, onPaymentComplete, onError }: BookingPaymentProps) {
   const { isLoading } = useFormStore()
+  const [stripeReady, setStripeReady] = useState(false)
+
+  useEffect(() => {
+    if (clientSecret) {
+      setStripeReady(true)
+    }
+  }, [clientSecret])
 
   const renderSkeleton = () => (
     <div className="space-y-5 py-4 h-full">
@@ -32,7 +39,7 @@ export function BookingPayment({ clientSecret, onPaymentComplete, onError }: Boo
 
   return (
     <div className="min-h-[252px] h-fit transition-all duration-300">
-      {isLoading || !clientSecret ? renderSkeleton() : renderStripeForm()}
+      {!stripeReady ? renderSkeleton() : renderStripeForm()}
     </div>
   )
 }
