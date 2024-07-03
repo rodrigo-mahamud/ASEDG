@@ -10,7 +10,7 @@ import { Button } from './lib/button'
 import { useBookingHandlers } from '@/utils/bookingHandlers'
 import { BookingError } from './BookingError'
 
-export default function BookingSticky() {
+export default function BookingSticky({ data }: any) {
   const { formState, price, errorDetails, successMessage, clientSecret, isLoading } =
     useBookingState()
 
@@ -33,7 +33,7 @@ export default function BookingSticky() {
     switch (formState) {
       case 'empty':
       case 'data':
-        return <BookingForm onSubmit={handleFormSubmit} />
+        return <BookingForm onSubmit={handleFormSubmit} data={data} />
       case 'payment':
         return (
           <BookingPayment

@@ -27,7 +27,7 @@ export default async function BookingPage({ params }: PageProps) {
   return (
     <main>
       <ImagesMasonry></ImagesMasonry>
-      <BookingSection></BookingSection>
+      <BookingSection data={booking}></BookingSection>
       <Toaster />
     </main>
   )

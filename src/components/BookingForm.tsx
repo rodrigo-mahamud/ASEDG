@@ -20,9 +20,10 @@ import useFormStore from '@/utils/useBookingState'
 
 interface BookingFormProps {
   onSubmit: (data: BookingFormTypes) => void
+  data: any
 }
 
-export function BookingForm({ onSubmit }: BookingFormProps) {
+export function BookingForm({ onSubmit, data }: BookingFormProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const { formData, updateFormData, setDataState, setEmptyState } = useFormStore()
 
@@ -62,7 +63,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           control={form.control}
           name="periodo"
           render={({ field }) => (
-            <BookingPeriods field={field} initiallyOpen={!!formData.periodo} />
+            <BookingPeriods field={field} data={data} initiallyOpen={!!formData.periodo} />
           )}
         />
         <Collapsible

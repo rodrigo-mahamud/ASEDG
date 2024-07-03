@@ -20,6 +20,7 @@ dayjs.locale('es')
 interface BookingPeriodsProps {
   field: any
   initiallyOpen?: boolean
+  data: any
 }
 
 const PRICES = {
@@ -36,7 +37,7 @@ const PERIOD_INFO: Record<PeriodKey, { icon: React.ElementType; title: string }>
   tres_meses: { icon: IconStack2, title: 'Trimestral' },
 }
 
-export function BookingPeriods({ field, initiallyOpen = false }: BookingPeriodsProps) {
+export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPeriodsProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen)
   const [endDates, setEndDates] = useState<{ [key in PeriodKey]: string }>(
     {} as { [key in PeriodKey]: string },
