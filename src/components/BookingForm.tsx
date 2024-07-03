@@ -72,7 +72,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
         >
           <CollapsibleTrigger className="w-full flex justify-between items-center gap-2">
             <div className="flex flex-col text-start justify-start w-10/12">
-              <h3 className="font-semibold">Datos Personales</h3>
+              <h3 className="text-lg font-semibold">Datos Personales</h3>
               <h4 className="text-sm">Completa tus datos personales.</h4>
             </div>
             <div className="pr-2">
