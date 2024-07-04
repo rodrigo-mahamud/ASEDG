@@ -11,8 +11,7 @@ import { BookingError } from './BookingError'
 import { BookingPrice } from './BookingPrice'
 
 export default function BookingSticky({ data }: any) {
-  const { formState, price, errorDetails, successMessage, clientSecret, isLoading } =
-    useBookingState()
+  const { formState, errorDetails, successMessage, clientSecret, isLoading } = useBookingState()
 
   const {
     initializePayment,
@@ -56,12 +55,12 @@ export default function BookingSticky({ data }: any) {
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
-      <h2 className="font-cal leading-3">
-        Reserva tu instalación {price > 0 ? `- ${price.toFixed(2)}€` : ''}
-      </h2>
-
+      <h2 className="text-xl font-cal leading-3 mb-2"> Gimnasio municipal</h2>
+      <h3 className="text-sm opacity-75 text-pretty">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. olor sit amet consectetur adipisic
+      </h3>
       {renderContent()}
-      <BookingPrice />
+      {formState !== 'success' && <BookingPrice />}
       <div className="flex gap-2">
         {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
           <div className="flex items-center">

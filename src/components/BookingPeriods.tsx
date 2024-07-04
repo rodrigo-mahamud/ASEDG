@@ -6,6 +6,7 @@ import { IconChevronDown, IconHours24 } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+import { BookingFormTypes } from '@/utils/bookingValidations'
 
 dayjs.locale('es')
 
@@ -22,7 +23,7 @@ interface BookingPeriodsData {
 }
 
 interface BookingPeriodsProps {
-  field: ControllerRenderProps<FieldValues, 'periodo'>
+  field: ControllerRenderProps<BookingFormTypes>
   initiallyOpen?: boolean
   data: BookingPeriodsData
 }
