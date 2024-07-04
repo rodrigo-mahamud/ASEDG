@@ -132,18 +132,9 @@ export async function POST(request: Request) {
     if (!endTime) {
       throw new Error('Período no válido proporcionado')
     }
-
-    console.log('Obteniendo credenciales del gimnasio...')
     const pinCode = await handleCredentials()
-    console.log('Credenciales obtenidas con éxito')
-
-    console.log('Preparando datos del visitante...')
     const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
-    console.log('Datos del visitante preparados:', JSON.stringify(visitorData, null, 2))
-
-    console.log('Registrando datos del visitante...')
     const result = await postVisitorData(visitorData)
-    console.log('Datos del visitante registrados con éxito:', JSON.stringify(result, null, 2))
 
     // Imprimir todos los datos del usuario y el código PIN por consola
     console.log('Datos del usuario registrado:', {
@@ -166,8 +157,6 @@ export async function POST(request: Request) {
       accessToken: result,
     })
   } catch (error) {
-    console.error('Error al procesar la reserva:', error)
-
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

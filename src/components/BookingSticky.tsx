@@ -4,7 +4,6 @@ import { BookingForm } from './BookingForm'
 import { BookingPayment } from './BookingPayment'
 import { BookingSuccess } from './BookingSuccess'
 import { BookingButton } from './BookingButton'
-import { IconAlertCircle } from '@tabler/icons-react'
 import useBookingState from '@/utils/useBookingState'
 import { Button } from './lib/button'
 import { useBookingHandlers } from '@/utils/bookingHandlers'
@@ -22,7 +21,6 @@ export default function BookingSticky({ data }: any) {
     handleError,
     handleDataSubmit,
     handlePaymentSubmit,
-    handleSuccessAction,
   } = useBookingHandlers()
 
   useEffect(() => {
@@ -78,9 +76,7 @@ export default function BookingSticky({ data }: any) {
         <BookingButton
           onDataSubmit={handleDataSubmit}
           onPaymentSubmit={handlePaymentSubmit}
-          onSuccessAction={handleSuccessAction}
           clientSecret={clientSecret}
-          disabled={formState === 'error' || isLoading}
         />
       </div>
     </aside>

@@ -1,21 +1,15 @@
 import React from 'react'
 import { Button } from './lib/button'
-import { IconArrowRight, IconLoader2 } from '@tabler/icons-react'
+import { IconArrowRight, IconLoader2, IconRefresh } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 
 interface BookingButtonProps {
   onDataSubmit: () => void
   onPaymentSubmit: () => void
-  onSuccessAction: () => void
   clientSecret: string | null
 }
 
-export function BookingButton({
-  onDataSubmit,
-  onPaymentSubmit,
-  onSuccessAction,
-  clientSecret,
-}: BookingButtonProps) {
+export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: BookingButtonProps) {
   const { formState, isLoading } = useFormStore()
 
   const handleClick = () => {
@@ -27,7 +21,7 @@ export function BookingButton({
         onPaymentSubmit()
         break
       case 'success':
-        onSuccessAction()
+        window.location.reload()
         break
     }
   }
@@ -68,7 +62,7 @@ export function BookingButton({
         return {
           ...baseProps,
           children: 'Reservar de nuevo',
-          Icon: IconArrowRight,
+          Icon: IconRefresh,
         }
       default:
         return baseProps

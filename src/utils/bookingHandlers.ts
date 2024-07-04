@@ -90,7 +90,6 @@ export const useBookingHandlers = () => {
     checkUnifiApi,
     price,
     setLoading,
-    setErrorState,
     setDataState,
     setClientSecret,
     setError,
@@ -150,11 +149,6 @@ export const useBookingHandlers = () => {
     }
   }, [])
 
-  const handleSuccessAction = useCallback(() => {
-    // Aquí puedes añadir la lógica para ver otras instalaciones o reiniciar el proceso
-    console.log('Acción después del éxito')
-  }, [])
-
   const createBooking = async (formData: BookingFormTypes) => {
     const response = await fetch('/api/create-booking', {
       method: 'POST',
@@ -181,7 +175,6 @@ export const useBookingHandlers = () => {
     handleError,
     handleDataSubmit,
     handlePaymentSubmit,
-    handleSuccessAction,
     checkUnifiApi,
   }
 }
