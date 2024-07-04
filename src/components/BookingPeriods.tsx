@@ -2,15 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ControllerRenderProps, FieldValues } from 'react-hook-form'
 import { FormItem, FormMessage } from '@/components/lib/form'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
-import {
-  IconChevronDown,
-  IconCalendarMonth,
-  IconCalendarEvent,
-  IconCheck,
-  IconHours24,
-  IconCalendarWeek,
-  IconStack2,
-} from '@tabler/icons-react'
+import { IconChevronDown, IconCalendarMonth, IconHours24, IconStack2 } from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'

@@ -47,7 +47,7 @@ export const useBookingHandlers = () => {
 
       if (response.ok) {
         const data = await response.json()
-        if (data && data.status === 'ok') {
+        if (data && data.status == 200) {
           setError(null)
           return true
         } else {
