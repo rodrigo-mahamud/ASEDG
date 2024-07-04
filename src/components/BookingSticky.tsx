@@ -55,10 +55,15 @@ export default function BookingSticky({ data }: any) {
 
   return (
     <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
-      <h2 className="text-xl font-cal leading-3 mb-2"> Gimnasio municipal</h2>
-      <h3 className="text-sm opacity-75 text-pretty">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. olor sit amet consectetur adipisic
-      </h3>
+      {formState !== 'success' && (
+        <>
+          <h2 className="text-xl font-cal "> Gimnasio municipal</h2>
+          <h3 className="text-sm opacity-75 text-pretty">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. olor sit amet consectetur
+            adipisic
+          </h3>
+        </>
+      )}
       {renderContent()}
       {formState !== 'success' && <BookingPrice />}
       <div className="flex gap-2">

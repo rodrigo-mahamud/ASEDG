@@ -30,7 +30,7 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
         numberOfPieces={450}
         friction={1}
       />
-      <div className="mt-4 p-6  flex flex-col items-center">
+      <div className="pb-7 flex flex-col items-center">
         <video src="/prueba.webm" className="w-24 h-24" autoPlay muted playsInline></video>
         <div className="text-center">
           <h3 className="font-bold text-lg mb-2">¡Reserva confirmada!</h3>
