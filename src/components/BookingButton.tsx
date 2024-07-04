@@ -1,6 +1,12 @@
 import React from 'react'
 import { Button } from './lib/button'
-import { IconArrowRight, IconLoader2, IconRefresh } from '@tabler/icons-react'
+import {
+  IconArrowRight,
+  IconCreditCard,
+  IconCreditCardPay,
+  IconLoader2,
+  IconRefresh,
+} from '@tabler/icons-react'
 import useFormStore from '@/utils/useBookingState'
 
 interface BookingButtonProps {
@@ -41,7 +47,7 @@ export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: B
         return {
           ...baseProps,
           disabled: true,
-          children: 'Completa el formulario',
+          children: 'Continuar con el pago',
           Icon: IconArrowRight,
         }
       case 'data':
@@ -55,8 +61,8 @@ export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: B
           ...baseProps,
           form: 'stripe-form',
           disabled: isLoading || !clientSecret,
-          children: isLoading ? 'Procesando...' : 'Realizar Pago',
-          Icon: isLoading ? IconLoader2 : IconArrowRight,
+          children: isLoading ? 'Procesando...' : 'Pagar',
+          Icon: isLoading ? IconLoader2 : IconCreditCardPay,
         }
       case 'success':
         return {

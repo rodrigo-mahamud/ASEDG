@@ -8,6 +8,7 @@ import useBookingState from '@/utils/useBookingState'
 import { Button } from './lib/button'
 import { useBookingHandlers } from '@/utils/bookingHandlers'
 import { BookingError } from './BookingError'
+import { BookingPrice } from './BookingPrice'
 
 export default function BookingSticky({ data }: any) {
   const { formState, price, errorDetails, successMessage, clientSecret, isLoading } =
@@ -60,7 +61,7 @@ export default function BookingSticky({ data }: any) {
       </h2>
 
       {renderContent()}
-
+      <BookingPrice />
       <div className="flex gap-2">
         {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
           <div className="flex items-center">

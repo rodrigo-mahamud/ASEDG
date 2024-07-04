@@ -69,9 +69,9 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="border-x border-b border-input p-4 rounded-b-md"
+          className="border-x border-b border-input rounded-b-md"
         >
-          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2">
+          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 hover:bg-secondary ease-in-out  p-4 duration-200">
             <div className="flex flex-col text-start justify-start w-10/12">
               <h3 className="text-lg font-semibold">Datos Personales</h3>
               <h4 className="text-sm">Completa tus datos personales.</h4>
@@ -85,7 +85,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
               />
             </div>
           </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-4 mt-6">
+          <CollapsibleContent className="space-y-4 pt-2 px-4 pb-6">
             <div className="flex gap-4">
               <FormField
                 control={form.control}
