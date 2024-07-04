@@ -1,17 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import dayjs from 'dayjs'
-
-const bookingSchema = z.object({
-  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  apellidos: z.string().min(2, 'Los apellidos deben tener al menos 2 caracteres'),
-  edad: z.number().min(16, 'Debes ser mayor de 16 años'),
-  email: z.string().email('Correo electrónico inválido'),
-  telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
-  dni: z.string().refine(validateDNI, { message: 'DNI español inválido' }),
-  periodo: z.enum(['un_dia', 'un_mes', 'tres_meses']),
-  remarks: z.string().optional(),
-})
+import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 
 function validateDNI(dni: string): boolean {
   // Implementa la lógica de validación del DNI aquí
@@ -43,12 +33,10 @@ async function handleCredentials() {
   }
 }
 
-function calculatePeriodTimes(period: string): { startTime: number; endTime: number | null } {
-  const periodMap = { un_dia: 1, un_mes: 30, tres_meses: 90 }
-  const days = periodMap[period as keyof typeof periodMap]
+function calculatePeriodTimes(days: number): { startTime: number; endTime: number | null } {
   const now = dayjs()
   const startTime = now.unix()
-  const endTime = days ? now.add(days, 'day').unix() : null
+  const endTime = days > 0 ? now.add(days, 'day').unix() : null
   return { startTime, endTime }
 }
 
@@ -63,7 +51,7 @@ function prepareVisitorData(
     last_name: data.apellidos,
     mobile_phone: data.telefono,
     email: data.email,
-    remarks: `Edad: ${data.edad} años - ${data.remarks}`,
+    remarks: `Edad: ${data.edad} años - ¿Términos aceptados? ${data.terminos}`,
     start_time: startTime,
     end_time: endTime,
     visit_reason: 'Others',
@@ -123,7 +111,7 @@ export async function POST(request: Request) {
     console.log('Iniciando proceso de reserva y concesión de acceso...')
 
     console.log('Validando datos del formulario...')
-    const validatedData = bookingSchema.parse(body)
+    const validatedData: BookingFormTypes = bookingSchema.parse(body)
     console.log('Datos del formulario validados con éxito:', validatedData)
 
     console.log('Calculando tiempos del período...')
@@ -148,7 +136,7 @@ export async function POST(request: Request) {
       fechaInicio: new Date(startTime * 1000).toLocaleString(),
       fechaFin: new Date(endTime * 1000).toLocaleString(),
       pinCode: pinCode,
-      remarks: validatedData.remarks,
+      remarks: validatedData.terminos,
     })
 
     return NextResponse.json({
