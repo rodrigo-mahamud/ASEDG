@@ -1,4 +1,4 @@
-import type { Field } from 'payload/types'
+import type { Field } from 'payload'
 import deepMerge from '@/utils/deepMerge'
 
 // Definir el tipo para la función LinkType

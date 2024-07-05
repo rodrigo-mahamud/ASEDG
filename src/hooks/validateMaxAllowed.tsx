@@ -1,4 +1,4 @@
-import { FieldHook, PayloadRequest } from 'payload/types'
+import { FieldHook, PayloadRequest } from 'payload'
 
 interface ValidateMaxAllowedOptions {
   field: string

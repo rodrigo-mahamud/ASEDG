@@ -1,5 +1,5 @@
 // collections/Media.ts
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 const Media: CollectionConfig = {
   slug: 'media',

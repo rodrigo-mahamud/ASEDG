@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload/types'
+import type { GlobalConfig } from 'payload'
 import headerLink from '../fields/headerLink'
 
 const Header: GlobalConfig = {

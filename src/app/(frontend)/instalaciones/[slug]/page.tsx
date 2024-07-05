@@ -1,7 +1,7 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Toaster } from 'sonner'
 import ImagesMasonry from '@/components/ImagesMasonry'
@@ -12,7 +12,7 @@ type PageProps = {
 }
 
 export default async function BookingPage({ params }: PageProps) {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
 
   const facilitiesData = (await payload.find({
     collection: 'facilities',
@@ -37,7 +37,7 @@ export default async function BookingPage({ params }: PageProps) {
 // export const revalidate = 60 // Revalidate every 60 seconds
 
 // export async function generateStaticParams() {
-//   const payload = await getPayloadHMR({ config: configPromise })
+//   const payload = await getPayload({ config: configPromise })
 
 //   const bookings = (await payload.find({
 //     collection: 'bookings',

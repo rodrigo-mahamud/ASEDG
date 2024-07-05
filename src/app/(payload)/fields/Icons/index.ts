@@ -1,4 +1,4 @@
-import { Field } from 'payload/types'
+import { Field } from 'payload'
 import IconField from './Component'
 
 const Icon: Field = {

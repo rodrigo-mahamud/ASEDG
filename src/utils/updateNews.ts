@@ -1,12 +1,12 @@
 // hooks/updateNews.ts
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
 import type { Payload } from 'payload'
 
 // ... (Mantén las interfaces y tipos existentes)
 
 const updateNews = async () => {
-  const payload: Payload = await getPayloadHMR({ config: configPromise })
+  const payload: Payload = await getPayload({ config: configPromise })
 
   // Obtener todas las noticias
   const allNewsResponse = await payload.find({

@@ -4,7 +4,7 @@ import NavBar from '@/components/NavBar'
 import { GeistSans } from 'geist/font/sans'
 import SmoothScrolling from '@/components/SmoothScrolling'
 import Footer from '@/components/Footer'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +16,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
   const header = (await payload.findGlobal({ slug: 'header' })) as any
   const settings = (await payload.findGlobal({ slug: 'settings' })) as any
 

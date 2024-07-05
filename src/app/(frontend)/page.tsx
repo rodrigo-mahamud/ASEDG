@@ -1,5 +1,5 @@
 import React from 'react'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import IndexHero from '@/components/IndexHero'
@@ -7,7 +7,7 @@ import Hero from '@/components/Hero'
 
 // TODO:  fix the types in findGlobal and pageData
 export default async function HomePage() {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
 
   // Obtener configuración global
   const settings = (await payload.findGlobal({ slug: 'settings' })) as any

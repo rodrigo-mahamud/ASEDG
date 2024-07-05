@@ -1,4 +1,4 @@
-import { Block } from 'payload/types'
+import { Block } from 'payload'
 import CalendarBlock from '../Calendar'
 import BusList from '../BusList'
 import NewsFeatured from '../NewsFeatured'

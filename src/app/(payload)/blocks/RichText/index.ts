@@ -1,6 +1,6 @@
-import { Block } from 'payload/types'
+import { Block } from 'payload'
 import link from '../../fields/link'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 export interface LinkItem {

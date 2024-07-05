@@ -1,4 +1,4 @@
-import { Block } from 'payload/types'
+import { Block } from 'payload'
 import link from '../../fields/link'
 export type Type = {
   style: string

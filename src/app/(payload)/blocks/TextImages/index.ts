@@ -1,4 +1,4 @@
-import { Block } from 'payload/types'
+import { Block } from 'payload'
 import IconField from '../../fields/Icons/Component'
 import Icon from '../../fields/Icons'
 interface ListTypes {
@@ -37,7 +37,7 @@ const TextImagesBlock: Block = {
       label: 'Invertir Diseño',
       required: false,
     },
-    // Icon,
+    Icon,
     {
       name: 'title',
       type: 'text',

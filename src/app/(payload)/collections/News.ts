@@ -1,33 +1,33 @@
-import { CollectionConfig, FieldHook } from 'payload/types'
-import { APIError } from 'payload/errors' // Importa APIError
+import { CollectionConfig, FieldHook } from 'payload'
+// import { APIError } from 'payload/errors' // Importa APIError
 import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
 import updateNews from '@/utils/updateNews'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config' // Asegúrate de que esta ruta es correcta
 
-const checkFixedNewsLimit: FieldHook = async ({ data, req, originalDoc }) => {
-  if (data && data.fixed && (!originalDoc || !originalDoc.fixed)) {
-    const payload = await getPayloadHMR({ config: configPromise })
+// const checkFixedNewsLimit: FieldHook = async ({ data, req, originalDoc }) => {
+//   if (data && data.fixed && (!originalDoc || !originalDoc.fixed)) {
+//     const payload = await getPayload({ config: configPromise })
 
-    const { totalDocs } = await payload.find({
-      collection: 'news',
-      where: {
-        fixed: {
-          equals: true,
-        },
-      },
-    })
+//     const { totalDocs } = await payload.find({
+//       collection: 'news',
+//       where: {
+//         fixed: {
+//           equals: true,
+//         },
+//       },
+//     })
 
-    if (totalDocs >= 8) {
-      const error = new APIError('No puedes fijar más de 8 noticias.', 400)
-      error.isPublic = true // Establece el error como público
-      throw error
-    }
-  }
+//     if (totalDocs >= 8) {
+//       const error = new APIError('No puedes fijar más de 8 noticias.', 400)
+//       error.isPublic = true // Establece el error como público
+//       throw error
+//     }
+//   }
 
-  return data?.fixed ?? originalDoc?.fixed // Maneja el posible valor undefined de data y originalDoc
-}
+//   return data?.fixed ?? originalDoc?.fixed // Maneja el posible valor undefined de data y originalDoc
+// }
 const News: CollectionConfig = {
   slug: 'news',
   labels: {
@@ -105,9 +105,9 @@ const News: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-      hooks: {
-        beforeChange: [checkFixedNewsLimit],
-      },
+      // hooks: {
+      //   beforeChange: [checkFixedNewsLimit],
+      // },
     },
     {
       name: 'publishedDate',

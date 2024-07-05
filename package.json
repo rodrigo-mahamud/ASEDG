@@ -1,5 +1,5 @@
 {
-  "name": "asedg",
+  "name": "prueba",
   "version": "1.0.0",
   "description": "A blank template to get started with Payload 3.0",
   "license": "MIT",
@@ -14,11 +14,11 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.6.0",
     "@payloadcms/db-mongodb": "beta",
     "@payloadcms/next": "beta",
     "@payloadcms/plugin-cloud": "beta",
     "@payloadcms/richtext-lexical": "beta",
+    "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-checkbox": "^1.1.0",
     "@radix-ui/react-collapsible": "^1.1.0",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -73,10 +73,10 @@
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "eslint": "^8",
-    "eslint-config-next": "^14.2.3",
+    "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5"
+    "typescript": "5.5.2"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0"

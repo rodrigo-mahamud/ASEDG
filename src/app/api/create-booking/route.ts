@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 function validateDNI(dni: string): boolean {
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
     const result = await postVisitorData(visitorData)
 
     // Obtener la instancia de Payload
-    const payload = await getPayloadHMR({ config: configPromise })
+    const payload = await getPayload({ config: configPromise })
 
     // Crear una nueva reserva en Payload
     try {

@@ -1,4 +1,4 @@
-import { CollectionConfig } from 'payload/types'
+import { CollectionConfig } from 'payload'
 
 const Categorias: CollectionConfig = {
   slug: 'cat',

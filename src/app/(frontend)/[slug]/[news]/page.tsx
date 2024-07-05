@@ -1,7 +1,7 @@
 // app/[slug]/page.tsx
 import React from 'react'
 import { Metadata } from 'next'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Hero from '@/components/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
@@ -26,7 +26,7 @@ interface PageProps {
 }
 
 // export async function generateStaticParams() {
-//   const payload = await getPayloadHMR({ config: configPromise })
+//   const payload = await getPayload({ config: configPromise })
 //   const pageData = (await payload.find({
 //     collection: 'news',
 //   })) as any
@@ -37,7 +37,7 @@ interface PageProps {
 // }
 
 // export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-//   const payload = await getPayloadHMR({ config: configPromise })
+//   const payload = await getPayload({ config: configPromise })
 //   const pageData = (await payload.find({
 //     collection: 'news',
 //   })) as any
@@ -55,7 +55,7 @@ interface PageProps {
 // }
 
 export default async function Page({ params }: PageProps) {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
   const pageData = (await payload.find({
     collection: 'news',
   })) as any

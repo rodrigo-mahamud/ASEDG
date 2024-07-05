@@ -1,5 +1,5 @@
 import slug from '../fields/slug'
-import type { CollectionConfig } from 'payload/types'
+import type { CollectionConfig } from 'payload'
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
 import TabsBlock from '../blocks/Tabs'

@@ -1,23 +1,20 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { useField } from '@payloadcms/ui/forms/useField'
-import { Field } from 'payload/types'
+import { useField } from '@payloadcms/ui'
+import { Field } from 'payload'
 import * as TablerIcons from '@tabler/icons-react'
+import { Icon as TablerIcon } from '@tabler/icons-react'
 import './style.css'
 
 const PAGE_SIZE = 40
 
 interface IconFieldProps {
   path: string
-  value: string
-
-  onChange: (value: string) => void
+  name: string
 }
 
-const IconField: React.FC<{ path: string }> = ({ path }) => {
-  const { value, setValue, showError, errorMessage } = useField<string>({
-    path,
-  })
+const IconField: React.FC<IconFieldProps> = ({ path, name }) => {
+  const { value, setValue } = useField<string>({ path })
   const [search, setSearch] = useState('')
   const [icons, setIcons] = useState(Object.keys(TablerIcons).slice(0, PAGE_SIZE))
   const [page, setPage] = useState(1)
@@ -52,10 +49,22 @@ const IconField: React.FC<{ path: string }> = ({ path }) => {
     setIsDropdownOpen(!isDropdownOpen)
   }
 
+  const handleIconSelect = (iconName: string) => {
+    setValue(iconName)
+    setIsDropdownOpen(false)
+  }
+
+  const renderIcon = (iconName: string) => {
+    const IconComponent = TablerIcons[
+      iconName as keyof typeof TablerIcons
+    ] as React.ComponentType<TablerIcon>
+    return IconComponent ? <IconComponent size={24} /> : null
+  }
+
   return (
     <div className="icon-field">
       <button onClick={toggleDropdown} className="icon-button">
-        {value ? React.createElement(TablerIcons[valueany]) : 'Select Icon'}
+        {value ? renderIcon(value) : 'Select Icon'}
       </button>
       {isDropdownOpen && (
         <div className="icon-dropdown">
@@ -67,24 +76,19 @@ const IconField: React.FC<{ path: string }> = ({ path }) => {
             className="icon-search"
           />
           <div className="icon-grid" onScroll={handleScroll}>
-            {icons.map((iconName) => {
-              const IconComponent = TablerIcons[iconName]
-              return (
-                <div
-                  key={iconName}
-                  className={`icon-item ${value === iconName ? 'selected' : ''}`}
-                  onClick={() => {
-                    setValue(iconName)
-                    setIsDropdownOpen(false)
-                  }}
-                >
-                  <IconComponent />
-                </div>
-              )
-            })}
+            {icons.map((iconName) => (
+              <div
+                key={iconName}
+                className={`icon-item ${value === iconName ? 'selected' : ''}`}
+                onClick={() => handleIconSelect(iconName)}
+              >
+                {renderIcon(iconName)}
+              </div>
+            ))}
           </div>
         </div>
       )}
+      <input type="hidden" name={name} value={value || ''} />
     </div>
   )
 }
