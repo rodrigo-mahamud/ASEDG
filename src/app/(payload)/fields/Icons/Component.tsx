@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useFieldProps, useField } from '@payloadcms/ui'
 import * as TablerIcons from '@tabler/icons-react'
-import { Icon as TablerIcon } from '@tabler/icons-react'
+import { Icon as TablerIcon, IconProps } from '@tabler/icons-react'
 import './style.css'
 
 const PAGE_SIZE = 40
@@ -52,8 +52,8 @@ const IconField: React.FC = () => {
   const renderIcon = (iconName: string) => {
     const IconComponent = TablerIcons[
       iconName as keyof typeof TablerIcons
-    ] as React.ComponentType<TablerIcon>
-    return IconComponent ? <IconComponent size={22} /> : null
+    ] as React.ComponentType<IconProps>
+    return IconComponent ? <IconComponent size={22} stroke={1.5} /> : null
   }
   const Default = () => {
     return (
