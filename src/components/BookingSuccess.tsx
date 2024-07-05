@@ -9,7 +9,7 @@ interface BookingSuccessProps {
 
 export function BookingSuccess({ message }: BookingSuccessProps) {
   const [isConfettiRunning, setIsConfettiRunning] = useState(true)
-  const [play] = useSound('/success.mp3', { volume: 0.5 })
+  const [play] = useSound('/success.mp3', { volume: 0.4 })
 
   useEffect(() => {
     play()
@@ -27,7 +27,7 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
         width={window.innerWidth}
         height={window.innerHeight}
         recycle={isConfettiRunning}
-        numberOfPieces={450}
+        numberOfPieces={550}
         friction={1}
       />
       <div className="pb-7 flex flex-col items-center">

@@ -3,7 +3,7 @@ import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
 
 const Bookings: CollectionConfig = {
-  slug: 'bookings',
+  slug: 'facilities',
   labels: {
     singular: 'Instalaciones',
     plural: 'Instalaciones',

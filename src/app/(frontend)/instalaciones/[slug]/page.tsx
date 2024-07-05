@@ -15,7 +15,7 @@ export default async function BookingPage({ params }: PageProps) {
   const payload = await getPayloadHMR({ config: configPromise })
 
   const bookingsData = (await payload.find({
-    collection: 'bookings',
+    collection: 'facilities',
   })) as any
 
   const booking = bookingsData.docs.find((booking: any) => booking.slug === params.slug)

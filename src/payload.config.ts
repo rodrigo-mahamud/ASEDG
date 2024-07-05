@@ -13,7 +13,7 @@ import path from 'path'
 import { buildConfig } from 'payload/config'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import Categorias from './app/(payload)/collections/Categorias'
 import News from './app/(payload)/collections/News'
 import Media from './app/(payload)/collections/Media'
@@ -23,7 +23,7 @@ import Users from './app/(payload)/collections/Users'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
 import TextImagesBlock from './app/(payload)/blocks/TextImages'
-import Bookings from './app/(payload)/collections/Bookings'
+import Facilities from './app/(payload)/collections/Facilities'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +32,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Pages, Media, News, Bookings, Categorias],
+  collections: [Users, Pages, Media, News, Facilities, Categorias],
   globals: [Settings, Header],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
@@ -80,7 +80,19 @@ export default buildConfig({
     ],
   }),
   secret: process.env.PAYLOAD_SECRET || '',
-
+  email: nodemailerAdapter({
+    defaultFromAddress: 'contacto@rodrigomahamud.com',
+    defaultFromName: 'Reservas San Esteban de Gormaz',
+    transportOptions: {
+      host: process.env.SECRET_SMTP_HOST,
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.SECRET_SMTP_MAIL,
+        pass: process.env.SECRET_SMTP_PASSWORD,
+      },
+    },
+  }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
