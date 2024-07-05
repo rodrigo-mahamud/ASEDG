@@ -14,20 +14,20 @@ type PageProps = {
 export default async function BookingPage({ params }: PageProps) {
   const payload = await getPayloadHMR({ config: configPromise })
 
-  const bookingsData = (await payload.find({
+  const facilitiesData = (await payload.find({
     collection: 'facilities',
   })) as any
 
-  const booking = bookingsData.docs.find((booking: any) => booking.slug === params.slug)
+  const data = facilitiesData.docs.find((booking: any) => booking.slug === params.slug)
 
-  if (!booking) {
+  if (!data) {
     notFound()
   }
 
   return (
     <main>
       <ImagesMasonry></ImagesMasonry>
-      <BookingSection data={booking}></BookingSection>
+      <BookingSection data={data}></BookingSection>
       <Toaster />
     </main>
   )

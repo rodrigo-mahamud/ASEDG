@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
-import payload from 'payload' // Importa Payload
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
 
 function validateDNI(dni: string): boolean {
   // Implementa la lógica de validación del DNI aquí
@@ -125,30 +126,32 @@ export async function POST(request: Request) {
     const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
     const result = await postVisitorData(visitorData)
 
-    // Enviar correo electrónico usando Payload
+    // Obtener la instancia de Payload
+    const payload = await getPayloadHMR({ config: configPromise })
+
+    // Crear una nueva reserva en Payload
     try {
-      await payload.sendEmail({
-        to: validatedData.email,
-        subject: 'Registro exitoso en el gimnasio',
-        html: `
-          <h1>¡Bienvenido, ${validatedData.nombre} ${validatedData.apellidos}!</h1>
-          <p>Te has registrado exitosamente en nuestro gimnasio.</p>
-          <p>Detalles de tu registro:</p>
-          <ul>
-            <li>Nombre: ${validatedData.nombre} ${validatedData.apellidos}</li>
-            <li>Teléfono móvil: ${validatedData.telefono}</li>
-            <li>Correo electrónico: ${validatedData.email}</li>
-            <li>Hora de inicio: ${new Date(startTime * 1000).toLocaleString()}</li>
-            <li>Hora de finalización: ${new Date(endTime * 1000).toLocaleString()}</li>
-            <li>Código PIN: ${pinCode}</li>
-          </ul>
-          <p>¡Gracias por unirte a nuestro gimnasio!</p>
-        `,
+      const booking = await payload.create({
+        collection: 'bookings',
+        data: {
+          nombre: validatedData.nombre,
+          apellidos: validatedData.apellidos,
+          email: validatedData.email,
+          telefono: validatedData.telefono,
+          edad: validatedData.edad,
+          dni: validatedData.dni,
+          periodo: validatedData.periodo,
+          fechaInicio: new Date(startTime * 1000),
+          fechaFin: new Date(endTime * 1000),
+          pinCode: pinCode,
+          terminos: validatedData.terminos,
+        },
       })
-      console.log('Correo electrónico enviado con éxito')
-    } catch (emailError) {
-      console.error('Error al enviar el correo electrónico:', emailError)
-      // Aquí puedes decidir si quieres lanzar una excepción o simplemente registrar el error
+
+      console.log('Reserva creada con éxito en Payload:', booking)
+    } catch (payloadError) {
+      console.error('Error al crear la reserva en Payload:', payloadError)
+      throw new Error('Error al procesar la reserva')
     }
 
     // Imprimir todos los datos del usuario y el código PIN por consola
