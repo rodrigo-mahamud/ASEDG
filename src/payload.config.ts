@@ -83,7 +83,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   email: nodemailerAdapter({
     defaultFromAddress: 'contacto@rodrigomahamud.com',
-    defaultFromName: 'Reservas San Esteban de Gormaz',
+    defaultFromName: 'Ayuntamiento de San Esteban de Gormaz',
     transportOptions: {
       host: process.env.SECRET_SMTP_HOST,
       port: 465,

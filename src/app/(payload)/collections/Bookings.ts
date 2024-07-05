@@ -68,11 +68,11 @@ const Bookings: CollectionConfig = {
   ],
   hooks: {
     afterChange: [
-      async ({ doc, operation }) => {
+      async ({ doc, req, operation }) => {
         if (operation === 'create') {
           const { email, nombre, apellidos, telefono, fechaInicio, fechaFin, pinCode } = doc
 
-          await payload.sendEmail({
+          await req.payload.sendEmail({
             to: email,
             subject: 'Registro exitoso en el gimnasio',
             html: `
