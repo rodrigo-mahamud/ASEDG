@@ -53,13 +53,20 @@ const IconField: React.FC = () => {
     const IconComponent = TablerIcons[
       iconName as keyof typeof TablerIcons
     ] as React.ComponentType<TablerIcon>
-    return IconComponent ? <IconComponent size={24} /> : null
+    return IconComponent ? <IconComponent size={22} /> : null
   }
-
+  const Default = () => {
+    return (
+      <>
+        <span>Añadir Icono</span>
+        <TablerIcons.IconPlus size={16}></TablerIcons.IconPlus>
+      </>
+    )
+  }
   return (
     <div className="icon-field">
       <button onClick={toggleDropdown} className="icon-button">
-        {value ? renderIcon(value) : 'Select Icon'}
+        {value ? renderIcon(value) : <Default />}
       </button>
       {isDropdownOpen && (
         <div className="icon-dropdown">
@@ -67,7 +74,7 @@ const IconField: React.FC = () => {
             type="text"
             value={search}
             onChange={handleSearchChange}
-            placeholder="Search icons..."
+            placeholder="Buscar iconos (EN)"
             className="icon-search"
           />
           <div className="icon-grid" onScroll={handleScroll}>

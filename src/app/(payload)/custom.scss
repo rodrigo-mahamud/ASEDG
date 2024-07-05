@@ -8,3 +8,44 @@
 .subcatGrid .collapsible__header-wrap--has-drag-handle {
   display: none;
 }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222222;
+  border: 0 #fff;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #323232;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #525252;
+}
+
+::-webkit-scrollbar-track {
+  background: #141414;
+  border: 0 #fff;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #222222;
+}
+
+::-webkit-scrollbar-track:active {
+  background: #323232;
+}
+
+::-webkit-scrollbar-corner {
+  background: 0 0;
+}
