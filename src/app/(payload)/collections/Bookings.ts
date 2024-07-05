@@ -2,6 +2,10 @@ import { CollectionConfig } from 'payload/types'
 import payload from 'payload' // Importa Payload
 const Bookings: CollectionConfig = {
   slug: 'bookings',
+  labels: {
+    singular: 'Reserva',
+    plural: 'Reservas',
+  },
   admin: {
     useAsTitle: 'email',
   },
