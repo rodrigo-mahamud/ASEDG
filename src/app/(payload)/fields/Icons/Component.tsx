@@ -1,19 +1,14 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { useField } from '@payloadcms/ui'
-import { Field } from 'payload'
+import { useFieldProps, useField } from '@payloadcms/ui'
 import * as TablerIcons from '@tabler/icons-react'
 import { Icon as TablerIcon } from '@tabler/icons-react'
 import './style.css'
 
 const PAGE_SIZE = 40
 
-interface IconFieldProps {
-  path: string
-  name: string
-}
-
-const IconField: React.FC<IconFieldProps> = ({ path, name }) => {
+const IconField: React.FC = () => {
+  const { path } = useFieldProps()
   const { value, setValue } = useField<string>({ path })
   const [search, setSearch] = useState('')
   const [icons, setIcons] = useState(Object.keys(TablerIcons).slice(0, PAGE_SIZE))
@@ -88,7 +83,6 @@ const IconField: React.FC<IconFieldProps> = ({ path, name }) => {
           </div>
         </div>
       )}
-      <input type="hidden" name={name} value={value || ''} />
     </div>
   )
 }
