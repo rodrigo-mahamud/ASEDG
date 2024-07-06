@@ -4,38 +4,8 @@ import dayjs from 'dayjs'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { render } from '@react-email/components'
-import { BookingConfirmationEmail } from '@/emails/BookingConfirmationEmail'
-
-function validateDNI(dni: string): boolean {
-  // Implementa la lógica de validación del DNI aquí
-  // Por ahora, retornamos true como placeholder
-  return true
-}
-
-async function handleCredentials() {
-  try {
-    console.log('Iniciando solicitud de credenciales del gimnasio...')
-    const response = await fetch(process.env.SECRET_GYM_CREDENTIALS_API_URL!, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: process.env.SECRET_GYM_CREDENTIALS_API_TOKEN!,
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    const data = await response.json()
-    console.log('Credenciales del gimnasio obtenidas con éxito')
-    return data.data
-  } catch (error) {
-    console.error('Error fetching gym credentials:', error)
-    throw new Error('Failed to fetch gym credentials')
-  }
-}
+import { getCredentials } from './getCredentials'
+import { sendEmail } from './sendEmail'
 
 function calculatePeriodTimes(days: number): { startTime: number; endTime: number | null } {
   const now = dayjs()
@@ -124,63 +94,16 @@ export async function POST(request: Request) {
     if (!endTime) {
       throw new Error('Período no válido proporcionado')
     }
-    const pinCode = await handleCredentials()
+
+    const pinCode = await getCredentials()
     const visitorData = prepareVisitorData(validatedData, startTime, endTime, pinCode)
     const result = await postVisitorData(visitorData)
 
     // Obtener la instancia de Payload
     const payload = await getPayload({ config: configPromise })
 
-    // Crear una nueva reserva en Payload
-    try {
-      const booking = await payload.create({
-        collection: 'bookings',
-        data: {
-          nombre: validatedData.nombre,
-          apellidos: validatedData.apellidos,
-          email: validatedData.email,
-          telefono: validatedData.telefono,
-          edad: validatedData.edad,
-          dni: validatedData.dni,
-          periodo: validatedData.periodo,
-          fechaInicio: new Date(startTime * 1000),
-          fechaFin: new Date(endTime * 1000),
-          pinCode: pinCode,
-          terminos: validatedData.terminos,
-        },
-      })
-
-      console.log('Reserva creada con éxito:', booking)
-
-      // Generar el HTML del correo electrónico usando React Email
-      const emailHtml = render(
-        BookingConfirmationEmail({
-          nombre: validatedData.nombre,
-          apellidos: validatedData.apellidos,
-          email: validatedData.email,
-          telefono: validatedData.telefono,
-          fechaInicio: new Date(startTime * 1000).toLocaleString(),
-          fechaFin: new Date(endTime * 1000).toLocaleString(),
-          pinCode: pinCode,
-        }),
-      )
-
-      // Enviar correo electrónico usando Payload
-      try {
-        await payload.sendEmail({
-          to: validatedData.email,
-          subject: 'Registro exitoso en el gimnasio',
-          html: emailHtml,
-        })
-        console.log('Correo electrónico enviado con éxito')
-      } catch (emailError) {
-        console.error('Error al enviar el correo electrónico:', emailError)
-        // Aquí puedes decidir si quieres lanzar una excepción o simplemente registrar el error
-      }
-    } catch (payloadError) {
-      console.error('Error al crear la reserva en Payload:', payloadError)
-      throw new Error('Error al procesar la reserva')
-    }
+    // Enviar correo electrónico
+    await sendEmail(payload, validatedData, startTime, endTime, pinCode)
 
     // Imprimir todos los datos del usuario y el código PIN por consola
     console.log('Datos del usuario registrado:', {
@@ -232,6 +155,17 @@ export async function POST(request: Request) {
             success: false,
             message:
               'Error al registrar los datos del visitante. Por favor, inténtelo de nuevo más tarde.',
+            errorDetails: error.stack,
+          },
+          { status: 500 },
+        )
+      }
+      if (error.message === 'Failed to send email') {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              'Error al enviar el correo electrónico de confirmación. Por favor, inténtelo de nuevo más tarde.',
             errorDetails: error.stack,
           },
           { status: 500 },

@@ -28,6 +28,7 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
         height={window.innerHeight}
         recycle={isConfettiRunning}
         numberOfPieces={550}
+        gravity={0.98}
         friction={1}
       />
       <div className="pb-7 flex flex-col items-center">
