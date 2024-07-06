@@ -15,7 +15,7 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
     play()
     const timer = setTimeout(() => {
       setIsConfettiRunning(false)
-    }, 1250) // Detiene el confeti después de 5 segundos
+    }, 1200) // Detiene el confeti después de 5 segundos
 
     return () => clearTimeout(timer)
   }, [play])
@@ -27,9 +27,8 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
         width={window.innerWidth}
         height={window.innerHeight}
         recycle={isConfettiRunning}
-        numberOfPieces={550}
-        gravity={0.98}
-        friction={1}
+        numberOfPieces={450}
+        gravity={0.97}
       />
       <div className="pb-7 flex flex-col items-center">
         <video src="/prueba.webm" className="w-24 h-24" autoPlay muted playsInline></video>

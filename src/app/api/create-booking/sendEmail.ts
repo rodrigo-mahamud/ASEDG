@@ -1,5 +1,5 @@
 import { render } from '@react-email/components'
-import { BookingConfirmationEmail } from '@/emails/BookingConfirmationEmail'
+import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { BookingFormTypes } from '@/utils/bookingValidations'
 import { Payload } from 'payload'
 
