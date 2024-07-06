@@ -1,5 +1,4 @@
 import { CollectionConfig } from 'payload'
-import payload from 'payload' // Importa Payload
 const Bookings: CollectionConfig = {
   slug: 'bookings',
   labels: {
@@ -66,34 +65,6 @@ const Bookings: CollectionConfig = {
       required: true,
     },
   ],
-  hooks: {
-    afterChange: [
-      async ({ doc, req, operation }) => {
-        if (operation === 'create') {
-          const { email, nombre, apellidos, telefono, fechaInicio, fechaFin, pinCode } = doc
-
-          await req.payload.sendEmail({
-            to: email,
-            subject: 'Registro exitoso en el gimnasio',
-            html: `
-              <h1>¡Bienvenido, ${nombre} ${apellidos}!</h1>
-              <p>Te has registrado exitosamente en nuestro gimnasio.</p>
-              <p>Detalles de tu registro:</p>
-              <ul>
-                <li>Nombre: ${nombre} ${apellidos}</li>
-                <li>Teléfono móvil: ${telefono}</li>
-                <li>Correo electrónico: ${email}</li>
-                <li>Hora de inicio: ${new Date(fechaInicio).toLocaleString()}</li>
-                <li>Hora de finalización: ${new Date(fechaFin).toLocaleString()}</li>
-                <li>Código PIN: ${pinCode}</li>
-              </ul>
-              <p>¡Gracias por unirte a nuestro gimnasio!</p>
-            `,
-          })
-        }
-      },
-    ],
-  },
 }
 
 export default Bookings

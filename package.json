@@ -14,11 +14,11 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.6.0",
     "@payloadcms/db-mongodb": "beta",
     "@payloadcms/next": "beta",
     "@payloadcms/plugin-cloud": "beta",
     "@payloadcms/richtext-lexical": "beta",
-    "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-checkbox": "^1.1.0",
     "@radix-ui/react-collapsible": "^1.1.0",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -31,6 +31,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@react-email/components": "^0.0.21",
     "@stripe/react-stripe-js": "^2.7.2",
     "@stripe/stripe-js": "^4.0.0",
     "@tabler/icons-react": "^3.5.0",

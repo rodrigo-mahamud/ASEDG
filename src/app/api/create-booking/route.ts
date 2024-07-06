@@ -4,6 +4,8 @@ import dayjs from 'dayjs'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { render } from '@react-email/components'
+import { BookingConfirmationEmail } from '@/emails/BookingConfirmationEmail'
 
 function validateDNI(dni: string): boolean {
   // Implementa la lógica de validación del DNI aquí
@@ -148,7 +150,33 @@ export async function POST(request: Request) {
         },
       })
 
-      console.log('Reserva creada con éxito en Payload:', booking)
+      console.log('Reserva creada con éxito:', booking)
+
+      // Generar el HTML del correo electrónico usando React Email
+      const emailHtml = render(
+        BookingConfirmationEmail({
+          nombre: validatedData.nombre,
+          apellidos: validatedData.apellidos,
+          email: validatedData.email,
+          telefono: validatedData.telefono,
+          fechaInicio: new Date(startTime * 1000).toLocaleString(),
+          fechaFin: new Date(endTime * 1000).toLocaleString(),
+          pinCode: pinCode,
+        }),
+      )
+
+      // Enviar correo electrónico usando Payload
+      try {
+        await payload.sendEmail({
+          to: validatedData.email,
+          subject: 'Registro exitoso en el gimnasio',
+          html: emailHtml,
+        })
+        console.log('Correo electrónico enviado con éxito')
+      } catch (emailError) {
+        console.error('Error al enviar el correo electrónico:', emailError)
+        // Aquí puedes decidir si quieres lanzar una excepción o simplemente registrar el error
+      }
     } catch (payloadError) {
       console.error('Error al crear la reserva en Payload:', payloadError)
       throw new Error('Error al procesar la reserva')
