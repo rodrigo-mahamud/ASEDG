@@ -36,7 +36,7 @@ export function BookingSuccess({ message }: BookingSuccessProps) {
           <h3 className="font-bold text-lg mb-2">¡Reserva confirmada!</h3>
           <p>
             Tu reserva en el Gimnasio Municipal se ha completado con éxito. Pronto recibirás un
-            email con tu código de acceso y los detalles de tu reserva.
+            email con tu código de acceso y los detalles de tu reserva
           </p>
           <p>¡Nos vemos en el gimnasio!</p>
         </div>
