@@ -36,6 +36,7 @@
     "@stripe/stripe-js": "^4.0.0",
     "@tabler/icons-react": "^3.5.0",
     "@types/react-big-calendar": "^1.8.9",
+    "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.11",

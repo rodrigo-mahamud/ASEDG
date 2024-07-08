@@ -29,7 +29,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
 
   const form = useForm<BookingFormTypes>({
     resolver: zodResolver(bookingSchema),
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues: formData,
   })
 
