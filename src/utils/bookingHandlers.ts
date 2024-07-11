@@ -74,7 +74,7 @@ export const useBookingHandlers = () => {
           return
         }
 
-        const secret = await createPaymentIntent(price)
+        const secret = await createPaymentIntent(price, formData.nombre, formData.apellidos)
         setClientSecret(secret)
       } catch (error) {
         console.error('Error creating payment intent:', error)

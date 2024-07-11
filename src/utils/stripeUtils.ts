@@ -3,7 +3,7 @@ import convertToSubcurrency from './convertToSubcurrency'
 
 export const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
-export async function createPaymentIntent(amount: number) {
+export async function createPaymentIntent({ amount, name, surname }: any) {
   try {
     const response = await fetch('/api/create-payment-intent', {
       method: 'POST',
