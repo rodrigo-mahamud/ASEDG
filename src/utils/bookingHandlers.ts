@@ -66,7 +66,14 @@ export const useBookingHandlers = () => {
   }, [setError])
 
   const initializePayment = useCallback(async () => {
-    if (formState === 'payment' && !clientSecret) {
+    if (
+      formState === 'payment' &&
+      !clientSecret &&
+      price &&
+      formData.email &&
+      formData.nombre &&
+      formData.apellidos
+    ) {
       try {
         setLoading(true)
         const isAvailable = await checkUnifiApi()
@@ -74,7 +81,13 @@ export const useBookingHandlers = () => {
           return
         }
 
-        const secret = await createPaymentIntent(price, formData.nombre, formData.apellidos)
+        const secret = await createPaymentIntent(
+          price,
+          formData.nombre,
+          formData.apellidos,
+          formData.email,
+        )
+
         setClientSecret(secret)
       } catch (error) {
         console.error('Error creating payment intent:', error)
@@ -88,6 +101,9 @@ export const useBookingHandlers = () => {
     formState,
     clientSecret,
     checkUnifiApi,
+    formData.nombre,
+    formData.apellidos,
+    formData.email,
     price,
     setLoading,
     setDataState,
