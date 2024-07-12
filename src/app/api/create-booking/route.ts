@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
-import { getPayload } from 'payload'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import { getCredentials } from './getCredentials'
 import { sendEmail } from './sendEmail'
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
     const result = await postVisitorData(visitorData)
 
     // Obtener la instancia de Payload
-    const payload = await getPayload({ config: configPromise })
+    const payload = await getPayloadHMR({ config: configPromise })
 
     // Enviar correo electrónico
     await sendEmail(payload, validatedData, startTime, endTime, pinCode)

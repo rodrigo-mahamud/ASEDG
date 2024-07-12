@@ -3,12 +3,12 @@ import { CollectionConfig, FieldHook } from 'payload'
 import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
 import updateNews from '@/utils/updateNews'
-import { getPayload } from 'payload'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Asegúrate de que esta ruta es correcta
 
 // const checkFixedNewsLimit: FieldHook = async ({ data, req, originalDoc }) => {
 //   if (data && data.fixed && (!originalDoc || !originalDoc.fixed)) {
-//     const payload = await getPayload({ config: configPromise })
+//     const payload = await getPayloadHMR({ config: configPromise })
 
 //     const { totalDocs } = await payload.find({
 //       collection: 'news',

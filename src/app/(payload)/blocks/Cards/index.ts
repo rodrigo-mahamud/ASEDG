@@ -1,7 +1,5 @@
 import { Block } from 'payload'
 import link from '../../fields/link'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
 
 export interface LinkItem {
   linkText: string

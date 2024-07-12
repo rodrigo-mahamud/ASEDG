@@ -2,7 +2,7 @@ import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
 
-const Bookings: CollectionConfig = {
+const Facilities: CollectionConfig = {
   slug: 'facilities',
   labels: {
     singular: 'Instalaciones',
@@ -47,50 +47,12 @@ const Bookings: CollectionConfig = {
       label: 'Ajustes de la reserva',
       fields: [
         {
-          name: 'bookingType',
-          type: 'select',
-          label: 'Tipo de reserva',
-          options: [
-            {
-              label: 'Por horas',
-              value: 'hourly',
-            },
-            {
-              label: 'Por días',
-              value: 'daily',
-            },
-            {
-              label: 'Precio fijo',
-              value: 'fixed',
-            },
-          ],
-          required: true,
-        },
-        {
-          name: 'hourlyRate',
-          type: 'number',
-          label: 'Precio por hora',
-          admin: {
-            condition: (data) => data.bookingData.bookingType === 'hourly',
-          },
-        },
-        {
-          name: 'fixedPrice',
-          type: 'number',
-          label: 'Precio fijo',
-          admin: {
-            condition: (data) => data.bookingData.bookingType === 'fixed',
-          },
-        },
-        {
-          name: 'dailyOptions',
+          name: 'bookingOptions',
           type: 'array',
-          label: 'Opciones por días',
+          label: 'Opciones de reserva',
           admin: {
-            condition: (data) => data.bookingData.bookingType === 'daily',
             initCollapsed: true,
           },
-          maxRows: 5,
           fields: [
             {
               type: 'row',
@@ -102,10 +64,28 @@ const Bookings: CollectionConfig = {
                   required: true,
                 },
                 {
-                  name: 'days',
-                  type: 'number',
-                  label: 'Días de duración',
+                  name: 'periodType',
+                  type: 'select',
+                  label: 'Tipo de período',
+                  options: [
+                    { label: 'Horas', value: 'hours' },
+                    { label: 'Días', value: 'days' },
+                    { label: 'Semanas', value: 'weeks' },
+                    { label: 'Meses', value: 'months' },
+                    { label: 'Trimestre', value: 'quarter' },
+                    { label: 'Año', value: 'year' },
+                    { label: 'Precio fijo', value: 'fixed' },
+                  ],
                   required: true,
+                },
+                {
+                  name: 'periodLength',
+                  type: 'number',
+                  label: 'Duración del período',
+                  required: true,
+                  admin: {
+                    condition: (data, siblingData) => siblingData.periodType !== 'fixed',
+                  },
                 },
                 {
                   name: 'price',
@@ -123,4 +103,4 @@ const Bookings: CollectionConfig = {
   ],
 }
 
-export default Bookings
+export default Facilities
