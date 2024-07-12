@@ -8,7 +8,7 @@ export default function BookingSection({ data }: any) {
     <Container className="pt-8">
       <div className="w-full flex gap-9 relative">
         <BookingInfo></BookingInfo>
-        <BookingSticky data={data.bookingData}></BookingSticky>
+        <BookingSticky data={data.bookingOptions}></BookingSticky>
       </div>
     </Container>
   )

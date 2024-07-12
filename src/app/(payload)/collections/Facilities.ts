@@ -41,64 +41,56 @@ const Facilities: CollectionConfig = {
         },
       ],
     },
+
     {
-      name: 'bookingData',
-      type: 'group',
-      label: 'Ajustes de la reserva',
+      name: 'bookingOptions',
+      type: 'array',
+      label: 'Opciones de reserva',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
-          name: 'bookingOptions',
-          type: 'array',
-          label: 'Opciones de reserva',
-          admin: {
-            initCollapsed: true,
-          },
+          name: 'periodType',
+          type: 'select',
+          label: 'Tipo de Reserva',
+          options: [
+            { label: 'Precio fijo', value: 'fixed' },
+            { label: 'Por Horas', value: 'hours' },
+            { label: 'Por Días', value: 'days' },
+            { label: 'Por Meses', value: 'months' },
+          ],
+          required: true,
+        },
+        {
+          type: 'row',
           fields: [
             {
-              type: 'row',
-              fields: [
-                {
-                  name: 'name',
-                  type: 'text',
-                  label: 'Nombre',
-                  required: true,
-                },
-                {
-                  name: 'periodType',
-                  type: 'select',
-                  label: 'Tipo de período',
-                  options: [
-                    { label: 'Horas', value: 'hours' },
-                    { label: 'Días', value: 'days' },
-                    { label: 'Semanas', value: 'weeks' },
-                    { label: 'Meses', value: 'months' },
-                    { label: 'Trimestre', value: 'quarter' },
-                    { label: 'Año', value: 'year' },
-                    { label: 'Precio fijo', value: 'fixed' },
-                  ],
-                  required: true,
-                },
-                {
-                  name: 'periodLength',
-                  type: 'number',
-                  label: 'Duración del período',
-                  required: true,
-                  admin: {
-                    condition: (data, siblingData) => siblingData.periodType !== 'fixed',
-                  },
-                },
-                {
-                  name: 'price',
-                  type: 'number',
-                  label: 'Precio en €',
-                  required: true,
-                },
-              ],
+              name: 'name',
+              type: 'text',
+              label: 'Nombre',
+              required: true,
+            },
+            {
+              name: 'periodLength',
+              type: 'number',
+              label: 'Cantidad',
+              required: true,
+              admin: {
+                condition: (data, siblingData) => siblingData.periodType !== 'fixed',
+              },
+            },
+            {
+              name: 'price',
+              type: 'number',
+              label: 'Precio en €',
+              required: true,
             },
           ],
         },
       ],
     },
+
     slug,
   ],
 }
