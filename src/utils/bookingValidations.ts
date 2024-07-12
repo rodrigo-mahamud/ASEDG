@@ -82,7 +82,7 @@ export const bookingSchema = z.object({
     ),
   telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
   dni: z.string().refine(validateDNINIE, { message: 'DNI o NIE español inválido' }),
-  periodo: z.number(),
+  daysAmount: z.number().min(1, 'Debes seleccionar un período de reserva'),
   terminos: z.boolean().refine((val) => val === true, {
     message: 'Debes aceptar los términos y condiciones',
   }),

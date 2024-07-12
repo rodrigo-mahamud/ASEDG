@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
 import RichText from '../blocks/RichText'
+import { calculateTotalDays } from '@/utils/bookingDateFormat' // Asumimos que crearemos este hook
 
 const Facilities: CollectionConfig = {
   slug: 'facilities',
@@ -41,7 +42,6 @@ const Facilities: CollectionConfig = {
         },
       ],
     },
-
     {
       name: 'bookingOptions',
       type: 'array',
@@ -88,11 +88,32 @@ const Facilities: CollectionConfig = {
             },
           ],
         },
+        {
+          name: 'daysAmount',
+          type: 'number',
+          label: 'Días totales',
+          admin: {
+            readOnly: true,
+            hidden: true,
+          },
+        },
       ],
     },
-
     slug,
   ],
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (data.bookingOptions) {
+          data.bookingOptions = data.bookingOptions.map((option: any) => ({
+            ...option,
+            daysAmount: calculateTotalDays(option.periodType, option.periodLength),
+          }))
+        }
+        return data
+      },
+    ],
+  },
 }
 
 export default Facilities

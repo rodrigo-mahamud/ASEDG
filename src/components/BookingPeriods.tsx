@@ -1,75 +1,42 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ControllerRenderProps } from 'react-hook-form'
 import { FormItem, FormMessage } from '@/components/lib/form'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
 import { IconChevronDown, IconClock } from '@tabler/icons-react'
 import useBookingState from '@/utils/useBookingState'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es'
+import { calculateTotalDays, formatPeriod, getEndDate } from '@/utils/bookingDateFormat'
 import { BookingFormTypes } from '@/utils/bookingValidations'
 
-dayjs.locale('es')
-
 interface BookingOption {
-  periodType: string
   name: string
-  periodLength: number
+  daysAmount: number
   price: number
   id: string
 }
 
 interface BookingPeriodsProps {
-  field: ControllerRenderProps<BookingFormTypes>
+  field: ControllerRenderProps<BookingFormTypes, 'daysAmount'>
   initiallyOpen?: boolean
   data: BookingOption[]
 }
 
 export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPeriodsProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen)
-  const [endDates, setEndDates] = useState<{ [key: string]: string }>({})
-  const { setPrice, setPeriodLength, setPeriodType } = useBookingState()
-
-  useEffect(() => {
-    const today = dayjs()
-    const dates = data.reduce((acc, option) => {
-      if (option.periodType !== 'fixed') {
-        acc[option.id] = today
-          .add(option.periodLength, option.periodType as dayjs.ManipulateType)
-          .format('DD MMMM YYYY')
-      }
-      return acc
-    }, {} as { [key: string]: string })
-    setEndDates(dates)
-  }, [data])
+  const { setPrice } = useBookingState()
 
   const handleValueChange = (option: BookingOption) => {
-    field.onChange(option.id)
+    field.onChange(option.daysAmount)
     setPrice(option.price)
-    setPeriodLength(option.periodLength)
-    setPeriodType(option.periodType)
     setIsOpen(false)
   }
 
   const getDisplayText = () => {
-    if (field.value) {
-      const selectedOption = data.find((option) => option.id === field.value)
-      if (selectedOption) {
-        return selectedOption.periodType === 'fixed'
-          ? `${selectedOption.name} - ${selectedOption.price}€`
-          : `${selectedOption.name} - Hasta el ${endDates[selectedOption.id]}`
-      }
+    const selectedOption = data.find((option) => option.daysAmount === field.value)
+    if (selectedOption) {
+      const endDate = getEndDate(selectedOption.daysAmount)
+      return `${selectedOption.name} - Hasta el ${endDate}`
     }
     return 'Selecciona un período'
-  }
-
-  const getPeriodTypeIcon = (periodType: string) => {
-    switch (periodType) {
-      case 'hours':
-        return <IconClock stroke={2} className="h-4 w-4 text-white" />
-      // Add more icons for different period types if needed
-      default:
-        return <IconClock stroke={2} className="h-4 w-4 text-white" />
-    }
   }
 
   return (
@@ -99,20 +66,18 @@ export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPe
               <div
                 key={option.id}
                 className={`w-full flex justify-between items-center transition-all ease-out duration-200 hover:bg-secondary cursor-pointer ${
-                  field.value === option.id ? 'bg-secondary' : ''
+                  field.value === option.daysAmount ? 'bg-secondary' : ''
                 }`}
                 onClick={() => handleValueChange(option)}
               >
                 <div className="flex justify-between items-center w-full px-4 py-3">
                   <div className="flex space-x-4 w-10/12 items-center">
                     <div className="flex items-center bg-secondaryAlt justify-center w-8 h-8 rounded-full">
-                      {getPeriodTypeIcon(option.periodType)}
+                      <IconClock stroke={2} className="h-4 w-4 text-white" />
                     </div>
                     <div className="flex flex-col">
                       <p className="font-semibold">{option.name}</p>
-                      {option.periodType !== 'fixed' && (
-                        <p className="text-sm opacity-75">Hasta el {endDates[option.id]}</p>
-                      )}
+                      <p className="text-sm opacity-75">Hasta el {getEndDate(option.daysAmount)}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-end w-2/12">

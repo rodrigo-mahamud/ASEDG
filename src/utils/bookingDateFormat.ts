@@ -33,55 +33,25 @@ export function calculateTotalDays(periodType: string, periodLength: number): nu
   return end.diff(start, 'day')
 }
 
-export function formatPeriod(periodType: string, periodLength: number): string {
-  switch (periodType) {
-    case 'hours':
-      return `${periodLength} ${periodLength === 1 ? 'hora' : 'horas'}`
-    case 'days':
-      return `${periodLength} ${periodLength === 1 ? 'día' : 'días'}`
-    case 'weeks':
-      return `${periodLength} ${periodLength === 1 ? 'semana' : 'semanas'}`
-    case 'months':
-      return `${periodLength} ${periodLength === 1 ? 'mes' : 'meses'}`
-    case 'quarter':
-      return `${periodLength} ${periodLength === 1 ? 'trimestre' : 'trimestres'}`
-    case 'year':
-      return `${periodLength} ${periodLength === 1 ? 'año' : 'años'}`
-    case 'fixed':
-      return 'Precio fijo'
-    default:
-      return 'Período desconocido'
+export function formatPeriod(daysAmount: number): string {
+  if (daysAmount === 1) {
+    return '1 día'
+  } else if (daysAmount < 7) {
+    return `${daysAmount} días`
+  } else if (daysAmount === 7) {
+    return '1 semana'
+  } else if (daysAmount < 30) {
+    const weeks = Math.floor(daysAmount / 7)
+    return `${weeks} ${weeks === 1 ? 'semana' : 'semanas'}`
+  } else if (daysAmount >= 30 && daysAmount < 365) {
+    const months = Math.floor(daysAmount / 30)
+    return `${months} ${months === 1 ? 'mes' : 'meses'}`
+  } else {
+    const years = Math.floor(daysAmount / 365)
+    return `${years} ${years === 1 ? 'año' : 'años'}`
   }
 }
 
-export function getEndDate(periodType: string, periodLength: number): string {
-  const start = dayjs()
-  let end: dayjs.Dayjs
-
-  switch (periodType) {
-    case 'hours':
-      end = start.add(periodLength, 'hour')
-      break
-    case 'days':
-      end = start.add(periodLength, 'day')
-      break
-    case 'weeks':
-      end = start.add(periodLength, 'week')
-      break
-    case 'months':
-      end = start.add(periodLength, 'month')
-      break
-    case 'quarter':
-      end = start.add(periodLength * 3, 'month')
-      break
-    case 'year':
-      end = start.add(periodLength, 'year')
-      break
-    case 'fixed':
-      return 'N/A'
-    default:
-      return 'Fecha desconocida'
-  }
-
-  return end.format('DD MMMM YYYY')
+export function getEndDate(daysAmount: number): string {
+  return dayjs().add(daysAmount, 'day').format('DD MMMM YYYY')
 }

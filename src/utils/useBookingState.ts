@@ -5,11 +5,11 @@ type FormState = 'empty' | 'data' | 'payment' | 'success' | 'error'
 
 interface FormStore {
   formState: FormState
-  formData: Partial<BookingFormTypes>
+  formData: Partial<BookingFormTypes> & {
+    daysAmount?: number | null
+  }
   isLoading: boolean
   price: number
-  periodLength: number | null
-  periodType: string | null
   errorDetails: string | null
   successMessage: string | null
   clientSecret: string | null
@@ -23,8 +23,6 @@ interface FormStore {
   resetForm: () => void
   setLoading: (loading: boolean) => void
   setPrice: (price: number) => void
-  setPeriodLength: (length: number | null) => void
-  setPeriodType: (type: string | null) => void
   setErrorDetails: (details: string | null) => void
   setSuccessMessage: (message: string | null) => void
   setClientSecret: (secret: string | null) => void
@@ -35,8 +33,6 @@ const useBookingState = create<FormStore>((set) => ({
   formData: {},
   isLoading: false,
   price: 0,
-  periodLength: null,
-  periodType: null,
   errorDetails: null,
   successMessage: null,
   clientSecret: null,
@@ -55,16 +51,12 @@ const useBookingState = create<FormStore>((set) => ({
       formData: {},
       isLoading: false,
       price: 0,
-      periodLength: null,
-      periodType: null,
       errorDetails: null,
       successMessage: null,
       clientSecret: null,
     }),
   setLoading: (loading) => set({ isLoading: loading }),
   setPrice: (price) => set({ price }),
-  setPeriodLength: (length) => set({ periodLength: length }),
-  setPeriodType: (type) => set({ periodType: type }),
   setErrorDetails: (details) => set({ errorDetails: details }),
   setSuccessMessage: (message) => set({ successMessage: message }),
   setClientSecret: (secret) => set({ clientSecret: secret }),

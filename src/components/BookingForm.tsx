@@ -46,7 +46,6 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
       await bookingSchema.parseAsync(data)
       setDataState()
     } catch (error) {
-      console.log('Form is invalid', error)
       setEmptyState()
     }
   }
@@ -61,9 +60,9 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
       <form onSubmit={form.handleSubmit(handleSubmit)} className="py-8">
         <FormField
           control={form.control}
-          name="periodo"
+          name={'daysAmount'}
           render={({ field }) => (
-            <BookingPeriods field={field} data={data} initiallyOpen={!!formData.periodo} />
+            <BookingPeriods field={field} data={data} initiallyOpen={!!formData.daysAmount} />
           )}
         />
         <Collapsible
