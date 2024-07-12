@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     console.log('Datos del formulario validados con éxito:', validatedData)
 
     console.log('Calculando tiempos del período...')
-    const { startTime, endTime } = calculatePeriodTimes(validatedData.periodo)
+    const { startTime, endTime } = calculatePeriodTimes(validatedData.daysAmount)
 
     if (!endTime) {
       throw new Error('Período no válido proporcionado')
@@ -113,7 +113,7 @@ export async function POST(request: Request) {
       email: validatedData.email,
       telefono: validatedData.telefono,
       dni: validatedData.dni,
-      periodo: validatedData.periodo,
+      periodo: validatedData.daysAmount,
       fechaInicio: new Date(startTime * 1000).toLocaleString(),
       fechaFin: new Date(endTime * 1000).toLocaleString(),
       pinCode: pinCode,

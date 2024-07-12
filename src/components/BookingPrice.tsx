@@ -14,20 +14,19 @@ export function BookingPrice() {
   }
 
   const pricePerDay = price / daysAmount
-  const endDate = dayjs().add(daysAmount, 'day').format('DD MMMM YYYY')
+  const endDate = dayjs().add(daysAmount, 'day').format('DD/MM/YYYY')
 
   return (
     <div className="mt-0 mb-8 p-4 bg-secondary rounded-md">
       <div className="flex justify-between mb-2">
-        <span>Duración de la reserva:</span>
-        <span>
-          {daysAmount} {daysAmount === 1 ? 'día' : 'días'}
-        </span>
-      </div>
-      <div className="flex justify-between mb-2">
-        <span>Fecha de finalización:</span>
+        <span>Finaliza el :</span>
         <span>{endDate}</span>
       </div>
+      <div className="flex justify-between mb-2">
+        <span>Nº de días:</span>
+        <span>{daysAmount}</span>
+      </div>
+
       <div className="flex justify-between mb-2">
         <span>Precio por día:</span>
         <span>{pricePerDay.toFixed(2)}€</span>
