@@ -3,7 +3,7 @@ import { ControllerRenderProps } from 'react-hook-form'
 import { FormItem, FormMessage } from '@/components/lib/form'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
 import { IconChevronDown, IconClock } from '@tabler/icons-react'
-import useFormStore from '@/utils/useBookingState'
+import useBookingState from '@/utils/useBookingState'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { BookingFormTypes } from '@/utils/bookingValidations'
@@ -27,13 +27,15 @@ interface BookingPeriodsProps {
 export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPeriodsProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen)
   const [endDates, setEndDates] = useState<{ [key: string]: string }>({})
-  const { setPrice } = useFormStore()
+  const { setPrice, setPeriodLength, setPeriodType } = useBookingState()
 
   useEffect(() => {
     const today = dayjs()
     const dates = data.reduce((acc, option) => {
       if (option.periodType !== 'fixed') {
-        acc[option.id] = today.add(option.periodLength, option.periodType).format('DD MMMM YYYY')
+        acc[option.id] = today
+          .add(option.periodLength, option.periodType as dayjs.ManipulateType)
+          .format('DD MMMM YYYY')
       }
       return acc
     }, {} as { [key: string]: string })
@@ -43,6 +45,8 @@ export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPe
   const handleValueChange = (option: BookingOption) => {
     field.onChange(option.id)
     setPrice(option.price)
+    setPeriodLength(option.periodLength)
+    setPeriodType(option.periodType)
     setIsOpen(false)
   }
 
