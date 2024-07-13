@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     console.log('Datos recibidos en la API:', body)
 
-    console.log('Iniciando proceso de reserva y concesión de acceso...')
+    console.log('Iniciando proceso de reserva y concesión de acceso....')
 
     console.log('Validando datos del formulario...')
     const validatedData: BookingFormTypes = bookingSchema.parse(body)
