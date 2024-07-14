@@ -1,14 +1,21 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
-import Custom from '@/components/payload/Custom'
+import { Views } from 'react-big-calendar'
+import SportsDashboard from '@/components/payload/SportsDashboard'
 
 const Sports: CollectionConfig = {
   slug: 'sports',
   labels: {
-    singular: 'Instalaciones',
-    plural: 'Instalaciones',
+    singular: 'Deportes',
+    plural: 'Deportes',
   },
-
+  admin: {
+    components: {
+      views: {
+        List: SportsDashboard, // highlight-line
+      },
+    },
+  },
   fields: [
     {
       name: 'title',
