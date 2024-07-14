@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
-import RichText from '../blocks/RichText'
+
 import { calculateTotalDays } from '@/utils/bookingDateFormat' // Asumimos que crearemos este hook
 
 const Facilities: CollectionConfig = {
