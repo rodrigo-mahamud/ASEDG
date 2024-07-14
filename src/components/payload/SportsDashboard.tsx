@@ -6,7 +6,6 @@ import { BarGraph } from './charts/bar-graph'
 import { RecentSales } from './recent-sales'
 import { AreaGraph } from './charts/area-graph'
 import { PieGraph } from './charts/pie-graph'
-// import '@/app/(payload)/style.css'
 export default function SportsDashboard() {
   return (
     <Gutter>
