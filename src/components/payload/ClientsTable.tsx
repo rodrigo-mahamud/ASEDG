@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Card,
   CardHeader,
@@ -15,17 +16,11 @@ import {
   TableCell,
 } from '@/components/lib/table'
 import { Badge } from '@/components/lib/badge'
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-} from '@/components/lib/dropdown-menu'
-import { Button } from '@/components/lib/button'
-import { IconDots } from '@tabler/icons-react'
 import { Input } from '../lib/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/lib/avatar'
+import { Avatar, AvatarFallback } from '@/components/lib/avatar'
+import ClientsSheetDrawer from './ClientsSheetDrawer'
+import ClientsBanDropdown from './ClientsBanDropdown'
+
 export default function ClientsTable() {
   return (
     <Card>
@@ -57,10 +52,9 @@ export default function ClientsTable() {
             <TableRow>
               <TableCell className="hidden sm:table-cell">
                 <Avatar className="mx-auto">
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>LL</AvatarFallback>
                 </Avatar>
               </TableCell>
-
               <TableCell className="font-medium">Laser Lemonade Machine</TableCell>
               <TableCell>
                 <Badge variant="outline">Draft</Badge>
@@ -68,20 +62,9 @@ export default function ClientsTable() {
               <TableCell className="hidden md:table-cell">$499.99</TableCell>
               <TableCell className="hidden md:table-cell">25</TableCell>
               <TableCell className="hidden md:table-cell">2023-07-12 10:42 AM</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <IconDots className="h-4 w-4" />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <TableCell className="flex gap-3">
+                <ClientsSheetDrawer />
+                <ClientsBanDropdown></ClientsBanDropdown>
               </TableCell>
             </TableRow>
           </TableBody>
