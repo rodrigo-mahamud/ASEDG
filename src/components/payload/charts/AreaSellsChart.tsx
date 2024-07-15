@@ -56,7 +56,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export default function MainChart() {
+export default function AreaSellsChart() {
   const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('desktop')
 
   const total = React.useMemo(
@@ -68,9 +68,9 @@ export default function MainChart() {
   )
 
   return (
-    <Card>
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+    <Card className="h-full relative">
+      <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
           <CardTitle>Line Chart - Interactive</CardTitle>
           <CardDescription>Showing total visitors for the last 3 months</CardDescription>
         </div>
@@ -81,7 +81,7 @@ export default function MainChart() {
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                className="flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
               >
                 <span className="text-xs text-muted-foreground">{chartConfig[chart].label}</span>
@@ -93,8 +93,8 @@ export default function MainChart() {
           })}
         </div>
       </CardHeader>
-      <CardContent className="px-2 sm:p-6">
-        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+      <CardContent className="px-2 sm:p-6 h-3/4">
+        <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
           <AreaChart
             accessibilityLayer
             data={chartData}

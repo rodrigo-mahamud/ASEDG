@@ -1,10 +1,14 @@
 import React from 'react'
 import { Gutter } from '@payloadcms/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-import '@/app/(payload)/styles.css'
+import '@/app/(payload)/globals.css'
 
 import { RecentSales } from './recent-sales'
-import MainChart from './charts/MainChart'
+import PentagonChart from './charts/PentagonChart'
+import { PieTextChart } from './charts/PieTextChart'
+import AreaSellsChart from './charts/AreaSellsChart'
+import AreaVisitorsChart from './charts/AreaVisitorsChart'
+import ClientsTable from './ClientsTable'
 
 export default function SportsDashboard() {
   return (
@@ -100,18 +104,18 @@ export default function SportsDashboard() {
           </Card>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <div className="col-span-4">
-            <MainChart />
+          <div className="col-span-7 h-[30rem] relative">
+            <AreaVisitorsChart />
           </div>
-          <Card className="col-span-4 md:col-span-3">
-            <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
-              <CardDescription>You made 265 sales this month.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RecentSales />
-            </CardContent>
-          </Card>
+          <div className="col-span-5 h-[30rem] relative">
+            <AreaSellsChart />
+          </div>
+          <div className="col-span-2 h-[30rem] relative">
+            <PieTextChart />
+          </div>
+        </div>
+        <div className="w-full">
+          <ClientsTable></ClientsTable>
         </div>
       </div>
     </Gutter>
