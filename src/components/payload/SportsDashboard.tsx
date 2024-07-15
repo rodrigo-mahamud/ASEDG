@@ -1,11 +1,11 @@
 import React from 'react'
 import { Gutter } from '@payloadcms/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
+import '@/app/(payload)/styles.css'
 
-import { BarGraph } from './charts/bar-graph'
 import { RecentSales } from './recent-sales'
-import { AreaGraph } from './charts/area-graph'
-import { PieGraph } from './charts/pie-graph'
+import MainChart from './charts/MainChart'
+
 export default function SportsDashboard() {
   return (
     <Gutter>
@@ -101,7 +101,7 @@ export default function SportsDashboard() {
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
           <div className="col-span-4">
-            <BarGraph />
+            <MainChart />
           </div>
           <Card className="col-span-4 md:col-span-3">
             <CardHeader>
@@ -112,12 +112,6 @@ export default function SportsDashboard() {
               <RecentSales />
             </CardContent>
           </Card>
-          <div className="col-span-4">
-            <AreaGraph />
-          </div>
-          <div className="col-span-4 md:col-span-3">
-            <PieGraph />
-          </div>
         </div>
       </div>
     </Gutter>

@@ -58,7 +58,7 @@
     "react-hook-form": "^7.52.0",
     "react-html-parser": "^2.0.2",
     "react-icons": "^5.2.1",
-    "recharts": "^2.12.7",
+    "recharts": "^2.13.0-alpha.4",
     "sharp": "0.32.6",
     "sonner": "^1.5.0",
     "stripe": "^16.1.0",
@@ -94,6 +94,9 @@
     }
   },
   "overrides": {
+    "recharts": {
+      "react-is": "19.0.0-rc-f994737d14-20240522"
+    },
     "@types/react": "npm:types-react@19.0.0-beta.2",
     "@types/react-dom": "npm:types-react-dom@19.0.0-beta.2"
   }
