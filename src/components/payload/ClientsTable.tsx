@@ -56,12 +56,11 @@ export default function ClientsTable() {
           <TableBody>
             <TableRow>
               <TableCell className="hidden sm:table-cell">
-                <Avatar>
+                <Avatar className="mx-auto">
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </TableCell>
 
-              <TableCell className="hidden sm:table-cell"></TableCell>
               <TableCell className="font-medium">Laser Lemonade Machine</TableCell>
               <TableCell>
                 <Badge variant="outline">Draft</Badge>
@@ -89,9 +88,7 @@ export default function ClientsTable() {
         </Table>
       </CardContent>
       <CardFooter>
-        <div className="text-xs text-muted-foreground">
-          Showing <strong>1-10</strong> of <strong>32</strong> products
-        </div>
+        <div className="text-xs text-muted-foreground">todos cargados</div>
       </CardFooter>
     </Card>
   )
