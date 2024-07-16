@@ -5,6 +5,7 @@ import {
   scopedPreflightStyles,
   isolateInsideOfContainer,
   isolateOutsideOfContainer,
+  isolateForComponents,
 } from 'tailwindcss-scoped-preflight'
 const colors = require('tailwindcss/colors')
 
@@ -147,8 +148,9 @@ const config = {
   blocklist: ['table'],
   plugins: [
     require('tailwindcss-animate'),
+
     scopedPreflightStyles({
-      isolationStrategy: isolateOutsideOfContainer('.table, h1, h2, h3, html, body'),
+      isolationStrategy: isolateInsideOfContainer('.twAply'),
     }),
 
     addVariablesForColors,

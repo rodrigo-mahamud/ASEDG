@@ -46,7 +46,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
         {visitor ? <IconPencil className="w-5 h-5" /> : <IconPlus className="w-5 h-5" />}
       </Button>
       <Sheet open={isOpen} onOpenChange={() => handleDrawerClose()}>
-        <SheetContent>
+        <SheetContent className="twAply">
           <SheetHeader>
             <SheetTitle>{visitor ? 'Edit Visitor' : 'Add New Visitor'}</SheetTitle>
             <SheetDescription>
