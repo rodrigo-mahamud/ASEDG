@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <html lang="es" className={GeistSans.className}>
-      <body className="overflow-x-hidden">
+      <body className="overflow-x-hidden twAply">
         <SmoothScrolling>
           <NavBar data={header.navMenu} />
           {children}
