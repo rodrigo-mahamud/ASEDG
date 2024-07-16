@@ -1,7 +1,6 @@
 import React from 'react'
 import { Gutter } from '@payloadcms/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-import '@/app/(payload)/globals.css'
 
 import { RecentSales } from './recent-sales'
 import PentagonChart from './charts/PentagonChart'
