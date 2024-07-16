@@ -31,7 +31,9 @@ interface ClientsSheetDrawerProps {
 }
 
 export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps) {
-  const { isDrawerOpen, currentVisitor } = useDashboardState()
+  const { drawerOpenId, currentVisitor } = useDashboardState()
+
+  const isOpen = visitor ? drawerOpenId === visitor.id : drawerOpenId === 'new'
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
       >
         {visitor ? <IconPencil className="w-5 h-5" /> : <IconPlus className="w-5 h-5" />}
       </Button>
-      <Sheet open={isDrawerOpen} onOpenChange={handleDrawerClose}>
+      <Sheet open={isOpen} onOpenChange={() => handleDrawerClose()}>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>{visitor ? 'Edit Visitor' : 'Add New Visitor'}</SheetTitle>

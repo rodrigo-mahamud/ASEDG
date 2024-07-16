@@ -12,18 +12,16 @@ interface Visitor {
 
 interface DashboardState {
   visitors: Visitor[]
-  isDrawerOpen: boolean
-  isDropdownOpen: boolean
+  drawerOpenId: string | null
+  dropdownOpenId: string | null
   currentVisitor: Visitor | null
-  visitorToDelete: string | null
   setVisitors: (visitors: Visitor[]) => void
   addVisitor: (visitor: Visitor) => void
   updateVisitor: (updatedVisitor: Visitor) => void
   deleteVisitor: (id: string) => void
-  setIsDrawerOpen: (isOpen: boolean) => void
-  setIsDropdownOpen: (isOpen: boolean) => void
+  setDrawerOpenId: (id: string | null) => void
+  setDropdownOpenId: (id: string | null) => void
   setCurrentVisitor: (visitor: Visitor | null) => void
-  setVisitorToDelete: (id: string | null) => void
 }
 
 const defaultVisitor: Visitor = {
@@ -32,15 +30,14 @@ const defaultVisitor: Visitor = {
   email: '',
   status: 'ACTIVE',
   start_time: Date.now() / 1000,
-  end_time: Date.now() / 1000 + 86400, // Default to 24 hours from now
+  end_time: Date.now() / 1000 + 86400,
 }
 
 const useDashboardState = create<DashboardState>((set) => ({
   visitors: [],
-  isDrawerOpen: false,
-  isDropdownOpen: false,
+  drawerOpenId: null,
+  dropdownOpenId: null,
   currentVisitor: null,
-  visitorToDelete: null,
   setVisitors: (visitors) => set({ visitors }),
   addVisitor: (visitor) => set((state) => ({ visitors: [...state.visitors, visitor] })),
   updateVisitor: (updatedVisitor) =>
@@ -53,10 +50,9 @@ const useDashboardState = create<DashboardState>((set) => ({
     set((state) => ({
       visitors: state.visitors.filter((visitor) => visitor.id !== id),
     })),
-  setIsDrawerOpen: (isOpen) => set({ isDrawerOpen }),
-  setIsDropdownOpen: (isOpen) => set({ isDropdownOpen }),
+  setDrawerOpenId: (id) => set({ drawerOpenId: id }),
+  setDropdownOpenId: (id) => set({ dropdownOpenId: id }),
   setCurrentVisitor: (visitor) => set({ currentVisitor: visitor || defaultVisitor }),
-  setVisitorToDelete: (id) => set({ visitorToDelete: id }),
 }))
 
 export default useDashboardState

@@ -1,6 +1,6 @@
 import useDashboardState from './useDashboardState'
 
-const API_URL = '/api/visitors' // Cambiado para usar nuestra API de Next.js
+const API_URL = '/api/visitors'
 
 export const fetchVisitors = async () => {
   try {
@@ -55,17 +55,15 @@ export const deleteVisitor = async (id: string) => {
   }
 }
 
-// Los demás manejadores permanecen igual ya que no involucran llamadas a la API
-
 export const handleDrawerOpen = (visitor?: any) => {
-  const { setCurrentVisitor, setIsDrawerOpen } = useDashboardState.getState()
+  const { setCurrentVisitor, setDrawerOpenId } = useDashboardState.getState()
   setCurrentVisitor(visitor || null)
-  setIsDrawerOpen(true)
+  setDrawerOpenId(visitor ? visitor.id : 'new')
 }
 
 export const handleDrawerClose = () => {
-  const { setIsDrawerOpen, setCurrentVisitor } = useDashboardState.getState()
-  setIsDrawerOpen(false)
+  const { setDrawerOpenId, setCurrentVisitor } = useDashboardState.getState()
+  setDrawerOpenId(null)
   setCurrentVisitor(null)
 }
 
@@ -76,13 +74,13 @@ export const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const handleSubmit = async () => {
-  const { currentVisitor, setIsDrawerOpen, setCurrentVisitor } = useDashboardState.getState()
+  const { currentVisitor, setDrawerOpenId, setCurrentVisitor } = useDashboardState.getState()
   if (currentVisitor?.id) {
     await updateVisitor(currentVisitor.id, currentVisitor)
   } else {
     await createVisitor(currentVisitor!)
   }
-  setIsDrawerOpen(false)
+  setDrawerOpenId(null)
   setCurrentVisitor(null)
 }
 
@@ -93,22 +91,16 @@ export const handleDateTimeChange = (name: string, value: string) => {
 }
 
 export const handleDropdownOpen = (visitorId: string) => {
-  const { setIsDropdownOpen, setVisitorToDelete } = useDashboardState.getState()
-  setVisitorToDelete(visitorId)
-  setIsDropdownOpen(true)
+  const { setDropdownOpenId } = useDashboardState.getState()
+  setDropdownOpenId(visitorId)
 }
 
 export const handleDropdownClose = () => {
-  const { setIsDropdownOpen, setVisitorToDelete } = useDashboardState.getState()
-  setIsDropdownOpen(false)
-  setVisitorToDelete(null)
+  const { setDropdownOpenId } = useDashboardState.getState()
+  setDropdownOpenId(null)
 }
 
-export const handleDeleteConfirm = async () => {
-  const { visitorToDelete, setIsDropdownOpen, setVisitorToDelete } = useDashboardState.getState()
-  if (visitorToDelete) {
-    await deleteVisitor(visitorToDelete)
-    setIsDropdownOpen(false)
-    setVisitorToDelete(null)
-  }
+export const handleDeleteConfirm = async (visitorId: string) => {
+  await deleteVisitor(visitorId)
+  handleDropdownClose()
 }

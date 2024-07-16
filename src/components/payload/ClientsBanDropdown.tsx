@@ -19,11 +19,13 @@ interface ClientsBanDropdownProps {
 }
 
 export default function ClientsBanDropdown({ visitorId }: ClientsBanDropdownProps) {
-  const { isDropdownOpen } = useDashboardState()
+  const { dropdownOpenId } = useDashboardState()
+
+  const isOpen = dropdownOpenId === visitorId
 
   return (
     <DropdownMenu
-      open={isDropdownOpen}
+      open={isOpen}
       onOpenChange={(isOpen) => (isOpen ? handleDropdownOpen(visitorId) : handleDropdownClose())}
     >
       <DropdownMenuTrigger asChild>
@@ -33,7 +35,7 @@ export default function ClientsBanDropdown({ visitorId }: ClientsBanDropdownProp
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="border-border">
-        <DropdownMenuItem onClick={handleDeleteConfirm}>Delete</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleDeleteConfirm(visitorId)}>Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
