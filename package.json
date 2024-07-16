@@ -64,6 +64,7 @@
     "stripe": "^16.1.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-scoped-preflight": "^3.3.0",
     "use-sound": "^4.0.3",
     "uvcanvas": "^0.2.1",
     "vaul": "^0.9.1",

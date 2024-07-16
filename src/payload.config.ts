@@ -30,9 +30,6 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  admin: {
-    user: Users.slug,
-  },
   collections: [Users, Pages, Media, News, Facilities, Sports, Categorias],
   globals: [Settings, Header],
   editor: lexicalEditor({

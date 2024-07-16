@@ -1,17 +1,16 @@
 import type { Config } from 'tailwindcss'
 const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenColorPalette')
 const svgToDataUri = require('mini-svg-data-uri')
-
+import {
+  scopedPreflightStyles,
+  isolateInsideOfContainer,
+  isolateOutsideOfContainer,
+} from 'tailwindcss-scoped-preflight'
 const colors = require('tailwindcss/colors')
 
 const config = {
-  darkMode: ['class'],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
+  darkMode: ['selector', '.dark'],
+  content: ['./src/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
     container: {
@@ -145,8 +144,13 @@ const config = {
       },
     },
   },
+  blocklist: ['table'],
   plugins: [
     require('tailwindcss-animate'),
+    scopedPreflightStyles({
+      isolationStrategy: isolateOutsideOfContainer('.table, h1, h2, h3, html, body'),
+    }),
+
     addVariablesForColors,
     function ({ matchUtilities, theme }: any) {
       matchUtilities(
