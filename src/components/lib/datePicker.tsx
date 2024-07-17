@@ -76,10 +76,10 @@ export function DatePickerWithRange({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 bg-onTop mt-2 shadow-xl border border-border"
+          className="useTw w-auto p-0 bg-onTop !mt-2 shadow-lg shadow-black border border-border"
           align="end"
         >
-          <div className="p-4 space-y-2 useTw ">
+          <div className="p-4 space-y-2  ">
             <Calendar
               initialFocus
               mode="range"
@@ -90,10 +90,10 @@ export function DatePickerWithRange({
               locale={es}
             />
             <Select onValueChange={handlePresetChange}>
-              <SelectTrigger className="dark:bg-white/5">
-                <SelectValue placeholder="Seleccionar preset" />
+              <SelectTrigger className="dark:bg-white/5 ">
+                <SelectValue placeholder="Seleccionar periodo predefinido" />
               </SelectTrigger>
-              <SelectContent position="popper" className="bg-onTop">
+              <SelectContent position="popper" className="bg-onTop shadow-lg shadow-black">
                 <SelectItem value="day">Día</SelectItem>
                 <SelectItem value="week">Semana</SelectItem>
                 <SelectItem value="month">Mes</SelectItem>

@@ -65,7 +65,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="first_name"
                 name="first_name"
-                label="First Name"
+                label="Nombre"
                 value={currentVisitor?.first_name || ''}
                 onChange={handleInputChange}
               />
@@ -73,7 +73,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="last_name"
                 name="last_name"
-                label="Last Name"
+                label="Apellidos"
                 value={currentVisitor?.last_name || ''}
                 onChange={handleInputChange}
               />
@@ -81,12 +81,12 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="email"
                 name="email"
-                label="Email"
+                label="Correo Electrónico"
                 value={currentVisitor?.email || ''}
                 onChange={handleInputChange}
               />
               <DatePickerWithRange
-                className="p-4 text-base h-auto focus-visible:border-white bg-onTop rounded-md w-full"
+                className="p-4 text-base h-auto bg-onTop rounded-md w-full"
                 value={{
                   from: new Date(currentVisitor?.start_time! * 1000),
                   to: new Date(currentVisitor?.end_time! * 1000),
