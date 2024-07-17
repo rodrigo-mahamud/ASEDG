@@ -34,7 +34,7 @@ export default function ClientsTable() {
   return (
     <Card className="border border-white/15">
       <CardHeader className="h-1/4 border-b border-border flex flex-row justify-between w-full">
-        <div className="justify-evenly flex flex-col gap-2">
+        <div className="justify-evenly flex flex-col gap-1">
           <CardTitle>Visitors</CardTitle>
           <CardDescription>Manage your visitors and view their details.</CardDescription>
         </div>
