@@ -10,7 +10,7 @@ import {
 const colors = require('tailwindcss/colors')
 
 const config = {
-  darkMode: ['selector', '.dark'],
+  darkMode: ['selector', "[data-theme='dark']"],
   content: ['./src/**/*.{ts,tsx}'],
   prefix: '',
   theme: {

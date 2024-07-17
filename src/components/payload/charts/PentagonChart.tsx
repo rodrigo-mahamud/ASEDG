@@ -41,7 +41,7 @@ const chartConfig = {
 
 export default function PentagonChart() {
   return (
-    <Card>
+    <Card className="border border-white/15">
       <CardHeader className="items-start pb-4">
         <CardTitle>Radar Chart - Legend</CardTitle>
         <CardDescription>Showing total visitors for the last 6 months</CardDescription>
