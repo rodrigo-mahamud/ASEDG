@@ -36,7 +36,7 @@ export default function NewsCard({
   image,
 }: NewsCardTypes) {
   return (
-    <Card className={`rounded-xl overflow-hidden ${className}`}>
+    <Card className={`rounded-xl overflow-hidden ${className} useTw`}>
       <Badge
         variant="secondary"
         className={`w-fit m-6 absolute bg-primary/50 backdrop-blur-md text-white ${badgeClass}`}

@@ -1,0 +1,109 @@
+'use client'
+
+import * as React from 'react'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
+import { DateRange } from 'react-day-picker'
+
+import { cn } from '@/utils/utils'
+import { Button } from '@/components/lib/button'
+import { Calendar } from '@/components/lib/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/lib/popover'
+import { IconCalendar } from '@tabler/icons-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/lib/select'
+
+interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
+  value?: DateRange
+  onChange?: (range: DateRange | undefined) => void
+  onPresetChange?: (preset: string) => void
+}
+
+export function DatePickerWithRange({
+  className,
+  value,
+  onChange,
+  onPresetChange,
+}: DatePickerWithRangeProps) {
+  const [date, setDate] = React.useState<DateRange | undefined>(value)
+
+  React.useEffect(() => {
+    if (value) {
+      setDate(value)
+    }
+  }, [value])
+
+  const handleDateChange = (newDate: DateRange | undefined) => {
+    setDate(newDate)
+    if (onChange) {
+      onChange(newDate)
+    }
+  }
+
+  const handlePresetChange = (preset: string) => {
+    if (onPresetChange) {
+      onPresetChange(preset)
+    }
+  }
+
+  return (
+    <div className={cn('grid gap-2', className)}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={'outline'}
+            className={cn(
+              'w-[300px] justify-start text-left font-normal',
+              !date && 'text-muted-foreground',
+            )}
+          >
+            <IconCalendar className="mr-2 h-4 w-4" />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "d 'de' MMMM, yyyy", { locale: es })} -{' '}
+                  {format(date.to, "d 'de' MMMM, yyyy", { locale: es })}
+                </>
+              ) : (
+                format(date.from, "d 'de' MMMM, yyyy", { locale: es })
+              )
+            ) : (
+              <span>Seleccionar fechas</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <div className="p-2 space-y-2 useTw">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={date?.from}
+              selected={date}
+              onSelect={handleDateChange}
+              numberOfMonths={2}
+              locale={es}
+            />
+            <Select onValueChange={handlePresetChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccionar preset" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="day">Día</SelectItem>
+                <SelectItem value="week">Semana</SelectItem>
+                <SelectItem value="month">Mes</SelectItem>
+                <SelectItem value="quarter">Trimestre</SelectItem>
+                <SelectItem value="year">Año</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}

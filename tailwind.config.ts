@@ -150,7 +150,7 @@ const config = {
     require('tailwindcss-animate'),
 
     scopedPreflightStyles({
-      isolationStrategy: isolateInsideOfContainer('.twAply'),
+      isolationStrategy: isolateInsideOfContainer(['.useTw']),
     }),
 
     addVariablesForColors,

@@ -1,4 +1,6 @@
 import useDashboardState from './useDashboardState'
+import { DateRange } from 'react-day-picker'
+import { addDays, addWeeks, addMonths, addYears, startOfDay, endOfDay } from 'date-fns'
 
 const API_URL = '/api/visitors'
 
@@ -84,10 +86,42 @@ export const handleSubmit = async () => {
   setCurrentVisitor(null)
 }
 
-export const handleDateTimeChange = (name: string, value: string) => {
-  const timestamp = new Date(value).getTime() / 1000
+export const handleDateRangeChange = (range: DateRange | undefined) => {
   const { setCurrentVisitor, currentVisitor } = useDashboardState.getState()
-  setCurrentVisitor({ ...currentVisitor!, [name]: timestamp })
+  if (range?.from && range?.to) {
+    setCurrentVisitor({
+      ...currentVisitor!,
+      start_time: Math.floor(range.from.getTime() / 1000),
+      end_time: Math.floor(range.to.getTime() / 1000),
+    })
+  }
+}
+
+export const handlePresetChange = (preset: string) => {
+  const today = new Date()
+  let newRange: DateRange
+
+  switch (preset) {
+    case 'day':
+      newRange = { from: startOfDay(today), to: endOfDay(today) }
+      break
+    case 'week':
+      newRange = { from: startOfDay(today), to: endOfDay(addWeeks(today, 1)) }
+      break
+    case 'month':
+      newRange = { from: startOfDay(today), to: endOfDay(addMonths(today, 1)) }
+      break
+    case 'quarter':
+      newRange = { from: startOfDay(today), to: endOfDay(addMonths(today, 3)) }
+      break
+    case 'year':
+      newRange = { from: startOfDay(today), to: endOfDay(addYears(today, 1)) }
+      break
+    default:
+      return
+  }
+
+  handleDateRangeChange(newRange)
 }
 
 export const handleDropdownOpen = (visitorId: string) => {

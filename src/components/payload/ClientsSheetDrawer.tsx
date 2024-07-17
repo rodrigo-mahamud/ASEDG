@@ -16,8 +16,10 @@ import {
   handleDrawerClose,
   handleInputChange,
   handleSubmit,
-  handleDateTimeChange,
+  handleDateRangeChange,
+  handlePresetChange,
 } from '@/utils/DashboardHandlers'
+import { DatePickerWithRange } from '@/components/lib/datePicker'
 
 interface ClientsSheetDrawerProps {
   visitor?: {
@@ -46,7 +48,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
         {visitor ? <IconPencil className="w-5 h-5" /> : <IconPlus className="w-5 h-5" />}
       </Button>
       <Sheet open={isOpen} onOpenChange={() => handleDrawerClose()}>
-        <SheetContent className="twAply flex flex-col justify-between p-0 border-border">
+        <SheetContent className="useTw flex flex-col justify-between p-0 border-border sm:max-w-[30rem]">
           <div className="flex flex-col">
             <SheetHeader className="p-6">
               <SheetTitle>{visitor ? 'Edit Visitor' : 'Add New Visitor'}</SheetTitle>
@@ -81,25 +83,13 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 value={currentVisitor?.email || ''}
                 onChange={handleInputChange}
               />
-              <FloatingLabelInput
-                className="p-4 text-base h-auto focus-visible:border-white"
-                id="start_time"
-                name="start_time"
-                label="Start Time"
-                type="datetime-local"
-                value={new Date((currentVisitor?.start_time || 0) * 1000)
-                  .toISOString()
-                  .slice(0, 16)}
-                onChange={(e) => handleDateTimeChange('start_time', e.target.value)}
-              />
-              <FloatingLabelInput
-                className="p-4 text-base h-auto focus-visible:border-white"
-                id="end_time"
-                name="end_time"
-                label="End Time"
-                type="datetime-local"
-                value={new Date((currentVisitor?.end_time || 0) * 1000).toISOString().slice(0, 16)}
-                onChange={(e) => handleDateTimeChange('end_time', e.target.value)}
+              <DatePickerWithRange
+                value={{
+                  from: new Date(currentVisitor?.start_time! * 1000),
+                  to: new Date(currentVisitor?.end_time! * 1000),
+                }}
+                onChange={handleDateRangeChange}
+                onPresetChange={handlePresetChange}
               />
             </div>
           </div>
