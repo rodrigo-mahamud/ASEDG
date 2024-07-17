@@ -24,11 +24,36 @@ import ClientsBanDropdown from './ClientsBanDropdown'
 import useDashboardState from '@/utils/useDashboardState'
 import { fetchVisitors, handleDrawerOpen, handleDrawerClose } from '@/utils/DashboardHandlers'
 import { Button } from '@/components/lib/button'
-import { IconCirclePlus, IconPencil, IconPlus, IconUsers, IconUsersPlus } from '@tabler/icons-react'
+import {
+  IconCirclePlus,
+  IconPencil,
+  IconUsers,
+  IconChevronUp,
+  IconChevronDown,
+} from '@tabler/icons-react'
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  SortingState,
+  getSortedRowModel,
+} from '@tanstack/react-table'
+
+interface Visitor {
+  id: string
+  first_name: string
+  last_name: string
+  status: string
+  email: string
+  start_time: number
+  end_time: number
+}
 
 export default function ClientsTable() {
   const { visitors, drawerOpenId } = useDashboardState()
   const [selectedVisitor, setSelectedVisitor] = useState<any>(null)
+  const [sorting, setSorting] = useState<SortingState>([])
 
   useEffect(() => {
     fetchVisitors()
@@ -44,6 +69,116 @@ export default function ClientsTable() {
     handleDrawerClose()
   }
 
+  const columns: ColumnDef<Visitor>[] = [
+    {
+      accessorKey: 'first_name',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Nombre
+            {column.getIsSorted() === 'asc' ? (
+              <IconChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <IconChevronDown className="ml-2 h-4 w-4" />
+            ) : null}
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div>{`${row.original.first_name} ${row.original.last_name}`}</div>,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => <Badge variant="outline">{row.original.status}</Badge>,
+    },
+    {
+      accessorKey: 'email',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Email
+            {column.getIsSorted() === 'asc' ? (
+              <IconChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <IconChevronDown className="ml-2 h-4 w-4" />
+            ) : null}
+          </Button>
+        )
+      },
+    },
+    {
+      accessorKey: 'start_time',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Start Time
+            {column.getIsSorted() === 'asc' ? (
+              <IconChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <IconChevronDown className="ml-2 h-4 w-4" />
+            ) : null}
+          </Button>
+        )
+      },
+      cell: ({ row }) => new Date(row.original.start_time * 1000).toLocaleString(),
+    },
+    {
+      accessorKey: 'end_time',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            End Time
+            {column.getIsSorted() === 'asc' ? (
+              <IconChevronUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === 'desc' ? (
+              <IconChevronDown className="ml-2 h-4 w-4" />
+            ) : null}
+          </Button>
+        )
+      },
+      cell: ({ row }) => new Date(row.original.end_time * 1000).toLocaleString(),
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => (
+        <div className="flex gap-3">
+          <Button
+            className="rounded-md"
+            variant="outline"
+            size="icon"
+            onClick={() => handleOpenDrawer(row.original)}
+          >
+            <IconPencil className="w-5 h-5" />
+          </Button>
+          <ClientsBanDropdown visitorId={row.original.id} />
+        </div>
+      ),
+    },
+  ]
+
+  const table = useReactTable({
+    data: visitors,
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+  })
+
   return (
     <Card className="border border-white/15 p-8">
       <CardHeader className="h-1/4 flex flex-row justify-between w-full p-0 ">
@@ -53,7 +188,7 @@ export default function ClientsTable() {
             Manage your visitors and view their details.
           </CardDescription>
         </div>
-        <div className="rounded-full bg-onTop border-border border w-12 h-12 p-3 aspect-square">
+        <div className="rounded-full border-border border w-12 h-12 p-3.5 aspect-square">
           <IconUsers className="w-full h-full "></IconUsers>
         </div>
       </CardHeader>
@@ -72,54 +207,38 @@ export default function ClientsTable() {
             <IconCirclePlus className="w-5 h-5 mr-2" /> Añadir
           </Button>
         </div>
-        <Table className="border border-border rounded-md">
+        <Table>
           <TableHeader>
-            <TableRow className="border-border">
-              <TableHead className="hidden w-[100px] sm:table-cell">
-                <span className="sr-only">Avatar</span>
-              </TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="hidden md:table-cell">Email</TableHead>
-              <TableHead className="hidden md:table-cell">Start Time</TableHead>
-              <TableHead className="hidden md:table-cell">End Time</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {visitors.map((visitor) => (
-              <TableRow key={visitor.id} className="border-border">
-                <TableCell className="hidden sm:table-cell">
-                  <Avatar className="mx-auto">
-                    <AvatarFallback>{visitor.first_name[0] + visitor.last_name[0]}</AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="font-medium">{`${visitor.first_name} ${visitor.last_name}`}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{visitor.status}</Badge>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">{visitor.email}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {new Date(visitor.start_time * 1000).toLocaleString()}
-                </TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {new Date(visitor.end_time * 1000).toLocaleString()}
-                </TableCell>
-                <TableCell className="flex gap-3">
-                  <Button
-                    className="rounded-md"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleOpenDrawer(visitor)}
-                  >
-                    <IconPencil className="w-5 h-5" />
-                  </Button>
-                  <ClientsBanDropdown visitorId={visitor.id!} />
-                </TableCell>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>
