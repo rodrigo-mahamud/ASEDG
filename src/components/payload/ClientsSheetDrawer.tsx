@@ -10,7 +10,6 @@ import {
 } from '@/components/lib/sheet'
 import { IconDeviceFloppy, IconTrash } from '@tabler/icons-react'
 import { FloatingLabelInput } from '../lib/floatinglabel'
-import useDashboardState from '@/utils/useDashboardState'
 import {
   handleDrawerClose,
   handleInputChange,
@@ -19,18 +18,12 @@ import {
   handlePresetChange,
 } from '@/utils/DashboardHandlers'
 import { DatePickerWithRange } from '@/components/lib/datePicker'
+import useDashboardState, { Visitor } from '@/utils/useDashboardState'
 
 interface ClientsSheetDrawerProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  visitor?: {
-    id?: string
-    first_name: string
-    last_name: string
-    email: string
-    start_time: number
-    end_time: number
-  }
+  visitor?: Visitor | null
 }
 
 export default function ClientsSheetDrawer({

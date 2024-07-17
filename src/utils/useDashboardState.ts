@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-interface Visitor {
+export interface Visitor {
   id?: string
   first_name: string
   last_name: string
@@ -10,7 +10,7 @@ interface Visitor {
   end_time: number
 }
 
-interface DashboardState {
+export interface DashboardState {
   visitors: Visitor[]
   drawerOpenId: string | null
   dropdownOpenId: string | null

@@ -16,157 +16,41 @@ import {
   TableBody,
   TableCell,
 } from '@/components/lib/table'
-import { Badge } from '@/components/lib/badge'
 import { Input } from '../lib/input'
-import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import ClientsSheetDrawer from './ClientsSheetDrawer'
-import ClientsBanDropdown from './ClientsBanDropdown'
-import useDashboardState from '@/utils/useDashboardState'
+import useDashboardState, { Visitor } from '@/utils/useDashboardState'
 import { fetchVisitors, handleDrawerOpen, handleDrawerClose } from '@/utils/DashboardHandlers'
 import { Button } from '@/components/lib/button'
+import { IconCirclePlus, IconUsers } from '@tabler/icons-react'
 import {
-  IconCirclePlus,
-  IconPencil,
-  IconUsers,
-  IconChevronUp,
-  IconChevronDown,
-} from '@tabler/icons-react'
-import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   SortingState,
   getSortedRowModel,
 } from '@tanstack/react-table'
-
-interface Visitor {
-  id: string
-  first_name: string
-  last_name: string
-  status: string
-  email: string
-  start_time: number
-  end_time: number
-}
+import { getClientsTableColumns } from './ClientsTableColumns'
 
 export default function ClientsTable() {
   const { visitors, drawerOpenId } = useDashboardState()
-  const [selectedVisitor, setSelectedVisitor] = useState<any>(null)
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [selectedVisitor, setSelectedVisitor] = useState<Visitor | undefined>(undefined)
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'first_name', desc: false }])
 
   useEffect(() => {
     fetchVisitors()
   }, [])
 
-  const handleOpenDrawer = (visitor?: any) => {
-    setSelectedVisitor(visitor)
+  const handleOpenDrawer = (visitor?: Visitor) => {
+    setSelectedVisitor(visitor || undefined)
     handleDrawerOpen(visitor)
   }
 
   const handleCloseDrawer = () => {
-    setSelectedVisitor(null)
+    setSelectedVisitor(undefined)
     handleDrawerClose()
   }
 
-  const columns: ColumnDef<Visitor>[] = [
-    {
-      accessorKey: 'first_name',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Nombre
-            {column.getIsSorted() === 'asc' ? (
-              <IconChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <IconChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        )
-      },
-      cell: ({ row }) => <div>{`${row.original.first_name} ${row.original.last_name}`}</div>,
-    },
-    {
-      accessorKey: 'status',
-      header: 'Status',
-      cell: ({ row }) => <Badge variant="outline">{row.original.status}</Badge>,
-    },
-    {
-      accessorKey: 'email',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Email
-            {column.getIsSorted() === 'asc' ? (
-              <IconChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <IconChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        )
-      },
-    },
-    {
-      accessorKey: 'start_time',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Start Time
-            {column.getIsSorted() === 'asc' ? (
-              <IconChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <IconChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        )
-      },
-      cell: ({ row }) => new Date(row.original.start_time * 1000).toLocaleString(),
-    },
-    {
-      accessorKey: 'end_time',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            End Time
-            {column.getIsSorted() === 'asc' ? (
-              <IconChevronUp className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'desc' ? (
-              <IconChevronDown className="ml-2 h-4 w-4" />
-            ) : null}
-          </Button>
-        )
-      },
-      cell: ({ row }) => new Date(row.original.end_time * 1000).toLocaleString(),
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => (
-        <div className="flex gap-3">
-          <Button
-            className="rounded-md"
-            variant="outline"
-            size="icon"
-            onClick={() => handleOpenDrawer(row.original)}
-          >
-            <IconPencil className="w-5 h-5" />
-          </Button>
-          <ClientsBanDropdown visitorId={row.original.id} />
-        </div>
-      ),
-    },
-  ]
+  const columns = getClientsTableColumns({ handleOpenDrawer })
 
   const table = useReactTable({
     data: visitors,

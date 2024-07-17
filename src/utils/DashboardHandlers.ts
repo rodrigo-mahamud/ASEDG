@@ -1,6 +1,7 @@
 import useDashboardState from './useDashboardState'
 import { DateRange } from 'react-day-picker'
-import { addDays, addWeeks, addMonths, addYears, startOfDay, endOfDay } from 'date-fns'
+import { addWeeks, addMonths, addYears, startOfDay, endOfDay } from 'date-fns'
+import { BadgeProps } from '@/components/lib/badge'
 
 const API_URL = '/api/visitors'
 
@@ -137,4 +138,28 @@ export const handleDropdownClose = () => {
 export const handleDeleteConfirm = async (visitorId: string) => {
   await deleteVisitor(visitorId)
   handleDropdownClose()
+}
+
+export const getStatusDetails = (
+  status: string,
+): { label: string; variant: BadgeProps['variant'] } => {
+  switch (status.toUpperCase()) {
+    case 'ACTIVE':
+    case '6':
+      return { label: 'Activo', variant: 'outlineGreen' }
+    case 'VISITED':
+    case '2':
+      return { label: 'Caducado', variant: 'outlineRed' }
+    case 'UPCOMING':
+    case '1':
+      return { label: 'Próximo', variant: 'outlineBlue' }
+    case 'CANCELLED':
+    case '4':
+      return { label: 'Cancelado', variant: 'outlineRed' }
+    case 'NO_VISIT':
+    case '5':
+      return { label: 'Ausentado', variant: 'outlineBlue' }
+    default:
+      return { label: 'Activo', variant: 'outlineGreen' }
+  }
 }
