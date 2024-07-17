@@ -24,7 +24,7 @@ import ClientsBanDropdown from './ClientsBanDropdown'
 import useDashboardState from '@/utils/useDashboardState'
 import { fetchVisitors, handleDrawerOpen, handleDrawerClose } from '@/utils/DashboardHandlers'
 import { Button } from '@/components/lib/button'
-import { IconPencil, IconPlus } from '@tabler/icons-react'
+import { IconCirclePlus, IconPencil, IconPlus, IconUsers, IconUsersPlus } from '@tabler/icons-react'
 
 export default function ClientsTable() {
   const { visitors, drawerOpenId } = useDashboardState()
@@ -53,17 +53,23 @@ export default function ClientsTable() {
             Manage your visitors and view their details.
           </CardDescription>
         </div>
+        <div className="rounded-full bg-onTop border-border border w-12 h-12 p-3 aspect-square">
+          <IconUsers className="w-full h-full "></IconUsers>
+        </div>
       </CardHeader>
       <CardContent className="h-3/4 p-0 mt-8 space-y-6">
         <div className="flex justify-between">
-          <Input placeholder={`Buscar usuario...`} className="w-full md:max-w-sm" />
+          <Input
+            placeholder={`Buscar usuario...`}
+            className="w-full px-6 h-auto py-3 md:max-w-sm text-base hover:bg-accent hover:text-accent-foreground"
+          />
           <Button
-            className="rounded-md"
+            className="rounded-md w-auto px-6 h-auto py-3 text-base"
             variant="outline"
             size="icon"
             onClick={() => handleOpenDrawer()}
           >
-            <IconPlus className="w-5 h-5" />
+            <IconCirclePlus className="w-5 h-5 mr-2" /> Añadir
           </Button>
         </div>
         <Table className="border border-border rounded-md">
