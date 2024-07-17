@@ -10,7 +10,7 @@ import {
 const colors = require('tailwindcss/colors')
 
 const config = {
-  darkMode: ['selector', "[data-theme='dark']"],
+  darkMode: ['class', "[data-theme='dark']"],
   content: ['./src/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -58,6 +58,9 @@ const config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        onTop: {
+          DEFAULT: 'hsl(var(--onTop))',
         },
       },
       borderRadius: {

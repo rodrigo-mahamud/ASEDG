@@ -52,16 +52,13 @@ export function DatePickerWithRange({
   }
 
   return (
-    <div className={cn('grid gap-2', className)}>
+    <div className={cn('grid gap-2')}>
       <Popover>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild className={className}>
           <Button
             id="date"
             variant={'outline'}
-            className={cn(
-              'w-[300px] justify-start text-left font-normal',
-              !date && 'text-muted-foreground',
-            )}
+            className={cn('justify-start text-left font-normal', !date && 'text-muted-foreground')}
           >
             <IconCalendar className="mr-2 h-4 w-4" />
             {date?.from ? (
@@ -78,8 +75,11 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <div className="p-2 space-y-2 useTw">
+        <PopoverContent
+          className="w-auto p-0 bg-onTop mt-2 shadow-xl border border-border"
+          align="end"
+        >
+          <div className="p-4 space-y-2 useTw ">
             <Calendar
               initialFocus
               mode="range"
@@ -90,10 +90,10 @@ export function DatePickerWithRange({
               locale={es}
             />
             <Select onValueChange={handlePresetChange}>
-              <SelectTrigger>
+              <SelectTrigger className="dark:bg-white/5">
                 <SelectValue placeholder="Seleccionar preset" />
               </SelectTrigger>
-              <SelectContent position="popper">
+              <SelectContent position="popper" className="bg-onTop">
                 <SelectItem value="day">Día</SelectItem>
                 <SelectItem value="week">Semana</SelectItem>
                 <SelectItem value="month">Mes</SelectItem>

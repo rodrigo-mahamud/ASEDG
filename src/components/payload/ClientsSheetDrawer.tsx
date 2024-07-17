@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/lib/sheet'
-import { IconPencil, IconPlus } from '@tabler/icons-react'
+import { IconDeviceFloppy, IconPencil, IconPlus, IconTrash } from '@tabler/icons-react'
 import { FloatingLabelInput } from '../lib/floatinglabel'
 import useDashboardState from '@/utils/useDashboardState'
 import {
@@ -48,11 +48,13 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
         {visitor ? <IconPencil className="w-5 h-5" /> : <IconPlus className="w-5 h-5" />}
       </Button>
       <Sheet open={isOpen} onOpenChange={() => handleDrawerClose()}>
-        <SheetContent className="useTw flex flex-col justify-between p-0 border-border sm:max-w-[30rem]">
+        <SheetContent className="useTw flex flex-col justify-between p-0 border-border sm:max-w-[30rem] bg-card">
           <div className="flex flex-col">
-            <SheetHeader className="p-6">
-              <SheetTitle>{visitor ? 'Edit Visitor' : 'Add New Visitor'}</SheetTitle>
-              <SheetDescription>
+            <SheetHeader className="px-6 py-12">
+              <SheetTitle className="useTw text-2xl">
+                {visitor ? 'Editar Usuario' : 'Añadir Usuario'}
+              </SheetTitle>
+              <SheetDescription className="text-base">
                 {visitor
                   ? "Make changes to visitor's information here."
                   : "Enter new visitor's information here."}
@@ -60,7 +62,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
             </SheetHeader>
             <div className="grid gap-4 px-6">
               <FloatingLabelInput
-                className="p-4 text-base h-auto focus-visible:border-white"
+                className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="first_name"
                 name="first_name"
                 label="First Name"
@@ -68,7 +70,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 onChange={handleInputChange}
               />
               <FloatingLabelInput
-                className="p-4 text-base h-auto focus-visible:border-white"
+                className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="last_name"
                 name="last_name"
                 label="Last Name"
@@ -76,7 +78,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 onChange={handleInputChange}
               />
               <FloatingLabelInput
-                className="p-4 text-base h-auto focus-visible:border-white"
+                className="p-4 text-base h-auto focus-visible:border-white bg-onTop"
                 id="email"
                 name="email"
                 label="Email"
@@ -84,6 +86,7 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
                 onChange={handleInputChange}
               />
               <DatePickerWithRange
+                className="p-4 text-base h-auto focus-visible:border-white bg-onTop rounded-md w-full"
                 value={{
                   from: new Date(currentVisitor?.start_time! * 1000),
                   to: new Date(currentVisitor?.end_time! * 1000),
@@ -93,12 +96,23 @@ export default function ClientsSheetDrawer({ visitor }: ClientsSheetDrawerProps)
               />
             </div>
           </div>
-          <SheetFooter className="p-5 w-full  bg-white/5">
-            <Button type="submit" variant={'default'} className="w-full" onClick={handleSubmit}>
-              Save changes
+          <SheetFooter className="p-6 border-border border-t bg-onTop flex gap-3">
+            <Button
+              type="submit"
+              variant="default"
+              className="w-3/4 py-4 text-lg rounded-md font-semibold items-center flex h-auto leading-none"
+              onClick={handleSubmit}
+            >
+              <IconDeviceFloppy className="w-6 h-6 mr-1"></IconDeviceFloppy>
+              Guardar cambios
             </Button>
-            <Button type="submit" variant={'destructive'} onClick={handleSubmit}>
-              Delete
+            <Button
+              type="submit"
+              variant="destructive"
+              className="w-1/4 py-4 rounded-md font-semibold items-center flex h-auto leading-none"
+              onClick={handleSubmit}
+            >
+              <IconTrash className="w-6 h-6"></IconTrash>
             </Button>
           </SheetFooter>
         </SheetContent>
