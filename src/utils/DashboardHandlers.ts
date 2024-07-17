@@ -5,9 +5,9 @@ import { BadgeProps } from '@/components/lib/badge'
 
 const API_URL = '/api/visitors'
 
-export const fetchVisitors = async (page = 1, pageSize = 25) => {
+export const fetchVisitors = async (page_num = 1, pageSize = 25) => {
   try {
-    const url = `${API_URL}?page_num=${page}&page_size=${pageSize}`
+    const url = `${API_URL}?page_num=${page_num}&page_size=${pageSize}`
 
     const response = await fetch(url)
     const data = await response.json()
@@ -16,10 +16,10 @@ export const fetchVisitors = async (page = 1, pageSize = 25) => {
     setVisitors(data.data)
 
     setPagination({
-      currentPage: page,
-      pageSize: pageSize,
-      totalPages: Math.ceil(data.total / pageSize),
-      totalItems: data.total,
+      currentPage: data.pagination.page_num,
+      pageSize: data.pagination.page_size,
+      totalPages: Math.ceil(data.pagination.total / pageSize),
+      totalItems: data.pagination.total,
     })
   } catch (error) {
     console.error('Failed to fetch visitors:', error)

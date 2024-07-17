@@ -48,8 +48,12 @@ export default function ClientsTable() {
     pageSize: 25,
   })
 
+  const fetchPagedVisitors = (pageNum: number, size: number) => {
+    fetchVisitors(pageNum, size)
+  }
+
   useEffect(() => {
-    fetchVisitors(pageIndex + 1, pageSize)
+    fetchPagedVisitors(pageIndex + 1, pageSize)
   }, [pageIndex, pageSize])
 
   const handleOpenDrawer = (visitor?: Visitor) => {
@@ -67,6 +71,7 @@ export default function ClientsTable() {
   const table = useReactTable({
     data: visitors,
     columns,
+
     state: {
       sorting,
       pagination: {
@@ -75,7 +80,18 @@ export default function ClientsTable() {
       },
     },
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        setPagination((prev) => {
+          const next = updater(prev)
+          fetchPagedVisitors(next.pageIndex + 1, next.pageSize)
+          return next
+        })
+      } else {
+        setPagination(updater)
+        fetchPagedVisitors(updater.pageIndex + 1, updater.pageSize)
+      }
+    },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     manualPagination: true,
@@ -109,6 +125,51 @@ export default function ClientsTable() {
           >
             <IconCirclePlus className="w-5 h-5 mr-2" /> Añadir
           </Button>
+        </div>
+        <div className="flex-1 text-sm text-muted-foreground text-center">
+          Showing {pageSize * pageIndex + 1} to{' '}
+          {Math.min(pageSize * (pageIndex + 1), pagination.totalItems)} of {pagination.totalItems}{' '}
+          visitors
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+          <div className="flex items-center justify-between space-x-2 py-4">
+            <div className="flex items-center space-x-2">
+              <p className="text-sm font-medium">Rows per page</p>
+              <Select
+                value={pageSize.toString()}
+                onValueChange={(value) => {
+                  table.setPageSize(Number(value))
+                }}
+              >
+                <SelectTrigger className="h-8 w-[70px]">
+                  <SelectValue placeholder={pageSize} />
+                </SelectTrigger>
+                <SelectContent side="bottom">
+                  {[25, 50, 100].map((size) => (
+                    <SelectItem key={size} value={`${size}`}>
+                      {size}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
         <Table>
           <TableHeader>
@@ -144,51 +205,6 @@ export default function ClientsTable() {
             )}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-between space-x-2 py-4">
-          <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
-            <Select
-              value={pageSize.toString()}
-              onValueChange={(value) => {
-                table.setPageSize(Number(value))
-              }}
-            >
-              <SelectTrigger className="h-8 w-[70px]">
-                <SelectValue placeholder={pageSize} />
-              </SelectTrigger>
-              <SelectContent side="top">
-                {[25, 50, 100].map((size) => (
-                  <SelectItem key={size} value={`${size}`}>
-                    {size}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex-1 text-sm text-muted-foreground text-center">
-            Showing {pageSize * pageIndex + 1} to{' '}
-            {Math.min(pageSize * (pageIndex + 1), pagination.totalItems)} of {pagination.totalItems}{' '}
-            visitors
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
       </CardContent>
       <CardFooter>
         <div className="text-xs text-muted-foreground">Total visitors: {pagination.totalItems}</div>
