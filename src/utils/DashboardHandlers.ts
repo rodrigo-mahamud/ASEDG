@@ -5,11 +5,22 @@ import { BadgeProps } from '@/components/lib/badge'
 
 const API_URL = '/api/visitors'
 
-export const fetchVisitors = async () => {
+export const fetchVisitors = async (page = 1, pageSize = 25) => {
   try {
-    const response = await fetch(API_URL)
+    const url = `${API_URL}?page_num=${page}&page_size=${pageSize}`
+
+    const response = await fetch(url)
     const data = await response.json()
-    useDashboardState.getState().setVisitors(data.data)
+
+    const { setVisitors, setPagination } = useDashboardState.getState()
+    setVisitors(data.data)
+
+    setPagination({
+      currentPage: page,
+      pageSize: pageSize,
+      totalPages: Math.ceil(data.total / pageSize),
+      totalItems: data.total,
+    })
   } catch (error) {
     console.error('Failed to fetch visitors:', error)
   }

@@ -1,11 +1,17 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 const API_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const response = await fetch(`${API_URL}`, {
+    const searchParams = request.nextUrl.searchParams
+    console.log(searchParams)
+
+    const url = `${API_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`
+    console.log(url)
+
+    const response = await fetch(url, {
       headers: {
         Authorization: `${API_TOKEN}`,
         'Content-Type': 'application/json',

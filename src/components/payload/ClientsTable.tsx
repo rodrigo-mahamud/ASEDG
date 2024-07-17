@@ -28,25 +28,37 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
+  PaginationState,
 } from '@tanstack/react-table'
 import { getClientsTableColumns } from './ClientsTableColumns'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/lib/select'
 
 export default function ClientsTable() {
-  const { visitors, drawerOpenId } = useDashboardState()
-  const [selectedVisitor, setSelectedVisitor] = useState<Visitor | undefined>(undefined)
-  const [sorting, setSorting] = useState<SortingState>([{ id: 'first_name', desc: false }])
+  const { visitors, pagination, drawerOpenId } = useDashboardState()
+  const [selectedVisitor, setSelectedVisitor] = useState<Visitor | null>(null)
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'first_name', desc: true }])
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 25,
+  })
 
   useEffect(() => {
-    fetchVisitors()
-  }, [])
+    fetchVisitors(pageIndex + 1, pageSize)
+  }, [pageIndex, pageSize])
 
   const handleOpenDrawer = (visitor?: Visitor) => {
-    setSelectedVisitor(visitor || undefined)
+    setSelectedVisitor(visitor || null)
     handleDrawerOpen(visitor)
   }
 
   const handleCloseDrawer = () => {
-    setSelectedVisitor(undefined)
+    setSelectedVisitor(null)
     handleDrawerClose()
   }
 
@@ -55,12 +67,19 @@ export default function ClientsTable() {
   const table = useReactTable({
     data: visitors,
     columns,
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
     },
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    manualPagination: true,
+    pageCount: pagination.totalPages,
   })
 
   return (
@@ -125,9 +144,54 @@ export default function ClientsTable() {
             )}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-between space-x-2 py-4">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Rows per page</p>
+            <Select
+              value={pageSize.toString()}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value))
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={pageSize} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[25, 50, 100].map((size) => (
+                  <SelectItem key={size} value={`${size}`}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex-1 text-sm text-muted-foreground text-center">
+            Showing {pageSize * pageIndex + 1} to{' '}
+            {Math.min(pageSize * (pageIndex + 1), pagination.totalItems)} of {pagination.totalItems}{' '}
+            visitors
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
       </CardContent>
       <CardFooter>
-        <div className="text-xs text-muted-foreground">Total visitors: {visitors.length}</div>
+        <div className="text-xs text-muted-foreground">Total visitors: {pagination.totalItems}</div>
       </CardFooter>
       <ClientsSheetDrawer
         isOpen={drawerOpenId !== null}

@@ -10,12 +10,21 @@ export interface Visitor {
   end_time: number
 }
 
-export interface DashboardState {
+interface Pagination {
+  currentPage: number
+  pageSize: number
+  totalPages: number
+  totalItems: number
+}
+
+interface DashboardState {
   visitors: Visitor[]
+  pagination: Pagination
   drawerOpenId: string | null
   dropdownOpenId: string | null
   currentVisitor: Visitor | null
   setVisitors: (visitors: Visitor[]) => void
+  setPagination: (pagination: Pagination) => void
   addVisitor: (visitor: Visitor) => void
   updateVisitor: (updatedVisitor: Visitor) => void
   deleteVisitor: (id: string) => void
@@ -30,15 +39,22 @@ const defaultVisitor: Visitor = {
   email: '',
   status: 'ACTIVE',
   start_time: Date.now() / 1000,
-  end_time: Date.now() / 1000 + 86400,
+  end_time: Date.now() / 1000 + 86400, // Default to 24 hours from now
 }
 
 const useDashboardState = create<DashboardState>((set) => ({
   visitors: [],
+  pagination: {
+    currentPage: 1,
+    pageSize: 10,
+    totalPages: 1,
+    totalItems: 0,
+  },
   drawerOpenId: null,
   dropdownOpenId: null,
   currentVisitor: null,
   setVisitors: (visitors) => set({ visitors }),
+  setPagination: (pagination) => set({ pagination }),
   addVisitor: (visitor) => set((state) => ({ visitors: [...state.visitors, visitor] })),
   updateVisitor: (updatedVisitor) =>
     set((state) => ({
