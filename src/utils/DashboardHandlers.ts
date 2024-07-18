@@ -5,24 +5,27 @@ import { BadgeProps } from '@/components/lib/badge'
 
 const API_URL = '/api/visitors'
 
-export const fetchVisitors = async (page_num = 1, pageSize = 25) => {
+export const fetchVisitors = async (page_num = 1, pageSize = 15) => {
   try {
     const url = `${API_URL}?page_num=${page_num}&page_size=${pageSize}`
 
     const response = await fetch(url)
     const data = await response.json()
 
-    const { setVisitors, setPagination } = useDashboardState.getState()
-    setVisitors(data.data)
+    const { setVisitors, addVisitors, setHasMore } = useDashboardState.getState()
 
-    setPagination({
-      currentPage: data.pagination.page_num,
-      pageSize: data.pagination.page_size,
-      totalPages: Math.ceil(data.pagination.total / pageSize),
-      totalItems: data.pagination.total,
-    })
+    if (page_num === 1) {
+      setVisitors(data.data)
+    } else {
+      addVisitors(data.data)
+    }
+
+    setHasMore(data.data.length === pageSize)
+
+    return data.pagination.total
   } catch (error) {
     console.error('Failed to fetch visitors:', error)
+    return 0
   }
 }
 
@@ -36,7 +39,7 @@ export const createVisitor = async (visitorData: any) => {
       body: JSON.stringify(visitorData),
     })
     const data = await response.json()
-    useDashboardState.getState().addVisitor(data.data)
+    useDashboardState.getState().addVisitors(data.data)
   } catch (error) {
     console.error('Failed to create visitor:', error)
   }

@@ -10,24 +10,17 @@ export interface Visitor {
   end_time: number
 }
 
-interface Pagination {
-  currentPage: number
-  pageSize: number
-  totalPages: number
-  totalItems: number
-}
-
 interface DashboardState {
   visitors: Visitor[]
-  pagination: Pagination
+  hasMore: boolean
   drawerOpenId: string | null
   dropdownOpenId: string | null
   currentVisitor: Visitor | null
   setVisitors: (visitors: Visitor[]) => void
-  setPagination: (pagination: Pagination) => void
-  addVisitor: (visitor: Visitor) => void
+  addVisitors: (newVisitors: Visitor[]) => void
   updateVisitor: (updatedVisitor: Visitor) => void
   deleteVisitor: (id: string) => void
+  setHasMore: (hasMore: boolean) => void
   setDrawerOpenId: (id: string | null) => void
   setDropdownOpenId: (id: string | null) => void
   setCurrentVisitor: (visitor: Visitor | null) => void
@@ -44,18 +37,15 @@ const defaultVisitor: Visitor = {
 
 const useDashboardState = create<DashboardState>((set) => ({
   visitors: [],
-  pagination: {
-    currentPage: 1,
-    pageSize: 10,
-    totalPages: 1,
-    totalItems: 0,
-  },
+  hasMore: true,
   drawerOpenId: null,
   dropdownOpenId: null,
   currentVisitor: null,
   setVisitors: (visitors) => set({ visitors }),
-  setPagination: (pagination) => set({ pagination }),
-  addVisitor: (visitor) => set((state) => ({ visitors: [...state.visitors, visitor] })),
+  addVisitors: (newVisitors) =>
+    set((state) => ({
+      visitors: [...state.visitors, ...newVisitors],
+    })),
   updateVisitor: (updatedVisitor) =>
     set((state) => ({
       visitors: state.visitors.map((visitor) =>
@@ -66,6 +56,7 @@ const useDashboardState = create<DashboardState>((set) => ({
     set((state) => ({
       visitors: state.visitors.filter((visitor) => visitor.id !== id),
     })),
+  setHasMore: (hasMore) => set({ hasMore }),
   setDrawerOpenId: (id) => set({ drawerOpenId: id }),
   setDropdownOpenId: (id) => set({ dropdownOpenId: id }),
   setCurrentVisitor: (visitor) => set({ currentVisitor: visitor || defaultVisitor }),

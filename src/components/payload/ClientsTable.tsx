@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import {
   Card,
   CardHeader,
@@ -28,33 +28,43 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
-  PaginationState,
 } from '@tanstack/react-table'
 import { getClientsTableColumns } from './ClientsTableColumns'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/lib/select'
 
 export default function ClientsTable() {
-  const { visitors, pagination, drawerOpenId } = useDashboardState()
+  const { visitors, hasMore, drawerOpenId } = useDashboardState()
   const [selectedVisitor, setSelectedVisitor] = useState<Visitor | null>(null)
   const [sorting, setSorting] = useState<SortingState>([{ id: 'first_name', desc: true }])
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 25,
-  })
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const observer = useRef<IntersectionObserver | null>(null)
 
-  const fetchPagedVisitors = (pageNum: number, size: number) => {
-    fetchVisitors(pageNum, size)
-  }
+  const loadMoreVisitors = useCallback(async () => {
+    if (!loading && hasMore) {
+      setLoading(true)
+      await fetchVisitors(page + 1, 15)
+      setPage((prevPage) => prevPage + 1)
+      setLoading(false)
+    }
+  }, [loading, hasMore, page])
+
+  const lastVisitorElementRef = useCallback(
+    (node: HTMLTableRowElement | null) => {
+      if (loading) return
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMoreVisitors()
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loading, hasMore, loadMoreVisitors],
+  )
 
   useEffect(() => {
-    fetchPagedVisitors(pageIndex + 1, pageSize)
-  }, [pageIndex, pageSize])
+    fetchVisitors(1, 15)
+  }, [])
 
   const handleOpenDrawer = (visitor?: Visitor) => {
     setSelectedVisitor(visitor || null)
@@ -71,31 +81,10 @@ export default function ClientsTable() {
   const table = useReactTable({
     data: visitors,
     columns,
-
-    state: {
-      sorting,
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
-    },
+    state: { sorting },
     onSortingChange: setSorting,
-    onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
-        setPagination((prev) => {
-          const next = updater(prev)
-          fetchPagedVisitors(next.pageIndex + 1, next.pageSize)
-          return next
-        })
-      } else {
-        setPagination(updater)
-        fetchPagedVisitors(updater.pageIndex + 1, updater.pageSize)
-      }
-    },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    manualPagination: true,
-    pageCount: pagination.totalPages,
   })
 
   return (
@@ -126,51 +115,6 @@ export default function ClientsTable() {
             <IconCirclePlus className="w-5 h-5 mr-2" /> Añadir
           </Button>
         </div>
-        <div className="flex-1 text-sm text-muted-foreground text-center">
-          Showing {pageSize * pageIndex + 1} to{' '}
-          {Math.min(pageSize * (pageIndex + 1), pagination.totalItems)} of {pagination.totalItems}{' '}
-          visitors
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-          <div className="flex items-center justify-between space-x-2 py-4">
-            <div className="flex items-center space-x-2">
-              <p className="text-sm font-medium">Rows per page</p>
-              <Select
-                value={pageSize.toString()}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value))
-                }}
-              >
-                <SelectTrigger className="h-8 w-[70px]">
-                  <SelectValue placeholder={pageSize} />
-                </SelectTrigger>
-                <SelectContent side="bottom">
-                  {[25, 50, 100].map((size) => (
-                    <SelectItem key={size} value={`${size}`}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -187,8 +131,12 @@ export default function ClientsTable() {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              table.getRowModel().rows.map((row, index) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  ref={index === table.getRowModel().rows.length - 1 ? lastVisitorElementRef : null}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -205,9 +153,10 @@ export default function ClientsTable() {
             )}
           </TableBody>
         </Table>
+        {loading && <div>Loading more...</div>}
       </CardContent>
       <CardFooter>
-        <div className="text-xs text-muted-foreground">Total visitors: {pagination.totalItems}</div>
+        <div className="text-xs text-muted-foreground">Total visitors: {visitors.length}</div>
       </CardFooter>
       <ClientsSheetDrawer
         isOpen={drawerOpenId !== null}
