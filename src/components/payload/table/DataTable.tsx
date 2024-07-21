@@ -34,6 +34,9 @@ import {
 import { Button } from '@/components/lib/button'
 import { Input } from '@/components/lib/input'
 import { Pagination } from './Pagination'
+import { IconAdjustmentsHorizontal, IconEye, IconSettings } from '@tabler/icons-react'
+import { DropdownMenuLabel, Separator } from '@radix-ui/react-dropdown-menu'
+import { SelectSeparator } from '@/components/lib/select'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -70,8 +73,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <div className="flex items-center py-4">
           <Input
             placeholder="Search by name..."
-            value={(table.getColumn('first_name')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => table.getColumn('first_name')?.setFilterValue(event.target.value)}
+            value={(table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => table.getColumn('fullName')?.setFilterValue(event.target.value)}
             className="max-w-sm"
           />
         </div>
@@ -79,11 +82,19 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
+            <Button variant="outline" className="ml-auto rounded-md border-border text-base">
+              <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
+              Ver
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent
+            className="p-1 w-44 border border-border rounded-md useTw"
+            align="end"
+          >
+            <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
+              Mostrar columnas
+            </DropdownMenuLabel>
+            <SelectSeparator></SelectSeparator>
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -91,7 +102,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   >
@@ -104,11 +115,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       </div>
 
       {/* Table */}
-      <div className="rounded-md border">
+      <div className="rounded-md border border-border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className="border-border" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -124,9 +135,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  className="border-border"
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className="text-base" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
