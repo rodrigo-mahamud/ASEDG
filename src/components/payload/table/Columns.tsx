@@ -10,7 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
-import { IconArrowsMoveHorizontal, IconArrowsUpDown } from '@tabler/icons-react'
+import {
+  IconArrowsMoveHorizontal,
+  IconArrowsUpDown,
+  IconCheck,
+  IconCircle,
+  IconCircleCheck,
+  IconCircleX,
+} from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import { Badge } from '@/components/lib/badge'
 
@@ -32,32 +39,46 @@ const getStatusColor = (status: string) => {
       return 'bg-green-600/50 text-green-100 border-green-600'
     case 'completed':
       return 'bg-red-600/50 text-red-100 border-red-600'
+    case 'no_visit':
+      return 'bg-red-600/50 text-red-100 border-red-600'
+    case 'visited':
+      return 'bg-red-600/50 text-red-100 border-red-600'
     default:
       return 'bg-yellow-600/50 text-yellow-100 border-yellow-600'
+  }
+}
+const getStatusIcon = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'upcoming':
+      return <IconCircleCheck size={14} stroke={1.5}></IconCircleCheck>
+    case 'active':
+      return <IconCircleCheck size={14} stroke={1.5}></IconCircleCheck>
+    case 'completed':
+      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+    case 'no_visit':
+      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+    case 'visited':
+      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+    default:
+      return <IconCheck></IconCheck>
   }
 }
 
 export const columns: ColumnDef<Visitor>[] = [
   {
-    id: 'avatar',
-    header: 'Avatar',
-    cell: ({ row }) => {
-      const visitor = row.original
-      const initials = `${visitor.first_name[0]}${visitor.last_name[0]}`.toUpperCase()
-      return (
-        <Avatar>
-          <AvatarFallback className="font-bold">{initials}</AvatarFallback>
-        </Avatar>
-      )
-    },
-  },
-
-  {
     accessorFn: (row) => `${row.first_name} ${row.last_name}`,
     id: 'fullName',
     cell: ({ row }) => {
       const fullName = row.getValue('fullName') as string
-      return <h2 className="text-base font-semibold useTw">{fullName}</h2>
+      const initials = `${row.original.first_name[0]}${row.original.last_name[0]}`.toUpperCase()
+      return (
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+          <h2 className="text-base font-semibold useTw">{fullName}</h2>
+        </div>
+      )
     },
     header: ({ column }) => {
       return (
@@ -79,9 +100,12 @@ export const columns: ColumnDef<Visitor>[] = [
       return (
         <Badge
           variant={'outline'}
-          className={`${getStatusColor(status)} rounded-md pt-0.5 pb-1 px-2.5 capitalize`}
+          className={`${getStatusColor(
+            status,
+          )} rounded-md py-0.5 px-2.5 capitalize flex items-center gap-1 w-fit`}
         >
-          {status.toLowerCase()}
+          {getStatusIcon(status)}
+          <span className="text-base mb-0.5">{status.toLowerCase()}</span>
         </Badge>
       )
     },

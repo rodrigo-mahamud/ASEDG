@@ -2,7 +2,6 @@ import { getVisitors } from '@/utils/dashboard/data'
 import { DataTable } from './table/DataTable'
 import { columns } from './table/Columns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-import { ChartContainer } from '../lib/chart'
 
 async function ClientsSection() {
   const data = await getVisitors()
