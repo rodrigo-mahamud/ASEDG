@@ -11,15 +11,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
 import {
-  IconArrowsMoveHorizontal,
   IconArrowsUpDown,
   IconCheck,
-  IconCircle,
   IconCircleCheck,
   IconCircleX,
+  IconDots,
 } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import { Badge } from '@/components/lib/badge'
+import dayjs from 'dayjs'
+import 'dayjs/locale/es'
+
+// Configurar dayjs para usar el locale español
+dayjs.locale('es')
 
 export type Visitor = {
   id: string
@@ -47,20 +51,21 @@ const getStatusColor = (status: string) => {
       return 'bg-yellow-600/50 text-yellow-100 border-yellow-600'
   }
 }
+
 const getStatusIcon = (status: string) => {
   switch (status.toLowerCase()) {
     case 'upcoming':
-      return <IconCircleCheck size={14} stroke={1.5}></IconCircleCheck>
+      return <IconCircleCheck size={13} stroke={1.5} />
     case 'active':
-      return <IconCircleCheck size={14} stroke={1.5}></IconCircleCheck>
+      return <IconCircleCheck size={13} stroke={1.5} />
     case 'completed':
-      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+      return <IconCircleX size={13} stroke={1.5} />
     case 'no_visit':
-      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+      return <IconCircleX size={13} stroke={1.5} />
     case 'visited':
-      return <IconCircleX size={14} stroke={1.5}></IconCircleX>
+      return <IconCircleX size={13} stroke={1.5} />
     default:
-      return <IconCheck></IconCheck>
+      return <IconCheck />
   }
 }
 
@@ -74,7 +79,7 @@ export const columns: ColumnDef<Visitor>[] = [
       return (
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarFallback>{initials}</AvatarFallback>
+            <AvatarFallback className="font-semibold">{initials}</AvatarFallback>
           </Avatar>
           <h2 className="text-base font-semibold useTw">{fullName}</h2>
         </div>
@@ -94,7 +99,7 @@ export const columns: ColumnDef<Visitor>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: 'Estado',
     cell: ({ row }) => {
       const status = row.getValue('status') as string
       return (
@@ -105,7 +110,7 @@ export const columns: ColumnDef<Visitor>[] = [
           )} rounded-md py-0.5 px-2.5 capitalize flex items-center gap-1 w-fit`}
         >
           {getStatusIcon(status)}
-          <span className="text-base mb-0.5">{status.toLowerCase()}</span>
+          <span className="text-base font-normal mb-0.5">{status.toLowerCase()}</span>
         </Badge>
       )
     },
@@ -118,19 +123,20 @@ export const columns: ColumnDef<Visitor>[] = [
     accessorKey: 'start_time',
     header: 'Fecha de Entrada',
     cell: ({ row }) => {
-      const date = new Date((row.getValue('start_time') as number) * 1000)
-      return <div>{date.toLocaleDateString()}</div>
+      const timestamp = row.getValue('start_time') as number
+      const date = dayjs(timestamp * 1000)
+      return <div>{date.format('D, MMMM, YYYY')}</div>
     },
   },
   {
     accessorKey: 'end_time',
     header: 'Fecha de Salida',
     cell: ({ row }) => {
-      const date = new Date((row.getValue('end_time') as number) * 1000)
-      return <div>{date.toLocaleDateString()}</div>
+      const timestamp = row.getValue('end_time') as number
+      const date = dayjs(timestamp * 1000)
+      return <div>{date.format('D, MMMM, YYYY')}</div>
     },
   },
-
   {
     id: 'actions',
     cell: ({ row }) => {
@@ -141,7 +147,7 @@ export const columns: ColumnDef<Visitor>[] = [
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <IconArrowsMoveHorizontal className="h-4 w-4" />
+              <IconDots size={16} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

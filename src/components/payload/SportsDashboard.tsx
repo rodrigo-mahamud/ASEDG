@@ -9,6 +9,8 @@ import AreaSellsChart from './charts/AreaSellsChart'
 import AreaVisitorsChart from './charts/AreaVisitorsChart'
 import { Suspense } from 'react'
 import ClientsSection from './ClientsSection'
+import { Skeleton } from '../lib/skeleton'
+import { SkeletonTable } from './table/SkeletonTable'
 
 export default function SportsDashboard() {
   return (
@@ -26,7 +28,7 @@ export default function SportsDashboard() {
         </div>
       </div>
       <div className="w-full">
-        <Suspense fallback={<>CARGANDO....</>}>
+        <Suspense fallback={<SkeletonTable></SkeletonTable>}>
           <ClientsSection></ClientsSection>
         </Suspense>
       </div>

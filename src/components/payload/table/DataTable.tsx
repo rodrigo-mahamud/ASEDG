@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="p-1 w-44 border border-border rounded-md useTw"
+            className="p-1 w-44 border border-border rounded-md shadow-xl shadow-black useTw"
             align="end"
           >
             <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
