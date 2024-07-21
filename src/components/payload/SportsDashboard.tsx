@@ -7,7 +7,8 @@ import PentagonChart from './charts/PentagonChart'
 import { PieTextChart } from './charts/PieTextChart'
 import AreaSellsChart from './charts/AreaSellsChart'
 import AreaVisitorsChart from './charts/AreaVisitorsChart'
-import ClientsTable from './ClientsTable'
+import { Suspense } from 'react'
+import ClientsSection from './ClientsSection'
 
 export default function SportsDashboard() {
   return (
@@ -25,7 +26,9 @@ export default function SportsDashboard() {
         </div>
       </div>
       <div className="w-full">
-        <ClientsTable></ClientsTable>
+        <Suspense fallback={<>CARGANDO....</>}>
+          <ClientsSection></ClientsSection>
+        </Suspense>
       </div>
     </Gutter>
   )
