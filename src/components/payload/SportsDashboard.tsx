@@ -1,8 +1,6 @@
 import React from 'react'
 import { Gutter } from '@payloadcms/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-
-import { RecentSales } from './recent-sales'
 import PentagonChart from './charts/PentagonChart'
 import { PieTextChart } from './charts/PieTextChart'
 import AreaSellsChart from './charts/AreaSellsChart'

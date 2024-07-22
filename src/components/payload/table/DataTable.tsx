@@ -30,11 +30,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
-
+import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { Button } from '@/components/lib/button'
 import { Input } from '@/components/lib/input'
 import { Pagination } from './Pagination'
-import { IconAdjustmentsHorizontal, IconEye, IconSettings } from '@tabler/icons-react'
+import { IconAdjustmentsHorizontal, IconEye, IconSettings, IconUserPlus } from '@tabler/icons-react'
 import { DropdownMenuLabel, Separator } from '@radix-ui/react-dropdown-menu'
 import { SelectSeparator } from '@/components/lib/select'
 
@@ -47,6 +47,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const { setIsOpen, setClientToEdit } = useClientEditStore()
 
   const table = useReactTable({
     data,
@@ -78,40 +79,52 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             className="w-80"
           />
         </div>
-
-        {/* Column visibility */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
-              <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
-              Ver
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="p-1 w-44 border border-border rounded-md shadow-xl shadow-black useTw"
-            align="end"
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            className="ml-auto rounded-md border-border text-base"
+            onClick={() => {
+              setClientToEdit(null)
+              setIsOpen(true)
+            }}
           >
-            <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
-              Mostrar columnas
-            </DropdownMenuLabel>
-            <SelectSeparator></SelectSeparator>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <IconUserPlus className="mr-2" stroke={1.5} size={16} />
+            Añadir
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
+                <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
+                Ver
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="p-1 w-44 border border-border rounded-md shadow-xl shadow-black useTw"
+              align="end"
+            >
+              <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
+                Mostrar columnas
+              </DropdownMenuLabel>
+              <SelectSeparator></SelectSeparator>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {/* Table */}

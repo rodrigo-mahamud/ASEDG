@@ -2,27 +2,15 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/lib/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
-import {
-  IconArrowsUpDown,
-  IconCheck,
-  IconCircleCheck,
-  IconCircleX,
-  IconDots,
-} from '@tabler/icons-react'
+
+import { IconArrowsUpDown, IconCheck, IconCircleCheck, IconCircleX } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import { Badge } from '@/components/lib/badge'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
+import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import ActionsTable from './ActionsTable'
 
-// Configurar dayjs para usar el locale español
 dayjs.locale('es')
 
 export type Visitor = {
@@ -143,28 +131,6 @@ export const columns: ColumnDef<Visitor>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const visitor = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <IconDots size={16} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(visitor.id)}>
-              Copy visitor ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View visitor details</DropdownMenuItem>
-            <DropdownMenuItem>Edit visitor</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: ({ row }) => <ActionsTable visitor={row.original} />,
   },
 ]
