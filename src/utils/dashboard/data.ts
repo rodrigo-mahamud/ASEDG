@@ -1,10 +1,11 @@
 'use server'
-export async function getVisitors() {
-  const URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
-  const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
+const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
+const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
+
+export async function getVisitors() {
   try {
-    const response = await fetch(`${URL}`, {
+    const response = await fetch(`${BASE_URL}`, {
       method: 'GET',
       headers: {
         Authorization: `${API_TOKEN}`,
@@ -16,29 +17,19 @@ export async function getVisitors() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    // await new Promise((resolve) => setTimeout(resolve, 58000))
     const res = await response.json()
-    const data = res.data
-    return data
+    return res.data
   } catch (error) {
     console.error('Error fetching visitors:', error)
+    throw error
   }
 }
 
 export async function deleteVisitors(visitorIds: string[]) {
-  const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
-  const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
-
-  console.log('BASE_URL:', BASE_URL)
-  console.log('API_TOKEN:', API_TOKEN ? 'Defined' : 'Undefined')
-  console.log('Visitor IDs to delete:', visitorIds)
-
   try {
     const results = await Promise.all(
       visitorIds.map(async (id) => {
         const url = `${BASE_URL}/${id}`
-        console.log('Attempting to delete visitor with URL:', url)
-
         const response = await fetch(url, {
           method: 'DELETE',
           headers: {
@@ -48,25 +39,17 @@ export async function deleteVisitors(visitorIds: string[]) {
           },
         })
 
-        console.log(`Response status for visitor ${id}:`, response.status)
-
         if (!response.ok) {
-          console.error(`Error response for visitor ${id}:`, await response.text())
           throw new Error(`HTTP error! status: ${response.status} for visitor ID: ${id}`)
         }
 
-        const resultJson = await response.json()
-        console.log(`Delete result for visitor ${id}:`, resultJson)
-        return resultJson
+        return await response.json()
       }),
     )
-
-    console.log('All delete results:', results)
 
     const allSuccessful = results.every((result) => result.code === 'SUCCESS')
 
     if (allSuccessful) {
-      console.log('All deletions successful')
       return { success: true, message: `Successfully deleted ${visitorIds.length} visitors` }
     } else {
       console.error('Some deletions failed:', results)
