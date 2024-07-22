@@ -1,7 +1,5 @@
 'use client'
-
 import { useState } from 'react'
-
 import {
   ColumnDef,
   flexRender,
@@ -14,7 +12,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-
 import {
   Table,
   TableBody,
@@ -23,20 +20,21 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/lib/table'
-
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { Button } from '@/components/lib/button'
 import { Input } from '@/components/lib/input'
 import { Pagination } from './Pagination'
-import { IconAdjustmentsHorizontal, IconEye, IconSettings, IconUserPlus } from '@tabler/icons-react'
-import { DropdownMenuLabel, Separator } from '@radix-ui/react-dropdown-menu'
+import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icons-react'
 import { SelectSeparator } from '@/components/lib/select'
+import { Checkbox } from '@/components/lib/checkbox'
+import { DeleteVisitor } from './DeleteVisitor'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,7 +45,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const { setIsOpen, setClientToEdit } = useClientEditStore()
+  const [rowSelection, setRowSelection] = useState({})
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const { setIsOpen, setClientToEdit, setSelectedClients, deleteSelectedClients } =
+    useClientEditStore()
 
   const table = useReactTable({
     data,
@@ -56,6 +57,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       sorting,
       columnFilters,
       columnVisibility,
+      rowSelection,
     },
     initialState: {
       pagination: {
@@ -63,6 +65,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         pageSize: 25, // Set default page size to 25
       },
     },
+
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -71,10 +76,21 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
+
+  const handleDeleteSelected = () => {
+    const selectedIds = table.getSelectedRowModel().rows.map((row) => (row.original as any).id)
+    setSelectedClients(selectedIds)
+    setIsDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    deleteSelectedClients()
+    setIsDeleteDialogOpen(false)
+    setRowSelection({})
+  }
+
   return (
     <>
-      {/* Filters */}
-
       <div className="flex items-center justify-between pb-6">
         <div className="flex items-center">
           <Input
@@ -86,6 +102,15 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
         <div className="flex gap-3">
           <Button
+            variant="destructive"
+            className="ml-auto rounded-md"
+            onClick={handleDeleteSelected}
+            disabled={Object.keys(rowSelection).length === 0}
+          >
+            <IconTrash className="mr-2" stroke={1.5} size={16} />
+            Borrar seleccionados
+          </Button>
+          <Button
             variant="outline"
             className="ml-auto rounded-md border-border text-base"
             onClick={() => {
@@ -96,11 +121,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             <IconUserPlus className="mr-2" stroke={1.5} size={16} />
             Añadir
           </Button>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
-                <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
+              <Button variant="outline" className="ml-auto rounded-md border-border text-base">
+                <IconAdjustmentsHorizontal className="mr-2" stroke={1.5} size={16} />
                 Ver
               </Button>
             </DropdownMenuTrigger>
@@ -111,7 +135,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
                 Mostrar columnas
               </DropdownMenuLabel>
-              <SelectSeparator></SelectSeparator>
+              <SelectSeparator />
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
@@ -132,21 +156,25 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
       </div>
 
-      {/* Table */}
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="border-border" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={table.getIsAllPageRowsSelected()}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                  />
+                </TableHead>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -158,6 +186,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >
+                  <TableCell className="w-12">
+                    <Checkbox
+                      checked={row.getIsSelected()}
+                      onCheckedChange={(value) => row.toggleSelected(!!value)}
+                      aria-label="Select row"
+                    />
+                  </TableCell>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="text-base useTw" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -167,7 +202,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length + 1} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -177,6 +212,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       </div>
 
       <Pagination table={table} />
+
+      <DeleteVisitor
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        itemCount={Object.keys(rowSelection).length}
+      />
     </>
   )
 }
