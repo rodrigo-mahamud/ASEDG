@@ -41,6 +41,8 @@ const getStatusColor = (status: string) => {
       return 'bg-blue-600/50 text-blue-100 border-blue-600'
     case 'active':
       return 'bg-green-600/50 text-green-100 border-green-600'
+    case 'visiting':
+      return 'bg-green-600/50 text-green-100 border-green-600'
     case 'completed':
       return 'bg-red-600/50 text-red-100 border-red-600'
     case 'no_visit':
@@ -58,6 +60,8 @@ const getStatusIcon = (status: string) => {
       return <IconCircleCheck size={13} stroke={1.5} />
     case 'active':
       return <IconCircleCheck size={13} stroke={1.5} />
+    case 'visiting':
+      return <IconCircleX size={13} stroke={1.5} />
     case 'completed':
       return <IconCircleX size={13} stroke={1.5} />
     case 'no_visit':

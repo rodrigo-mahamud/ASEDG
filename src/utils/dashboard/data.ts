@@ -17,7 +17,7 @@ export async function getVisitors() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-    await new Promise((resolve) => setTimeout(resolve, 58000))
+    // await new Promise((resolve) => setTimeout(resolve, 58000))
     const res = await response.json()
     const data = res.data
     return data

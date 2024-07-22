@@ -69,20 +69,20 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     <>
       {/* Filters */}
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center py-4">
+      <div className="flex items-center justify-between pb-6">
+        <div className="flex items-center">
           <Input
-            placeholder="Search by name..."
+            placeholder="Buscar por nombre..."
             value={(table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
             onChange={(event) => table.getColumn('fullName')?.setFilterValue(event.target.value)}
-            className="max-w-sm"
+            className="w-80"
           />
         </div>
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto rounded-md border-border text-base">
+            <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
               <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
               Ver
             </Button>
