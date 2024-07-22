@@ -41,9 +41,9 @@ export function DeleteVisitor() {
           <AlertDialogTitle className="useTw text-xl">
             Eliminar {selectedClients.length === 1 ? 'Usuario' : 'Usuarios'}
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-base">
+          <AlertDialogDescription className="text-base text-white/75">
             Estás seguro de que deseas eliminar a:
-            <ul className="list-disc pl-5 mt-2">
+            <ul className="list-disc pl-5 mt-2 max-h-64 overflow-y-auto">
               {usersToDelete.map((user) => (
                 <li key={user.id}>{user.name}</li>
               ))}

@@ -4,10 +4,10 @@ import { columns } from './table/Columns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
 import { AddEdit } from './table/AddEdit'
 import { DeleteVisitor } from './table/DeleteVisitor'
-import { Visitor } from './table/Columns'
+import { Visitor } from '@/utils/dashboard/types'
 
 async function ClientsSection() {
-  const data = await getVisitors()
+  const data: Visitor[] = await getVisitors()
 
   return (
     <Card className={'h-full relative border border-white/15'}>

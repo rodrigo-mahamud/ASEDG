@@ -37,13 +37,12 @@ import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icon
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
 import { SelectSeparator } from '@/components/lib/select'
 import { Checkbox } from '@/components/lib/checkbox'
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+import { Visitor } from '@/utils/dashboard/types'
+interface DataTableProps {
+  columns: ColumnDef<Visitor, any>[]
+  data: Visitor[]
 }
-
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable({ columns, data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -104,19 +103,22 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
         <div className="flex gap-3">
           <Button
-            variant="destructive"
-            className="ml-auto rounded-md"
+            variant="outline"
+            className={
+              Object.keys(rowSelection).length === 0
+                ? ' opacity-0'
+                : 'ml-auto rounded-md border-border text-base '
+            }
             onClick={() => {
               setIsDeleteDialogOpen(true)
             }}
-            disabled={Object.keys(rowSelection).length === 0}
           >
             <IconTrash className="mr-2" stroke={1.5} size={16} />
-            Borrar seleccionados
+            Borrar
           </Button>
           <Button
             variant="outline"
-            className="ml-auto rounded-md border-border text-base"
+            className="ml-auto rounded-md border-border text-base "
             onClick={() => {
               setClientToEdit(null)
               setIsOpen(true)
@@ -128,7 +130,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
+              <Button variant="outline" className="ml-auto rounded-md border-border text-base  ">
                 <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
                 Ver
               </Button>

@@ -1,30 +1,6 @@
 import { create } from 'zustand'
-import { deleteVisitors } from '@/utils/dashboard/data' // Asegúrate de que esta función esté correctamente implementada
-
-export type Visitor = {
-  id: string
-  first_name: string
-  last_name: string
-  email: string
-  start_time: number
-  end_time: number
-  status: string
-}
-
-interface ClientEditStore {
-  isOpen: boolean
-  clientToEdit: Visitor | null
-  selectedClients: string[]
-  isDeleteDialogOpen: boolean
-  usersToDelete: { id: string; name: string }[]
-  setIsOpen: (isOpen: boolean) => void
-  setClientToEdit: (client: Visitor | null) => void
-  setSelectedClients: (clientIds: string[]) => void
-  setIsDeleteDialogOpen: (isOpen: boolean) => void
-  setUsersToDelete: (users: { id: string; name: string }[]) => void
-  deleteSelectedClients: () => Promise<void>
-  resetStore: () => void
-}
+import { ClientEditStore } from './types'
+import { deleteVisitors } from '@/utils/dashboard/data'
 
 export const useClientEditStore = create<ClientEditStore>((set, get) => ({
   isOpen: false,
@@ -32,8 +8,9 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
   selectedClients: [],
   isDeleteDialogOpen: false,
   usersToDelete: [],
+  editedClient: null,
   setIsOpen: (isOpen) => set({ isOpen }),
-  setClientToEdit: (client) => set({ clientToEdit: client }),
+  setClientToEdit: (client) => set({ clientToEdit: client, editedClient: client }),
   setSelectedClients: (clientIds) => set({ selectedClients: clientIds }),
   setIsDeleteDialogOpen: (isOpen) => set({ isDeleteDialogOpen: isOpen }),
   setUsersToDelete: (users) => set({ usersToDelete: users }),
@@ -54,5 +31,19 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
       selectedClients: [],
       isDeleteDialogOpen: false,
       usersToDelete: [],
+      editedClient: null,
     }),
+  setEditedClient: (client) => set({ editedClient: client }),
+  updateEditedClient: (field, value) =>
+    set((state) => ({
+      editedClient: state.editedClient ? { ...state.editedClient, [field]: value } : null,
+    })),
+  saveEditedClient: () => {
+    const { editedClient } = get()
+    if (editedClient) {
+      // Aquí iría la lógica para guardar el cliente editado en el backend
+      console.log('Guardando cliente:', editedClient)
+      set({ isOpen: false, clientToEdit: null, editedClient: null })
+    }
+  },
 }))

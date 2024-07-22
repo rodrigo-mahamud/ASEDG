@@ -1,3 +1,4 @@
+import { Visitor } from '@/utils/dashboard/types'
 import { Button } from '@/components/lib/button'
 import {
   DropdownMenu,
@@ -7,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
-import { useClientEditStore, Visitor } from '@/utils/dashboard/dashboardStore'
+import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { IconDots } from '@tabler/icons-react'
 
 export default function ActionsTable({ visitor }: { visitor: Visitor }) {

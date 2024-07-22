@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -17,30 +17,30 @@ import {
   DrawerFooter,
 } from '@/components/lib/drawer'
 import { Button } from '@/components/lib/button'
-import { Input } from '@/components/lib/input'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { Visitor } from './Columns'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+
 export function AddEdit() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const clientEditStore = useClientEditStore()
-  const [editedClient, setEditedClient] = useState<Visitor | null>(null)
+  const {
+    isOpen,
+    clientToEdit,
+    editedClient,
+    setIsOpen,
+    setEditedClient,
+    updateEditedClient,
+    saveEditedClient,
+    resetStore,
+  } = useClientEditStore()
 
   useEffect(() => {
-    setEditedClient(clientEditStore.clientToEdit)
-  }, [clientEditStore.clientToEdit])
+    setEditedClient(clientToEdit)
+  }, [clientToEdit, setEditedClient])
 
   const handleClose = () => {
-    clientEditStore.setIsOpen(false)
-    clientEditStore.resetStore()
-  }
-
-  const handleSave = () => {
-    if (editedClient) {
-      console.log('Guardando cliente:', editedClient)
-      handleClose()
-    }
+    setIsOpen(false)
+    resetStore()
   }
 
   const Content = (
@@ -49,23 +49,19 @@ export function AddEdit() {
         <FloatingLabelInput
           id="first_name"
           value={editedClient?.first_name || ''}
-          onChange={(e) =>
-            setEditedClient({ ...editedClient, first_name: e.target.value } as Visitor)
-          }
+          onChange={(e) => updateEditedClient('first_name', e.target.value)}
           label="Nombre"
         />
         <FloatingLabelInput
           id="last_name"
           value={editedClient?.last_name || ''}
-          onChange={(e) =>
-            setEditedClient({ ...editedClient, last_name: e.target.value } as Visitor)
-          }
+          onChange={(e) => updateEditedClient('last_name', e.target.value)}
           label="Apellido"
         />
         <FloatingLabelInput
           id="email"
           value={editedClient?.email || ''}
-          onChange={(e) => setEditedClient({ ...editedClient, email: e.target.value } as Visitor)}
+          onChange={(e) => updateEditedClient('email', e.target.value)}
           label="Email"
         />
       </div>
@@ -74,19 +70,17 @@ export function AddEdit() {
 
   if (isDesktop) {
     return (
-      <Sheet open={clientEditStore.isOpen} onOpenChange={handleClose}>
+      <Sheet open={isOpen} onOpenChange={handleClose}>
         <SheetContent className="useTw border-border sm:max-w-[32rem]">
           <SheetHeader>
-            <SheetTitle>
-              {clientEditStore.clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}
-            </SheetTitle>
+            <SheetTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</SheetTitle>
             <SheetDescription>
-              Make changes to your profile here. Click save when yore done.
+              Make changes to your profile here. Click save when youre done.
             </SheetDescription>
           </SheetHeader>
           {Content}
           <SheetFooter>
-            <SheetClose asChild onClick={handleSave}>
+            <SheetClose asChild onClick={saveEditedClient}>
               <Button>Guardar cambios</Button>
             </SheetClose>
           </SheetFooter>
@@ -96,14 +90,15 @@ export function AddEdit() {
   }
 
   return (
-    <Drawer open={clientEditStore.isOpen} onOpenChange={handleClose}>
+    <Drawer open={isOpen} onOpenChange={handleClose}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>
-            {clientEditStore.clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}
-          </DrawerTitle>
+          <DrawerTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</DrawerTitle>
         </DrawerHeader>
         {Content}
+        <DrawerFooter>
+          <Button onClick={saveEditedClient}>Guardar cambios</Button>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
