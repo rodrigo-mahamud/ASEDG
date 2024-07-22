@@ -22,11 +22,11 @@ const FloatingLabelInput = React.forwardRef<HTMLInputElement, FloatingLabelInput
           htmlFor={id}
           className={cn(
             'absolute left-2 top-2 z-10 origin-[0] -translate-y-4 scale-75 transform',
-            'bg-background px-2 text-sm text-secondaryAlt/75 duration-300 font-normal',
+            'bg-transparent px-2 text-sm text-secondaryAlt/75 duration-300 font-normal',
             'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100',
             'peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2',
             'peer-focus:text-secondaryAlt',
-            'dark:bg-background',
+            'dark:bg-transparent',
           )}
         >
           {label}

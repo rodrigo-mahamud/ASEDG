@@ -3,6 +3,7 @@ import { DataTable } from './table/DataTable'
 import { columns } from './table/Columns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
 import { AddEdit } from './table/AddEdit'
+import { DeleteVisitor } from './table/DeleteVisitor'
 import { Visitor } from './table/Columns'
 
 async function ClientsSection() {
@@ -19,6 +20,7 @@ async function ClientsSection() {
       <CardContent className="px-2 sm:p-6 h-3/4">
         <DataTable columns={columns} data={data} />
         <AddEdit />
+        <DeleteVisitor />
       </CardContent>
     </Card>
   )

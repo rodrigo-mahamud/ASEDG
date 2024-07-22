@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { deleteVisitors } from '@/utils/dashboard/data' // Asegúrate de importar la función desde donde la hayas definido
+import { deleteVisitors } from '@/utils/dashboard/data' // Asegúrate de que esta función esté correctamente implementada
 
 export type Visitor = {
   id: string
@@ -15,9 +15,13 @@ interface ClientEditStore {
   isOpen: boolean
   clientToEdit: Visitor | null
   selectedClients: string[]
+  isDeleteDialogOpen: boolean
+  usersToDelete: { id: string; name: string }[]
   setIsOpen: (isOpen: boolean) => void
   setClientToEdit: (client: Visitor | null) => void
   setSelectedClients: (clientIds: string[]) => void
+  setIsDeleteDialogOpen: (isOpen: boolean) => void
+  setUsersToDelete: (users: { id: string; name: string }[]) => void
   deleteSelectedClients: () => Promise<void>
   resetStore: () => void
 }
@@ -26,20 +30,29 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
   isOpen: false,
   clientToEdit: null,
   selectedClients: [],
+  isDeleteDialogOpen: false,
+  usersToDelete: [],
   setIsOpen: (isOpen) => set({ isOpen }),
   setClientToEdit: (client) => set({ clientToEdit: client }),
   setSelectedClients: (clientIds) => set({ selectedClients: clientIds }),
+  setIsDeleteDialogOpen: (isOpen) => set({ isDeleteDialogOpen: isOpen }),
+  setUsersToDelete: (users) => set({ usersToDelete: users }),
   deleteSelectedClients: async () => {
     const { selectedClients } = get()
     const result = await deleteVisitors(selectedClients)
     if (result.success) {
-      set({ selectedClients: [] })
-      // Aquí podrías también actualizar la lista de visitantes si la mantienes en el store
+      set({ selectedClients: [], usersToDelete: [] })
       console.log(result.message)
     } else {
       console.error(result.message)
-      // Aquí podrías manejar el caso de error, por ejemplo, mostrando una notificación al usuario
     }
   },
-  resetStore: () => set({ isOpen: false, clientToEdit: null, selectedClients: [] }),
+  resetStore: () =>
+    set({
+      isOpen: false,
+      clientToEdit: null,
+      selectedClients: [],
+      isDeleteDialogOpen: false,
+      usersToDelete: [],
+    }),
 }))

@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -12,6 +13,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+
 import {
   Table,
   TableBody,
@@ -20,11 +22,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/lib/table'
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
@@ -32,9 +34,9 @@ import { Button } from '@/components/lib/button'
 import { Input } from '@/components/lib/input'
 import { Pagination } from './Pagination'
 import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icons-react'
+import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
 import { SelectSeparator } from '@/components/lib/select'
 import { Checkbox } from '@/components/lib/checkbox'
-import { DeleteVisitor } from './DeleteVisitor'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -46,9 +48,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const { setIsOpen, setClientToEdit, setSelectedClients, deleteSelectedClients } =
-    useClientEditStore()
+  const {
+    setIsOpen,
+    setClientToEdit,
+    setSelectedClients,
+    setIsDeleteDialogOpen,
+    setUsersToDelete,
+  } = useClientEditStore()
 
   const table = useReactTable({
     data,
@@ -59,15 +65,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       columnVisibility,
       rowSelection,
     },
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 25, // Set default page size to 25
-      },
-    },
-
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
+    getRowId: (row: any) => row.id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -77,20 +77,22 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     getPaginationRowModel: getPaginationRowModel(),
   })
 
-  const handleDeleteSelected = () => {
-    const selectedIds = table.getSelectedRowModel().rows.map((row) => (row.original as any).id)
-    setSelectedClients(selectedIds)
-    setIsDeleteDialogOpen(true)
-  }
+  useEffect(() => {
+    const selectedIds = Object.keys(rowSelection)
+    const selectedUsers = data
+      .filter((row: any) => selectedIds.includes(row.id))
+      .map((row: any) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
 
-  const handleConfirmDelete = () => {
-    deleteSelectedClients()
-    setIsDeleteDialogOpen(false)
-    setRowSelection({})
-  }
+    setSelectedClients(selectedIds)
+    setUsersToDelete(selectedUsers)
+
+    console.log('Selected IDs:', selectedIds)
+    console.log('Selected Users:', selectedUsers)
+  }, [rowSelection, data, setSelectedClients, setUsersToDelete])
 
   return (
     <>
+      {/* Filters */}
       <div className="flex items-center justify-between pb-6">
         <div className="flex items-center">
           <Input
@@ -104,7 +106,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <Button
             variant="destructive"
             className="ml-auto rounded-md"
-            onClick={handleDeleteSelected}
+            onClick={() => {
+              setIsDeleteDialogOpen(true)
+            }}
             disabled={Object.keys(rowSelection).length === 0}
           >
             <IconTrash className="mr-2" stroke={1.5} size={16} />
@@ -121,10 +125,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             <IconUserPlus className="mr-2" stroke={1.5} size={16} />
             Añadir
           </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto rounded-md border-border text-base">
-                <IconAdjustmentsHorizontal className="mr-2" stroke={1.5} size={16} />
+              <Button variant="outline" className="ml-auto rounded-md border-border text-base ">
+                <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
                 Ver
               </Button>
             </DropdownMenuTrigger>
@@ -135,7 +140,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
                 Mostrar columnas
               </DropdownMenuLabel>
-              <SelectSeparator />
+              <SelectSeparator></SelectSeparator>
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
@@ -156,6 +161,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
       </div>
 
+      {/* Table */}
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader>
@@ -168,24 +174,22 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     aria-label="Select all"
                   />
                 </TableHead>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  )
+                })}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  className="border-border"
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   <TableCell className="w-12">
                     <Checkbox
                       checked={row.getIsSelected()}
@@ -194,7 +198,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     />
                   </TableCell>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-base useTw" key={cell.id}>
+                    <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -212,13 +216,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       </div>
 
       <Pagination table={table} />
-
-      <DeleteVisitor
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
-        itemCount={Object.keys(rowSelection).length}
-      />
     </>
   )
 }

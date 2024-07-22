@@ -2,13 +2,11 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/lib/button'
-
 import { IconArrowsUpDown, IconCheck, IconCircleCheck, IconCircleX } from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import { Badge } from '@/components/lib/badge'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import ActionsTable from './ActionsTable'
 
 dayjs.locale('es')
@@ -21,6 +19,32 @@ export type Visitor = {
   start_time: number
   end_time: number
   status: string
+  avatar: string
+  inviter_id: string
+  inviter_name: string
+  mobile_phone: string
+  location_id: string
+  nfc_cards: any[]
+  pin_code: { token: string }
+  remarks: string
+  resources: Array<{ id: string; name: string; type: string }>
+  schedule: {
+    id: string
+    is_default: boolean
+    name: string
+    type: string
+    weekly: Record<string, Array<{ start_time: string; end_time: string }>>
+    holiday_group: {
+      id: string
+      name: string
+      is_default: boolean
+      description: string
+      holidays: any[]
+    }
+  }
+  schedule_id: string
+  visit_reason: string
+  visitor_company: string
 }
 
 const getStatusColor = (status: string) => {
