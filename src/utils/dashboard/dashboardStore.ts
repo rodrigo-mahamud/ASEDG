@@ -19,9 +19,9 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
     const result = await deleteVisitors(selectedClients)
     if (result.success) {
       set({ selectedClients: [], usersToDelete: [] })
-      console.log(result.message)
+      return result
     } else {
-      console.error(result.message)
+      throw new Error(result.message)
     }
   },
   resetStore: () =>

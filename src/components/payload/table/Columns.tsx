@@ -101,7 +101,7 @@ export const columns: ColumnDef<Visitor>[] = [
   },
   {
     accessorKey: 'start_time',
-    header: 'Fecha de Entrada',
+    header: 'Inicio de Reserva',
     cell: ({ row }) => {
       const timestamp = row.getValue('start_time') as number
       const date = dayjs(timestamp * 1000)
@@ -110,7 +110,7 @@ export const columns: ColumnDef<Visitor>[] = [
   },
   {
     accessorKey: 'end_time',
-    header: 'Fecha de Salida',
+    header: 'Fin de Reserva',
     cell: ({ row }) => {
       const timestamp = row.getValue('end_time') as number
       const date = dayjs(timestamp * 1000)
