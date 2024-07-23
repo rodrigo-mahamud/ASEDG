@@ -16,8 +16,8 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
+      <DropdownMenuTrigger asChild className="m-2">
+        <Button variant="ghost" className="h-10 w-10 p-2 rounded-md">
           <span className="sr-only">Open menu</span>
           <IconDots size={16} />
         </Button>

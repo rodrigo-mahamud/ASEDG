@@ -2,7 +2,13 @@
 import { Visitor } from '@/utils/dashboard/types'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/lib/button'
-import { IconArrowsUpDown, IconCheck, IconCircleCheck, IconCircleX } from '@tabler/icons-react'
+import {
+  IconArrowsUpDown,
+  IconCheck,
+  IconCircleCheck,
+  IconCircleX,
+  IconExternalLink,
+} from '@tabler/icons-react'
 import { Avatar, AvatarFallback } from '@/components/lib/avatar'
 import { Badge } from '@/components/lib/badge'
 import dayjs from 'dayjs'
@@ -45,7 +51,7 @@ const getStatusIcon = (status: string) => {
     case 'visited':
       return <IconCircleX size={13} stroke={1.5} />
     default:
-      return <IconCheck />
+      return <IconCheck size={13} stroke={1.5} />
   }
 }
 const parseRemarks = (remarks: string): { age: string; dni: string; acceptedTerms: boolean } => {
@@ -68,7 +74,7 @@ export const columns: ColumnDef<Visitor>[] = [
           <Avatar>
             <AvatarFallback className="font-semibold">{initials}</AvatarFallback>
           </Avatar>
-          <h2 className="text-base font-semibold line-clamp-1 useTw">{fullName}</h2>
+          <h2 className="text-base font-semibold line-clamp-1 max-w-48 useTw">{fullName}</h2>
         </div>
       )
     },
@@ -108,32 +114,34 @@ export const columns: ColumnDef<Visitor>[] = [
     cell: ({ row }) => {
       const email = row.getValue('email') as string
       return (
-        <a href={`mailto:${email}`} target="_blank" rel="nofollow noopener">
+        <a
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="nofollow noopener"
+          className="flex gap-1 items-center hover:underline"
+        >
           {email}
+          <IconExternalLink size={16}></IconExternalLink>
         </a>
       )
     },
   },
   {
     accessorKey: 'mobile_phone',
-    header: 'Teléfono de contacto',
+    header: 'Teléfono ',
   },
   {
-    accessorKey: 'start_time',
-    header: 'Inicio de Reserva',
+    accessorFn: (row) => `${row.start_time}-${row.end_time}`,
+    id: 'periodo',
+    header: 'Periodo',
     cell: ({ row }) => {
-      const timestamp = row.getValue('start_time') as number
-      const date = dayjs(timestamp * 1000)
-      return <div>{date.format('D, MMMM, YYYY')}</div>
-    },
-  },
-  {
-    accessorKey: 'end_time',
-    header: 'Fin de Reserva',
-    cell: ({ row }) => {
-      const timestamp = row.getValue('end_time') as number
-      const date = dayjs(timestamp * 1000)
-      return <div>{date.format('D, MMMM, YYYY')}</div>
+      const startTime = dayjs(row.original.start_time * 1000)
+      const endTime = dayjs(row.original.end_time * 1000)
+      return (
+        <div>
+          {startTime.format('DD/MM/YY')} - {endTime.format('DD/MM/YY')}
+        </div>
+      )
     },
   },
   {
@@ -149,24 +157,33 @@ export const columns: ColumnDef<Visitor>[] = [
   {
     accessorFn: (row) => parseRemarks(row.remarks).age,
     id: 'age',
-    header: 'Edad',
+
     cell: ({ row }) => {
       const remarks = row.original.remarks
       const { age } = parseRemarks(remarks)
-      return <div>{age} Años</div>
+      return <div className="flex justify-center items-center">{age}</div>
+    },
+    header: () => {
+      return <div className="flex justify-center items-center">Edad</div>
     },
   },
   {
     accessorFn: (row) => parseRemarks(row.remarks).acceptedTerms,
     id: 'acceptedTerms',
-    header: 'Términos',
+    header: () => {
+      return <div className="flex justify-center items-center">Términos</div>
+    },
     cell: ({ row }) => {
       const remarks = row.original.remarks
       const { acceptedTerms } = parseRemarks(remarks)
       return (
-        <Badge variant={acceptedTerms ? 'success' : 'destructive'}>
-          {acceptedTerms ? 'Aceptados' : 'No aceptados'}
-        </Badge>
+        <div className="flex items-center justify-center">
+          {acceptedTerms ? (
+            <IconCircleCheck size={22} stroke={1.5} className="text-green-600"></IconCircleCheck>
+          ) : (
+            <IconCircleX size={22} stroke={1.5} className="text-red-600"></IconCircleX>
+          )}
+        </div>
       )
     },
   },

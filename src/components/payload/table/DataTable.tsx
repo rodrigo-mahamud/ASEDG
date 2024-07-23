@@ -64,6 +64,12 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnVisibility,
       rowSelection,
     },
+    initialState: {
+      pagination: {
+        pageSize: 25,
+        pageIndex: 0,
+      },
+    },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     getRowId: (row: any) => row.id,
@@ -169,7 +175,7 @@ export function DataTable({ columns, data }: DataTableProps) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="border-border" key={headerGroup.id}>
-                <TableHead className="w-12">
+                <TableHead className="pl-6 pr-0 py-2 w-fit">
                   <Checkbox
                     checked={table.getIsAllPageRowsSelected()}
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -178,7 +184,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                 </TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead className="px-4 py-2" key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -191,8 +197,12 @@ export function DataTable({ columns, data }: DataTableProps) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  <TableCell className="w-12">
+                <TableRow
+                  key={row.id}
+                  className="border-border"
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  <TableCell className="pl-6 pr-0 py-2 w-fit">
                     <Checkbox
                       checked={row.getIsSelected()}
                       onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -200,7 +210,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                     />
                   </TableCell>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell className="px-4 py-2" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
