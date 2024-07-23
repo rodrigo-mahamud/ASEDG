@@ -1,5 +1,7 @@
 'use server'
 
+import { revalidateTag } from 'next/cache'
+
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
@@ -12,7 +14,10 @@ export async function getVisitors() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+      next: { tags: ['refreshVisitors'] },
     })
+
+    // await new Promise((resolve) => setTimeout(resolve, 5000))
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
@@ -52,6 +57,7 @@ export async function addVisitor(visitorData: any) {
     const result = await response.json()
 
     if (result.code === 'SUCCESS') {
+      revalidateTag('refreshVisitors')
       return { success: true, message: 'Visitor added successfully', data: result.data }
     } else {
       throw new Error(`API error: ${result.msg}`)
@@ -86,6 +92,7 @@ export async function updateVisitor(visitorData: VisitorFormValues) {
     const result = await response.json()
 
     if (result.code === 'SUCCESS') {
+      revalidateTag('refreshVisitors')
       return { success: true, message: 'Visitor updated successfully', data: result.data }
     } else {
       throw new Error(`API error: ${result.msg}`)

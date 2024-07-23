@@ -32,6 +32,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
 import { visitorSchema, VisitorFormValues } from '@/utils/dashboard/validationSchema'
+import { toast } from '@payloadcms/ui'
 
 export function AddEdit() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -85,16 +86,12 @@ export function AddEdit() {
           end_time: oneYearFromNow,
         })
       }
-
       if (result.success) {
-        console.log('aaa')
-
         handleClose()
-      } else {
-        throw new Error(result.message)
+        toast.success('Añadido correctamente')
       }
     } catch (error) {
-      console.log('aaass')
+      toast.error('No se ha podido añadir al usuario intentalo de nuevo mas tarde.')
     }
   }
 
