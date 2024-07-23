@@ -27,6 +27,7 @@ import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
 import { visitorSchema, VisitorFormValues } from '@/utils/dashboard/validationSchema'
 import { toast } from '@payloadcms/ui'
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+import { FormErrors } from './FormErrors'
 
 export function AddEdit() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -176,7 +177,7 @@ export function AddEdit() {
             </FormItem>
           )}
         />
-
+        <FormErrors form={form} />
         <Button type="submit">Guardar cambios</Button>
       </form>
     </Form>
@@ -185,7 +186,7 @@ export function AddEdit() {
   if (isDesktop) {
     return (
       <Sheet open={isOpen} onOpenChange={handleClose}>
-        <SheetContent className="useTw border-border sm:max-w-[32rem]">
+        <SheetContent className="useTw border-border sm:max-w-96">
           <SheetHeader>
             <SheetTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</SheetTitle>
             <SheetDescription>
