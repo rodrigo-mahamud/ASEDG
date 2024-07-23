@@ -46,9 +46,7 @@ export type ClientEditStore = {
   setSelectedClients: (clientIds: string[]) => void
   setIsDeleteDialogOpen: (isOpen: boolean) => void
   setUsersToDelete: (users: { id: string; name: string }[]) => void
-  deleteSelectedClients: () => Promise<void>
   resetStore: () => void
   setEditedClient: (client: Visitor | null) => void
   updateEditedClient: (field: keyof Visitor, value: string) => void
-  saveEditedClient: () => void
 }

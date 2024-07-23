@@ -1,5 +1,7 @@
 'use client'
 import { useEffect } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import {
   Sheet,
   SheetContent,
@@ -17,55 +19,156 @@ import {
   DrawerFooter,
 } from '@/components/lib/drawer'
 import { Button } from '@/components/lib/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/lib/form'
+import { Input } from '@/components/lib/input'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
-import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
+import { visitorSchema, VisitorFormValues } from '@/utils/dashboard/validationSchema'
 
 export function AddEdit() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
-  const {
-    isOpen,
-    clientToEdit,
-    editedClient,
-    setIsOpen,
-    setEditedClient,
-    updateEditedClient,
-    saveEditedClient,
-    resetStore,
-  } = useClientEditStore()
+  const { isOpen, clientToEdit, setIsOpen, resetStore } = useClientEditStore()
+
+  const form = useForm<VisitorFormValues>({
+    resolver: zodResolver(visitorSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      dni: '',
+      age: '',
+    },
+  })
 
   useEffect(() => {
-    setEditedClient(clientToEdit)
-  }, [clientToEdit, setEditedClient])
+    if (clientToEdit) {
+      form.reset(clientToEdit)
+    } else {
+      form.reset({
+        first_name: '',
+        last_name: '',
+        email: '',
+        dni: '',
+        age: '',
+      })
+    }
+  }, [clientToEdit, form])
 
   const handleClose = () => {
     setIsOpen(false)
     resetStore()
+    form.reset()
+  }
+
+  const handleSave = async (data: VisitorFormValues) => {
+    try {
+      let result
+      if (data.id) {
+        // Si hay un ID, estamos editando un visitante existente
+        result = await updateVisitor(data)
+      } else {
+        // Si no hay ID, estamos añadiendo un nuevo visitante
+        const currentTime = Math.floor(Date.now() / 1000)
+        const oneYearFromNow = currentTime + 365 * 24 * 60 * 60
+        result = await addVisitor({
+          ...data,
+          start_time: currentTime,
+          end_time: oneYearFromNow,
+        })
+      }
+
+      if (result.success) {
+        console.log('aaa')
+
+        handleClose()
+      } else {
+        throw new Error(result.message)
+      }
+    } catch (error) {
+      console.log('aaass')
+    }
   }
 
   const Content = (
-    <>
-      <div className="grid gap-4 py-4">
-        <FloatingLabelInput
-          id="first_name"
-          value={editedClient?.first_name || ''}
-          onChange={(e) => updateEditedClient('first_name', e.target.value)}
-          label="Nombre"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSave)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="first_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nombre</FormLabel>
+              <FormControl>
+                <Input placeholder="Nombre" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <FloatingLabelInput
-          id="last_name"
-          value={editedClient?.last_name || ''}
-          onChange={(e) => updateEditedClient('last_name', e.target.value)}
-          label="Apellido"
+        <FormField
+          control={form.control}
+          name="last_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Apellido</FormLabel>
+              <FormControl>
+                <Input placeholder="Apellido" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <FloatingLabelInput
-          id="email"
-          value={editedClient?.email || ''}
-          onChange={(e) => updateEditedClient('email', e.target.value)}
-          label="Email"
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-    </>
+        <FormField
+          control={form.control}
+          name="dni"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>DNI</FormLabel>
+              <FormControl>
+                <Input placeholder="DNI" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="age"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Edad</FormLabel>
+              <FormControl>
+                <Input placeholder="Edad" type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Guardar cambios</Button>
+      </form>
+    </Form>
   )
 
   if (isDesktop) {
@@ -75,15 +178,10 @@ export function AddEdit() {
           <SheetHeader>
             <SheetTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</SheetTitle>
             <SheetDescription>
-              Make changes to your profile here. Click save when youre done.
+              Haz cambios en el perfil del cliente aquí. Haz clic en guardar cuando hayas terminado.
             </SheetDescription>
           </SheetHeader>
           {Content}
-          <SheetFooter>
-            <SheetClose asChild onClick={saveEditedClient}>
-              <Button>Guardar cambios</Button>
-            </SheetClose>
-          </SheetFooter>
         </SheetContent>
       </Sheet>
     )
@@ -96,9 +194,6 @@ export function AddEdit() {
           <DrawerTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</DrawerTitle>
         </DrawerHeader>
         {Content}
-        <DrawerFooter>
-          <Button onClick={saveEditedClient}>Guardar cambios</Button>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )

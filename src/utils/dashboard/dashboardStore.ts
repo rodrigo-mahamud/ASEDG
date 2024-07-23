@@ -1,8 +1,7 @@
 import { create } from 'zustand'
 import { ClientEditStore } from './types'
-import { deleteVisitors } from '@/utils/dashboard/data'
 
-export const useClientEditStore = create<ClientEditStore>((set, get) => ({
+export const useClientEditStore = create<ClientEditStore>((set) => ({
   isOpen: false,
   clientToEdit: null,
   selectedClients: [],
@@ -14,16 +13,6 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
   setSelectedClients: (clientIds) => set({ selectedClients: clientIds }),
   setIsDeleteDialogOpen: (isOpen) => set({ isDeleteDialogOpen: isOpen }),
   setUsersToDelete: (users) => set({ usersToDelete: users }),
-  deleteSelectedClients: async () => {
-    const { selectedClients } = get()
-    const result = await deleteVisitors(selectedClients)
-    if (result.success) {
-      set({ selectedClients: [], usersToDelete: [] })
-      return result
-    } else {
-      throw new Error(result.message)
-    }
-  },
   resetStore: () =>
     set({
       isOpen: false,
@@ -38,12 +27,4 @@ export const useClientEditStore = create<ClientEditStore>((set, get) => ({
     set((state) => ({
       editedClient: state.editedClient ? { ...state.editedClient, [field]: value } : null,
     })),
-  saveEditedClient: () => {
-    const { editedClient } = get()
-    if (editedClient) {
-      // Aquí iría la lógica para guardar el cliente editado en el backend
-      console.log('Guardando cliente:', editedClient)
-      set({ isOpen: false, clientToEdit: null, editedClient: null })
-    }
-  },
 }))
