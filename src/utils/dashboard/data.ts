@@ -42,7 +42,7 @@ export async function addVisitor(visitorData: any) {
         first_name: visitorData.first_name,
         last_name: visitorData.last_name,
         email: visitorData.email,
-        remarks: `DNI: ${visitorData.dni}, EDAD: ${visitorData.age}`,
+        remarks: visitorData.remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
         visit_reason: 'Gym Membership',

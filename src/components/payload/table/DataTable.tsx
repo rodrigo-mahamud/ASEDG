@@ -23,37 +23,23 @@ import {
   TableRow,
 } from '@/components/lib/table'
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
-import { Button } from '@/components/lib/button'
-import { Input } from '@/components/lib/input'
-import { Pagination } from './Pagination'
-import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icons-react'
-import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
-import { SelectSeparator } from '@/components/lib/select'
 import { Checkbox } from '@/components/lib/checkbox'
 import { Visitor } from '@/utils/dashboard/types'
+import { Pagination } from './Pagination'
+import { ToolbarTable } from './ToolbarTable'
+
 interface DataTableProps {
   columns: ColumnDef<Visitor, any>[]
   data: Visitor[]
 }
+
 export function DataTable({ columns, data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-  const {
-    setIsOpen,
-    setClientToEdit,
-    setSelectedClients,
-    setIsDeleteDialogOpen,
-    setUsersToDelete,
-  } = useClientEditStore()
+  const { setSelectedClients, setUsersToDelete } = useClientEditStore()
 
   const table = useReactTable({
     data,
@@ -97,79 +83,8 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   return (
     <>
-      {/* Filters */}
-      <div className="flex items-center justify-between pb-6">
-        <div className="flex items-center">
-          <Input
-            placeholder="Buscar por nombre..."
-            value={(table.getColumn('fullName')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => table.getColumn('fullName')?.setFilterValue(event.target.value)}
-            className="w-80"
-          />
-        </div>
-        <div className="flex gap-3">
-          <Button
-            variant="outline"
-            className={
-              Object.keys(rowSelection).length === 0
-                ? ' opacity-0'
-                : 'ml-auto rounded-md border-border text-base '
-            }
-            onClick={() => {
-              setIsDeleteDialogOpen(true)
-            }}
-          >
-            <IconTrash className="mr-2" stroke={1.5} size={16} />
-            Borrar
-          </Button>
-          <Button
-            variant="outline"
-            className="ml-auto rounded-md border-border text-base "
-            onClick={() => {
-              setClientToEdit(null)
-              setIsOpen(true)
-            }}
-          >
-            <IconUserPlus className="mr-2" stroke={1.5} size={16} />
-            Añadir
-          </Button>
+      <ToolbarTable table={table} />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto rounded-md border-border text-base  ">
-                <IconAdjustmentsHorizontal className="mr-2 " stroke={1.5} size={16} />
-                Ver
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="p-1 w-44 border border-border rounded-md shadow-xl shadow-black useTw"
-              align="end"
-            >
-              <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
-                Mostrar columnas
-              </DropdownMenuLabel>
-              <SelectSeparator></SelectSeparator>
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-
-      {/* Table */}
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader>
