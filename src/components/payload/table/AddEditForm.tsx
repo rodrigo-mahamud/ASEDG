@@ -1,17 +1,18 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/lib/form'
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
-import { addVisitor, updateVisitor, getPeriods } from '@/utils/dashboard/data'
+import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
 import { VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 
 export default function AddEditForm() {
   const { clientToEdit } = useClientEditStore()
+  console.log(clientToEdit)
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
@@ -86,6 +87,9 @@ export default function AddEditForm() {
                       label="Edad"
                       type="number"
                       {...field}
+                      onChange={(e) =>
+                        field.onChange(e.target.value ? parseInt(e.target.value) : '')
+                      }
                     />
                   </FormControl>
                 </FormItem>

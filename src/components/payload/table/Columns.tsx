@@ -54,14 +54,7 @@ const getStatusIcon = (status: string) => {
       return <IconCheck size={13} stroke={1.5} />
   }
 }
-const parseRemarks = (remarks: string): { age: string; dni: string; acceptedTerms: boolean } => {
-  const [age, dni, terms] = remarks.split(';')
-  return {
-    age,
-    dni,
-    acceptedTerms: terms === '1',
-  }
-}
+
 export const columns: ColumnDef<Visitor>[] = [
   {
     accessorFn: (row) => `${row.first_name} ${row.last_name}`,
@@ -145,40 +138,24 @@ export const columns: ColumnDef<Visitor>[] = [
     },
   },
   {
-    accessorFn: (row) => parseRemarks(row.remarks).dni,
+    accessorKey: 'dni',
     id: 'dni',
     header: 'DNI',
-    cell: ({ row }) => {
-      const remarks = row.original.remarks
-      const { dni } = parseRemarks(remarks)
-      return <div>{dni}</div>
-    },
   },
   {
-    accessorFn: (row) => parseRemarks(row.remarks).age,
+    accessorKey: 'age',
     id: 'age',
-
-    cell: ({ row }) => {
-      const remarks = row.original.remarks
-      const { age } = parseRemarks(remarks)
-      return <div className="flex justify-center items-center">{age}</div>
-    },
-    header: () => {
-      return <div className="flex justify-center items-center">Edad</div>
-    },
+    header: 'Edad',
   },
   {
-    accessorFn: (row) => parseRemarks(row.remarks).acceptedTerms,
-    id: 'acceptedTerms',
-    header: () => {
-      return <div className="flex justify-center items-center">Términos</div>
-    },
+    accessorKey: 'terms',
+    id: 'terms',
+    header: 'Términos',
     cell: ({ row }) => {
-      const remarks = row.original.remarks
-      const { acceptedTerms } = parseRemarks(remarks)
+      const terms = row.getValue('terms') as boolean
       return (
         <div className="flex items-center justify-center">
-          {acceptedTerms ? (
+          {terms ? (
             <IconCircleCheck size={22} stroke={1.5} className="text-green-600"></IconCircleCheck>
           ) : (
             <IconCircleX size={22} stroke={1.5} className="text-red-600"></IconCircleX>

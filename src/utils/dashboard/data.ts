@@ -45,12 +45,12 @@ export async function getVisitors() {
 
     // Procesar los datos antes de devolverlos
     const processedData = res.data.map((visitor: any) => {
-      const [age, dni, acceptedTerms] = visitor.remarks.split(';')
+      const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
       return {
         ...visitor,
-        age,
-        dni,
-        acceptedTerms: acceptedTerms === '1',
+        age: age.trim(),
+        dni: dni.trim(),
+        terms: acceptedTerms.trim() === '1',
       }
     })
 
