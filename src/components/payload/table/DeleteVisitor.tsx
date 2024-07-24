@@ -48,7 +48,7 @@ export function DeleteVisitor() {
     <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
       <AlertDialogContent className="useTw border-border gap-6 p-0">
         <AlertDialogHeader className="px-6 pt-6">
-          <AlertDialogTitle className="useTw text-2xl font-bold">
+          <AlertDialogTitle className="useTw text-2xl font-semibold">
             Eliminar {selectedClients.length === 1 ? 'Visitante' : 'Visitantes'}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-base text-white/85 text-pretty">

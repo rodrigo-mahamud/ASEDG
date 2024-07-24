@@ -19,7 +19,7 @@ export async function getPeriods() {
       (booking: any) => booking.id === '669147e907d44f5df704e9c1',
     )
 
-    await new Promise((resolve) => setTimeout(resolve, 500000))
+    // await new Promise((resolve) => setTimeout(resolve, 50000))
 
     return data
   } catch (error) {

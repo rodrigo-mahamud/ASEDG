@@ -15,10 +15,10 @@ export function FormErrors<T extends FieldValues>({ form }: FormErrorsProps<T>) 
 
   return (
     <Alert variant="destructive" className="mb-6">
-      <AlertTitle>Hay errores en el formulario:</AlertTitle>
+      <AlertTitle>Revisa los siguientes campos:</AlertTitle>
       <AlertDescription>
-        <div className="h-[100px] rounded-md border p-4">
-          <ul className="list-disc pl-4">
+        <div className="max-h-52 overflow-y-auto rounded-md pt-2">
+          <ul className="list-decimal pl-0 text-base">
             {errorList.map(([key, error]) => (
               <li key={key}>{error?.message as string}</li>
             ))}
