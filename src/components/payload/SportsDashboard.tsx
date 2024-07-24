@@ -26,9 +26,7 @@ export default function SportsDashboard() {
         </div>
       </div>
       <div className="w-full">
-        <Suspense fallback={<SkeletonTable></SkeletonTable>}>
-          <ClientsSection></ClientsSection>
-        </Suspense>
+        <ClientsSection></ClientsSection>
       </div>
     </Gutter>
   )

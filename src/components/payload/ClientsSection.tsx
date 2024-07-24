@@ -1,14 +1,14 @@
 import { getVisitors } from '@/utils/dashboard/data'
-import { DataTable } from './table/DataTable'
-import { columns } from './table/Columns'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-import { AddEdit } from './table/AddEditVisitor'
+import AddEditVisitor from './table/AddEditVisitor'
 import { DeleteVisitor } from './table/DeleteVisitor'
 import { Visitor } from '@/utils/dashboard/types'
+import { TableVisitorsWrapper } from './table/TableVisitorsWrapper'
+import { Suspense } from 'react'
+import { SkeletonTable } from './table/SkeletonTable'
 
-async function ClientsSection() {
-  const data: Visitor[] = await getVisitors()
-
+export default function ClientsSection() {
   return (
     <Card className={'h-full relative border border-white/15'}>
       <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
@@ -18,12 +18,12 @@ async function ClientsSection() {
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6 h-3/4">
-        <DataTable columns={columns} data={data} />
-        <AddEdit />
+        <Suspense fallback={<SkeletonTable></SkeletonTable>}>
+          <TableVisitorsWrapper />
+        </Suspense>
+        <AddEditVisitor />
         <DeleteVisitor />
       </CardContent>
     </Card>
   )
 }
-
-export default ClientsSection

@@ -3,6 +3,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
+import dayjs from 'dayjs'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
@@ -18,7 +19,7 @@ export async function getPeriods() {
       (booking: any) => booking.id === '669147e907d44f5df704e9c1',
     )
 
-    console.log(data)
+    await new Promise((resolve) => setTimeout(resolve, 500000))
 
     return data
   } catch (error) {
@@ -37,13 +38,23 @@ export async function getVisitors() {
       next: { tags: ['refreshVisitors'] },
     })
 
-    // await new Promise((resolve) => setTimeout(resolve, 5000))
-
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const res = await response.json()
-    return res.data
+
+    // Procesar los datos antes de devolverlos
+    const processedData = res.data.map((visitor: any) => {
+      const [age, dni, acceptedTerms] = visitor.remarks.split(';')
+      return {
+        ...visitor,
+        age,
+        dni,
+        acceptedTerms: acceptedTerms === '1',
+      }
+    })
+
+    return processedData
   } catch (error) {
     console.error('Error fetching visitors:', error)
     throw error
@@ -52,6 +63,10 @@ export async function getVisitors() {
 
 export async function addVisitor(visitorData: any) {
   try {
+    const remarks = `${visitorData.age};${visitorData.dni};${visitorData.acceptedTerms ? '1' : '0'}`
+    const now = dayjs()
+    const startTime = now.unix()
+    const endTime = visitorData.period > 0 ? now.add(visitorData.period, 'day').unix() : null
     const response = await fetch(`${BASE_URL}`, {
       method: 'POST',
       headers: {
@@ -62,9 +77,9 @@ export async function addVisitor(visitorData: any) {
         first_name: visitorData.first_name,
         last_name: visitorData.last_name,
         email: visitorData.email,
-        remarks: visitorData.remarks,
-        start_time: visitorData.start_time,
-        end_time: visitorData.end_time,
+        remarks: remarks,
+        start_time: startTime,
+        end_time: endTime,
         visit_reason: 'Gym Membership',
       }),
     })
@@ -88,8 +103,9 @@ export async function addVisitor(visitorData: any) {
   }
 }
 
-export async function updateVisitor(visitorData: VisitorFormValues) {
+export async function updateVisitor(visitorData: any) {
   try {
+    const remarks = `${visitorData.age};${visitorData.dni};${visitorData.acceptedTerms ? '1' : '0'}`
     const response = await fetch(`${BASE_URL}/${visitorData.id}`, {
       method: 'PUT',
       headers: {
@@ -100,7 +116,7 @@ export async function updateVisitor(visitorData: VisitorFormValues) {
         first_name: visitorData.first_name,
         last_name: visitorData.last_name,
         email: visitorData.email,
-        remarks: `DNI: ${visitorData.dni}, EDAD: ${visitorData.age}`,
+        remarks: remarks,
       }),
     })
 

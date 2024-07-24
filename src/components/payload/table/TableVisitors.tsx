@@ -34,7 +34,7 @@ interface DataTableProps {
   data: Visitor[]
 }
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function TableVisitors({ columns, data }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
