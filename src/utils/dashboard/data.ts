@@ -1,10 +1,30 @@
 'use server'
 
+import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
-
+import configPromise from '@payload-config'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
+export async function getPeriods() {
+  try {
+    const payload = await getPayloadHMR({ config: configPromise })
+
+    const facilitiesData = (await payload.find({
+      collection: 'facilities',
+    })) as any
+
+    const data = facilitiesData.docs.find(
+      (booking: any) => booking.id === '669147e907d44f5df704e9c1',
+    )
+
+    console.log(data)
+
+    return data
+  } catch (error) {
+    console.log('aaaa')
+  }
+}
 export async function getVisitors() {
   try {
     const response = await fetch(`${BASE_URL}`, {

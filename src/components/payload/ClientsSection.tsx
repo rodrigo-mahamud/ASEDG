@@ -2,7 +2,7 @@ import { getVisitors } from '@/utils/dashboard/data'
 import { DataTable } from './table/DataTable'
 import { columns } from './table/Columns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
-import { AddEdit } from './table/AddEdit'
+import { AddEdit } from './table/AddEditVisitor'
 import { DeleteVisitor } from './table/DeleteVisitor'
 import { Visitor } from '@/utils/dashboard/types'
 

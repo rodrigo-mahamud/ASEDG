@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import {
@@ -19,11 +19,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/lib/form'
-import { Input } from '@/components/lib/input'
-import { Checkbox } from '@/components/lib/checkbox'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/lib/select'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
-import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
+import { addVisitor, updateVisitor, getPeriods } from '@/utils/dashboard/data'
 import { visitorSchema, VisitorFormValues } from '@/utils/dashboard/validationSchema'
 import { toast } from '@payloadcms/ui'
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
@@ -32,6 +37,7 @@ import { FormErrors } from './FormErrors'
 export function AddEdit() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const { isOpen, clientToEdit, setIsOpen, resetStore } = useClientEditStore()
+  const [periods, setPeriods] = useState<any[]>([])
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
@@ -42,9 +48,19 @@ export function AddEdit() {
       email: '',
       dni: '',
       age: '',
+      mobile_phone: '',
+      period: '',
       acceptedTerms: false,
     },
   })
+
+  useEffect(() => {
+    async function fetchPeriods() {
+      const periodsData = await getPeriods()
+      setPeriods(periodsData.bookingOptions || [])
+    }
+    fetchPeriods()
+  }, [])
 
   useEffect(() => {
     if (clientToEdit) {
@@ -62,6 +78,8 @@ export function AddEdit() {
         email: '',
         dni: '',
         age: '',
+        mobile_phone: '',
+        period: '',
         acceptedTerms: false,
       })
     }
@@ -100,15 +118,15 @@ export function AddEdit() {
 
   const Content = (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSave)} className="space-y-3">
-        <div className="flex w-full gap-3">
+      <form onSubmit={form.handleSubmit(handleSave)} className="space-y-5">
+        <div className="flex w-full gap-5">
           <FormField
             control={form.control}
             name="first_name"
             render={({ field }) => (
               <FormItem className="w-1/2">
                 <FormControl>
-                  <FloatingLabelInput className="text-base" label="Nombre" {...field} />
+                  <FloatingLabelInput className="text-base py-3 h-fit" label="Nombre" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,21 +138,25 @@ export function AddEdit() {
             render={({ field }) => (
               <FormItem className="w-1/2">
                 <FormControl>
-                  <FloatingLabelInput className="text-base" label="Apellidos" {...field} />
+                  <FloatingLabelInput
+                    className="text-base py-3 h-fit"
+                    label="Apellidos"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-5 w-full">
           <FormField
             control={form.control}
             name="dni"
             render={({ field }) => (
               <FormItem className="w-3/4">
                 <FormControl>
-                  <FloatingLabelInput label="DNI" {...field} />
+                  <FloatingLabelInput className="text-base py-3 h-fit" label="DNI" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -146,7 +168,12 @@ export function AddEdit() {
             render={({ field }) => (
               <FormItem className="w-1/4">
                 <FormControl>
-                  <FloatingLabelInput label="Edad" type="number" {...field} />
+                  <FloatingLabelInput
+                    className="text-base py-3 h-fit"
+                    label="Edad"
+                    type="number"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -159,7 +186,7 @@ export function AddEdit() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label="Email" {...field} />
+                <FloatingLabelInput className="text-base py-3 h-fit" label="Email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,8 +198,36 @@ export function AddEdit() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <FloatingLabelInput label="Teléfono de contacto" {...field} />
+                <FloatingLabelInput
+                  className="text-base py-3 h-fit"
+                  label="Teléfono de contacto"
+                  {...field}
+                />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="period"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Período</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona un período" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {periods.map((period) => (
+                    <SelectItem key={period.id} value={period.id}>
+                      {period.name} - {period.price}€ - {period.daysAmount}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
