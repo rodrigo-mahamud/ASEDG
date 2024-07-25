@@ -16,29 +16,26 @@ import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { Alert, AlertTitle } from '@/components/lib/alert'
 import { Input } from '@/components/lib/input'
 import { Label } from '@/components/lib/label'
-
+import { deleteVisitors } from '@/utils/dashboard/data'
+import { toast } from '@payloadcms/ui'
 export function DeleteVisitor() {
   const [confirmText, setConfirmText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const {
-    isDeleteDialogOpen,
-    setIsDeleteDialogOpen,
-    selectedClients,
-    deleteSelectedClients,
-    usersToDelete,
-  } = useClientEditStore()
+  const { isDeleteDialogOpen, setIsDeleteDialogOpen, selectedClients, usersToDelete } =
+    useClientEditStore()
 
   const handleConfirm = async () => {
     if (confirmText === 'eliminar-usuarios') {
       setIsDeleting(true)
       try {
-        await deleteSelectedClients()
+        await deleteVisitors(usersToDelete.map((user) => user.id))
         setIsDeleteDialogOpen(false)
       } catch (error) {
         console.error('Error deleting visitors:', error)
-        // Here you could add some user feedback about the error
+        toast.error('Ha ocurrido un error al eliminar el usuario')
       } finally {
         setIsDeleting(false)
+        toast.success('Usuario eliminado correctamente')
         setConfirmText('')
       }
     }

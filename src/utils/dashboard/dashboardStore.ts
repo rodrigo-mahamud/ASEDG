@@ -12,7 +12,7 @@ export const useClientEditStore = create<ClientEditStore>((set) => ({
   setClientToEdit: (client) => set({ clientToEdit: client, editedClient: client }),
   setSelectedClients: (clientIds) => set({ selectedClients: clientIds }),
   setIsDeleteDialogOpen: (isOpen) => set({ isDeleteDialogOpen: isOpen }),
-  setUsersToDelete: (users) => set({ usersToDelete: users }),
+  setUsersToDelete: (users) => set({ usersToDelete: Array.isArray(users) ? users : [users] }),
   resetStore: () =>
     set({
       isOpen: false,

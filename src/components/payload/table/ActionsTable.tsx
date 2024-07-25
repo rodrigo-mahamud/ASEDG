@@ -14,8 +14,8 @@ import { IconDots } from '@tabler/icons-react'
 export default function ActionsTable({ visitor }: { visitor: Visitor }) {
   console.log(visitor)
 
-  const { setIsOpen, setClientToEdit } = useClientEditStore()
-
+  const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen, setUsersToDelete } =
+    useClientEditStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="m-2">
@@ -25,18 +25,28 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(visitor.id)}>
-          Copy visitor ID
-        </DropdownMenuItem>
+        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(visitor.mobile_phone)}>
+          copiar telefono
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             setClientToEdit(visitor)
             setIsOpen(true)
           }}
         >
-          Edit visitor
+          Editar
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            setUsersToDelete([
+              { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
+            ])
+            setIsDeleteDialogOpen(true)
+          }}
+        >
+          Eliminar
         </DropdownMenuItem>
         <DropdownMenuItem>View visitor details</DropdownMenuItem>
       </DropdownMenuContent>

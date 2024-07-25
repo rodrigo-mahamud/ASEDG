@@ -9,9 +9,9 @@ import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
 import { VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
-
+import { toast } from '@payloadcms/ui'
 export default function AddEditForm() {
-  const { clientToEdit } = useClientEditStore()
+  const { clientToEdit, setIsOpen } = useClientEditStore()
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
@@ -21,10 +21,26 @@ export default function AddEditForm() {
 
   const handleSave = async (data: VisitorFormValues) => {
     if (clientToEdit) {
-      await updateVisitor({ ...data })
-    } else {
-      console.log(data)
-      await addVisitor({ ...data })
+      try {
+        await updateVisitor({ ...data })
+        setIsOpen(false)
+      } catch (error) {
+        console.error('Error deleting visitors:', error)
+        toast.error('Ha ocurrido un error al editatar el usuario')
+      } finally {
+        toast.success('Usuario editado correctamente')
+      }
+    }
+    if (!clientToEdit) {
+      try {
+        await addVisitor({ ...data })
+        setIsOpen(false)
+      } catch (error) {
+        console.error('Error deleting visitors:', error)
+        toast.error('Ha ocurrido un error al añadir al usuario')
+      } finally {
+        toast.success('Usuario añadido correctamente')
+      }
     }
   }
 

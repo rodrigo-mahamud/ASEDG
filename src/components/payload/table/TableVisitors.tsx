@@ -71,14 +71,11 @@ export function TableVisitors({ columns, data }: DataTableProps) {
   useEffect(() => {
     const selectedIds = Object.keys(rowSelection)
     const selectedUsers = data
-      .filter((row: any) => selectedIds.includes(row.id))
-      .map((row: any) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
+      .filter((row: Visitor) => selectedIds.includes(row.id))
+      .map((row: Visitor) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
 
     setSelectedClients(selectedIds)
     setUsersToDelete(selectedUsers)
-
-    console.log('Selected IDs:', selectedIds)
-    console.log('Selected Users:', selectedUsers)
   }, [rowSelection, data, setSelectedClients, setUsersToDelete])
 
   return (

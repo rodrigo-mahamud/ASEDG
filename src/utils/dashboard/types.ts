@@ -1,3 +1,5 @@
+// types.ts
+
 export type Visitor = {
   id: string
   first_name: string
@@ -34,19 +36,24 @@ export type Visitor = {
   visitor_company: string
 }
 
+export type UserToDelete = {
+  id: string
+  name: string
+}
+
 export type ClientEditStore = {
   isOpen: boolean
   clientToEdit: Visitor | null
   selectedClients: string[]
   isDeleteDialogOpen: boolean
-  usersToDelete: { id: string; name: string }[]
+  usersToDelete: UserToDelete[]
   editedClient: Visitor | null
   setIsOpen: (isOpen: boolean) => void
   setClientToEdit: (client: Visitor | null) => void
   setSelectedClients: (clientIds: string[]) => void
   setIsDeleteDialogOpen: (isOpen: boolean) => void
-  setUsersToDelete: (users: { id: string; name: string }[]) => void
+  setUsersToDelete: (users: UserToDelete[] | UserToDelete) => void
   resetStore: () => void
   setEditedClient: (client: Visitor | null) => void
-  updateEditedClient: (field: keyof Visitor, value: string) => void
+  updateEditedClient: (field: keyof Visitor, value: any) => void
 }

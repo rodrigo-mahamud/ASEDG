@@ -3,6 +3,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
+
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
@@ -168,6 +169,8 @@ export async function deleteVisitors(visitorIds: string[]) {
     const allSuccessful = results.every((result) => result.code === 'SUCCESS')
 
     if (allSuccessful) {
+      revalidateTag('refreshVisitors')
+
       return { success: true, message: `Successfully deleted ${visitorIds.length} visitors` }
     } else {
       console.error('Some deletions failed:', results)
