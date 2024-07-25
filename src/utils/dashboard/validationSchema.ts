@@ -65,6 +65,7 @@ export const defaultValues = {
   age: undefined,
   end_time: undefined,
   start_time: undefined,
+  pin_code: '',
 }
 export const visitorSchema = z
   .object({
@@ -103,6 +104,10 @@ export const visitorSchema = z
       .min(getStartOfToday(), { message: 'Debes introducir una fecha futura' })
       .optional(),
     end_time: z.number().optional(),
+    pin_code: z
+      .string()
+      .min(4, 'El código PIN debe tener al menos 4 dígitos')
+      .max(8, 'El código PIN no puede tener más de 8 dígitos'),
   })
   .refine(
     (data) => {

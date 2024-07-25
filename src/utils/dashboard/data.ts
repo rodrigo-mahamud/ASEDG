@@ -6,7 +6,7 @@ import configPromise from '@payload-config'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
-
+const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
 export async function getPeriods() {
   try {
     const payload = await getPayloadHMR({ config: configPromise })
@@ -81,6 +81,7 @@ export async function addVisitor(visitorData: any) {
         remarks: remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
+        pin_code: visitorData.pin_code,
         visit_reason: 'Others',
       }),
     })
@@ -121,6 +122,7 @@ export async function updateVisitor(visitorData: any) {
         remarks: remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
+        pin_code: visitorData.pin_code,
         visit_reason: 'Others',
       }),
     })
@@ -179,5 +181,32 @@ export async function deleteVisitors(visitorIds: string[]) {
   } catch (error) {
     console.error('Error in deleteVisitors function:', error)
     return { success: false, message: 'Error deleting visitors. Check console for details.' }
+  }
+}
+
+export async function generatePinCode() {
+  try {
+    const response = await fetch(`${GYM_CREDENTIALS_URL}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      return { success: true, pinCode: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error generating PIN code:', error)
+    return { success: false, message: 'Error generating PIN code. Check console for details.' }
   }
 }

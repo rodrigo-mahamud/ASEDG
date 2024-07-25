@@ -114,7 +114,7 @@ export const columns: ColumnDef<Visitor>[] = [
           className="flex gap-1 items-center hover:underline"
         >
           {email}
-          <IconExternalLink size={16}></IconExternalLink>
+          <IconExternalLink size={14}></IconExternalLink>
         </a>
       )
     },

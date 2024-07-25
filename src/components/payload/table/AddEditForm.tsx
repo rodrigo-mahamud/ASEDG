@@ -5,48 +5,79 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
-import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
+import { addVisitor, updateVisitor, generatePinCode } from '@/utils/dashboard/data'
 import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
+import { useState, useEffect, useCallback } from 'react'
+
 export default function AddEditForm() {
   const { clientToEdit, setIsOpen } = useClientEditStore()
+  const [isGeneratingPin, setIsGeneratingPin] = useState(false)
+  const [pinCodeChanged, setPinCodeChanged] = useState(false)
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
-    mode: 'onBlur',
-    defaultValues: clientToEdit || defaultValues,
+    mode: 'onChange',
+    defaultValues: clientToEdit ? { ...clientToEdit, pin_code: '......' } : defaultValues,
   })
 
+  const handleGeneratePin = useCallback(async () => {
+    setIsGeneratingPin(true)
+    try {
+      const result = await generatePinCode()
+      if (result.success) {
+        form.setValue('pin_code', result.pinCode)
+        setPinCodeChanged(true)
+      } else {
+        toast.error('Error al generar el código PIN')
+      }
+    } catch (error) {
+      console.error('Error generating PIN code:', error)
+      toast.error('Error al generar el código PIN')
+    } finally {
+      setIsGeneratingPin(false)
+    }
+  }, [form])
+
+  useEffect(() => {
+    if (!clientToEdit && !form.getValues().pin_code) {
+      handleGeneratePin()
+    }
+  }, [clientToEdit, handleGeneratePin, form])
+
   const handleSave = async (data: VisitorFormValues) => {
+    const visitorData = { ...data }
+
+    if (clientToEdit && !pinCodeChanged) {
+      visitorData.pin_code = ''
+    }
+
     if (clientToEdit) {
       try {
-        await updateVisitor({ ...data })
+        await updateVisitor(visitorData)
         setIsOpen(false)
-      } catch (error) {
-        console.error('Error deleting visitors:', error)
-        toast.error('Ha ocurrido un error al editatar el usuario')
-      } finally {
         toast.success('Usuario editado correctamente')
-      }
-    }
-    if (!clientToEdit) {
-      try {
-        await addVisitor({ ...data })
-        setIsOpen(false)
       } catch (error) {
-        console.error('Error deleting visitors:', error)
-        toast.error('Ha ocurrido un error al añadir al usuario')
-      } finally {
+        console.error('Error updating visitor:', error)
+        toast.error('Ha ocurrido un error al editar el usuario')
+      }
+    } else {
+      try {
+        await addVisitor(visitorData)
+        setIsOpen(false)
         toast.success('Usuario añadido correctamente')
+      } catch (error) {
+        console.error('Error adding visitor:', error)
+        toast.error('Ha ocurrido un error al añadir al usuario')
       }
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSave)} className=" mt-6">
+      <form onSubmit={form.handleSubmit(handleSave)} className="mt-6">
         <div className="px-8 space-y-5">
           <div className="flex w-full gap-5">
             <FormField
@@ -61,6 +92,7 @@ export default function AddEditForm() {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -76,6 +108,7 @@ export default function AddEditForm() {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -89,6 +122,7 @@ export default function AddEditForm() {
                   <FormControl>
                     <FloatingLabelInput className="text-base py-3 h-fit" label="DNI" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -108,6 +142,7 @@ export default function AddEditForm() {
                       }
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -120,6 +155,7 @@ export default function AddEditForm() {
                 <FormControl>
                   <FloatingLabelInput className="text-base py-3 h-fit" label="Email" {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -135,6 +171,7 @@ export default function AddEditForm() {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -157,6 +194,38 @@ export default function AddEditForm() {
               />
             )}
           />
+
+          <div className="flex gap-5 w-full">
+            <FormField
+              control={form.control}
+              name="pin_code"
+              render={({ field }) => (
+                <FormItem className="w-3/4">
+                  <FormControl>
+                    <FloatingLabelInput
+                      className="text-base py-3 h-fit"
+                      label="Código PIN"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.value)
+                        setPinCodeChanged(true)
+                      }}
+                      disabled={true}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="button"
+              onClick={handleGeneratePin}
+              disabled={isGeneratingPin}
+              className="w-1/4 h-fit py-3"
+            >
+              {isGeneratingPin ? 'Generando...' : 'Generar nuevo PIN'}
+            </Button>
+          </div>
 
           <FormErrors form={form} />
         </div>
