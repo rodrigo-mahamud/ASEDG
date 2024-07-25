@@ -1,5 +1,3 @@
-// types.ts
-
 export type Visitor = {
   id: string
   first_name: string
@@ -34,6 +32,9 @@ export type Visitor = {
   schedule_id: string
   visit_reason: string
   visitor_company: string
+  dni?: string
+  age?: number
+  periodId?: string
 }
 
 export type UserToDelete = {
@@ -56,4 +57,27 @@ export type ClientEditStore = {
   resetStore: () => void
   setEditedClient: (client: Visitor | null) => void
   updateEditedClient: (field: keyof Visitor, value: any) => void
+}
+
+export type BookingOption = {
+  periodType: 'days' | 'months'
+  name: string
+  periodLength: number
+  price: number
+  daysAmount: number
+  id: string
+}
+
+export type BookingOptionsTypes = BookingOption[]
+
+// New types for AddEditDatePicker
+export interface DatePeriodPickerProps {
+  field: {
+    value: { start_time?: number; end_time?: number }
+    onChange: (value: { start_time?: number; end_time?: number }) => void
+  }
+}
+
+export interface PeriodsData {
+  bookingOptions: BookingOptionsTypes
 }

@@ -23,7 +23,7 @@ export async function getPeriods() {
 
     return data
   } catch (error) {
-    console.log('aaaa')
+    console.error('Error fetching periods:', error)
   }
 }
 export async function getVisitors() {

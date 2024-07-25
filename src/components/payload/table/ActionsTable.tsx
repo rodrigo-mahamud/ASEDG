@@ -12,8 +12,6 @@ import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { IconDots } from '@tabler/icons-react'
 
 export default function ActionsTable({ visitor }: { visitor: Visitor }) {
-  console.log(visitor)
-
   const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen, setUsersToDelete } =
     useClientEditStore()
   return (

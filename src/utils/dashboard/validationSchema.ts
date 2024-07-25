@@ -56,7 +56,16 @@ const getStartOfToday = () => {
   today.setHours(0, 0, 0, 0)
   return Math.floor(today.getTime() / 1000)
 }
-
+export const defaultValues = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  mobile_phone: '',
+  dni: '',
+  age: undefined,
+  end_time: undefined,
+  start_time: undefined,
+}
 export const visitorSchema = z
   .object({
     id: z.string().optional(),

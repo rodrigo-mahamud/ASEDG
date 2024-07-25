@@ -6,7 +6,7 @@ import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
 import { addVisitor, updateVisitor } from '@/utils/dashboard/data'
-import { VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
+import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
@@ -16,7 +16,7 @@ export default function AddEditForm() {
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
     mode: 'onBlur',
-    defaultValues: clientToEdit || {},
+    defaultValues: clientToEdit || defaultValues,
   })
 
   const handleSave = async (data: VisitorFormValues) => {
@@ -148,12 +148,10 @@ export default function AddEditForm() {
                   value: {
                     start_time: form.getValues().start_time,
                     end_time: form.getValues().end_time,
-                    periodId: form.getValues().periodId,
                   },
                   onChange: (value) => {
                     form.setValue('start_time', value.start_time)
                     form.setValue('end_time', value.end_time)
-                    form.setValue('periodId', value.periodId)
                   },
                 }}
               />

@@ -16,19 +16,13 @@ import { FormControl, FormItem, FormMessage } from '@/components/lib/form'
 import { getPeriods } from '@/utils/dashboard/data'
 import { Skeleton } from '@/components/lib/skeleton'
 import { IconCalendar } from '@tabler/icons-react'
-
-interface DatePeriodPickerProps {
-  field: {
-    value: { start_time?: number; end_time?: number }
-    onChange: (value: { start_time?: number; end_time?: number }) => void
-  }
-}
+import { DatePeriodPickerProps, PeriodsData } from '@/utils/dashboard/types'
 
 export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
-  const [periodsData, setPeriodsData] = useState(null)
+  const [periodsData, setPeriodsData] = useState<PeriodsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [date, setDate] = useState<DateRange | undefined>(() => {
+  const [error, setError] = useState<string | null>(null)
+  const [date, setDate] = useState<DateRange | any>(() => {
     if (field.value.start_time && field.value.end_time) {
       return {
         from: fromUnixTime(field.value.start_time),
@@ -47,6 +41,7 @@ export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
       setIsLoading(false)
     } catch (err) {
       console.error('Error fetching periods:', err)
+      setError('Error fetching periods')
       setIsLoading(false)
     }
   }, [])
@@ -57,9 +52,10 @@ export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
 
   const updateSelectedPeriod = useCallback(() => {
     if (date?.from && date?.to && periodsData) {
-      const matchingPeriod = periodsData.bookingOptions.find((option) =>
-        isSameDay(addDays(date.from, option.daysAmount), date.to),
-      )
+      const matchingPeriod = periodsData.bookingOptions.find((option) => {
+        const endDate = addDays(date.from, option.daysAmount)
+        return date.to && isSameDay(endDate, date.to)
+      })
       setSelectedPeriod(matchingPeriod ? matchingPeriod.id : 'custom')
     }
   }, [date, periodsData])
@@ -115,10 +111,12 @@ export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
       </>
     )
   }, [periodsData])
+
   const disabledDays = useMemo(() => {
     const today = startOfToday()
     return { before: today }
   }, [])
+
   return (
     <FormItem className="flex flex-col space-y-4">
       <div className={cn('grid gap-2')}>
