@@ -10,7 +10,8 @@ import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboa
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { IconLineDotted, IconLoader2, IconRefresh } from '@tabler/icons-react'
 
 export default function AddEditForm() {
   const { clientToEdit, setIsOpen } = useClientEditStore()
@@ -20,7 +21,7 @@ export default function AddEditForm() {
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
     mode: 'onChange',
-    defaultValues: clientToEdit ? { ...clientToEdit, pin_code: '......' } : defaultValues,
+    defaultValues: clientToEdit || defaultValues,
   })
 
   const handleGeneratePin = useCallback(async () => {
@@ -41,7 +42,7 @@ export default function AddEditForm() {
     }
   }, [form])
 
-  useEffect(() => {
+  useMemo(() => {
     if (!clientToEdit && !form.getValues().pin_code) {
       handleGeneratePin()
     }
@@ -195,22 +196,22 @@ export default function AddEditForm() {
             )}
           />
 
-          <div className="flex gap-5 w-full">
+          <div className="flex w-full">
             <FormField
               control={form.control}
               name="pin_code"
               render={({ field }) => (
-                <FormItem className="w-3/4">
+                <FormItem className="w-4/5">
                   <FormControl>
                     <FloatingLabelInput
-                      className="text-base py-3 h-fit"
+                      className="text-base py-3 h-fit border-r-0 rounded-r-none "
                       label="Código PIN"
+                      disabled={true}
                       {...field}
                       onChange={(e) => {
                         field.onChange(e.target.value)
                         setPinCodeChanged(true)
                       }}
-                      disabled={true}
                     />
                   </FormControl>
                   <FormMessage />
@@ -219,11 +220,16 @@ export default function AddEditForm() {
             />
             <Button
               type="button"
+              variant={'outline'}
               onClick={handleGeneratePin}
               disabled={isGeneratingPin}
-              className="w-1/4 h-fit py-3"
+              className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
             >
-              {isGeneratingPin ? 'Generando...' : 'Generar nuevo PIN'}
+              {isGeneratingPin ? (
+                <IconLoader2 size={19} className="animate-spin"></IconLoader2>
+              ) : (
+                <IconRefresh size={19}></IconRefresh>
+              )}
             </Button>
           </div>
 

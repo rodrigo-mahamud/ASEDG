@@ -12,7 +12,7 @@ export type Visitor = {
   mobile_phone: string
   location_id: string
   nfc_cards: any[]
-  pin_code: { token: string }
+  pin_code: string
   remarks: string
   resources: Array<{ id: string; name: string; type: string }>
   schedule: {

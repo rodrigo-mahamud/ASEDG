@@ -44,14 +44,14 @@ export async function getVisitors() {
 
     const res = await response.json()
 
-    // Filter out CANCELLED visitors and process the data
     const processedData = res.data
-      .filter((visitor: any) => visitor.status !== 'CANCELLED') // Exclude CANCELLED visitors
+      .filter((visitor: any) => visitor.status !== 'CANCELLED')
       .map((visitor: any) => {
         const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
         return {
           ...visitor,
-          age: age.trim(),
+          pin_code: '* * * * * *',
+          age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
           terms: acceptedTerms.trim() === '1',
         }
@@ -63,7 +63,6 @@ export async function getVisitors() {
     throw error
   }
 }
-
 export async function addVisitor(visitorData: any) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
