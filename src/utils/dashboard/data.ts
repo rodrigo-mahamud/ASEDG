@@ -3,7 +3,6 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
-import dayjs from 'dayjs'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 
@@ -41,18 +40,21 @@ export async function getVisitors() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
+
     const res = await response.json()
 
-    // Procesar los datos antes de devolverlos
-    const processedData = res.data.map((visitor: any) => {
-      const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
-      return {
-        ...visitor,
-        age: age.trim(),
-        dni: dni.trim(),
-        terms: acceptedTerms.trim() === '1',
-      }
-    })
+    // Filter out CANCELLED visitors and process the data
+    const processedData = res.data
+      .filter((visitor: any) => visitor.status !== 'CANCELLED') // Exclude CANCELLED visitors
+      .map((visitor: any) => {
+        const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
+        return {
+          ...visitor,
+          age: age.trim(),
+          dni: dni.trim(),
+          terms: acceptedTerms.trim() === '1',
+        }
+      })
 
     return processedData
   } catch (error) {
@@ -78,7 +80,7 @@ export async function addVisitor(visitorData: any) {
         remarks: remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
-        visit_reason: 'Gym Membership',
+        visit_reason: 'Others',
       }),
     })
 
@@ -103,7 +105,7 @@ export async function addVisitor(visitorData: any) {
 
 export async function updateVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${visitorData.acceptedTerms ? '1' : '0'}`
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
     const response = await fetch(`${BASE_URL}/${visitorData.id}`, {
       method: 'PUT',
       headers: {
@@ -114,7 +116,11 @@ export async function updateVisitor(visitorData: any) {
         first_name: visitorData.first_name,
         last_name: visitorData.last_name,
         email: visitorData.email,
+        mobile_phone: visitorData.mobile_phone,
         remarks: remarks,
+        start_time: visitorData.start_time,
+        end_time: visitorData.end_time,
+        visit_reason: 'Others',
       }),
     })
 

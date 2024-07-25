@@ -28,7 +28,7 @@ function prepareVisitorData(
     remarks: `Edad: ${data.edad} años - ¿Términos aceptados? ${data.terminos}`,
     start_time: startTime,
     end_time: endTime,
-    visit_reason: 'Others',
+    visit_reason: 'Interview',
     week_schedule: defaultWeekSchedule(),
     resources: [{ id: process.env.SECRET_GYM_DOOR_ID, type: 'door' }],
     pin_code: pinCode,
