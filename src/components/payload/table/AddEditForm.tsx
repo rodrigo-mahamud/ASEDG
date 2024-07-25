@@ -1,4 +1,5 @@
 'use client'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/lib/form'
@@ -10,13 +11,13 @@ import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboa
 import { AddEditDatePicker } from './AddEditDatePicker'
 import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { IconLineDotted, IconLoader2, IconRefresh } from '@tabler/icons-react'
+import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 
-export default function AddEditForm() {
+const AddEditForm = React.memo(function AddEditForm() {
   const { clientToEdit, setIsOpen } = useClientEditStore()
   const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [pinCodeChanged, setPinCodeChanged] = useState(false)
+  const initialPinGeneratedRef = useRef(false)
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
@@ -42,9 +43,10 @@ export default function AddEditForm() {
     }
   }, [form])
 
-  useMemo(() => {
-    if (!clientToEdit && !form.getValues().pin_code) {
+  useEffect(() => {
+    if (!clientToEdit && !form.getValues().pin_code && !initialPinGeneratedRef.current) {
       handleGeneratePin()
+      initialPinGeneratedRef.current = true
     }
   }, [clientToEdit, handleGeneratePin, form])
 
@@ -226,9 +228,9 @@ export default function AddEditForm() {
               className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
             >
               {isGeneratingPin ? (
-                <IconLoader2 size={19} className="animate-spin"></IconLoader2>
+                <IconLoader2 size={19} className="animate-spin" />
               ) : (
-                <IconRefresh size={19}></IconRefresh>
+                <IconRefresh size={19} />
               )}
             </Button>
           </div>
@@ -243,4 +245,6 @@ export default function AddEditForm() {
       </form>
     </Form>
   )
-}
+})
+
+export default AddEditForm
