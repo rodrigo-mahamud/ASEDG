@@ -51,35 +51,61 @@ function validateDNINIE(value: string): boolean {
 
   return letra.toUpperCase() === letraCalculada
 }
+const getStartOfToday = () => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return Math.floor(today.getTime() / 1000)
+}
 
-export const visitorSchema = z.object({
-  id: z.string().optional(),
-  first_name: z
-    .string()
-    .min(1, 'El nombre debe tener al menos 2 caracteres')
-    .regex(
-      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-      'El nombre no puede contener números ni caracteres especiales',
-    ),
-  last_name: z
-    .string()
-    .min(1, 'Los apellidos deben tener al menos 2 caracteres')
-    .regex(
-      /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-      'Los apellidos no pueden contener números ni caracteres especiales',
-    ),
-  email: z
-    .string()
-    .email('Correo electrónico inválido')
-    .refine(
-      (email) => !prohibitedDomains.some((domain) => email.toLowerCase().endsWith(`@${domain}`)),
-      {
-        message:
-          'Por favor, utiliza tu dirección de correo personal no se admiten mails temporales',
-      },
-    ),
-  dni: z.string().refine(validateDNINIE, { message: 'DNI o NIE español inválido' }),
-  age: z.number().min(16, 'Debes ser mayor de 16 años'),
-})
+export const visitorSchema = z
+  .object({
+    id: z.string().optional(),
+    first_name: z
+      .string()
+      .min(1, 'El nombre debe tener al menos 2 caracteres')
+      .regex(
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+        'El nombre no puede contener números ni caracteres especiales',
+      ),
+    last_name: z
+      .string()
+      .min(1, 'Los apellidos deben tener al menos 2 caracteres')
+      .regex(
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+        'Los apellidos no pueden contener números ni caracteres especiales',
+      ),
+    email: z
+      .string()
+      .email('Correo electrónico inválido')
+      .refine(
+        (email) => !prohibitedDomains.some((domain) => email.toLowerCase().endsWith(`@${domain}`)),
+        {
+          message:
+            'Por favor, utiliza tu dirección de correo personal no se admiten mails temporales',
+        },
+      ),
+    mobile_phone: z
+      .string()
+      .regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
+    dni: z.string().refine(validateDNINIE, { message: 'DNI o NIE español inválido' }),
+    age: z.number().min(16, 'Debes ser mayor de 16 años'),
+    start_time: z
+      .number()
+      .min(getStartOfToday(), { message: 'Debes introducir una fecha futura' })
+      .optional(),
+    end_time: z.number().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.start_time && data.end_time) {
+        return data.end_time > data.start_time
+      }
+      return true
+    },
+    {
+      message: 'La fecha de fin debe ser posterior a la fecha de inicio',
+      path: ['end_time'],
+    },
+  )
 
 export type VisitorFormValues = z.infer<typeof visitorSchema>

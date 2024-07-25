@@ -12,7 +12,6 @@ import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
 
 export default function AddEditForm() {
   const { clientToEdit } = useClientEditStore()
-  console.log(clientToEdit)
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
@@ -21,9 +20,10 @@ export default function AddEditForm() {
   })
 
   const handleSave = async (data: VisitorFormValues) => {
-    if (data.id) {
+    if (clientToEdit) {
       await updateVisitor({ ...data })
     } else {
+      console.log(data)
       await addVisitor({ ...data })
     }
   }
@@ -126,7 +126,22 @@ export default function AddEditForm() {
           <FormField
             control={form.control}
             name="end_time"
-            render={({ field }) => <AddEditDatePicker field={field} />}
+            render={({ field }) => (
+              <AddEditDatePicker
+                field={{
+                  value: {
+                    start_time: form.getValues().start_time,
+                    end_time: form.getValues().end_time,
+                    periodId: form.getValues().periodId,
+                  },
+                  onChange: (value) => {
+                    form.setValue('start_time', value.start_time)
+                    form.setValue('end_time', value.end_time)
+                    form.setValue('periodId', value.periodId)
+                  },
+                }}
+              />
+            )}
           />
 
           <FormErrors form={form} />

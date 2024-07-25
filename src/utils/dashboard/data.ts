@@ -63,10 +63,7 @@ export async function getVisitors() {
 
 export async function addVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${visitorData.acceptedTerms ? '1' : '0'}`
-    const now = dayjs()
-    const startTime = now.unix()
-    const endTime = visitorData.period > 0 ? now.add(visitorData.period, 'day').unix() : null
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
     const response = await fetch(`${BASE_URL}`, {
       method: 'POST',
       headers: {
@@ -77,9 +74,10 @@ export async function addVisitor(visitorData: any) {
         first_name: visitorData.first_name,
         last_name: visitorData.last_name,
         email: visitorData.email,
+        mobile_phone: visitorData.mobile_phone,
         remarks: remarks,
-        start_time: startTime,
-        end_time: endTime,
+        start_time: visitorData.start_time,
+        end_time: visitorData.end_time,
         visit_reason: 'Gym Membership',
       }),
     })

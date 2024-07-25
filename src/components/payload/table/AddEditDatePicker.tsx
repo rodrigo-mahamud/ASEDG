@@ -1,10 +1,14 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
-import { addDays, format } from 'date-fns'
-
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import {
+  addDays,
+  format,
+  fromUnixTime,
+  getUnixTime,
+  startOfToday,
+  isSameDay,
+  startOfDay,
+} from 'date-fns'
 import { DateRange } from 'react-day-picker'
-
 import { cn } from '@/utils/utils'
 import { Button } from '@/components/lib/button'
 import { Calendar } from '@/components/lib/calendar'
@@ -16,63 +20,113 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/lib/select'
-import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/lib/form'
+import { FormControl, FormItem, FormMessage } from '@/components/lib/form'
 import { getPeriods } from '@/utils/dashboard/data'
 import { Skeleton } from '@/components/lib/skeleton'
 import { IconCalendar } from '@tabler/icons-react'
 
 interface DatePeriodPickerProps {
-  field: any
+  field: {
+    value: { start_time?: number; end_time?: number }
+    onChange: (value: { start_time?: number; end_time?: number }) => void
+  }
 }
 
 export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
   const [periodsData, setPeriodsData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 7),
-  })
-  const [selectedPeriod, setSelectedPeriod] = useState<string | undefined>()
-
-  useEffect(() => {
-    const fetchPeriods = async () => {
-      try {
-        setIsLoading(true)
-        const data = await getPeriods()
-        setPeriodsData(data)
-        setIsLoading(false)
-      } catch (err) {
-        console.error('Error fetching periods:', err)
-        setIsLoading(false)
+  const [date, setDate] = useState<DateRange | undefined>(() => {
+    if (field.value.start_time && field.value.end_time) {
+      return {
+        from: fromUnixTime(field.value.start_time),
+        to: fromUnixTime(field.value.end_time),
       }
     }
+    return undefined
+  })
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('custom')
 
-    fetchPeriods()
+  const fetchPeriods = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      const data = await getPeriods()
+      setPeriodsData(data)
+      setIsLoading(false)
+    } catch (err) {
+      console.error('Error fetching periods:', err)
+      setIsLoading(false)
+    }
   }, [])
 
-  const handlePeriodChange = (periodId: string) => {
-    setSelectedPeriod(periodId)
-    const selectedOption = periodsData?.bookingOptions.find((option) => option.id === periodId)
-    if (selectedOption && date?.from) {
-      const newEndDate = addDays(date.from, selectedOption.daysAmount)
-      setDate({ from: date.from, to: newEndDate })
-      field.onChange({ startDate: date.from, endDate: newEndDate, periodId })
-    }
-  }
+  useEffect(() => {
+    fetchPeriods()
+  }, [fetchPeriods])
 
-  const handleDateChange = (newDate: DateRange | undefined) => {
-    setDate(newDate)
-    setSelectedPeriod(undefined)
-    if (newDate?.from && newDate?.to) {
-      field.onChange({
-        startDate: newDate.from,
-        endDate: newDate.to,
-        periodId: undefined,
-      })
+  const updateSelectedPeriod = useCallback(() => {
+    if (date?.from && date?.to && periodsData) {
+      const matchingPeriod = periodsData.bookingOptions.find((option) =>
+        isSameDay(addDays(date.from, option.daysAmount), date.to),
+      )
+      setSelectedPeriod(matchingPeriod ? matchingPeriod.id : 'custom')
     }
-  }
+  }, [date, periodsData])
 
+  useEffect(() => {
+    updateSelectedPeriod()
+  }, [updateSelectedPeriod])
+
+  const handlePeriodChange = useCallback(
+    (periodId: string) => {
+      setSelectedPeriod(periodId)
+      if (periodId === 'custom') return
+
+      const selectedOption = periodsData?.bookingOptions.find((option) => option.id === periodId)
+      if (selectedOption) {
+        const startDate = date?.from || startOfToday()
+        const endDate = addDays(startDate, selectedOption.daysAmount)
+        setDate({ from: startDate, to: endDate })
+        field.onChange({
+          start_time: getUnixTime(startDate),
+          end_time: getUnixTime(endDate),
+        })
+      }
+    },
+    [periodsData, date, field],
+  )
+
+  const handleDateChange = useCallback(
+    (newDate: DateRange | undefined) => {
+      setDate(newDate)
+      if (newDate?.from && newDate?.to) {
+        field.onChange({
+          start_time: getUnixTime(newDate.from),
+          end_time: getUnixTime(newDate.to),
+        })
+      }
+    },
+    [field],
+  )
+
+  const selectOptions = useMemo(() => {
+    if (!periodsData) return null
+    return (
+      <>
+        <SelectItem value="custom" className="text-base">
+          Personalizado
+        </SelectItem>
+        {periodsData.bookingOptions.map((option) => (
+          <SelectItem key={option.id} value={option.id} className="text-base">
+            {option.name}: {option.price}€
+          </SelectItem>
+        ))}
+      </>
+    )
+  }, [periodsData])
+  const disabledDays = useMemo(() => {
+    const today = startOfToday()
+    return { before: today }
+  }, [])
   return (
     <FormItem className="flex flex-col space-y-4">
       <div className={cn('grid gap-2')}>
@@ -107,9 +161,10 @@ export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
           >
             <Calendar
               initialFocus
-              className="useTw  p-0"
+              disabled={disabledDays}
+              className="useTw p-0"
               mode="range"
-              defaultMonth={date?.from}
+              defaultMonth={date?.from || new Date()}
               selected={date}
               onSelect={handleDateChange}
               numberOfMonths={2}
@@ -126,13 +181,7 @@ export function AddEditDatePicker({ field }: DatePeriodPickerProps) {
                   </SelectTrigger>
                 </FormControl>
 
-                <SelectContent className="useTw border-border">
-                  {periodsData?.bookingOptions.map((option) => (
-                    <SelectItem key={option.id} value={option.id} className="text-base">
-                      {option.name}: {option.price}€
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+                <SelectContent className="useTw border-border">{selectOptions}</SelectContent>
               </Select>
             )}
           </PopoverContent>
