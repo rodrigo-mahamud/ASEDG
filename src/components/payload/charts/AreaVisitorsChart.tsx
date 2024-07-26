@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/lib/card'
@@ -10,59 +10,52 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/lib/chart'
-const chartData = [
-  { date: '2024-04-01', desktop: 222, mobile: 150 },
-  { date: '2024-04-02', desktop: 97, mobile: 180 },
-  { date: '2024-04-03', desktop: 167, mobile: 120 },
-  { date: '2024-04-04', desktop: 242, mobile: 260 },
-  { date: '2024-04-05', desktop: 373, mobile: 290 },
-  { date: '2024-04-06', desktop: 301, mobile: 340 },
-  { date: '2024-04-07', desktop: 245, mobile: 180 },
-  { date: '2024-04-08', desktop: 409, mobile: 320 },
-  { date: '2024-04-09', desktop: 59, mobile: 110 },
-  { date: '2024-04-10', desktop: 261, mobile: 190 },
-  { date: '2024-04-11', desktop: 327, mobile: 350 },
-  { date: '2024-04-12', desktop: 292, mobile: 210 },
-  { date: '2024-04-13', desktop: 342, mobile: 380 },
-  { date: '2024-04-14', desktop: 137, mobile: 220 },
-  { date: '2024-04-15', desktop: 120, mobile: 170 },
-  { date: '2024-04-16', desktop: 138, mobile: 190 },
-  { date: '2024-04-17', desktop: 446, mobile: 360 },
-  { date: '2024-04-18', desktop: 364, mobile: 410 },
-  { date: '2024-04-19', desktop: 243, mobile: 180 },
-  { date: '2024-04-20', desktop: 89, mobile: 150 },
-  { date: '2024-04-21', desktop: 137, mobile: 200 },
-  { date: '2024-04-22', desktop: 224, mobile: 170 },
-  { date: '2024-04-23', desktop: 138, mobile: 230 },
-  { date: '2024-05-04', desktop: 385, mobile: 420 },
-  { date: '2024-05-05', desktop: 481, mobile: 390 },
-  { date: '2024-05-06', desktop: 498, mobile: 520 },
-  { date: '2024-05-07', desktop: 388, mobile: 300 },
-  { date: '2024-05-08', desktop: 149, mobile: 210 },
-  { date: '2024-05-09', desktop: 227, mobile: 180 },
-]
+import { getActivityLogs } from '@/utils/dashboard/data'
 
 const chartConfig = {
   views: {
     label: 'Page Views',
   },
-  desktop: {
-    label: 'Desktop',
+  amount: {
+    label: 'amount',
     color: 'hsl(var(--chart-1))',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig
 
-export default function AreaVisitorsChart(className) {
-  const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('desktop')
+export default function AreaVisitorsChart() {
+  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>('amount')
+  const [chartData, setchartData] = useState<ActivityLog[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    const fetchchartData = async () => {
+      try {
+        setIsLoading(true)
+        // Ejemplo: obtener logs del último mes
+        const endDate = new Date()
+        const startDate = new Date()
+        startDate.setMonth(startDate.getMonth() - 1)
 
-  const total = React.useMemo(
+        const logs = await getActivityLogs(
+          Math.floor(startDate.getTime() / 1000),
+          Math.floor(endDate.getTime() / 1000),
+        )
+        setchartData(logs)
+        console.log(logs)
+      } catch (err) {
+        setError('Error al cargar los logs de actividad')
+        console.error(err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchchartData()
+  }, [])
+
+  const total = useMemo(
     () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
+      amount: chartData.reduce((acc, curr) => acc + curr.amount, 0),
     }),
     [],
   )
@@ -75,7 +68,7 @@ export default function AreaVisitorsChart(className) {
           <CardDescription>Showing total visitors for the last 3 months</CardDescription>
         </div>
         <div className="flex">
-          {['desktop', 'mobile'].map((key) => {
+          {['amount'].map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
               <button
@@ -120,22 +113,18 @@ export default function AreaVisitorsChart(className) {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
+              <linearGradient id="fillamount" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-amount)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
 
             <Area
               dataKey={activeChart}
               type="natural"
-              fill="url(#fillDesktop)"
+              fill="url(#fillamount)"
               fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              stroke="var(--color-amount)"
               stackId="a"
             />
           </AreaChart>

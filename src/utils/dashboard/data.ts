@@ -4,11 +4,12 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
 import { render } from '@react-email/components'
+import { format } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 
 import { VisitorFormValues } from './validationSchema'
 
-const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
+const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
 export async function getPeriods() {
@@ -23,8 +24,6 @@ export async function getPeriods() {
       (booking: any) => booking.id === '669147e907d44f5df704e9c1',
     )
 
-    // await new Promise((resolve) => setTimeout(resolve, 50000))
-
     return data
   } catch (error) {
     console.error('Error fetching periods:', error)
@@ -32,7 +31,7 @@ export async function getPeriods() {
 }
 export async function getVisitors() {
   try {
-    const response = await fetch(`${BASE_URL}`, {
+    const response = await fetch(`${BASE_URL}/visitors`, {
       method: 'GET',
       headers: {
         Authorization: `${API_TOKEN}`,
@@ -45,7 +44,7 @@ export async function getVisitors() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-
+    // await new Promise((resolve) => setTimeout(resolve, 50000))
     const res = await response.json()
 
     const processedData = res.data
@@ -70,7 +69,7 @@ export async function getVisitors() {
 export async function addVisitor(visitorData: any) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
-    const response = await fetch(`${BASE_URL}`, {
+    const response = await fetch(`${BASE_URL}/visitors`, {
       method: 'POST',
       headers: {
         Authorization: `${API_TOKEN}`,
@@ -113,7 +112,7 @@ export async function addVisitor(visitorData: any) {
 export async function updateVisitor(visitorData: any) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
-    const response = await fetch(`${BASE_URL}/${visitorData.id}`, {
+    const response = await fetch(`${BASE_URL}/visitors/${visitorData.id}`, {
       method: 'PUT',
       headers: {
         Authorization: `${API_TOKEN}`,
@@ -155,7 +154,7 @@ export async function deleteVisitors(visitorIds: string[]) {
   try {
     const results = await Promise.all(
       visitorIds.map(async (id) => {
-        const url = `${BASE_URL}/${id}`
+        const url = `${BASE_URL}/visitors/${id}`
         const response = await fetch(url, {
           method: 'DELETE',
           headers: {
@@ -240,5 +239,52 @@ export async function sendEmail(visitorData: VisitorFormValues) {
   } catch (emailError) {
     console.error('Error al enviar el correo electrónico:', emailError)
     throw new Error('Failed to send email')
+  }
+}
+
+//LOGS
+
+export async function getActivityLogs(since: number, until: number) {
+  try {
+    const response = await fetch(`${BASE_URL}/system/logs`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        topic: 'door_openings',
+        since: since,
+        until: until,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const res = await response.json()
+
+    // Procesar los datos para obtener el conteo por día
+    const logCounts = res.data.hits.reduce((acc: Record<string, number>, log: any) => {
+      const date = format(new Date(log['@timestamp']), 'yyyy-MM-dd')
+      acc[date] = (acc[date] || 0) + 1
+      return acc
+    }, {})
+
+    // Convertir el objeto de conteo a un array de objetos con la estructura deseada
+    const processedData = Object.entries(logCounts).map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+
+    // Ordenar los datos por fecha
+    processedData.sort((a, b) => a.date.localeCompare(b.date))
+
+    return processedData
+  } catch (error) {
+    console.error('Error fetching activity logs:', error)
+    throw error
   }
 }
