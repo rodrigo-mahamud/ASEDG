@@ -3,6 +3,10 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
+import { render } from '@react-email/components'
+import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
+
+import { VisitorFormValues } from './validationSchema'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_VISITORS
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
@@ -50,7 +54,7 @@ export async function getVisitors() {
         const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
         return {
           ...visitor,
-          pin_code: '* * * * * *',
+          pin_code: '******',
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
           terms: acceptedTerms.trim() === '1',
@@ -81,6 +85,7 @@ export async function addVisitor(visitorData: any) {
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
         pin_code: visitorData.pin_code,
+        resources: [{ id: process.env.SECRET_GYM_DOOR_ID, type: 'door' }],
         visit_reason: 'Others',
       }),
     })
@@ -94,6 +99,7 @@ export async function addVisitor(visitorData: any) {
 
     if (result.code === 'SUCCESS') {
       revalidateTag('refreshVisitors')
+      await sendEmail(visitorData)
       return { success: true, message: 'Visitor added successfully', data: result.data }
     } else {
       throw new Error(`API error: ${result.msg}`)
@@ -207,5 +213,32 @@ export async function generatePinCode() {
   } catch (error) {
     console.error('Error generating PIN code:', error)
     return { success: false, message: 'Error generating PIN code. Check console for details.' }
+  }
+}
+export async function sendEmail(visitorData: VisitorFormValues) {
+  try {
+    const emailHtml = render(
+      BookingConfirmationEmail({
+        nombre: visitorData.first_name,
+        apellidos: visitorData.last_name,
+        email: visitorData.email,
+        telefono: visitorData.mobile_phone,
+        fechaInicio: new Date(visitorData.start_time! * 1000).toLocaleString(),
+        fechaFin: new Date(visitorData.end_time! * 1000).toLocaleString(),
+        pinCode: visitorData.pin_code,
+      }),
+    )
+
+    const payload = await getPayloadHMR({ config: configPromise })
+
+    await payload.sendEmail({
+      to: visitorData.email,
+      subject: 'Registro exitoso en el gimnasio',
+      html: emailHtml,
+    })
+    console.log('Correo electrónico enviado con éxito')
+  } catch (emailError) {
+    console.error('Error al enviar el correo electrónico:', emailError)
+    throw new Error('Failed to send email')
   }
 }

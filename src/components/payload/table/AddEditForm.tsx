@@ -95,7 +95,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -111,7 +110,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -125,7 +123,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                   <FormControl>
                     <FloatingLabelInput className="text-base py-3 h-fit" label="DNI" {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -145,7 +142,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                       }
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -158,7 +154,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                 <FormControl>
                   <FloatingLabelInput className="text-base py-3 h-fit" label="Email" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -174,7 +169,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -216,7 +210,6 @@ const AddEditForm = React.memo(function AddEditForm() {
                       }}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
