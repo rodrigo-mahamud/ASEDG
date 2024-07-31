@@ -232,7 +232,7 @@ export async function sendEmail(visitorData: VisitorFormValues) {
 
     await payload.sendEmail({
       to: visitorData.email,
-      subject: 'Registro exitoso en el gimnasio',
+      subject: 'Registro exitoso en el gimnasio.',
       html: emailHtml,
     })
     console.log('Correo electrónico enviado con éxito')
