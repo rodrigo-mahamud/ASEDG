@@ -16,8 +16,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 export default function AreaGraph({ chartData }) {
-  console.log(chartData.data)
-
   return (
     <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
       <AreaChart
