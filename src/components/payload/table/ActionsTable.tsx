@@ -8,12 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { IconDots } from '@tabler/icons-react'
 
 export default function ActionsTable({ visitor }: { visitor: Visitor }) {
   const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen, setUsersToDelete } =
-    useClientEditStore()
+    useDashboardStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="m-2">

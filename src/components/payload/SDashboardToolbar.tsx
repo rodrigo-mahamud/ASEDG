@@ -35,9 +35,9 @@ export default function SDashboardToolbar() {
           <SelectSeparator></SelectSeparator>
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
             <DropdownMenuRadioItem value="diaria">Ultimas 24h</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="mensual">Este mes</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="mesactual">Este mes</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="mespasado">Mes pasado</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="trimestre">Right</DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>

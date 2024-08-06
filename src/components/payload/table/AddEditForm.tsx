@@ -9,12 +9,12 @@ import { Button } from '@/components/lib/button'
 import { addVisitor, updateVisitor, generatePinCode } from '@/utils/dashboard/data'
 import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { AddEditDatePicker } from './AddEditDatePicker'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 
 const AddEditForm = React.memo(function AddEditForm() {
-  const { clientToEdit, setIsOpen } = useClientEditStore()
+  const { clientToEdit, setIsOpen } = useDashboardStore()
   const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [pinCodeChanged, setPinCodeChanged] = useState(false)
   const initialPinGeneratedRef = useRef(false)

@@ -8,13 +8,13 @@ import {
 } from '@/components/lib/sheet'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/lib/drawer'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { getPeriods } from '@/utils/dashboard/data'
 
 import AddEditForm from './AddEditForm'
 
 export default function AddEditVisitor() {
-  const { isOpen, clientToEdit, setIsOpen } = useClientEditStore()
+  const { isOpen, clientToEdit, setIsOpen } = useDashboardStore()
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   if (!isDesktop) {

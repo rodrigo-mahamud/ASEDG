@@ -1,13 +1,18 @@
 import { create } from 'zustand'
 import { ClientEditStore } from './types'
 
-export const useClientEditStore = create<ClientEditStore>((set) => ({
+export const useDashboardStore = create<ClientEditStore>((set) => ({
   isOpen: false,
   clientToEdit: null,
   selectedClients: [],
   isDeleteDialogOpen: false,
   usersToDelete: [],
   editedClient: null,
+  logsPeriod: {
+    since: undefined,
+    untill: undefined,
+  },
+  facilitie: '',
   setIsOpen: (isOpen) => set({ isOpen }),
   setClientToEdit: (client) => set({ clientToEdit: client, editedClient: client }),
   setSelectedClients: (clientIds) => set({ selectedClients: clientIds }),
@@ -27,4 +32,7 @@ export const useClientEditStore = create<ClientEditStore>((set) => ({
     set((state) => ({
       editedClient: state.editedClient ? { ...state.editedClient, [field]: value } : null,
     })),
+
+  setLogsPeriod: (logsPeriod: number) => set({ logsPeriod }),
+  setfacilitie: (facilitie: number) => set({ facilitie }),
 }))

@@ -245,6 +245,9 @@ export async function sendEmail(visitorData: VisitorFormValues) {
 //LOGS
 
 export async function getActivityLogs(since: number, until: number) {
+  console.log('desde:' + since)
+  console.log('hasta' + until)
+
   try {
     const response = await fetch(`${BASE_URL}/system/logs`, {
       method: 'POST',
@@ -255,8 +258,8 @@ export async function getActivityLogs(since: number, until: number) {
       },
       body: JSON.stringify({
         topic: 'door_openings',
-        since: since,
-        until: until,
+        since: until,
+        until: since,
       }),
     })
 

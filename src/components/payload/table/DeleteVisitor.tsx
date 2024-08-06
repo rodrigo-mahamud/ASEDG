@@ -12,7 +12,7 @@ import {
 } from '@/components/lib/alert-dialog'
 import { Button } from '@/components/lib/button'
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Alert, AlertTitle } from '@/components/lib/alert'
 import { Input } from '@/components/lib/input'
 import { Label } from '@/components/lib/label'
@@ -22,7 +22,7 @@ export function DeleteVisitor() {
   const [confirmText, setConfirmText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const { isDeleteDialogOpen, setIsDeleteDialogOpen, selectedClients, usersToDelete } =
-    useClientEditStore()
+    useDashboardStore()
 
   const handleConfirm = async () => {
     if (confirmText === 'eliminar-usuarios') {

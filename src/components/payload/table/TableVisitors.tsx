@@ -23,7 +23,7 @@ import {
   TableRow,
 } from '@/components/lib/table'
 
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Checkbox } from '@/components/lib/checkbox'
 import { Visitor } from '@/utils/dashboard/types'
 import { Pagination } from './Pagination'
@@ -39,7 +39,7 @@ export function TableVisitors({ columns, data }: DataTableProps) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-  const { setSelectedClients, setUsersToDelete } = useClientEditStore()
+  const { setSelectedClients, setUsersToDelete } = useDashboardStore()
 
   const table = useReactTable({
     data,

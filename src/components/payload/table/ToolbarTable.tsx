@@ -11,7 +11,7 @@ import {
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
 import { SelectSeparator } from '@/components/lib/select'
 import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icons-react'
-import { useClientEditStore } from '@/utils/dashboard/dashboardStore'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Visitor } from '@/utils/dashboard/types'
 
 interface ToolbarTableProps {
@@ -19,7 +19,7 @@ interface ToolbarTableProps {
 }
 
 export function ToolbarTable({ table }: ToolbarTableProps) {
-  const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen } = useClientEditStore()
+  const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen } = useDashboardStore()
 
   return (
     <div className="flex items-center justify-between pb-6">

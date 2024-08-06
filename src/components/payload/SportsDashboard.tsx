@@ -8,12 +8,16 @@ import VisitorsCharts from './VisitorsCharts'
 import { AsyncWrapper } from '../AsyncWrapper'
 import { getActivityLogs } from '@/utils/dashboard/data'
 import SDashboardToolbar from './SDashboardToolbar'
+import { getUnixTime, subDays, subMonths } from 'date-fns'
 
 export default function SportsDashboard() {
   const currentDate = new Date()
   // Fecha de hace 3 meses
-  const threeMonthsAgo = new Date()
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
+  const threeMonthsAgo = subDays(currentDate, 1)
+
+  // Convertir a formato Unix (segundos desde la época Unix)
+  const currentDateUnix = getUnixTime(currentDate)
+  const threeMonthsAgoUnix = getUnixTime(threeMonthsAgo)
   return (
     <Gutter className="useTw space-y-8">
       <SDashboardToolbar></SDashboardToolbar>
@@ -21,8 +25,8 @@ export default function SportsDashboard() {
         <div className="col-span-7 h-[30rem] relative ">
           <Suspense fallback={<SkeletonTable></SkeletonTable>}>
             <AsyncWrapper
-              fetchData={() => getActivityLogs()}
-              fetchParams={[currentDate, threeMonthsAgo]}
+              fetchData={() => getActivityLogs(currentDateUnix, threeMonthsAgoUnix)}
+              fetchParams={[]}
               Component={VisitorsCharts}
             />
           </Suspense>
