@@ -4,9 +4,16 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
 import { render } from '@react-email/components'
-import { format } from 'date-fns'
+import {
+  format,
+  subHours,
+  subDays,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  getUnixTime,
+} from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
-
 import { VisitorFormValues } from './validationSchema'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
@@ -244,9 +251,38 @@ export async function sendEmail(visitorData: VisitorFormValues) {
 
 //LOGS
 
-export async function getActivityLogs(since: number, until: number) {
-  console.log('desde:' + since)
-  console.log('hasta' + until)
+export async function getActivityLogs(period: string, type: string = 'door_openings') {
+  const now = new Date()
+  let since: Date
+  let until: Date
+
+  switch (period) {
+    case 'day':
+      since = now
+      until = subHours(now, 24)
+      break
+    case 'week':
+      since = now
+      until = subDays(now, 7)
+      break
+    case 'currentmonth':
+      since = now
+      until = startOfMonth(now)
+      break
+    case 'pastmonth':
+      since = endOfMonth(subMonths(now, 1))
+      until = startOfMonth(subMonths(now, 1))
+      break
+    case 'quarter':
+      since = now
+      until = subMonths(now, 3)
+      break
+    default:
+      throw new Error('Invalid period')
+  }
+
+  const sinceUnix = getUnixTime(since)
+  const untilUnix = getUnixTime(until)
 
   try {
     const response = await fetch(`${BASE_URL}/system/logs`, {
@@ -257,9 +293,9 @@ export async function getActivityLogs(since: number, until: number) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        topic: 'door_openings',
-        since: until,
-        until: since,
+        topic: type,
+        since: untilUnix, // Invertimos since y until porque la API los espera en orden inverso
+        until: sinceUnix,
       }),
     })
 

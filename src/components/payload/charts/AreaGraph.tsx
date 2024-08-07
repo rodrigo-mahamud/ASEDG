@@ -20,7 +20,7 @@ export default function AreaGraph({ chartData }) {
     <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
       <AreaChart
         accessibilityLayer
-        data={chartData.data}
+        data={chartData}
         margin={{
           left: 12,
           right: 12,

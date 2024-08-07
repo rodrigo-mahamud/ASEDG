@@ -51,10 +51,11 @@ export default function SDashboardToolbar() {
             onValueChange={handlePeriodChange}
             defaultValue={searchParams.get('period')?.toString()}
           >
-            <DropdownMenuRadioItem value="diaria">Ultimas 24h</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="mesactual">Este mes</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="mespasado">Mes pasado</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="trimestre">Trimestre</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="day">Ultimas 24h</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="week">Ultimos 7 dás</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="currentmonth">Este mes</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="pastmonth">Mes pasado</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="quarter">Ultimos 3 meses</DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>

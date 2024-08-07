@@ -1,20 +1,18 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type FetchDataFunction<T, P extends any[]> = (...args: P) => Promise<T>
 
 type AsyncWrapperProps<T, P extends any[]> = {
-  Component: React.ComponentType<{ data: T } & any>
+  children: (data: T) => ReactNode
   fetchData: FetchDataFunction<T, P>
-  [key: string]: any
+  fetchParams: P
 }
 
 export async function AsyncWrapper<T, P extends any[]>({
-  Component,
+  children,
   fetchData,
   fetchParams,
-  ...props
 }: AsyncWrapperProps<T, P>) {
   const data = await fetchData(...fetchParams)
-
-  return <Component data={data} {...props} />
+  return <>{children(data)}</>
 }

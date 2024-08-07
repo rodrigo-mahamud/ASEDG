@@ -1,17 +1,12 @@
-'use client'
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/lib/card'
-
 import AreaGraph from './charts/AreaGraph'
-import { useMemo } from 'react'
+import { Suspense } from 'react'
+import { SkeletonTable } from './table/SkeletonTable'
+import { AsyncWrapper } from '../AsyncWrapper'
+import { getActivityLogs } from '@/utils/dashboard/data'
 
-export default function VisitorsCharts(data) {
-  const total = useMemo(
-    () => ({
-      amount: data.data.reduce((acc, curr) => acc + curr.amount, 0),
-    }),
-    [data.data],
-  )
+export default async function VisitorsCharts({ period, logType }) {
+  const activityLogs = await getActivityLogs(period, logType)
 
   return (
     <Card className={'h-full relative border border-white/15'}>
@@ -20,7 +15,7 @@ export default function VisitorsCharts(data) {
           <CardTitle>Visitantes hoy</CardTitle>
           <CardDescription>Showing total visitors for the last 3 months</CardDescription>
         </div>
-        <div className="flex">
+        {/* <div className="flex">
           <button className="flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
             <span className="text-lg font-bold leading-none sm:text-3xl">
               TOTAL:
@@ -32,10 +27,11 @@ export default function VisitorsCharts(data) {
               {total.amount.toLocaleString()}
             </span>
           </button>
-        </div>
+        </div> */}
       </CardHeader>
+
       <CardContent className="px-2 sm:p-6 h-3/4">
-        <AreaGraph chartData={data} />
+        <AreaGraph chartData={activityLogs} />
       </CardContent>
     </Card>
   )
