@@ -250,7 +250,6 @@ export async function sendEmail(visitorData: VisitorFormValues) {
 }
 
 //LOGS
-
 export async function getActivityLogs(period: string, type: string = 'door_openings') {
   const now = new Date()
   let since: Date
@@ -294,34 +293,34 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
       },
       body: JSON.stringify({
         topic: type,
-        since: untilUnix, // Invertimos since y until porque la API los espera en orden inverso
+        since: untilUnix,
         until: sinceUnix,
       }),
     })
-
+    // await new Promise((resolve) => setTimeout(resolve, 200000))
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
     const res = await response.json()
-
-    // Procesar los datos para obtener el conteo por día
     const logCounts = res.data.hits.reduce((acc: Record<string, number>, log: any) => {
       const date = format(new Date(log['@timestamp']), 'yyyy-MM-dd')
       acc[date] = (acc[date] || 0) + 1
       return acc
     }, {})
-
-    // Convertir el objeto de conteo a un array de objetos con la estructura deseada
     const processedData = Object.entries(logCounts).map(([date, amount]) => ({
       date,
-      amount,
+      amount: amount as number,
     }))
 
-    // Ordenar los datos por fecha
     processedData.sort((a, b) => a.date.localeCompare(b.date))
 
-    return processedData
+    // Calcular el total de amount
+    const totalAmount = processedData.reduce((sum, entry) => sum + entry.amount, 0)
+    return {
+      data: processedData,
+      totalAmount: totalAmount,
+    }
   } catch (error) {
     console.error('Error fetching activity logs:', error)
     throw error

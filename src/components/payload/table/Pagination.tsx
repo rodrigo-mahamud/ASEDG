@@ -4,6 +4,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/lib/select'
@@ -40,6 +41,7 @@ export function Pagination<TData>({ table }: DataTablePaginationProps<TData>) {
           >
             <SelectGroup>
               <SelectLabel>Elementos por página</SelectLabel>
+              <SelectSeparator />
               {[25, 50, 75, 100].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
