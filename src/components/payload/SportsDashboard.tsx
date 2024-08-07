@@ -11,6 +11,7 @@ import SDashboardToolbar from './SDashboardToolbar'
 import { getUnixTime, subDays, subMonths } from 'date-fns'
 
 export default function SportsDashboard() {
+  const period = ''
   const currentDate = new Date()
   // Fecha de hace 3 meses
   const threeMonthsAgo = subDays(currentDate, 1)

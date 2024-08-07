@@ -5,7 +5,6 @@ type FetchDataFunction<T, P extends any[]> = (...args: P) => Promise<T>
 type AsyncWrapperProps<T, P extends any[]> = {
   Component: React.ComponentType<{ data: T } & any>
   fetchData: FetchDataFunction<T, P>
-  fetchParams: P
   [key: string]: any
 }
 

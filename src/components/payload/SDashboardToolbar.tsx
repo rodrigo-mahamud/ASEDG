@@ -2,7 +2,6 @@
 
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
@@ -12,9 +11,23 @@ import {
 import { IconCalendarMonth } from '@tabler/icons-react'
 import { Button } from '../lib/button'
 import { SelectSeparator } from '../lib/select'
-import { useState } from 'react'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+
 export default function SDashboardToolbar() {
-  const [position, setPosition] = useState('bottom')
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const { replace } = useRouter()
+
+  const handlePeriodChange = (value: string) => {
+    const params = new URLSearchParams(searchParams)
+    if (value) {
+      params.set('period', value)
+    } else {
+      params.delete('period')
+    }
+    replace(`${pathname}?${params.toString()}`)
+  }
+
   return (
     <div className="flex w-full justify-between">
       <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
@@ -32,12 +45,16 @@ export default function SDashboardToolbar() {
           <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
             Periodos
           </DropdownMenuLabel>
-          <SelectSeparator></SelectSeparator>
-          <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+          <SelectSeparator />
+          <DropdownMenuRadioGroup
+            value={searchParams.get('period')?.toString()}
+            onValueChange={handlePeriodChange}
+            defaultValue={searchParams.get('period')?.toString()}
+          >
             <DropdownMenuRadioItem value="diaria">Ultimas 24h</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="mesactual">Este mes</DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="mespasado">Mes pasado</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="trimestre">Right</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="trimestre">Trimestre</DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>
