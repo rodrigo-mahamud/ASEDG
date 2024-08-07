@@ -28,7 +28,7 @@ export default function SDToolbar({ period }: { period: string }) {
     replace(`${pathname}?${params.toString()}`)
   }
   const periodos = [
-    { id: 'day', text: 'hoy' },
+    { id: 'day', text: 'día actual' },
     { id: 'week', text: 'ultima semana' },
     { id: 'currentmonth', text: 'mes actual' },
     { id: 'pastmonth', text: 'mes anterior' },

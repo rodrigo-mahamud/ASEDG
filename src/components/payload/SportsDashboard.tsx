@@ -24,7 +24,6 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
         <div className="col-span-2 h-[30rem] relative">
           <PieTextChart />
         </div> */}
-        º
       </div>
       <div className="w-full">
         <ClientsSection></ClientsSection>
