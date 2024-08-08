@@ -1,5 +1,6 @@
 import React from 'react'
 import { Gutter } from '@payloadcms/ui'
+
 import { Suspense } from 'react'
 import ClientsSection from './ClientsSection'
 import { SkeletonTable } from './table/SkeletonTable'

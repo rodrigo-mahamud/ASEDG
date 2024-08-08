@@ -1,6 +1,7 @@
 'use client'
 
-import { IconCalendarMonth } from '@tabler/icons-react'
+import { IconCalendarMonth, IconSettings2, IconWheel } from '@tabler/icons-react'
+import { useDocumentDrawer } from '@payloadcms/ui'
 import {
   Select,
   SelectContent,
@@ -12,6 +13,7 @@ import {
   SelectValue,
 } from '../lib/select'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import { Button } from '../lib/button'
 
 export default function SDToolbar({ period }: { period: string }) {
   const searchParams = useSearchParams()
@@ -38,39 +40,57 @@ export default function SDToolbar({ period }: { period: string }) {
     const selectedPeriod = periodos.find((periodo) => periodo.id === id)
     return selectedPeriod ? selectedPeriod.text : 'Mes actual'
   }
+  const [DocumentDrawer, DocumentDrawerToggler, { openDrawer }] = useDocumentDrawer({
+    id: '669147e907d44f5df704e9c1',
+    collectionSlug: 'facilities',
+  })
+
   return (
-    <div className="flex w-full justify-between">
-      <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
-      <Select value={period} onValueChange={handlePeriodChange} defaultValue={'currentmonth'}>
-        <SelectTrigger className="w-fit focus-visible:outline-none capitalize useTw">
-          <SelectValue placeholder={period}>
-            <div className="flex items-center text-base">
-              <IconCalendarMonth className="mr-2" size={16} stroke={1.5}></IconCalendarMonth>
-              <span className="mr-2">{getSelectedPeriodText(period)}</span>
-            </div>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent
-          className="border border-border rounded-md shadow-xl shadow-black useTw"
-          align="end"
-        >
-          <SelectGroup>
-            <SelectLabel className="px-2 py-1.5 font-semibold text-base leading-relaxed">
-              Periodos
-            </SelectLabel>
-            <SelectSeparator />
-            {periodos.map((periodo) => (
-              <SelectItem
-                className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                key={periodo.id}
-                value={periodo.id}
-              >
-                {periodo.text}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+    <>
+      <DocumentDrawer />
+      <div className="flex w-full justify-between">
+        <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
+        <div className="flex gap-3">
+          <Select value={period} onValueChange={handlePeriodChange} defaultValue={'currentmonth'}>
+            <SelectTrigger className="w-fit focus-visible:outline-none capitalize">
+              <SelectValue placeholder={period}>
+                <div className="flex items-center text-base">
+                  <IconCalendarMonth className="mr-2" size={16} stroke={1.5}></IconCalendarMonth>
+                  <span className="mr-2 font-medium">{getSelectedPeriodText(period)}</span>
+                </div>
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent
+              className="border border-border rounded-md shadow-xl shadow-black useTw"
+              align="end"
+            >
+              <SelectGroup>
+                <SelectLabel className="px-2 py-1.5 font-semibold text-base leading-relaxed">
+                  Periodos
+                </SelectLabel>
+                <SelectSeparator />
+                {periodos.map((periodo) => (
+                  <SelectItem
+                    className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                    key={periodo.id}
+                    value={periodo.id}
+                  >
+                    {periodo.text}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            className="rounded-md border-border text-base"
+            onClick={openDrawer}
+          >
+            <IconSettings2 className="mr-2" stroke={1.5} size={16} />
+            Ajustes
+          </Button>
+        </div>
+      </div>
+    </>
   )
 }
