@@ -73,7 +73,7 @@ export default function AreaGraph({ chartData, period }) {
         </defs>
         <Area
           dataKey="amount"
-          type="bump"
+          type="monotone"
           fill="url(#fillamount)"
           fillOpacity={0.4}
           stroke="var(--color-amount)"

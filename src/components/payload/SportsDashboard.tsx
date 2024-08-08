@@ -8,7 +8,7 @@ import SDToolbar from './SDToolbar'
 import { SkeletonChart } from './charts/SkeletonChart'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
-  const period = searchParams?.period || 'currentmonth'
+  const period = searchParams?.period || 'day'
   return (
     <Gutter className="useTw space-y-8">
       <SDToolbar period={period}></SDToolbar>

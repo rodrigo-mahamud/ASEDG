@@ -16,8 +16,8 @@ export function SkeletonChart() {
         <div className="flex">
           <div className="flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
             <span className="text-lg font-bold leading-none sm:text-3xl">
-              <Skeleton className="h-4 w-11 mb-2" />
-              <Skeleton className="h-6 w-14" />
+              <Skeleton className="h-4 w-28 mb-2" />
+              <Skeleton className="h-6 w-16" />
             </span>
           </div>
         </div>

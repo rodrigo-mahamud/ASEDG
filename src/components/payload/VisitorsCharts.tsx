@@ -37,7 +37,7 @@ export default async function VisitorsCharts({
         </div>
         <div className="flex">
           <div className="flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6">
-            <span className=" text-muted-foreground text-sm">Total:</span>
+            <span className=" text-muted-foreground text-sm">Accesos Totales:</span>
             <span className="text-lg font-bold leading-none sm:text-3xl">
               {activityLogs.totalAmount}
             </span>
