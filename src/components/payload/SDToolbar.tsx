@@ -28,7 +28,7 @@ export default function SDToolbar({ period }: { period: string }) {
     replace(`${pathname}?${params.toString()}`)
   }
   const periodos = [
-    { id: 'day', text: 'día actual' },
+    { id: 'day', text: 'Hoy' },
     { id: 'week', text: 'semana pasada' },
     { id: 'currentmonth', text: 'mes actual' },
     { id: 'pastmonth', text: 'mes anterior' },
@@ -42,11 +42,11 @@ export default function SDToolbar({ period }: { period: string }) {
     <div className="flex w-full justify-between">
       <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
       <Select value={period} onValueChange={handlePeriodChange} defaultValue={'currentmonth'}>
-        <SelectTrigger className="w-56 focus-visible:outline-none useTw">
+        <SelectTrigger className="w-fit focus-visible:outline-none capitalize useTw">
           <SelectValue placeholder={period}>
             <div className="flex items-center text-base">
               <IconCalendarMonth className="mr-2" size={16} stroke={1.5}></IconCalendarMonth>
-              <span className="mr-2">Ver: {getSelectedPeriodText(period)}</span>
+              <span className="mr-2">{getSelectedPeriodText(period)}</span>
             </div>
           </SelectValue>
         </SelectTrigger>
