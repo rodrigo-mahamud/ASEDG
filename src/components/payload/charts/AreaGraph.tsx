@@ -6,22 +6,25 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/lib/chart'
+import { format, isValid, setDefaultOptions } from 'date-fns'
+import { es } from 'date-fns/locale'
+setDefaultOptions({ locale: es })
 const chartConfig = {
-  views: {
-    label: 'Page Views',
-  },
   amount: {
-    label: 'amount',
+    label: 'Nº de accesos:',
     color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig
-export default function AreaGraph({ chartData }) {
+export default function AreaGraph({ chartData, period }) {
+  console.log(chartData)
+
   return (
     <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
       <AreaChart
         accessibilityLayer
         data={chartData}
         margin={{
+          top: 15,
           left: 0,
           right: 0,
         }}
@@ -35,13 +38,33 @@ export default function AreaGraph({ chartData }) {
           minTickGap={32}
           tickFormatter={(value) => {
             const date = new Date(value)
-            return date.toLocaleDateString('es-ES', {
-              month: 'short',
-              day: 'numeric',
-            })
+            if (!isValid(date)) return value
+            if (period === 'day') {
+              return format(date, 'HH:mm')
+            } else {
+              return format(date, 'd MMM')
+            }
           }}
         />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <ChartTooltip
+          cursor={true}
+          content={
+            <ChartTooltipContent
+              labelFormatter={(value) => {
+                const date = new Date(value)
+                if (!isValid(date)) return value
+                if (period === 'day') {
+                  return format(date, 'HH:mm')
+                } else {
+                  return format(date, 'eeee d/MM/y')
+                }
+              }}
+              labelClassName="capitalize"
+              className=" shadow-md shadow-black/65 min-w-40 text-sm p-3"
+              indicator={'line'}
+            />
+          }
+        />
         <defs>
           <linearGradient id="fillamount" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={0.8} />
@@ -50,7 +73,7 @@ export default function AreaGraph({ chartData }) {
         </defs>
         <Area
           dataKey="amount"
-          type="natural"
+          type="bump"
           fill="url(#fillamount)"
           fillOpacity={0.4}
           stroke="var(--color-amount)"

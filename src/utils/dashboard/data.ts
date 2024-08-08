@@ -6,12 +6,16 @@ import configPromise from '@payload-config'
 import { render } from '@react-email/components'
 import {
   format,
-  subHours,
   subDays,
   subMonths,
   startOfMonth,
   endOfMonth,
   getUnixTime,
+  parse,
+  startOfHour,
+  addHours,
+  endOfDay,
+  startOfDay,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
@@ -257,8 +261,8 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
 
   switch (period) {
     case 'day':
-      since = now
-      until = subHours(now, 24)
+      since = endOfDay(now)
+      until = startOfDay(now)
       break
     case 'week':
       since = now
@@ -297,26 +301,59 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
         until: sinceUnix,
       }),
     })
-    // await new Promise((resolve) => setTimeout(resolve, 200000))
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
     const res = await response.json()
-    const logCounts = res.data.hits.reduce((acc: Record<string, number>, log: any) => {
-      const date = format(new Date(log['@timestamp']), 'yyyy-MM-dd')
-      acc[date] = (acc[date] || 0) + 1
-      return acc
-    }, {})
+
+    let logCounts: Record<string, number> = {}
+
+    if (period === 'day') {
+      // Inicializamos todos los períodos de hora del día
+      for (let i = 0; i < 24; i++) {
+        const hourStart = addHours(startOfDay(now), i)
+        const hourEnd = addHours(hourStart, 1)
+        const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
+        logCounts[periodKey] = 0
+      }
+
+      // Agrupamos por períodos de una hora
+      res.data.hits.forEach((log: any) => {
+        const logDate = new Date(log['@timestamp'])
+        const hourStart = startOfHour(logDate)
+        const hourEnd = addHours(hourStart, 1)
+        const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
+        logCounts[periodKey]++
+      })
+    } else {
+      // Para otros períodos, mantenemos la lógica anterior
+      res.data.hits.forEach((log: any) => {
+        const dateKey = format(new Date(log['@timestamp']), 'yyyy-MM-dd')
+        logCounts[dateKey] = (logCounts[dateKey] || 0) + 1
+      })
+    }
+
     const processedData = Object.entries(logCounts).map(([date, amount]) => ({
       date,
       amount: amount as number,
     }))
 
-    processedData.sort((a, b) => a.date.localeCompare(b.date))
+    // Ordenamos los datos
+    if (period === 'day') {
+      processedData.sort((a, b) => {
+        const timeA = parse(a.date.split('-')[0], 'HH:mm', new Date())
+        const timeB = parse(b.date.split('-')[0], 'HH:mm', new Date())
+        return timeA.getTime() - timeB.getTime()
+      })
+    } else {
+      processedData.sort((a, b) => a.date.localeCompare(b.date))
+    }
 
     // Calcular el total de amount
     const totalAmount = processedData.reduce((sum, entry) => sum + entry.amount, 0)
+
     return {
       data: processedData,
       totalAmount: totalAmount,

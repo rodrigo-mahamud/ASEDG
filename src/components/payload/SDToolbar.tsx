@@ -29,7 +29,7 @@ export default function SDToolbar({ period }: { period: string }) {
   }
   const periodos = [
     { id: 'day', text: 'día actual' },
-    { id: 'week', text: 'ultima semana' },
+    { id: 'week', text: 'semana pasada' },
     { id: 'currentmonth', text: 'mes actual' },
     { id: 'pastmonth', text: 'mes anterior' },
     { id: 'quarter', text: 'ultimo trimestre' },

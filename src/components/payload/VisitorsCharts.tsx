@@ -13,11 +13,11 @@ export default async function VisitorsCharts({
   const getPeriodDescription = (period: string | null) => {
     switch (period) {
       case 'day':
-        return 'las últimas 24 horas'
+        return 'hoy'
       case 'week':
-        return 'la última semana'
+        return 'en los ultimos 7 días'
       case 'currentmonth':
-        return 'en lo que va de mes.'
+        return 'en este mes'
       case 'pastmonth':
         return 'el mes pasado'
       case 'quarter':
@@ -30,9 +30,9 @@ export default async function VisitorsCharts({
     <Card className={'h-full relative border border-white/15'}>
       <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
-          <CardTitle>Actividad en {getPeriodDescription(period)}. </CardTitle>
+          <CardTitle>Actividad {getPeriodDescription(period)}. </CardTitle>
           <CardDescription>
-            Muestra todos los accesos a la instalacion en {getPeriodDescription(period)}.
+            Muestra todos los accesos a la instalacion {getPeriodDescription(period)}.
           </CardDescription>
         </div>
         <div className="flex">
@@ -46,7 +46,7 @@ export default async function VisitorsCharts({
       </CardHeader>
 
       <CardContent className="px-2 sm:p-6 h-3/4">
-        <AreaGraph chartData={activityLogs.data} />
+        <AreaGraph period={period} chartData={activityLogs.data} />
       </CardContent>
     </Card>
   )
