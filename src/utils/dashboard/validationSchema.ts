@@ -104,6 +104,7 @@ export const visitorSchema = z
       .min(getStartOfToday(), { message: 'Debes introducir una fecha futura' })
       .optional(),
     end_time: z.number().optional(),
+    price: z.number().optional(),
     pin_code: z.string().length(6, 'El PIN debe ser de 6 cifras').optional(),
   })
   .refine(

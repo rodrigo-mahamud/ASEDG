@@ -9,7 +9,7 @@ import SDToolbar from './SDToolbar'
 import { SkeletonChart } from './charts/SkeletonChart'
 import AreaSellsChart from './charts/AreaSellsChart'
 import { PieTextChart } from './charts/PieTextChart'
-import SellsChart from './SellsChart'
+import RevenueChart from './RevenueChart'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'day'
@@ -24,7 +24,7 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
         </div>
         <div className="col-span-5 h-[30rem] relative">
           <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-            <SellsChart period={period} logType={'admin_activity'} />
+            <RevenueChart period={period} logType={'admin_activity'} />
           </Suspense>
         </div>
         <div className="col-span-2 h-[30rem] relative">

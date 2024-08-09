@@ -186,6 +186,7 @@ const AddEditForm = React.memo(function AddEditForm() {
                   onChange: (value) => {
                     form.setValue('start_time', value.start_time)
                     form.setValue('end_time', value.end_time)
+                    form.setValue('price', value.price)
                   },
                 }}
               />

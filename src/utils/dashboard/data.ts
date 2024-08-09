@@ -62,16 +62,15 @@ export async function getVisitors() {
     const processedData = res.data
       .filter((visitor: any) => visitor.status !== 'CANCELLED')
       .map((visitor: any) => {
-        const [age = '', dni = '', acceptedTerms = '', paidIn = '', dateAdded = ''] = (
-          visitor.remarks || ''
-        ).split(';')
+        const [age = '', dni = '', acceptedTerms = '', price = ''] = (visitor.remarks || '').split(
+          ';',
+        )
         return {
           ...visitor,
           pin_code: '******',
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
-          paidIn: paidIn.trim(),
-          dateAdded: dateAdded,
+          price: price,
           terms: acceptedTerms.trim() === '1',
         }
       })
@@ -84,7 +83,7 @@ export async function getVisitors() {
 }
 export async function addVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${'1'};`
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};`
     const response = await fetch(`${BASE_URL}/visitors`, {
       method: 'POST',
       headers: {
@@ -363,9 +362,66 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     return {
       data: processedData,
       totalAmount: totalAmount,
+      raw: res.data.hits, // Añadimos los datos sin procesar aquí
     }
   } catch (error) {
     console.error('Error fetching activity logs:', error)
+    throw error
+  }
+}
+
+export async function getRevenue(period: string, type: string = 'admin_activity') {
+  try {
+    // Obtener los eventos (logs de actividad) para el período y tipo especificados
+    const eventsData = await getActivityLogs(period, type)
+
+    // Obtener todos los visitantes
+    const visitors = await getVisitors()
+
+    // Crear un mapa de visitantes por ID para acceso rápido
+    const visitorMap = new Map(visitors.map((visitor) => [visitor.id, visitor]))
+
+    // Filtrar y procesar los eventos relevantes
+    const revenueData = eventsData.raw
+      .filter(
+        (event) =>
+          event._source.event.type === 'access.visitor.create' ||
+          event._source.event.type === 'access.pin_code.update',
+      )
+      .reduce((acc, event) => {
+        const eventDate = new Date(event['@timestamp']).toISOString().split('T')[0]
+        const visitorId = event._source.target[0].id
+        const visitor = visitorMap.get(visitorId)
+
+        if (visitor) {
+          const paidAmount = parseFloat(visitor.price) || 0
+
+          const existingEntry = acc.find((entry) => entry.date === eventDate)
+          if (existingEntry) {
+            existingEntry.revenue += paidAmount
+          } else {
+            acc.push({
+              date: eventDate,
+              revenue: paidAmount,
+            })
+          }
+        }
+
+        return acc
+      }, [])
+
+    // Ordenar los datos por fecha
+    revenueData.sort((a, b) => a.date.localeCompare(b.date))
+
+    // Calcular el ingreso total
+    const totalRevenue = revenueData.reduce((sum, entry) => sum + entry.revenue, 0)
+
+    return {
+      data: revenueData,
+      totalRevenue: totalRevenue,
+    }
+  } catch (error) {
+    console.error('Error calculating revenue:', error)
     throw error
   }
 }

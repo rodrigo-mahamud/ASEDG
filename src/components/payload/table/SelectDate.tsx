@@ -43,6 +43,7 @@ export function SelectDate({ field }: DatePeriodPickerProps) {
         field.onChange({
           start_time: getUnixTime(startDate),
           end_time: getUnixTime(endDate),
+          price: selectedOption.price, // Añadimos el precio
         })
       }
     },
