@@ -15,7 +15,7 @@ const chartConfig = {
     color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig
-export default function AreaGraph({ chartData, period }) {
+export default function AreaGraph({ chartData, period }: any) {
   return (
     <ChartContainer config={chartConfig} className="aspect-auto h-full w-full">
       <AreaChart

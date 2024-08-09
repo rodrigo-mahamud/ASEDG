@@ -1,3 +1,5 @@
+import { VisitorFormValues } from './validationSchema'
+
 export type Visitor = {
   id: string
   first_name: string
@@ -34,6 +36,7 @@ export type Visitor = {
   visitor_company: string
   dni?: string
   age?: number
+  price?: string
   periodId?: string
 }
 

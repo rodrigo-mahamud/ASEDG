@@ -20,6 +20,7 @@ import {
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
+import { Visitor } from './types'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
@@ -372,53 +373,84 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
 
 export async function getRevenue(period: string, type: string = 'admin_activity') {
   try {
-    // Obtener los eventos (logs de actividad) para el período y tipo especificados
     const eventsData = await getActivityLogs(period, type)
-
-    // Obtener todos los visitantes
     const visitors = await getVisitors()
+    const visitorMap = new Map(visitors.map((visitor: Visitor) => [visitor.id, visitor]))
 
-    // Crear un mapa de visitantes por ID para acceso rápido
-    const visitorMap = new Map(visitors.map((visitor) => [visitor.id, visitor]))
+    let revenueData: { date: string; revenue: number; amount: number }[] = []
 
-    // Filtrar y procesar los eventos relevantes
-    const revenueData = eventsData.raw
+    if (period === 'day') {
+      const now = new Date()
+      for (let i = 0; i < 24; i++) {
+        const hourStart = addHours(startOfDay(now), i)
+        const hourEnd = addHours(hourStart, 1)
+        const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
+        revenueData.push({
+          date: periodKey,
+          revenue: 0,
+          amount: 0,
+        })
+      }
+    }
+
+    eventsData.raw
       .filter(
-        (event) =>
+        (event: any) =>
           event._source.event.type === 'access.visitor.create' ||
           event._source.event.type === 'access.pin_code.update',
       )
-      .reduce((acc, event) => {
-        const eventDate = new Date(event['@timestamp']).toISOString().split('T')[0]
+      .forEach((event: any) => {
+        const eventDate = new Date(event['@timestamp'])
         const visitorId = event._source.target[0].id
         const visitor = visitorMap.get(visitorId)
 
         if (visitor) {
-          const paidAmount = parseFloat(visitor.price) || 0
+          const paidAmount = parseFloat((visitor as any).price) || 0
 
-          const existingEntry = acc.find((entry) => entry.date === eventDate)
-          if (existingEntry) {
-            existingEntry.revenue += paidAmount
+          if (period === 'day') {
+            const hourStart = startOfHour(eventDate)
+            const hourEnd = addHours(hourStart, 1)
+            const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
+            const existingEntry = revenueData.find((entry) => entry.date === periodKey)
+            if (existingEntry) {
+              existingEntry.revenue += paidAmount
+              existingEntry.amount += 1
+            }
           } else {
-            acc.push({
-              date: eventDate,
-              revenue: paidAmount,
-            })
+            const dateKey = format(eventDate, 'yyyy-MM-dd')
+            const existingEntry = revenueData.find((entry) => entry.date === dateKey)
+            if (existingEntry) {
+              existingEntry.revenue += paidAmount
+              existingEntry.amount += 1
+            } else {
+              revenueData.push({
+                date: dateKey,
+                revenue: paidAmount,
+                amount: 1,
+              })
+            }
           }
         }
+      })
 
-        return acc
-      }, [])
+    // Ordenamos los datos
+    if (period === 'day') {
+      revenueData.sort((a, b) => {
+        const timeA = parse(a.date.split('-')[0], 'HH:mm', new Date())
+        const timeB = parse(b.date.split('-')[0], 'HH:mm', new Date())
+        return timeA.getTime() - timeB.getTime()
+      })
+    } else {
+      revenueData.sort((a, b) => a.date.localeCompare(b.date))
+    }
 
-    // Ordenar los datos por fecha
-    revenueData.sort((a, b) => a.date.localeCompare(b.date))
-
-    // Calcular el ingreso total
     const totalRevenue = revenueData.reduce((sum, entry) => sum + entry.revenue, 0)
+    const totalAmount = revenueData.reduce((sum, entry) => sum + entry.amount, 0)
 
     return {
       data: revenueData,
       totalRevenue: totalRevenue,
+      totalAmount: totalAmount,
     }
   } catch (error) {
     console.error('Error calculating revenue:', error)

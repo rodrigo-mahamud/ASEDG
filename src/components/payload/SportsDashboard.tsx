@@ -7,7 +7,7 @@ import { SkeletonTable } from './table/SkeletonTable'
 import VisitorsCharts from './VisitorsCharts'
 import SDToolbar from './SDToolbar'
 import { SkeletonChart } from './charts/SkeletonChart'
-import AreaSellsChart from './charts/AreaSellsChart'
+import AreaSellsChart from './charts/AreaRevenue'
 import { PieTextChart } from './charts/PieTextChart'
 import RevenueChart from './RevenueChart'
 
