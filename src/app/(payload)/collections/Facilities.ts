@@ -99,6 +99,50 @@ const Facilities: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'schedule', // required
+      label: 'Horario de apertura',
+      type: 'group', // required
+      interfaceName: 'Horario de apertura', // optional
+      fields: [
+        {
+          name: 'location',
+          type: 'point',
+          label: 'Location',
+        },
+        {
+          type: 'row',
+
+          fields: [
+            {
+              name: 'monday',
+              label: 'Lunes -',
+              type: 'date',
+              admin: {
+                date: {
+                  overrides: { dateFormat: 'kk:mm:ss' },
+                  pickerAppearance: 'timeOnly',
+                  displayFormat: 'HH:mm',
+                },
+              },
+              required: true,
+            },
+            {
+              name: 'tuesday',
+              label: 'Martes',
+              type: 'date',
+              admin: {
+                date: {
+                  pickerAppearance: 'timeOnly',
+                  displayFormat: 'HH:mm',
+                },
+              },
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
     slug,
   ],
   hooks: {

@@ -43,6 +43,7 @@ export default function SDToolbar({ period }: { period: string }) {
   }
   const [DocumentDrawer, DocumentDrawerToggler, { openDrawer }] = useDocumentDrawer({
     id: '669147e907d44f5df704e9c1',
+
     collectionSlug: 'facilities',
   })
 
