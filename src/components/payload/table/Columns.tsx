@@ -148,6 +148,19 @@ export const columns: ColumnDef<Visitor>[] = [
     header: 'Edad',
   },
   {
+    accessorKey: 'paidIn',
+    id: 'paidIn',
+    header: 'Pago',
+    cell: ({ row }) => {
+      const paidIn = row.getValue('paidIn') as string
+      return (
+        <div className="flex items-center justify-center">
+          {paidIn === 'A' ? <>ONLINE</> : <>En mano</>}
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: 'terms',
     id: 'terms',
     header: 'Términos',

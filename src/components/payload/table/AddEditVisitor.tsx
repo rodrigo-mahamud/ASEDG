@@ -9,8 +9,6 @@ import {
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/lib/drawer'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
-import { getPeriods } from '@/utils/dashboard/data'
-
 import AddEditForm from './AddEditForm'
 
 export default function AddEditVisitor() {
@@ -46,5 +44,3 @@ export default function AddEditVisitor() {
     </Sheet>
   )
 }
-
-// Nota: Necesitarás crear un archivo separado llamado FormContent.tsx con el contenido del formulario

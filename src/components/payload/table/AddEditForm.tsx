@@ -8,7 +8,7 @@ import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
 import { addVisitor, updateVisitor, generatePinCode } from '@/utils/dashboard/data'
 import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
-import { AddEditDatePicker } from './AddEditDatePicker'
+import { SelectDate } from './SelectDate'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
@@ -177,7 +177,7 @@ const AddEditForm = React.memo(function AddEditForm() {
             control={form.control}
             name="end_time"
             render={({ field }) => (
-              <AddEditDatePicker
+              <SelectDate
                 field={{
                   value: {
                     start_time: form.getValues().start_time,

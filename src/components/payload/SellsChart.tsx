@@ -2,12 +2,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import AreaGraph from './charts/AreaGraph'
 import { getActivityLogs } from '@/utils/dashboard/data'
 
-export default async function VisitorsCharts({
+export default async function SellsChart({
   period,
   logType,
 }: {
   period: string
-  logType: string
+  logType?: string
 }) {
   const activityLogs = await getActivityLogs(period, logType)
   const getPeriodDescription = (period: string | null) => {
@@ -32,7 +32,7 @@ export default async function VisitorsCharts({
     <Card className="h-full relative border border-white/15">
       <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
-          <CardTitle>Actividad {getPeriodDescription(period)}. </CardTitle>
+          <CardTitle>Ganancias durante {getPeriodDescription(period)}. </CardTitle>
           <CardDescription>
             Muestra todos los accesos a la instalacion {getPeriodDescription(period)}.
           </CardDescription>

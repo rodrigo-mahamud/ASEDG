@@ -35,6 +35,7 @@ export default function SDToolbar({ period }: { period: string }) {
     { id: 'currentmonth', text: 'mes actual' },
     { id: 'pastmonth', text: 'mes anterior' },
     { id: 'quarter', text: 'ultimo trimestre' },
+    { id: 'year', text: 'año actual' },
   ]
   const getSelectedPeriodText = (id: string | null) => {
     const selectedPeriod = periodos.find((periodo) => periodo.id === id)

@@ -16,6 +16,7 @@ import {
   addHours,
   endOfDay,
   startOfDay,
+  startOfYear,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
@@ -61,12 +62,16 @@ export async function getVisitors() {
     const processedData = res.data
       .filter((visitor: any) => visitor.status !== 'CANCELLED')
       .map((visitor: any) => {
-        const [age = '', dni = '', acceptedTerms = ''] = (visitor.remarks || '').split(';')
+        const [age = '', dni = '', acceptedTerms = '', paidIn = '', dateAdded = ''] = (
+          visitor.remarks || ''
+        ).split(';')
         return {
           ...visitor,
           pin_code: '******',
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
+          paidIn: paidIn.trim(),
+          dateAdded: dateAdded,
           terms: acceptedTerms.trim() === '1',
         }
       })
@@ -79,7 +84,7 @@ export async function getVisitors() {
 }
 export async function addVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'};`
     const response = await fetch(`${BASE_URL}/visitors`, {
       method: 'POST',
       headers: {
@@ -280,6 +285,10 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
       since = now
       until = subMonths(now, 3)
       break
+    case 'year':
+      since = now
+      until = startOfYear(now)
+      break
     default:
       throw new Error('Invalid period')
   }
@@ -311,7 +320,6 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     let logCounts: Record<string, number> = {}
 
     if (period === 'day') {
-      // Inicializamos todos los períodos de hora del día
       for (let i = 0; i < 24; i++) {
         const hourStart = addHours(startOfDay(now), i)
         const hourEnd = addHours(hourStart, 1)
@@ -319,7 +327,6 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
         logCounts[periodKey] = 0
       }
 
-      // Agrupamos por períodos de una hora
       res.data.hits.forEach((log: any) => {
         const logDate = new Date(log['@timestamp'])
         const hourStart = startOfHour(logDate)
@@ -328,7 +335,6 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
         logCounts[periodKey]++
       })
     } else {
-      // Para otros períodos, mantenemos la lógica anterior
       res.data.hits.forEach((log: any) => {
         const dateKey = format(new Date(log['@timestamp']), 'yyyy-MM-dd')
         logCounts[dateKey] = (logCounts[dateKey] || 0) + 1

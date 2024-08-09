@@ -7,6 +7,9 @@ import { SkeletonTable } from './table/SkeletonTable'
 import VisitorsCharts from './VisitorsCharts'
 import SDToolbar from './SDToolbar'
 import { SkeletonChart } from './charts/SkeletonChart'
+import AreaSellsChart from './charts/AreaSellsChart'
+import { PieTextChart } from './charts/PieTextChart'
+import SellsChart from './SellsChart'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'day'
@@ -19,12 +22,14 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
             <VisitorsCharts period={period} logType={'door_openings'}></VisitorsCharts>
           </Suspense>
         </div>
-        {/* <div className="col-span-5 h-[30rem] relative">
-          <AreaSellsChart />
+        <div className="col-span-5 h-[30rem] relative">
+          <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+            <SellsChart period={period} logType={'admin_activity'} />
+          </Suspense>
         </div>
         <div className="col-span-2 h-[30rem] relative">
           <PieTextChart />
-        </div> */}
+        </div>
       </div>
       <div className="w-full">
         <ClientsSection></ClientsSection>
