@@ -1,6 +1,6 @@
 'use client'
 
-import { IconCalendarMonth, IconSettings2, IconWheel } from '@tabler/icons-react'
+import { IconCalendarMonth, IconSettings, IconSettings2, IconWheel } from '@tabler/icons-react'
 import { useDocumentDrawer } from '@payloadcms/ui'
 import {
   Select,
@@ -53,10 +53,10 @@ export default function SDToolbar({ period }: { period: string }) {
         <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
         <div className="flex gap-3">
           <Select value={period} onValueChange={handlePeriodChange} defaultValue={'currentmonth'}>
-            <SelectTrigger className="w-fit focus-visible:outline-none capitalize">
+            <SelectTrigger className="w-fit focus-visible:outline-none capitalize py-3 px-4 h-fit">
               <SelectValue placeholder={period}>
                 <div className="flex items-center text-base">
-                  <IconCalendarMonth className="mr-2" size={16} stroke={1.5}></IconCalendarMonth>
+                  <IconCalendarMonth className="mr-2" size={18} stroke={1.5}></IconCalendarMonth>
                   <span className="mr-2 font-medium">{getSelectedPeriodText(period)}</span>
                 </div>
               </SelectValue>
@@ -84,11 +84,10 @@ export default function SDToolbar({ period }: { period: string }) {
           </Select>
           <Button
             variant="outline"
-            className="rounded-md border-border text-base"
+            className="rounded-md border-border text-base py-3 h-fit"
             onClick={openDrawer}
           >
-            <IconSettings2 className="mr-2" stroke={1.5} size={16} />
-            Ajustes
+            <IconSettings stroke={1.75} size={18} />
           </Button>
         </div>
       </div>
