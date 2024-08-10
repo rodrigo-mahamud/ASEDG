@@ -113,6 +113,16 @@ const Facilities: CollectionConfig = {
       label: 'Horario de apertura',
       type: 'array',
       maxRows: 2,
+      validate: (value) => {
+        if (Array.isArray(value)) {
+          const allDays = value.flatMap((item) => item.days || [])
+          const uniqueDays = new Set(allDays)
+          if (allDays.length !== uniqueDays.size) {
+            return 'No se pueden repetir los días en diferentes horarios'
+          }
+        }
+        return true
+      },
       fields: [
         {
           name: 'days',
@@ -121,15 +131,6 @@ const Facilities: CollectionConfig = {
           hasMany: true,
           options: daysOfWeek,
           required: true,
-          admin: {
-            condition: (data, siblingData, { user }) => {
-              const selectedDays = data.schedule
-                ?.filter((item, index) => index !== siblingData.id)
-                .flatMap((item) => item.days || [])
-
-              return daysOfWeek.filter((day) => !selectedDays.includes(day.value))
-            },
-          },
         },
         {
           type: 'row',
@@ -161,11 +162,22 @@ const Facilities: CollectionConfig = {
                 },
               },
               required: true,
+              validate: (value, { siblingData }) => {
+                if (siblingData.open && value) {
+                  const openTime = new Date(siblingData.open)
+                  const closeTime = new Date(value)
+                  if (closeTime <= openTime) {
+                    return 'La hora de cierre debe ser posterior a la hora de apertura'
+                  }
+                }
+                return true
+              },
             },
           ],
         },
       ],
     },
+
     slug,
   ],
   hooks: {
