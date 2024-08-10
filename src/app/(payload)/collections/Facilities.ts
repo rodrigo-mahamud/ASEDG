@@ -1,7 +1,16 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
+import { calculateTotalDays } from '@/utils/bookingDateFormat'
 
-import { calculateTotalDays } from '@/utils/bookingDateFormat' // Asumimos que crearemos este hook
+const daysOfWeek = [
+  { label: 'Lunes', value: 'monday' },
+  { label: 'Martes', value: 'tuesday' },
+  { label: 'Miércoles', value: 'wednesday' },
+  { label: 'Jueves', value: 'thursday' },
+  { label: 'Viernes', value: 'friday' },
+  { label: 'Sábado', value: 'saturday' },
+  { label: 'Domingo', value: 'sunday' },
+]
 
 const Facilities: CollectionConfig = {
   slug: 'facilities',
@@ -100,41 +109,55 @@ const Facilities: CollectionConfig = {
       ],
     },
     {
-      name: 'schedule', // required
+      name: 'schedule',
       label: 'Horario de apertura',
-      type: 'group', // required
-      interfaceName: 'Horario de apertura', // optional
+      type: 'array',
+      maxRows: 2,
       fields: [
         {
-          name: 'location',
-          type: 'point',
-          label: 'Location',
+          name: 'days',
+          label: 'Días',
+          type: 'select',
+          hasMany: true,
+          options: daysOfWeek,
+          required: true,
+          admin: {
+            condition: (data, siblingData, { user }) => {
+              const selectedDays = data.schedule
+                ?.filter((item, index) => index !== siblingData.id)
+                .flatMap((item) => item.days || [])
+
+              return daysOfWeek.filter((day) => !selectedDays.includes(day.value))
+            },
+          },
         },
         {
           type: 'row',
-
           fields: [
             {
-              name: 'monday',
-              label: 'Lunes -',
+              name: 'open',
+              label: 'Hora de Apertura',
               type: 'date',
               admin: {
                 date: {
-                  overrides: { dateFormat: 'kk:mm:ss' },
                   pickerAppearance: 'timeOnly',
                   displayFormat: 'HH:mm',
+                  timeIntervals: 15,
+                  timeFormat: 'HH:mm',
                 },
               },
               required: true,
             },
             {
-              name: 'tuesday',
-              label: 'Martes',
+              name: 'close',
+              label: 'Hora de Cierre',
               type: 'date',
               admin: {
                 date: {
                   pickerAppearance: 'timeOnly',
                   displayFormat: 'HH:mm',
+                  timeIntervals: 15,
+                  timeFormat: 'HH:mm',
                 },
               },
               required: true,
