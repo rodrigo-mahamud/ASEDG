@@ -57,7 +57,12 @@
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
   --radius: 0.5rem;
-
+  .drawer__blur-bg {
+    background-color: #000000b3;
+  }
+  .drawer__close {
+    background: none !important;
+  }
   .drawer__content {
     width: calc(75% - var(--gutter-h));
     transform: translateX(100%);
