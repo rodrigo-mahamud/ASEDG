@@ -192,42 +192,45 @@ const AddEditForm = React.memo(function AddEditForm() {
               />
             )}
           />
-
-          <div className="flex w-full">
-            <FormField
-              control={form.control}
-              name="pin_code"
-              render={({ field }) => (
-                <FormItem className="w-4/5">
-                  <FormControl>
-                    <FloatingLabelInput
-                      className="text-base py-3 h-fit border-r-0 rounded-r-none "
-                      label="Código PIN"
-                      disabled={true}
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e.target.value)
-                        setPinCodeChanged(true)
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button
-              type="button"
-              variant={'outline'}
-              onClick={handleGeneratePin}
-              disabled={isGeneratingPin}
-              className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
-            >
-              {isGeneratingPin ? (
-                <IconLoader2 size={19} className="animate-spin" />
-              ) : (
-                <IconRefresh size={19} />
-              )}
-            </Button>
-          </div>
+          {!clientToEdit ? (
+            <div className="flex w-full">
+              <FormField
+                control={form.control}
+                name="pin_code"
+                render={({ field }) => (
+                  <FormItem className="w-4/5">
+                    <FormControl>
+                      <FloatingLabelInput
+                        className="text-base py-3 h-fit border-r-0 rounded-r-none "
+                        label="Código PIN"
+                        disabled={true}
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e.target.value)
+                          setPinCodeChanged(true)
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="button"
+                variant={'outline'}
+                onClick={handleGeneratePin}
+                disabled={isGeneratingPin}
+                className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
+              >
+                {isGeneratingPin ? (
+                  <IconLoader2 size={19} className="animate-spin" />
+                ) : (
+                  <IconRefresh size={19} />
+                )}
+              </Button>
+            </div>
+          ) : (
+            ' '
+          )}
 
           <FormErrors form={form} />
         </div>

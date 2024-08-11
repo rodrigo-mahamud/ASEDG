@@ -21,15 +21,14 @@ import { toast } from '@payloadcms/ui'
 export function DeleteVisitor() {
   const [confirmText, setConfirmText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
-  const { isDeleteDialogOpen, setIsDeleteDialogOpen, selectedClients, usersToDelete } =
-    useDashboardStore()
+  const { isDialogOpen, setDialogOpen, selectedClients, usersToDelete } = useDashboardStore()
 
   const handleConfirm = async () => {
     if (confirmText === 'eliminar-usuarios') {
       setIsDeleting(true)
       try {
         await deleteVisitors(usersToDelete.map((user) => user.id))
-        setIsDeleteDialogOpen(false)
+        setDialogOpen(false)
       } catch (error) {
         console.error('Error deleting visitors:', error)
         toast.error('Ha ocurrido un error al eliminar el usuario')
@@ -42,7 +41,7 @@ export function DeleteVisitor() {
   }
 
   return (
-    <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+    <AlertDialog open={isDialogOpen} onOpenChange={setDialogOpen}>
       <AlertDialogContent className="useTw border-border gap-6 p-0">
         <AlertDialogHeader className="px-6 pt-6">
           <AlertDialogTitle className="useTw text-2xl font-semibold">
@@ -79,7 +78,7 @@ export function DeleteVisitor() {
         </div>
         <AlertDialogFooter className="px-6 pb-6">
           <AlertDialogCancel
-            onClick={() => setIsDeleteDialogOpen(false)}
+            onClick={() => setDialogOpen(false)}
             className="text-base rounded-md border-border"
           >
             Cancelar

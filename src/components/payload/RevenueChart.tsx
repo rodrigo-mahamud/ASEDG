@@ -37,8 +37,8 @@ export default async function RevenueChart({
         <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
           <CardTitle>Usuarios e ingresos {getPeriodDescription(period)}. </CardTitle>
           <CardDescription>
-            Muestra todos los usuarios registrados en a la instalacion junto y los ingresos
-            correspondientes.
+            Muestra todos los usuarios registrados en a la instalacion{' '}
+            {getPeriodDescription(period)}
           </CardDescription>
         </div>
         <div className="flex">

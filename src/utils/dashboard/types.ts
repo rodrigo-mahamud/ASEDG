@@ -49,13 +49,13 @@ export type ClientEditStore = {
   isOpen: boolean
   clientToEdit: Visitor | null
   selectedClients: string[]
-  isDeleteDialogOpen: boolean
+  isDialogOpen: boolean
   usersToDelete: UserToDelete[]
   editedClient: Visitor | null
   setIsOpen: (isOpen: boolean) => void
   setClientToEdit: (client: Visitor | null) => void
   setSelectedClients: (clientIds: string[]) => void
-  setIsDeleteDialogOpen: (isOpen: boolean) => void
+  setDialogOpen: (isOpen: boolean) => void
   setUsersToDelete: (users: UserToDelete[] | UserToDelete) => void
   resetStore: () => void
   setEditedClient: (client: Visitor | null) => void

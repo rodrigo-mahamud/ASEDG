@@ -19,7 +19,7 @@ interface ToolbarTableProps {
 }
 
 export function ToolbarTable({ table }: ToolbarTableProps) {
-  const { setIsOpen, setClientToEdit, setIsDeleteDialogOpen } = useDashboardStore()
+  const { setIsOpen, setClientToEdit, setDialogOpen } = useDashboardStore()
 
   return (
     <div className="flex items-center justify-between pb-6">
@@ -51,7 +51,7 @@ export function ToolbarTable({ table }: ToolbarTableProps) {
               : 'ml-auto rounded-md border-border text-base'
           }
           onClick={() => {
-            setIsDeleteDialogOpen(true)
+            setDialogOpen(true)
           }}
         >
           <IconTrash className="mr-2" stroke={1.5} size={16} />

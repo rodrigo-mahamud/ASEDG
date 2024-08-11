@@ -142,7 +142,6 @@ export async function updateVisitor(visitorData: any) {
         remarks: remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
-        pin_code: visitorData.pin_code,
         visit_reason: 'Others',
       }),
     })
