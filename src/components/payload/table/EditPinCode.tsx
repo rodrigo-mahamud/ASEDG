@@ -115,7 +115,7 @@ export function EditPinCode() {
                       <FormControl>
                         <FloatingLabelInput
                           className="text-base py-3 h-fit border-r-0 rounded-r-none "
-                          label="Código PIN"
+                          label="Nuevo Código PIN"
                           disabled={true}
                           {...field}
                           onChange={(e) => {

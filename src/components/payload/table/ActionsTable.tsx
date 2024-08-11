@@ -81,7 +81,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+          className="capitalize hover:bg-red-600/25 hover:text-red-600 text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
             setUsersToDelete([
               { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
