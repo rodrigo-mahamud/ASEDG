@@ -1,8 +1,8 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
 import { calculateTotalDays } from '@/utils/bookingDateFormat'
-import { createSchedule } from '@/utils/dashboard/data'
-
+import { createHolidayGroup, createSchedule } from '@/utils/dashboard/data'
+import { toast } from '@payloadcms/ui'
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },
   { label: 'Martes', value: 'tuesday' },
@@ -123,6 +123,14 @@ const Facilities: CollectionConfig = {
           type: 'text',
         },
         {
+          name: 'holidayGroupID',
+          label: 'ID del horario de vacaciones',
+          admin: {
+            readOnly: true,
+          },
+          type: 'text',
+        },
+        {
           name: 'schedule',
           interfaceName: 'Horario',
           label: ' ',
@@ -203,17 +211,9 @@ const Facilities: CollectionConfig = {
       type: 'group',
       fields: [
         {
-          name: 'scheduleID',
-          label: 'ID del horario',
-          admin: {
-            readOnly: true,
-          },
-          type: 'text',
-        },
-        {
           name: 'schedule',
           interfaceName: 'Horario de Vacaciones',
-          label: '',
+          label: ' ',
           type: 'array',
           maxRows: 2,
           validate: (value) => {
@@ -228,14 +228,20 @@ const Facilities: CollectionConfig = {
           },
           fields: [
             {
+              name: 'holydayRepeat',
+              type: 'checkbox',
+              label: '¿Repetir todos los años?',
+              defaultValue: false,
+            },
+            {
+              name: 'holydayName',
+              label: 'Nombre',
+              type: 'text',
+              required: true,
+            },
+            {
               type: 'row',
               fields: [
-                {
-                  name: 'holydayRepeat',
-                  type: 'checkbox',
-                  label: '¿Repetir todos los años?',
-                  defaultValue: false,
-                },
                 {
                   name: 'holydaySince',
                   label: 'Desde',
@@ -266,12 +272,6 @@ const Facilities: CollectionConfig = {
                 },
               ],
             },
-            {
-              name: 'holydayName',
-              label: 'Nombre',
-              type: 'text',
-              required: true,
-            },
           ],
         },
       ],
@@ -280,39 +280,43 @@ const Facilities: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      ({ data }) => {
+      async ({ data, req }) => {
+        // Calcular daysAmount para bookingOptions
         if (data.bookingOptions) {
           data.bookingOptions = data.bookingOptions.map((option: any) => ({
             ...option,
             daysAmount: calculateTotalDays(option.periodType, option.periodLength),
           }))
         }
-        return data
-      },
-    ],
-
-    afterChange: [
-      async ({ doc, req }) => {
-        if (doc.facilitieSchedules) {
+        if (data.regularSchedule || data.holidayschedule) {
           try {
-            const result = await createSchedule(doc)
-            if (result.success) {
-              await req.payload.update({
-                collection: 'facilities',
-                id: doc.id,
-                data: {
-                  scheduleId: result.data.id,
-                },
-              })
-              console.log('Schedule created successfully with ID:', result.data.id)
-            } else {
-              console.error('Error creating schedule:', result.message)
+            // Primero, crear el Holiday Group
+            const holidayGroupResult = await createHolidayGroup(data)
+            if (!holidayGroupResult.success) {
+              throw new Error(holidayGroupResult.message)
+            }
+
+            const holidayGroupId = holidayGroupResult.data.id
+
+            // Luego, crear el Schedule usando el Holiday Group ID
+            const scheduleResult = await createSchedule(data, holidayGroupId)
+            if (!scheduleResult.success) {
+              throw new Error(scheduleResult.message)
+            }
+
+            // Actualizar los campos en el documento antes de guardarlo
+            data.regularSchedule = {
+              ...data.regularSchedule,
+              scheduleID: scheduleResult.data.id,
+              holidayGroupID: holidayGroupId,
             }
           } catch (error) {
-            console.error('Error in afterChange hook:', error)
+            console.error('Error in beforeChange hook:', error)
+            throw error // Lanzar el error para que Payload lo maneje
           }
         }
-        return doc
+
+        return data
       },
     ],
   },

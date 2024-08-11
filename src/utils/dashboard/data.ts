@@ -458,16 +458,14 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
   }
 }
 
-//CREATE SCHEDULE
-export async function createSchedule(facilityData: any) {
+//CREATE SCHEDULE & HOLIDAYS
+export async function createSchedule(facilityData: any, holidayGroupId: string) {
   try {
-    // Función auxiliar para convertir la fecha a formato HH:mm:ss
     const formatTime = (dateString: string) => {
       const date = new Date(dateString)
       return date.toTimeString().split(' ')[0]
     }
 
-    // Preparar week_schedule
     const weekSchedule: { [key: string]: any[] } = {
       sunday: [],
       monday: [],
@@ -478,7 +476,7 @@ export async function createSchedule(facilityData: any) {
       saturday: [],
     }
 
-    facilityData.facilitieSchedules.schedule.forEach((schedule: any) => {
+    facilityData.regularSchedule.schedule.forEach((schedule: any) => {
       schedule.days.forEach((day: string) => {
         weekSchedule[day].push({
           start_time: formatTime(schedule.open),
@@ -487,21 +485,13 @@ export async function createSchedule(facilityData: any) {
       })
     })
 
-    // Preparar holiday_schedule
-    const holidaySchedule = facilityData.facilitieSchedules.holidayschedule.map((holiday: any) => ({
-      start_time: formatTime(holiday.open),
-      end_time: formatTime(holiday.close),
-    }))
-
     const requestBody = {
       name: `schedule-${Date.now()}`,
       week_schedule: weekSchedule,
-      holiday_schedule: holidaySchedule,
-      // Nota: holiday_group_id no está presente en tus datos, así que lo omitimos
+      holiday_group_id: holidayGroupId,
     }
 
-    // Loguear el cuerpo de la solicitud
-    console.log('Request body for createSchedule:', JSON.stringify(requestBody, null, 2))
+    // console.log('Request body for createSchedule:', JSON.stringify(requestBody, null, 2))
 
     const response = await fetch(`${BASE_URL}/access_policies/schedules`, {
       method: 'POST',
@@ -529,5 +519,49 @@ export async function createSchedule(facilityData: any) {
   } catch (error) {
     console.error('Error creating schedule:', error)
     return { success: false, message: 'Error creating schedule. Check console for details.' }
+  }
+}
+
+export async function createHolidayGroup(facilityData: any) {
+  try {
+    const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
+      name: holiday.holydayName,
+      start_time: new Date(holiday.holydaySince).toISOString(),
+      end_time: new Date(holiday.holydayUntill).toISOString(),
+      repeat: holiday.holydayRepeat,
+    }))
+
+    const requestBody = {
+      name: `HolidayGroup-${Date.now()}`,
+      holidays: holidays,
+    }
+
+    // console.log('Request body for createHolidayGroup:', JSON.stringify(requestBody, null, 2))
+
+    const response = await fetch(`${BASE_URL}/access_policies/holiday_groups`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      return { success: true, message: 'Holiday Group created successfully', data: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error creating Holiday Group:', error)
+    return { success: false, message: 'Error creating Holiday Group. Check console for details.' }
   }
 }
