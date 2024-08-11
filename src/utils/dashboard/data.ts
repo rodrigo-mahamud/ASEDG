@@ -486,7 +486,7 @@ export async function createSchedule(facilityData: any, holidayGroupId: string) 
     })
 
     const requestBody = {
-      name: `Horario creado desde la API NO BORRAR (${Date.now()})`,
+      name: `Creado desde la API NO BORRAR (${Date.now()})`,
       week_schedule: weekSchedule,
       holiday_group_id: holidayGroupId,
     }
@@ -567,6 +567,7 @@ export async function createHolidayGroup(facilityData: any) {
   }
 }
 
+//EDIT Schedule
 export async function editSchedule(facilityData: any, scheduleId: string, holidayGroupId: string) {
   try {
     const formatTime = (dateString: string) => {
@@ -594,7 +595,7 @@ export async function editSchedule(facilityData: any, scheduleId: string, holida
     })
 
     const requestBody = {
-      name: `Horario creado desde la API NO BORRAR (${Date.now()})`,
+      name: `Creado desde la API NO BORRAR (${Date.now()})`,
       week_schedule: weekSchedule,
       holiday_group_id: holidayGroupId,
     }
@@ -630,6 +631,7 @@ export async function editSchedule(facilityData: any, scheduleId: string, holida
   }
 }
 
+//EDIT HolidayGroup
 export async function editHolidayGroup(facilityData: any, holidayGroupId: string) {
   try {
     const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
@@ -671,5 +673,36 @@ export async function editHolidayGroup(facilityData: any, holidayGroupId: string
   } catch (error) {
     console.error('Error updating Holiday Group:', error)
     return { success: false, message: 'Error updating Holiday Group. Check console for details.' }
+  }
+}
+
+export async function deleteSchedule(scheduleId: string) {
+  try {
+    console.log(`Deleting schedule with ID: ${scheduleId}`)
+
+    const response = await fetch(`${BASE_URL}/access_policies/schedules/${scheduleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        Accept: 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      revalidateTag('refreshFacilities')
+      return { success: true, message: 'Schedule deleted successfully' }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error deleting schedule:', error)
+    return { success: false, message: 'Error deleting schedule. Check console for details.' }
   }
 }

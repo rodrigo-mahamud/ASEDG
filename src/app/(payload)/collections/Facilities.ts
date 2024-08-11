@@ -4,6 +4,7 @@ import { calculateTotalDays } from '@/utils/bookingDateFormat'
 import {
   createHolidayGroup,
   createSchedule,
+  deleteSchedule,
   editHolidayGroup,
   editSchedule,
 } from '@/utils/dashboard/data'
@@ -123,7 +124,7 @@ const Facilities: CollectionConfig = {
           name: 'scheduleID',
           label: 'ID del horario',
           admin: {
-            readOnly: false,
+            readOnly: true,
           },
           type: 'text',
         },
@@ -131,7 +132,7 @@ const Facilities: CollectionConfig = {
           name: 'holidayGroupID',
           label: 'ID del horario de vacaciones',
           admin: {
-            readOnly: false,
+            readOnly: true,
           },
           type: 'text',
         },
@@ -304,64 +305,63 @@ const Facilities: CollectionConfig = {
           data.holidayschedule.schedule &&
           data.holidayschedule.schedule.length > 0
 
-        // Proceder solo si hay horarios para crear/editar
-        if (hasRegularSchedule || hasHolidaySchedule) {
-          try {
-            let holidayGroupId = data.regularSchedule.holidayGroupID
-            let scheduleId = data.regularSchedule.scheduleID
+        try {
+          let holidayGroupId = data.regularSchedule.holidayGroupID
+          let scheduleId = data.regularSchedule.scheduleID
 
-            // Crear o editar el Holiday Group solo si hay horarios de vacaciones
-            if (hasHolidaySchedule) {
-              if (holidayGroupId) {
-                const holidayGroupResult = await editHolidayGroup(data, holidayGroupId)
-                if (!holidayGroupResult.success) {
-                  throw new Error(holidayGroupResult.message)
-                }
-                holidayGroupId = holidayGroupResult.data.id
-              } else {
-                const holidayGroupResult = await createHolidayGroup(data)
-                if (!holidayGroupResult.success) {
-                  throw new Error(holidayGroupResult.message)
-                }
-                holidayGroupId = holidayGroupResult.data.id
+          // Manejar el Holiday Group
+          if (hasHolidaySchedule) {
+            if (holidayGroupId) {
+              const holidayGroupResult = await editHolidayGroup(data, holidayGroupId)
+              if (!holidayGroupResult.success) {
+                throw new Error(holidayGroupResult.message)
               }
-            }
-
-            // Crear o editar el Schedule solo si hay horarios regulares
-            if (hasRegularSchedule) {
-              if (scheduleId) {
-                const scheduleResult = await editSchedule(data, scheduleId, holidayGroupId)
-                if (!scheduleResult.success) {
-                  throw new Error(scheduleResult.message)
-                }
-                scheduleId = scheduleResult.data.id
-              } else {
-                const scheduleResult = await createSchedule(data, holidayGroupId)
-                if (!scheduleResult.success) {
-                  throw new Error(scheduleResult.message)
-                }
-                scheduleId = scheduleResult.data.id
+            } else {
+              const holidayGroupResult = await createHolidayGroup(data)
+              if (!holidayGroupResult.success) {
+                throw new Error(holidayGroupResult.message)
               }
+              holidayGroupId = holidayGroupResult.data.id
             }
+          } else if (holidayGroupId) {
+            holidayGroupId = null
+          }
 
-            // Actualizar los campos en el documento antes de guardarlo
+          // Manejar el Schedule
+          if (hasRegularSchedule) {
+            if (scheduleId) {
+              const scheduleResult = await editSchedule(data, scheduleId, holidayGroupId)
+              if (!scheduleResult.success) {
+                throw new Error(scheduleResult.message)
+              }
+            } else {
+              const scheduleResult = await createSchedule(data, holidayGroupId)
+              if (!scheduleResult.success) {
+                throw new Error(scheduleResult.message)
+              }
+              scheduleId = scheduleResult.data.id
+            }
+          } else if (scheduleId) {
+            const deleteResult = await deleteSchedule(scheduleId)
+            if (!deleteResult.success) {
+              throw new Error(deleteResult.message)
+            }
+            scheduleId = null
+          }
+
+          // Actualizar los campos en el documento solo si es necesario
+          if (!data.regularSchedule.scheduleID || scheduleId === null || holidayGroupId === null) {
             data.regularSchedule = {
               ...data.regularSchedule,
               scheduleID: scheduleId,
               holidayGroupID: holidayGroupId,
             }
+          }
 
-            console.log('Schedule and Holiday Group created/updated successfully')
-          } catch (error) {
-            console.error('Error in beforeChange hook:', error)
-            throw error // Lanzar el error para que Payload lo maneje
-          }
-        } else {
-          // Si no hay horarios, asegurarse de que no haya IDs guardados
-          if (data.regularSchedule) {
-            data.regularSchedule.scheduleID = null
-            data.regularSchedule.holidayGroupID = null
-          }
+          console.log('Schedule and Holiday Group operations completed successfully')
+        } catch (error) {
+          console.error('Error in beforeChange hook:', error)
+          throw error // Lanzar el error para que Payload lo maneje
         }
 
         return data
