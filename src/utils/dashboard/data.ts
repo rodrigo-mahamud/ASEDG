@@ -458,7 +458,7 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
   }
 }
 
-//CREATE SCHEDULE & HOLIDAYS
+//CREATE SCHEDULE
 export async function createSchedule(facilityData: any, holidayGroupId: string) {
   try {
     const formatTime = (dateString: string) => {
@@ -486,7 +486,7 @@ export async function createSchedule(facilityData: any, holidayGroupId: string) 
     })
 
     const requestBody = {
-      name: `schedule-${Date.now()}`,
+      name: `Horario creado desde la API NO BORRAR (${Date.now()})`,
       week_schedule: weekSchedule,
       holiday_group_id: holidayGroupId,
     }
@@ -522,6 +522,7 @@ export async function createSchedule(facilityData: any, holidayGroupId: string) 
   }
 }
 
+//CREATE HOLIDAYS
 export async function createHolidayGroup(facilityData: any) {
   try {
     const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
@@ -563,5 +564,112 @@ export async function createHolidayGroup(facilityData: any) {
   } catch (error) {
     console.error('Error creating Holiday Group:', error)
     return { success: false, message: 'Error creating Holiday Group. Check console for details.' }
+  }
+}
+
+export async function editSchedule(facilityData: any, scheduleId: string, holidayGroupId: string) {
+  try {
+    const formatTime = (dateString: string) => {
+      const date = new Date(dateString)
+      return date.toTimeString().split(' ')[0]
+    }
+
+    const weekSchedule: { [key: string]: any[] } = {
+      sunday: [],
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+    }
+
+    facilityData.regularSchedule.schedule.forEach((schedule: any) => {
+      schedule.days.forEach((day: string) => {
+        weekSchedule[day].push({
+          start_time: formatTime(schedule.open),
+          end_time: formatTime(schedule.close),
+        })
+      })
+    })
+
+    const requestBody = {
+      name: `Horario creado desde la API NO BORRAR (${Date.now()})`,
+      week_schedule: weekSchedule,
+      holiday_group_id: holidayGroupId,
+    }
+
+    console.log('Request body for editSchedule:', JSON.stringify(requestBody, null, 2))
+
+    const response = await fetch(`${BASE_URL}/access_policies/schedules/${scheduleId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      revalidateTag('refreshFacilities')
+      return { success: true, message: 'Schedule updated successfully', data: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error updating schedule:', error)
+    return { success: false, message: 'Error updating schedule. Check console for details.' }
+  }
+}
+
+export async function editHolidayGroup(facilityData: any, holidayGroupId: string) {
+  try {
+    const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
+      name: holiday.holydayName,
+      start_time: new Date(holiday.holydaySince).toISOString(),
+      end_time: new Date(holiday.holydayUntill).toISOString(),
+      repeat: holiday.holydayRepeat,
+    }))
+
+    const requestBody = {
+      name: `HolidayGroup-${Date.now()}`,
+      holidays: holidays,
+    }
+
+    console.log('Request body for editHolidayGroup:', JSON.stringify(requestBody, null, 2))
+
+    const response = await fetch(`${BASE_URL}/access_policies/holiday_groups/${holidayGroupId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      return { success: true, message: 'Holiday Group updated successfully', data: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error updating Holiday Group:', error)
+    return { success: false, message: 'Error updating Holiday Group. Check console for details.' }
   }
 }
