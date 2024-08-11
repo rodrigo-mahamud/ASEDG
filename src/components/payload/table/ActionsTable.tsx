@@ -53,7 +53,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
           className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
             setClientToEdit(visitor)
-            setIsOpen(true)
+            setDialogOpen(true, 'pincode')
           }}
         >
           <IconRefreshDot className="mr-2" size={14}></IconRefreshDot>
@@ -86,7 +86,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             setUsersToDelete([
               { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
             ])
-            setDialogOpen(true)
+            setDialogOpen(true, 'delete')
           }}
         >
           <IconTrash className="mr-2" size={14}></IconTrash>

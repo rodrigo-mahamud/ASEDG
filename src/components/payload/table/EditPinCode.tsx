@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,14 +11,19 @@ import {
   AlertDialogTitle,
 } from '@/components/lib/alert-dialog'
 import { Button } from '@/components/lib/button'
-import { IconAlertCircle, IconTrash } from '@tabler/icons-react'
+import { IconAlertCircle, IconLoader2, IconRefresh, IconTrash } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Alert, AlertTitle } from '@/components/lib/alert'
 import { Input } from '@/components/lib/input'
 import { Label } from '@/components/lib/label'
-import { deleteVisitors } from '@/utils/dashboard/data'
+import { deleteVisitors, generatePinCode } from '@/utils/dashboard/data'
 import { toast } from '@payloadcms/ui'
-export function DeleteVisitor() {
+import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { visitorSchema } from '@/utils/dashboard/validationSchema'
+import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+export function EditPinCode() {
   const [confirmText, setConfirmText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
   const { isDialogOpen, setDialogOpen, selectedClients, usersToDelete, dialogType } =
@@ -29,7 +34,7 @@ export function DeleteVisitor() {
       setIsDeleting(true)
       try {
         await deleteVisitors(usersToDelete.map((user) => user.id))
-        setDialogOpen(false, 'delete')
+        setDialogOpen(false, 'pincode')
       } catch (error) {
         console.error('Error deleting visitors:', error)
         toast.error('Ha ocurrido un error al eliminar el usuario')
@@ -40,11 +45,36 @@ export function DeleteVisitor() {
       }
     }
   }
+  const form = useForm<VisitorFormValues>({
+    resolver: zodResolver(visitorSchema),
+    mode: 'onChange',
+    defaultValues: [],
+  })
+  const handleGeneratePin = useCallback(async () => {
+    setIsGeneratingPin(true)
+    try {
+      const result = await generatePinCode()
+      if (result.success) {
+        form.setValue('pin_code', result.pinCode)
+        setPinCodeChanged(true)
+      } else {
+        toast.error('Error al generar el código PIN')
+      }
+    } catch (error) {
+      console.error('Error generating PIN code:', error)
+      toast.error('Error al generar el código PIN')
+    } finally {
+      setIsGeneratingPin(false)
+    }
+  }, [form])
 
+  const [isGeneratingPin, setIsGeneratingPin] = useState(false)
+  const [pinCodeChanged, setPinCodeChanged] = useState(false)
+  const initialPinGeneratedRef = useRef(false)
   return (
     <AlertDialog
-      open={isDialogOpen && dialogType === 'delete'}
-      onOpenChange={() => setDialogOpen(false, 'delete')}
+      open={isDialogOpen && dialogType === 'pincode'}
+      onOpenChange={() => setDialogOpen(false, 'pincode')}
     >
       <AlertDialogContent className="useTw border-border gap-6 p-0">
         <AlertDialogHeader className="px-6 pt-6">
@@ -74,15 +104,49 @@ export function DeleteVisitor() {
           <Label className="text-base font-normal">
             Para confirmar, escribe: <b>eliminar-usuarios</b>
           </Label>
-          <Input
-            value={confirmText}
-            className="bg-transparent text-white p-6 text-base mt-3"
-            onChange={(e) => setConfirmText(e.target.value)}
-          />
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit('a')} className="mt-6">
+              <div className="flex w-full">
+                <FormField
+                  control={form.control}
+                  name="pin_code"
+                  render={({ field }) => (
+                    <FormItem className="w-4/5">
+                      <FormControl>
+                        <FloatingLabelInput
+                          className="text-base py-3 h-fit border-r-0 rounded-r-none "
+                          label="Código PIN"
+                          disabled={true}
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e.target.value)
+                            setPinCodeChanged(true)
+                          }}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant={'outline'}
+                  onClick={handleGeneratePin}
+                  disabled={isGeneratingPin}
+                  className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
+                >
+                  {isGeneratingPin ? (
+                    <IconLoader2 size={19} className="animate-spin" />
+                  ) : (
+                    <IconRefresh size={19} />
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
         <AlertDialogFooter className="px-6 pb-6">
           <AlertDialogCancel
-            onClick={() => setDialogOpen(false, 'delete')}
+            onClick={() => setDialogOpen(false, 'pincode')}
             className="text-base rounded-md border-border"
           >
             Cancelar

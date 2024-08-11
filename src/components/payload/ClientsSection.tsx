@@ -7,6 +7,7 @@ import { Visitor } from '@/utils/dashboard/types'
 import { TableVisitorsWrapper } from './table/TableVisitorsWrapper'
 import { Suspense } from 'react'
 import { SkeletonTable } from './table/SkeletonTable'
+import { EditPinCode } from './table/EditPinCode'
 
 export default function ClientsSection() {
   return (
@@ -23,6 +24,7 @@ export default function ClientsSection() {
         </Suspense>
         <AddEditVisitor />
         <DeleteVisitor />
+        <EditPinCode />
       </CardContent>
     </Card>
   )
