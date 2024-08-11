@@ -12,7 +12,6 @@ export default async function RevenueChart({
   logType?: string
 }) {
   const activityLogs = await getRevenue(period, logType)
-  console.log(activityLogs)
 
   const getPeriodDescription = (period: string | null) => {
     switch (period) {

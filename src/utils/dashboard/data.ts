@@ -457,3 +457,77 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
     throw error
   }
 }
+
+//CREATE SCHEDULE
+export async function createSchedule(facilityData: any) {
+  try {
+    // Función auxiliar para convertir la fecha a formato HH:mm:ss
+    const formatTime = (dateString: string) => {
+      const date = new Date(dateString)
+      return date.toTimeString().split(' ')[0]
+    }
+
+    // Preparar week_schedule
+    const weekSchedule: { [key: string]: any[] } = {
+      sunday: [],
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+    }
+
+    facilityData.facilitieSchedules.schedule.forEach((schedule: any) => {
+      schedule.days.forEach((day: string) => {
+        weekSchedule[day].push({
+          start_time: formatTime(schedule.open),
+          end_time: formatTime(schedule.close),
+        })
+      })
+    })
+
+    // Preparar holiday_schedule
+    const holidaySchedule = facilityData.facilitieSchedules.holidayschedule.map((holiday: any) => ({
+      start_time: formatTime(holiday.open),
+      end_time: formatTime(holiday.close),
+    }))
+
+    const requestBody = {
+      name: `schedule-${Date.now()}`,
+      week_schedule: weekSchedule,
+      holiday_schedule: holidaySchedule,
+      // Nota: holiday_group_id no está presente en tus datos, así que lo omitimos
+    }
+
+    // Loguear el cuerpo de la solicitud
+    console.log('Request body for createSchedule:', JSON.stringify(requestBody, null, 2))
+
+    const response = await fetch(`${BASE_URL}/access_policies/schedules`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      revalidateTag('refreshFacilities')
+      return { success: true, message: 'Schedule created successfully', data: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error creating schedule:', error)
+    return { success: false, message: 'Error creating schedule. Check console for details.' }
+  }
+}

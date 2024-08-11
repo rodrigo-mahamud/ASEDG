@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
 import { calculateTotalDays } from '@/utils/bookingDateFormat'
+import { createSchedule } from '@/utils/dashboard/data'
 
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },
@@ -109,75 +110,172 @@ const Facilities: CollectionConfig = {
       ],
     },
     {
-      name: 'schedule',
-      label: 'Horario de apertura',
-      type: 'array',
-      maxRows: 2,
-      validate: (value) => {
-        if (Array.isArray(value)) {
-          const allDays = value.flatMap((item) => item.days || [])
-          const uniqueDays = new Set(allDays)
-          if (allDays.length !== uniqueDays.size) {
-            return 'No se pueden repetir los días en diferentes horarios'
-          }
-        }
-        return true
-      },
+      name: 'regularSchedule',
+      label: 'Horario Regular',
+      type: 'group',
       fields: [
         {
-          name: 'days',
-          label: 'Días',
-          type: 'select',
-          hasMany: true,
-          options: daysOfWeek,
-          required: true,
+          name: 'scheduleID',
+          label: 'ID del horario',
+          admin: {
+            readOnly: true,
+          },
+          type: 'text',
         },
         {
-          type: 'row',
+          name: 'schedule',
+          interfaceName: 'Horario',
+          label: ' ',
+          type: 'array',
+          admin: {
+            initCollapsed: true,
+          },
+          maxRows: 2,
+          validate: (value) => {
+            if (Array.isArray(value)) {
+              const allDays = value.flatMap((item) => item.days || [])
+              const uniqueDays = new Set(allDays)
+              if (allDays.length !== uniqueDays.size) {
+                return 'No puedes asignar 2 horarios al mismo dia de la semana.'
+              }
+            }
+            return true
+          },
           fields: [
             {
-              name: 'open',
-              label: 'Hora de Apertura',
-              type: 'date',
-              admin: {
-                date: {
-                  pickerAppearance: 'timeOnly',
-                  displayFormat: 'HH:mm',
-                  timeIntervals: 15,
-                  timeFormat: 'HH:mm',
+              type: 'row',
+              fields: [
+                {
+                  name: 'open',
+                  label: 'Hora de Apertura',
+                  type: 'date',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'timeOnly',
+                      displayFormat: 'HH:mm',
+                      timeIntervals: 15,
+                      timeFormat: 'HH:mm',
+                    },
+                  },
+                  required: true,
                 },
-              },
-              required: true,
+                {
+                  name: 'close',
+                  label: 'Hora de Cierre',
+                  type: 'date',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'timeOnly',
+                      displayFormat: 'HH:mm',
+                      timeIntervals: 15,
+                      timeFormat: 'HH:mm',
+                    },
+                  },
+                  required: true,
+                  validate: (value, { siblingData }) => {
+                    if (siblingData.open && value) {
+                      const openTime = new Date(siblingData.open)
+                      const closeTime = new Date(value)
+                      if (closeTime <= openTime) {
+                        return 'La hora de cierre debe ser posterior a la hora de apertura'
+                      }
+                    }
+                    return true
+                  },
+                },
+              ],
             },
             {
-              name: 'close',
-              label: 'Hora de Cierre',
-              type: 'date',
-              admin: {
-                date: {
-                  pickerAppearance: 'timeOnly',
-                  displayFormat: 'HH:mm',
-                  timeIntervals: 15,
-                  timeFormat: 'HH:mm',
-                },
-              },
+              name: 'days',
+              label: 'Repetir los dias:',
+              type: 'select',
+              hasMany: true,
+              options: daysOfWeek,
               required: true,
-              validate: (value, { siblingData }) => {
-                if (siblingData.open && value) {
-                  const openTime = new Date(siblingData.open)
-                  const closeTime = new Date(value)
-                  if (closeTime <= openTime) {
-                    return 'La hora de cierre debe ser posterior a la hora de apertura'
-                  }
-                }
-                return true
-              },
             },
           ],
         },
       ],
     },
-
+    {
+      name: 'holidayschedule',
+      label: 'Horario Vacaciones',
+      type: 'group',
+      fields: [
+        {
+          name: 'scheduleID',
+          label: 'ID del horario',
+          admin: {
+            readOnly: true,
+          },
+          type: 'text',
+        },
+        {
+          name: 'schedule',
+          interfaceName: 'Horario de Vacaciones',
+          label: '',
+          type: 'array',
+          maxRows: 2,
+          validate: (value) => {
+            if (Array.isArray(value)) {
+              const allDays = value.flatMap((item) => item.days || [])
+              const uniqueDays = new Set(allDays)
+              if (allDays.length !== uniqueDays.size) {
+                return 'No puedes asignar 2 horarios al mismo dia de la semana.'
+              }
+            }
+            return true
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'holydayRepeat',
+                  type: 'checkbox',
+                  label: '¿Repetir todos los años?',
+                  defaultValue: false,
+                },
+                {
+                  name: 'holydaySince',
+                  label: 'Desde',
+                  type: 'date',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'dayAndTime',
+                      displayFormat: 'dd/LL/yyyy HH:mm',
+                      timeIntervals: 15,
+                      timeFormat: 'HH:mm',
+                    },
+                  },
+                  required: true,
+                },
+                {
+                  name: 'holydayUntill',
+                  label: 'Hasta',
+                  type: 'date',
+                  admin: {
+                    date: {
+                      pickerAppearance: 'dayAndTime',
+                      displayFormat: 'dd/LL/yyyy HH:mm',
+                      timeIntervals: 15,
+                      timeFormat: 'HH:mm',
+                    },
+                  },
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'holydayName',
+              label: 'Nombre',
+              type: 'text',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
     slug,
   ],
   hooks: {
@@ -190,6 +288,31 @@ const Facilities: CollectionConfig = {
           }))
         }
         return data
+      },
+    ],
+
+    afterChange: [
+      async ({ doc, req }) => {
+        if (doc.facilitieSchedules) {
+          try {
+            const result = await createSchedule(doc)
+            if (result.success) {
+              await req.payload.update({
+                collection: 'facilities',
+                id: doc.id,
+                data: {
+                  scheduleId: result.data.id,
+                },
+              })
+              console.log('Schedule created successfully with ID:', result.data.id)
+            } else {
+              console.error('Error creating schedule:', result.message)
+            }
+          } catch (error) {
+            console.error('Error in afterChange hook:', error)
+          }
+        }
+        return doc
       },
     ],
   },
