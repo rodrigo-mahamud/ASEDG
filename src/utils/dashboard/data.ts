@@ -21,6 +21,7 @@ import {
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
 import { Visitor } from './types'
+import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
@@ -68,7 +69,6 @@ export async function getVisitors() {
         )
         return {
           ...visitor,
-          pin_code: '******',
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
           price: price,
@@ -114,7 +114,7 @@ export async function addVisitor(visitorData: any) {
 
     if (result.code === 'SUCCESS') {
       revalidateTag('refreshVisitors')
-      await sendEmail(visitorData)
+      await sendEmail(visitorData, 'confirmation')
       return { success: true, message: 'Visitor added successfully', data: result.data }
     } else {
       throw new Error(`API error: ${result.msg}`)
@@ -229,34 +229,55 @@ export async function generatePinCode() {
     return { success: false, message: 'Error generating PIN code. Check console for details.' }
   }
 }
-export async function sendEmail(visitorData: VisitorFormValues) {
+export async function sendEmail(visitorData: any, template: 'confirmation' | 'pinCode') {
   try {
-    const emailHtml = render(
-      BookingConfirmationEmail({
-        nombre: visitorData.first_name,
-        apellidos: visitorData.last_name,
-        email: visitorData.email,
-        telefono: visitorData.mobile_phone,
-        fechaInicio: new Date(visitorData.start_time! * 1000).toLocaleString(),
-        fechaFin: new Date(visitorData.end_time! * 1000).toLocaleString(),
-        pinCode: visitorData.pin_code,
-      }),
-    )
+    let emailHtml: string
+    let subject: string
+
+    switch (template) {
+      case 'confirmation':
+        emailHtml = render(
+          BookingConfirmationEmail({
+            nombre: visitorData.first_name,
+            apellidos: visitorData.last_name,
+            email: visitorData.email,
+            telefono: visitorData.mobile_phone,
+            fechaInicio: new Date(visitorData.start_time! * 1000).toLocaleString(),
+            fechaFin: new Date(visitorData.end_time! * 1000).toLocaleString(),
+            pinCode: visitorData.pin_code,
+          }),
+        )
+        subject = 'Registro exitoso en el gimnasio.'
+        break
+      case 'pinCode':
+        emailHtml = render(
+          PinCodeChangedEmail({
+            nombre: visitorData.first_name,
+            apellidos: visitorData.last_name,
+            email: visitorData.email,
+            pinCode: visitorData.pin_code,
+          }),
+        )
+        subject = 'Tu nuevo código de acceso.'
+        break
+      default:
+        throw new Error('Plantilla de correo no reconocida')
+    }
 
     const payload = await getPayloadHMR({ config: configPromise })
 
     await payload.sendEmail({
       to: visitorData.email,
-      subject: 'Registro exitoso en el gimnasio.',
+      subject: subject,
       html: emailHtml,
     })
+
     console.log('Correo electrónico enviado con éxito')
   } catch (emailError) {
     console.error('Error al enviar el correo electrónico:', emailError)
     throw new Error('Failed to send email')
   }
 }
-
 //LOGS
 export async function getActivityLogs(period: string, type: string = 'door_openings') {
   const now = new Date()

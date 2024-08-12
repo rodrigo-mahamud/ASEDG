@@ -124,7 +124,7 @@ const Facilities: CollectionConfig = {
           name: 'scheduleID',
           label: 'ID del horario',
           admin: {
-            readOnly: true,
+            readOnly: false,
           },
           type: 'text',
         },
@@ -132,7 +132,7 @@ const Facilities: CollectionConfig = {
           name: 'holidayGroupID',
           label: 'ID del horario de vacaciones',
           admin: {
-            readOnly: true,
+            readOnly: false,
           },
           type: 'text',
         },

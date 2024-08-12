@@ -1,5 +1,3 @@
-import { getVisitors } from '@/utils/dashboard/data'
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
 import AddEditVisitor from './table/AddEditVisitor'
 import { DeleteVisitor } from './table/DeleteVisitor'

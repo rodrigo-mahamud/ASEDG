@@ -119,5 +119,7 @@ export const visitorSchema = z
       path: ['end_time'],
     },
   )
-
+export const pinCodeSchema = z.object({
+  pin_code: z.string().length(6, 'El PIN debe ser de 6 cifras').optional(),
+})
 export type VisitorFormValues = z.infer<typeof visitorSchema>

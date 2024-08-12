@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
   Html,
   Head,
@@ -7,7 +6,6 @@ import {
   Section,
   Text,
   Heading,
-  Preview,
   Row,
   Column,
   Link,
