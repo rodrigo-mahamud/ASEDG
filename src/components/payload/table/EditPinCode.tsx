@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from '@/components/lib/alert-dialog'
 import { Button } from '@/components/lib/button'
-import { IconCircleCheck, IconLoader2, IconRefresh } from '@tabler/icons-react'
+import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/data'
 import { toast } from '@payloadcms/ui'
@@ -100,7 +100,7 @@ export function EditPinCode() {
         </AlertDialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSave)} className="">
+          <form>
             <div className="flex w-full h-full">
               <FormField
                 control={form.control}
@@ -143,9 +143,9 @@ export function EditPinCode() {
           >
             Cancelar
           </AlertDialogCancel>
-          <AlertDialogAction asChild>
+          <AlertDialogAction onClick={form.handleSubmit(handleSave)} asChild>
             <Button
-              type="submit"
+              type="button"
               variant="default"
               disabled={isGeneratingPin || isSaving}
               className="flex items-center text-base font-semibold rounded-md leading-none"
