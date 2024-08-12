@@ -21,6 +21,7 @@ export function SelectDate({ field }: DatePeriodPickerProps) {
     try {
       setIsLoading(true)
       const data = await getPeriods()
+
       setPeriodsData(data)
       setIsLoading(false)
     } catch (err) {

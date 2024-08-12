@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
-import { addVisitor, updateVisitor, generatePinCode } from '@/utils/dashboard/data'
+import { addVisitor, updateVisitor, generatePinCode, getPeriods } from '@/utils/dashboard/data'
 import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { SelectDate } from './SelectDate'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
@@ -21,10 +21,21 @@ const AddEditForm = React.memo(function AddEditForm() {
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues: clientToEdit || defaultValues,
   })
+  const fetchPeriods = useCallback(async () => {
+    try {
+      const data = await getPeriods()
+      console.log(data)
+    } catch (err) {
+      console.error('Error fetching periods:', err)
+    }
+  }, [])
 
+  useEffect(() => {
+    fetchPeriods()
+  }, [fetchPeriods])
   const handleGeneratePin = useCallback(async () => {
     setIsGeneratingPin(true)
     try {
@@ -153,6 +164,21 @@ const AddEditForm = React.memo(function AddEditForm() {
               <FormItem>
                 <FormControl>
                   <FloatingLabelInput className="text-base py-3 h-fit" label="Email" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="mobile_phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <FloatingLabelInput
+                    className="text-base py-3 h-fit"
+                    label="Teléfono de contacto"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}

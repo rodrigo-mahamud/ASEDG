@@ -26,7 +26,7 @@ import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
-export async function getPeriods() {
+export async function getSchedule() {
   try {
     const payload = await getPayloadHMR({ config: configPromise })
 
@@ -38,6 +38,23 @@ export async function getPeriods() {
       (booking: any) => booking.id === '669147e907d44f5df704e9c1',
     )
 
+    console.log(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching periods:', error)
+  }
+}
+export async function getPeriods() {
+  try {
+    const payload = await getPayloadHMR({ config: configPromise })
+
+    const facilitiesData = (await payload.find({
+      collection: 'facilities',
+    })) as any
+
+    const data = facilitiesData.docs.find(
+      (booking: any) => booking.id === '669147e907d44f5df704e9c1',
+    )
     return data
   } catch (error) {
     console.error('Error fetching periods:', error)
