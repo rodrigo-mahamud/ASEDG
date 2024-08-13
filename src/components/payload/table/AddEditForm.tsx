@@ -6,36 +6,44 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 import { Button } from '@/components/lib/button'
-import { addVisitor, updateVisitor, generatePinCode, getPeriods } from '@/utils/dashboard/data'
+import { addVisitor, updateVisitor, generatePinCode, getPayload } from '@/utils/dashboard/data'
 import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
 import { SelectDate } from './SelectDate'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
+import { PeriodsData } from '@/utils/dashboard/types'
 
 const AddEditForm = React.memo(function AddEditForm() {
   const { clientToEdit, setIsOpen } = useDashboardStore()
   const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [pinCodeChanged, setPinCodeChanged] = useState(false)
   const initialPinGeneratedRef = useRef(false)
+  const [data, setData] = useState<PeriodsData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const form = useForm<VisitorFormValues>({
     resolver: zodResolver(visitorSchema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
     defaultValues: clientToEdit || defaultValues,
   })
-  const fetchPeriods = useCallback(async () => {
+
+  const fetchPayload = useCallback(async () => {
     try {
-      const data = await getPeriods()
-      console.log(data)
+      setIsLoading(true)
+      const data = await getPayload()
+      form.setValue('schedule_id', data.regularSchedule.scheduleID)
+      setData(data)
+      setIsLoading(false)
     } catch (err) {
       console.error('Error fetching periods:', err)
+      toast.error('Error al consultar los horarios de la instalacción')
+      setError('Error al consultar los horarios de la instalacción')
+      setIsLoading(false)
     }
-  }, [])
+  }, [form])
 
-  useEffect(() => {
-    fetchPeriods()
-  }, [fetchPeriods])
   const handleGeneratePin = useCallback(async () => {
     setIsGeneratingPin(true)
     try {
@@ -59,7 +67,8 @@ const AddEditForm = React.memo(function AddEditForm() {
       handleGeneratePin()
       initialPinGeneratedRef.current = true
     }
-  }, [clientToEdit, handleGeneratePin, form])
+    fetchPayload()
+  }, [clientToEdit, handleGeneratePin, form, fetchPayload])
 
   const handleSave = async (data: VisitorFormValues) => {
     const visitorData = { ...data }
@@ -183,27 +192,15 @@ const AddEditForm = React.memo(function AddEditForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="mobile_phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput
-                    className="text-base py-3 h-fit"
-                    label="Teléfono de contacto"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
 
           <FormField
             control={form.control}
             name="end_time"
             render={({ field }) => (
               <SelectDate
+                periods={data?.bookingOptions}
+                isLoading={isLoading}
+                error={error}
                 field={{
                   value: {
                     start_time: form.getValues().start_time,
@@ -257,6 +254,22 @@ const AddEditForm = React.memo(function AddEditForm() {
           ) : (
             ' '
           )}
+          <FormField
+            control={form.control}
+            name="schedule_id"
+            disabled={true}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <FloatingLabelInput
+                    className={`text-base py-3 h-fit ${isLoading ? 'bg-onTop' : ''}`}
+                    label="Identificador del horario"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
           <FormErrors form={form} />
         </div>

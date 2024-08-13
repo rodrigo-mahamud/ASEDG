@@ -1,43 +1,24 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { addDays, getUnixTime, startOfToday } from 'date-fns'
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@/components/lib/select'
 import { FormControl, FormItem, FormMessage } from '@/components/lib/form'
-import { getPeriods } from '@/utils/dashboard/data'
+
 import { Skeleton } from '@/components/lib/skeleton'
-import { DatePeriodPickerProps, PeriodsData } from '@/utils/dashboard/types'
+import { DatePeriodPickerProps } from '@/utils/dashboard/types'
+import { SelectLabel } from '@radix-ui/react-select'
 
-export function SelectDate({ field }: DatePeriodPickerProps) {
-  const [periodsData, setPeriodsData] = useState<PeriodsData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  const fetchPeriods = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const data = await getPeriods()
-
-      setPeriodsData(data)
-      setIsLoading(false)
-    } catch (err) {
-      console.error('Error fetching periods:', err)
-      setError('Error fetching periods')
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchPeriods()
-  }, [fetchPeriods])
-
+export function SelectDate({ field, periods, isLoading, error }: DatePeriodPickerProps) {
   const handlePeriodChange = useCallback(
     (periodId: string) => {
-      const selectedOption = periodsData?.bookingOptions.find((option) => option.id === periodId)
+      const selectedOption = periods?.find((option) => option.id === periodId)
       if (selectedOption) {
         const startDate = startOfToday()
         const endDate = addDays(startDate, selectedOption.daysAmount)
@@ -48,7 +29,7 @@ export function SelectDate({ field }: DatePeriodPickerProps) {
         })
       }
     },
-    [periodsData, field],
+    [periods, field],
   )
 
   if (isLoading) {
@@ -68,11 +49,15 @@ export function SelectDate({ field }: DatePeriodPickerProps) {
           </SelectTrigger>
         </FormControl>
         <SelectContent className="useTw border-border">
-          {periodsData?.bookingOptions.map((option) => (
-            <SelectItem key={option.id} value={option.id} className="text-base">
-              {option.name}: {option.price}€
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectLabel>Periodos disponibles</SelectLabel>
+            <SelectSeparator></SelectSeparator>
+            {periods?.map((option) => (
+              <SelectItem key={option.id} value={option.id} className="text-base">
+                {option.name}: {option.price}€
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <FormMessage />

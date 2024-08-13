@@ -15,7 +15,7 @@ export function FormErrors<T extends FieldValues>({ form }: FormErrorsProps<T>) 
 
   return (
     <Alert variant="destructive" className="mb-6">
-      <AlertTitle>Revisa los siguientes campos:</AlertTitle>
+      <AlertTitle className="text-lg useTw">Revisa los siguientes campos:</AlertTitle>
       <AlertDescription>
         <div className="max-h-52 overflow-y-auto rounded-md pt-2">
           <ul className="list-decimal pl-0 text-base">

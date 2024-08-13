@@ -97,6 +97,7 @@ export const visitorSchema = z
     mobile_phone: z
       .string()
       .regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
+    schedule_id: z.string().min(1, 'El nombre debe tener al menos 2 caracteres'),
     dni: z.string().refine(validateDNINIE, { message: 'DNI o NIE español inválido' }),
     age: z.number().min(16, 'Debes ser mayor de 16 años'),
     start_time: z

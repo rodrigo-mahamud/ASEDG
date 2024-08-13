@@ -57,14 +57,14 @@ function validateDNINIE(value: string): boolean {
 export const bookingSchema = z.object({
   nombre: z
     .string()
-    .min(1, 'El nombre debe tener al menos 2 caracteres')
+    .min(1, 'No has rellenado el campo nombre')
     .regex(
       /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
       'El nombre no puede contener números ni caracteres especiales',
     ),
   apellidos: z
     .string()
-    .min(1, 'Los apellidos deben tener al menos 2 caracteres')
+    .min(1, 'No has rellenado el campo apellidos')
     .regex(
       /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
       'Los apellidos no pueden contener números ni caracteres especiales',

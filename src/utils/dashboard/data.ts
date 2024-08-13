@@ -44,7 +44,7 @@ export async function getSchedule() {
     console.error('Error fetching periods:', error)
   }
 }
-export async function getPeriods() {
+export async function getPayload() {
   try {
     const payload = await getPayloadHMR({ config: configPromise })
 
