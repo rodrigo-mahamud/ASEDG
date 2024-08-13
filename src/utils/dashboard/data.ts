@@ -117,6 +117,7 @@ export async function addVisitor(visitorData: any) {
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
         pin_code: visitorData.pin_code,
+        schedule_id: visitorData.schedule_id,
         resources: [{ id: process.env.SECRET_GYM_DOOR_ID, type: 'door' }],
         visit_reason: 'Others',
       }),

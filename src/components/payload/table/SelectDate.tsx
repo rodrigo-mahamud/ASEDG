@@ -48,9 +48,11 @@ export function SelectDate({ field, periods, isLoading, error }: DatePeriodPicke
             <SelectValue placeholder="Selecciona un periodo" />
           </SelectTrigger>
         </FormControl>
-        <SelectContent className="useTw border-border">
+        <SelectContent className="p-1 border border-border rounded-md shadow-xl shadow-black useTw">
           <SelectGroup>
-            <SelectLabel>Periodos disponibles</SelectLabel>
+            <SelectLabel className="py-1.5 px-2 font-semibold text-base">
+              Periodos disponibles
+            </SelectLabel>
             <SelectSeparator></SelectSeparator>
             {periods?.map((option) => (
               <SelectItem key={option.id} value={option.id} className="text-base">

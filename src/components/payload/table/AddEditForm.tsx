@@ -16,7 +16,6 @@ import { PeriodsData } from '@/utils/dashboard/types'
 
 const AddEditForm = React.memo(function AddEditForm() {
   const { clientToEdit, setIsOpen } = useDashboardStore()
-  const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [pinCodeChanged, setPinCodeChanged] = useState(false)
   const initialPinGeneratedRef = useRef(false)
   const [data, setData] = useState<PeriodsData | null>(null)
@@ -45,7 +44,7 @@ const AddEditForm = React.memo(function AddEditForm() {
   }, [form])
 
   const handleGeneratePin = useCallback(async () => {
-    setIsGeneratingPin(true)
+    setIsLoading(true)
     try {
       const result = await generatePinCode()
       if (result.success) {
@@ -58,7 +57,7 @@ const AddEditForm = React.memo(function AddEditForm() {
       console.error('Error generating PIN code:', error)
       toast.error('Error al generar el código PIN')
     } finally {
-      setIsGeneratingPin(false)
+      setIsLoading(false)
     }
   }, [form])
 
@@ -241,10 +240,10 @@ const AddEditForm = React.memo(function AddEditForm() {
                 type="button"
                 variant={'outline'}
                 onClick={handleGeneratePin}
-                disabled={isGeneratingPin}
+                disabled={isLoading}
                 className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
               >
-                {isGeneratingPin ? (
+                {isLoading ? (
                   <IconLoader2 size={19} className="animate-spin" />
                 ) : (
                   <IconRefresh size={19} />
@@ -254,27 +253,14 @@ const AddEditForm = React.memo(function AddEditForm() {
           ) : (
             ' '
           )}
-          <FormField
-            control={form.control}
-            name="schedule_id"
-            disabled={true}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput
-                    className={`text-base py-3 h-fit ${isLoading ? 'bg-onTop' : ''}`}
-                    label="Identificador del horario"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
           <FormErrors form={form} />
         </div>
         <div className="bg-onTop w-full p-6 absolute bottom-0 border-t border-border">
-          <Button type="submit" className="w-full rounded-md h-fit py-3 text-base">
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-full rounded-md h-fit py-3 text-base"
+          >
             Guardar cambios
           </Button>
         </div>
