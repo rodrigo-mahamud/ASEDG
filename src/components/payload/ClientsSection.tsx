@@ -6,6 +6,7 @@ import { TableVisitorsWrapper } from './table/TableVisitorsWrapper'
 import { Suspense } from 'react'
 import { SkeletonTable } from './table/SkeletonTable'
 import { EditPinCode } from './table/EditPinCode'
+import { ReportMail } from './table/ReportMail'
 
 export default function ClientsSection() {
   return (
@@ -23,6 +24,7 @@ export default function ClientsSection() {
         <AddEditVisitor />
         <DeleteVisitor />
         <EditPinCode />
+        <ReportMail />
       </CardContent>
     </Card>
   )

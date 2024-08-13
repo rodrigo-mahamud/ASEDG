@@ -10,6 +10,7 @@ import {
 } from '@/components/lib/dropdown-menu'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import {
+  IconAlertTriangle,
   IconClipboard,
   IconDeviceMobile,
   IconDots,
@@ -32,7 +33,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="p-1 w-44 border border-border rounded-md shadow-xl shadow-black useTw"
+        className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw"
         align="end"
       >
         <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
@@ -78,6 +79,15 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         >
           <IconDeviceMobile className="mr-2" size={14}></IconDeviceMobile>
           Copiar teléfono
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+          onClick={() => {
+            setDialogOpen(true, 'report')
+          }}
+        >
+          <IconAlertTriangle className="mr-2" size={14}></IconAlertTriangle>
+          Reportar Incidencia
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
