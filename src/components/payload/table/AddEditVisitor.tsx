@@ -35,7 +35,7 @@ export default function AddEditVisitor() {
           <SheetTitle className="useTw text-2xl font-semibold">
             {clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-base">
             Haz cambios en el perfil del cliente aquí. Haz clic en guardar cuando hayas terminado.
           </SheetDescription>
         </SheetHeader>

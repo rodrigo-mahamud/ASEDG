@@ -10,7 +10,12 @@ import {
 } from '@/components/lib/dropdown-menu'
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
 import { SelectSeparator } from '@/components/lib/select'
-import { IconAdjustmentsHorizontal, IconUserPlus, IconTrash } from '@tabler/icons-react'
+import {
+  IconAdjustmentsHorizontal,
+  IconUserPlus,
+  IconTrash,
+  IconUsersPlus,
+} from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Visitor } from '@/utils/dashboard/types'
 
@@ -65,7 +70,7 @@ export function ToolbarTable({ table }: ToolbarTableProps) {
             setIsOpen(true)
           }}
         >
-          <IconUserPlus className="mr-2" stroke={1.5} size={16} />
+          <IconUsersPlus className="mr-2" stroke={1.5} size={16} />
           Añadir
         </Button>
 

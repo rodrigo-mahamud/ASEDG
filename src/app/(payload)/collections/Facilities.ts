@@ -286,7 +286,18 @@ const Facilities: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      async ({ data, req }) => {
+      async ({ data, req, operation }) => {
+        if (
+          operation === 'create' &&
+          req.payload.config.collections.some((collection) => collection.slug === 'facilities')
+        ) {
+          if (data.regularSchedule) {
+            data.regularSchedule.scheduleID = null
+            data.regularSchedule.holidayGroupID = null
+          }
+          return data
+        }
+
         // Calcular daysAmount para bookingOptions
         if (data.bookingOptions) {
           data.bookingOptions = data.bookingOptions.map((option: any) => ({
@@ -294,8 +305,6 @@ const Facilities: CollectionConfig = {
             daysAmount: calculateTotalDays(option.periodType, option.periodLength),
           }))
         }
-
-        // Verificar si hay horarios regulares o de vacaciones
         const hasRegularSchedule =
           data.regularSchedule &&
           data.regularSchedule.schedule &&
@@ -361,7 +370,7 @@ const Facilities: CollectionConfig = {
           console.log('Schedule and Holiday Group operations completed successfully')
         } catch (error) {
           console.error('Error in beforeChange hook:', error)
-          throw error // Lanzar el error para que Payload lo maneje
+          throw error
         }
 
         return data

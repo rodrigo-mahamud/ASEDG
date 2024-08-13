@@ -77,8 +77,13 @@ export type BookingOptionsTypes = BookingOption[] | undefined
 // New types for AddEditDatePicker
 export interface DatePeriodPickerProps {
   field: {
-    value: { start_time?: number; end_time?: number; price?: number }
-    onChange: (value: { start_time?: number; end_time?: number; price?: number }) => void
+    value: { start_time?: number; end_time?: number; price?: number; period_id: string }
+    onChange: (value: {
+      start_time?: number
+      end_time?: number
+      price?: number
+      period_id: string
+    }) => void
   }
   periods: BookingOptionsTypes
   error: string | null

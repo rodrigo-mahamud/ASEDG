@@ -81,14 +81,16 @@ export async function getVisitors() {
     const processedData = res.data
       .filter((visitor: any) => visitor.status !== 'CANCELLED')
       .map((visitor: any) => {
-        const [age = '', dni = '', acceptedTerms = '', price = ''] = (visitor.remarks || '').split(
-          ';',
-        )
+        const [age = '', dni = '', acceptedTerms = '', price = '', period_id = ''] = (
+          visitor.remarks || ''
+        ).split(';')
+        const { pin_code, ...visitorWithoutPin } = visitor
         return {
-          ...visitor,
+          ...visitorWithoutPin,
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
           dni: dni.trim(),
           price: price,
+          period_id: period_id,
           terms: acceptedTerms.trim() === '1',
         }
       })
@@ -101,7 +103,9 @@ export async function getVisitors() {
 }
 export async function addVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};`
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};${
+      visitorData.period_id
+    }`
     const response = await fetch(`${BASE_URL}/visitors`, {
       method: 'POST',
       headers: {
@@ -145,7 +149,9 @@ export async function addVisitor(visitorData: any) {
 
 export async function updateVisitor(visitorData: any) {
   try {
-    const remarks = `${visitorData.age};${visitorData.dni};${'1'}`
+    const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};${
+      visitorData.period_id
+    }`
     const response = await fetch(`${BASE_URL}/visitors/${visitorData.id}`, {
       method: 'PUT',
       headers: {
@@ -160,6 +166,7 @@ export async function updateVisitor(visitorData: any) {
         remarks: remarks,
         start_time: visitorData.start_time,
         end_time: visitorData.end_time,
+        schedule_id: visitorData.schedule_id,
         visit_reason: 'Others',
       }),
     })

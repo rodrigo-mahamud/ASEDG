@@ -11,7 +11,16 @@ import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboa
 import { SelectDate } from './SelectDate'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
-import { IconLoader2, IconRefresh } from '@tabler/icons-react'
+import {
+  IconCircle,
+  IconCircleCheck,
+  IconDeviceFloppy,
+  IconLoader2,
+  IconRefresh,
+  IconSettings,
+  IconUser,
+  IconUsersPlus,
+} from '@tabler/icons-react'
 import { PeriodsData } from '@/utils/dashboard/types'
 
 const AddEditForm = React.memo(function AddEditForm() {
@@ -71,6 +80,7 @@ const AddEditForm = React.memo(function AddEditForm() {
 
   const handleSave = async (data: VisitorFormValues) => {
     const visitorData = { ...data }
+    console.log(visitorData)
 
     if (clientToEdit && !pinCodeChanged) {
       visitorData.pin_code = ''
@@ -191,29 +201,45 @@ const AddEditForm = React.memo(function AddEditForm() {
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="end_time"
-            render={({ field }) => (
-              <SelectDate
-                periods={data?.bookingOptions}
-                isLoading={isLoading}
-                error={error}
-                field={{
-                  value: {
-                    start_time: form.getValues().start_time,
-                    end_time: form.getValues().end_time,
-                  },
-                  onChange: (value) => {
-                    form.setValue('start_time', value.start_time)
-                    form.setValue('end_time', value.end_time)
-                    form.setValue('price', value.price)
-                  },
-                }}
-              />
-            )}
-          />
+          <div className="flex w-full">
+            <FormField
+              control={form.control}
+              name="end_time"
+              render={({ field }) => (
+                <SelectDate
+                  periods={data?.bookingOptions}
+                  isLoading={isLoading}
+                  error={error}
+                  field={{
+                    value: {
+                      start_time: form.getValues().start_time,
+                      end_time: form.getValues().end_time,
+                      period_id: form.getValues().period_id,
+                    },
+                    onChange: (value) => {
+                      form.setValue('start_time', value.start_time)
+                      form.setValue('end_time', value.end_time)
+                      form.setValue('price', value.price)
+                      form.setValue('period_id', value.period_id)
+                    },
+                  }}
+                />
+              )}
+            />
+            <Button
+              type="button"
+              variant={'outline'}
+              onClick={handleGeneratePin}
+              disabled={isLoading}
+              className="w-1/5 h-[inherit] py-3 bg-onTop text-base rounded-r-md"
+            >
+              {isLoading ? (
+                <IconLoader2 size={16} className="animate-spin" />
+              ) : (
+                <IconSettings size={16} />
+              )}
+            </Button>
+          </div>
           {!clientToEdit ? (
             <div className="flex w-full">
               <FormField
@@ -241,12 +267,12 @@ const AddEditForm = React.memo(function AddEditForm() {
                 variant={'outline'}
                 onClick={handleGeneratePin}
                 disabled={isLoading}
-                className="w-1/5 h-fit py-3 bg-onTop text-base rounded-r-md"
+                className="w-1/5 h-[inherit] py-3 bg-onTop text-base rounded-r-md"
               >
                 {isLoading ? (
-                  <IconLoader2 size={19} className="animate-spin" />
+                  <IconLoader2 size={16} className="animate-spin" />
                 ) : (
-                  <IconRefresh size={19} />
+                  <IconRefresh size={16} />
                 )}
               </Button>
             </div>
@@ -259,9 +285,21 @@ const AddEditForm = React.memo(function AddEditForm() {
           <Button
             disabled={isLoading}
             type="submit"
-            className="w-full rounded-md h-fit py-3 text-base"
+            className="w-full rounded-md h-fit py-4 flex items-center "
           >
-            Guardar cambios
+            {isLoading ? (
+              <IconLoader2 size={16} stroke={1.5} className="animate-spin" />
+            ) : clientToEdit ? (
+              <>
+                <IconCircleCheck size={16} className="mr-1" />
+                <span className="leading-none text-lg font"> Guardar cambios </span>
+              </>
+            ) : (
+              <>
+                <IconUsersPlus size={16} className="mr-1" />
+                <span className="leading-none text-lg font"> Añadir usuario </span>
+              </>
+            )}
           </Button>
         </div>
       </form>
