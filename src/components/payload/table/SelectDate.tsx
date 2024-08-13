@@ -48,7 +48,7 @@ export function SelectDate({ field, periods, isLoading, error }: DatePeriodPicke
   }
 
   return (
-    <FormItem className="w-4/5">
+    <FormItem>
       <Select onValueChange={handlePeriodChange} defaultValue={field.value.period_id}>
         <FormControl>
           <SelectTrigger className="w-full text-base py-3 h-auto border-r-0 rounded-r-none">

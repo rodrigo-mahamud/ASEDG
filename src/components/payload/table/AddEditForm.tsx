@@ -11,16 +11,7 @@ import { defaultValues, VisitorFormValues, visitorSchema } from '@/utils/dashboa
 import { SelectDate } from './SelectDate'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
-import {
-  IconCircle,
-  IconCircleCheck,
-  IconDeviceFloppy,
-  IconLoader2,
-  IconRefresh,
-  IconSettings,
-  IconUser,
-  IconUsersPlus,
-} from '@tabler/icons-react'
+import { IconCircleCheck, IconLoader2, IconRefresh, IconUsersPlus } from '@tabler/icons-react'
 import { PeriodsData } from '@/utils/dashboard/types'
 
 const AddEditForm = React.memo(function AddEditForm() {
@@ -28,7 +19,10 @@ const AddEditForm = React.memo(function AddEditForm() {
   const [pinCodeChanged, setPinCodeChanged] = useState(false)
   const initialPinGeneratedRef = useRef(false)
   const [data, setData] = useState<PeriodsData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState({
+    periods: false,
+    pinCode: false,
+  })
   const [error, setError] = useState<string | null>(null)
 
   const form = useForm<VisitorFormValues>({
@@ -39,21 +33,21 @@ const AddEditForm = React.memo(function AddEditForm() {
 
   const fetchPayload = useCallback(async () => {
     try {
-      setIsLoading(true)
+      setIsLoading((prevState) => ({ ...prevState, periods: true }))
       const data = await getPayload()
       form.setValue('schedule_id', data.regularSchedule.scheduleID)
       setData(data)
-      setIsLoading(false)
     } catch (err) {
       console.error('Error fetching periods:', err)
-      toast.error('Error al consultar los horarios de la instalacción')
-      setError('Error al consultar los horarios de la instalacción')
-      setIsLoading(false)
+      toast.error('Error al consultar los horarios de la instalación')
+      setError('Error al consultar los horarios de la instalación')
+    } finally {
+      setIsLoading((prevState) => ({ ...prevState, periods: false }))
     }
   }, [form])
 
   const handleGeneratePin = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading((prevState) => ({ ...prevState, pinCode: true }))
     try {
       const result = await generatePinCode()
       if (result.success) {
@@ -66,7 +60,7 @@ const AddEditForm = React.memo(function AddEditForm() {
       console.error('Error generating PIN code:', error)
       toast.error('Error al generar el código PIN')
     } finally {
-      setIsLoading(false)
+      setIsLoading((prevState) => ({ ...prevState, pinCode: false }))
     }
   }, [form])
 
@@ -201,45 +195,32 @@ const AddEditForm = React.memo(function AddEditForm() {
               </FormItem>
             )}
           />
-          <div className="flex w-full">
-            <FormField
-              control={form.control}
-              name="end_time"
-              render={({ field }) => (
-                <SelectDate
-                  periods={data?.bookingOptions}
-                  isLoading={isLoading}
-                  error={error}
-                  field={{
-                    value: {
-                      start_time: form.getValues().start_time,
-                      end_time: form.getValues().end_time,
-                      period_id: form.getValues().period_id,
-                    },
-                    onChange: (value) => {
-                      form.setValue('start_time', value.start_time)
-                      form.setValue('end_time', value.end_time)
-                      form.setValue('price', value.price)
-                      form.setValue('period_id', value.period_id)
-                    },
-                  }}
-                />
-              )}
-            />
-            <Button
-              type="button"
-              variant={'outline'}
-              onClick={handleGeneratePin}
-              disabled={isLoading}
-              className="w-1/5 h-[inherit] py-3 bg-onTop text-base rounded-r-md"
-            >
-              {isLoading ? (
-                <IconLoader2 size={16} className="animate-spin" />
-              ) : (
-                <IconSettings size={16} />
-              )}
-            </Button>
-          </div>
+
+          <FormField
+            control={form.control}
+            name="end_time"
+            render={({ field }) => (
+              <SelectDate
+                periods={data?.bookingOptions}
+                isLoading={isLoading.periods}
+                error={error}
+                field={{
+                  value: {
+                    start_time: form.getValues().start_time,
+                    end_time: form.getValues().end_time,
+                    period_id: form.getValues().period_id,
+                  },
+                  onChange: (value) => {
+                    form.setValue('start_time', value.start_time)
+                    form.setValue('end_time', value.end_time)
+                    form.setValue('price', value.price)
+                    form.setValue('period_id', value.period_id)
+                  },
+                }}
+              />
+            )}
+          />
+
           {!clientToEdit ? (
             <div className="flex w-full">
               <FormField
@@ -266,10 +247,10 @@ const AddEditForm = React.memo(function AddEditForm() {
                 type="button"
                 variant={'outline'}
                 onClick={handleGeneratePin}
-                disabled={isLoading}
+                disabled={isLoading.pinCode}
                 className="w-1/5 h-[inherit] py-3 bg-onTop text-base rounded-r-md"
               >
-                {isLoading ? (
+                {isLoading.pinCode ? (
                   <IconLoader2 size={16} className="animate-spin" />
                 ) : (
                   <IconRefresh size={16} />
@@ -283,11 +264,11 @@ const AddEditForm = React.memo(function AddEditForm() {
         </div>
         <div className="bg-onTop w-full p-6 absolute bottom-0 border-t border-border">
           <Button
-            disabled={isLoading}
+            disabled={isLoading.periods || isLoading.pinCode}
             type="submit"
             className="w-full rounded-md h-fit py-4 flex items-center "
           >
-            {isLoading ? (
+            {isLoading.periods || isLoading.pinCode ? (
               <IconLoader2 size={16} stroke={1.5} className="animate-spin" />
             ) : clientToEdit ? (
               <>
