@@ -64,7 +64,7 @@ export function ReportMail() {
           pin_code: data.pin_code,
         }
         await sendEmail(visitorData, 'report')
-        toast.success('Código PIN actualizado correctamente')
+        toast.success('Código PIN actualizado correctamenteee')
         setDialogOpen(false, 'report')
       } catch (error) {
         console.error('Error updating visitor:', error)
