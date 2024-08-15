@@ -57,7 +57,7 @@ export function SelectDate({ field, periods, isLoading, error }: DatePeriodPicke
         </FormControl>
         <SelectContent className="p-1 border border-border rounded-md shadow-xl shadow-black useTw">
           <SelectGroup>
-            <SelectLabel className="py-1.5 px-2 font-semibold text-base">
+            <SelectLabel className="py-1.5 px-2 font-semibold text-lg">
               Periodos disponibles
             </SelectLabel>
             <SelectSeparator />

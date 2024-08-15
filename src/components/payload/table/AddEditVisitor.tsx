@@ -20,7 +20,7 @@ export default function AddEditVisitor() {
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}</DrawerTitle>
+            <DrawerTitle>{clientToEdit ? 'Editar Usuario' : 'Añadir Usuario'}</DrawerTitle>
           </DrawerHeader>
           <AddEditForm></AddEditForm>
         </DrawerContent>
@@ -33,10 +33,10 @@ export default function AddEditVisitor() {
       <SheetContent className="useTw border-border sm:max-w-[28rem] p-0">
         <SheetHeader className="px-8 pt-8">
           <SheetTitle className="useTw text-2xl font-semibold">
-            {clientToEdit ? 'Editar Cliente' : 'Añadir Cliente'}
+            {clientToEdit ? 'Editar Usuario' : 'Añadir Usuario'}
           </SheetTitle>
           <SheetDescription className="text-base">
-            Haz cambios en el perfil del cliente aquí. Haz clic en guardar cuando hayas terminado.
+            Haz cambios en el perfil del Usuario aquí. Haz clic en guardar cuando hayas terminado.
           </SheetDescription>
         </SheetHeader>
         <AddEditForm></AddEditForm>

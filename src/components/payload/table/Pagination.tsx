@@ -37,13 +37,13 @@ export function Pagination<TData>({ table }: DataTablePaginationProps<TData>) {
           </SelectTrigger>
           <SelectContent
             side="top"
-            className="p-1 border border-border rounded-md shadow-xl shadow-black useTw"
+            className="p-1 w-28 border border-border rounded-md shadow-xl shadow-black useTw"
           >
             <SelectGroup>
-              <SelectLabel>Elementos por página</SelectLabel>
+              <SelectLabel className="text-lg px-2 font-bold">Elementos por página</SelectLabel>
               <SelectSeparator />
               {[25, 50, 75, 100].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem className="text-base" key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
               ))}

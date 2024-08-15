@@ -33,7 +33,7 @@ export default async function VisitorsCharts({
       <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
           <CardTitle>Actividad {getPeriodDescription(period)}. </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-base">
             Muestra todos los accesos a la instalacion {getPeriodDescription(period)}.
           </CardDescription>
         </div>
