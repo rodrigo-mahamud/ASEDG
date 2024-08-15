@@ -33,23 +33,6 @@ export function ReportMail() {
     },
   })
 
-  const handleGeneratePin = useCallback(async () => {
-    setIsGeneratingPin(true)
-    try {
-      const result = await generatePinCode()
-      if (result.success) {
-        form.setValue('pin_code', result.pinCode)
-      } else {
-        toast.error('Error al generar el código PIN')
-      }
-    } catch (error) {
-      console.error('Error generating PIN code:', error)
-      toast.error('Error al generar el código PIN')
-    } finally {
-      setIsGeneratingPin(false)
-    }
-  }, [form])
-
   const handleSave = async (data: VisitorFormValues) => {
     console.log('hola me has clickado')
 
@@ -75,18 +58,12 @@ export function ReportMail() {
     }
   }
 
-  useEffect(() => {
-    if (isDialogOpen && dialogType === 'report') {
-      handleGeneratePin()
-    }
-  }, [isDialogOpen, dialogType, handleGeneratePin])
-
   return (
     <AlertDialog
       open={isDialogOpen && dialogType === 'report'}
       onOpenChange={() => setDialogOpen(false, 'report')}
     >
-      <AlertDialogContent className="useTw border-border gap-10 p-6 w-full max-w-4xl">
+      <AlertDialogContent className="useTw border-border gap-10 p-6 w-full max-w-3xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="useTw text-2xl font-semibold">
             Reportar incidencia por Email.
@@ -97,7 +74,7 @@ export function ReportMail() {
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <Textarea placeholder="Type your message here." />
+        <Textarea className="text-base" placeholder="Motivo y explicación de la incidencia." />
 
         <AlertDialogFooter>
           <AlertDialogCancel
