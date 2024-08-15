@@ -17,34 +17,40 @@ import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/dat
 import { toast } from '@payloadcms/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { pinCodeSchema, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
+import {
+  reportReason,
+  ReportReasonTypes,
+  VisitorFormValues,
+} from '@/utils/dashboard/validationSchema'
 import { Textarea } from '@/components/lib/textarea'
+import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
+import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+import { FormErrors } from './FormErrors'
 
 export function ReportMail() {
   const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const { isDialogOpen, setDialogOpen, dialogType, clientToEdit } = useDashboardStore()
 
-  const form = useForm<VisitorFormValues>({
-    resolver: zodResolver(pinCodeSchema),
+  const form = useForm<ReportReasonTypes>({
+    resolver: zodResolver(reportReason),
     mode: 'onChange',
     defaultValues: {
-      pin_code: '',
+      report_reason: '',
     },
   })
 
-  const handleSave = async (data: VisitorFormValues) => {
+  const handleSave = async (data: ReportReasonTypes) => {
     console.log('hola me has clickado')
 
-    if (clientToEdit && data.pin_code) {
+    if (clientToEdit && data.report_reason) {
       setIsSaving(true)
       try {
-        await updateVisitor({ ...clientToEdit, pin_code: data.pin_code })
         const visitorData = {
           first_name: clientToEdit.first_name,
           last_name: clientToEdit.last_name,
           email: clientToEdit.email,
-          pin_code: data.pin_code,
+          report_reason: data.report_reason,
         }
         await sendEmail(visitorData, 'report')
         toast.success('Código PIN actualizado correctamenteee')
@@ -73,8 +79,28 @@ export function ReportMail() {
             correo electrónico.
           </AlertDialogDescription>
         </AlertDialogHeader>
-
-        <Textarea className="text-base" placeholder="Motivo y explicación de la incidencia." />
+        <Form {...form}>
+          <form>
+            <div className="flex w-full h-full">
+              <FormField
+                control={form.control}
+                name="report_reason"
+                render={({ field }) => (
+                  <FormItem className="w-full focus-visible:ring-0">
+                    <FormControl>
+                      <Textarea
+                        className="text-base"
+                        placeholder="Motivo y explicación de la incidencia."
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormErrors form={form} />
+          </form>
+        </Form>
 
         <AlertDialogFooter>
           <AlertDialogCancel

@@ -124,4 +124,8 @@ export const visitorSchema = z
 export const pinCodeSchema = z.object({
   pin_code: z.string().length(6, 'El PIN debe ser de 6 cifras').optional(),
 })
+export const reportReason = z.object({
+  report_reason: z.string().min(20, 'Explica con detalle la razon de la incidencia.'),
+})
+export type ReportReasonTypes = z.infer<typeof reportReason>
 export type VisitorFormValues = z.infer<typeof visitorSchema>

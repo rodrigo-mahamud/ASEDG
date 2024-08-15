@@ -83,6 +83,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         <DropdownMenuItem
           className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
+            setClientToEdit(visitor)
             setDialogOpen(true, 'report')
           }}
         >

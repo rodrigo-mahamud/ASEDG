@@ -30,7 +30,7 @@ export default function ReportMail({ nombre, pinCode }: any) {
             <Column className="bg-white py-8 border border-[#ddd] rounded-xl shadow-lg">
               <Section className="px-12">
                 <Heading className="mt-0" as="h1">
-                  {nombre}, tu código de acceso se ha cambiado correctamente.
+                  Hola {nombre}, hemos percibido un comportamiento inadecuado.
                 </Heading>
                 <Text className="text-base leading-6 mt-4">
                   Tu reserva del gimnasio municipal ha sido realizada correctamente. Con el
