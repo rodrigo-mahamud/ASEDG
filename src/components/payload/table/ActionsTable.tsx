@@ -19,6 +19,8 @@ import {
   IconPencil,
   IconRefreshDot,
   IconTrash,
+  IconUserExclamation,
+  IconUserOff,
 } from '@tabler/icons-react'
 import { toast } from '@payloadcms/ui'
 
@@ -36,7 +38,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
         className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw"
         align="end"
       >
-        <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-base">
+        <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-lg">
           Acciones
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -47,7 +49,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             setIsOpen(true)
           }}
         >
-          <IconEdit className="mr-2" size={14}></IconEdit>
+          <IconEdit className="mr-2" size={15}></IconEdit>
           Editar Usuario
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -57,9 +59,30 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             setDialogOpen(true, 'pincode')
           }}
         >
-          <IconRefreshDot className="mr-2" size={14}></IconRefreshDot>
+          <IconRefreshDot className="mr-2" size={15}></IconRefreshDot>
           Cambiar PIN
         </DropdownMenuItem>
+        <DropdownMenuItem
+          className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+          onClick={() => {
+            setClientToEdit(visitor)
+            setDialogOpen(true, 'report')
+          }}
+        >
+          <IconUserExclamation className="mr-2" size={15}></IconUserExclamation>
+          Reportar Incidencia
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+          onClick={() => {
+            setClientToEdit(visitor)
+            setDialogOpen(true, 'report')
+          }}
+        >
+          <IconUserOff className="mr-2" size={15}></IconUserOff>
+          Banear usuarío
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
@@ -67,7 +90,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             toast.info('Emial copiado al portapapeles')
           }}
         >
-          <IconMail className="mr-2" size={14}></IconMail>
+          <IconMail className="mr-2" size={15}></IconMail>
           Copiar Email
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -77,19 +100,10 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             toast.info('Teléfono copiado al portapapeles')
           }}
         >
-          <IconDeviceMobile className="mr-2" size={14}></IconDeviceMobile>
+          <IconDeviceMobile className="mr-2" size={15}></IconDeviceMobile>
           Copiar teléfono
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-          onClick={() => {
-            setClientToEdit(visitor)
-            setDialogOpen(true, 'report')
-          }}
-        >
-          <IconAlertTriangle className="mr-2" size={14}></IconAlertTriangle>
-          Reportar Incidencia
-        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="capitalize hover:bg-red-600/25 hover:text-red-600 text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
@@ -100,7 +114,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
             setDialogOpen(true, 'delete')
           }}
         >
-          <IconTrash className="mr-2" size={14}></IconTrash>
+          <IconTrash className="mr-2" size={15}></IconTrash>
           Eliminar
         </DropdownMenuItem>
       </DropdownMenuContent>

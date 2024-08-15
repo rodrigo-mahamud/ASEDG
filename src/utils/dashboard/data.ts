@@ -292,7 +292,7 @@ export async function sendEmail(visitorData: any, template: 'confirmation' | 'pi
             nombre: visitorData.first_name,
             apellidos: visitorData.last_name,
             email: visitorData.email,
-            pinCode: visitorData.pin_code,
+            reason: visitorData.report_reason,
           }),
         )
         subject = 'Incidencia con .'

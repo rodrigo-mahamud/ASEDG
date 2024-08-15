@@ -11,7 +11,7 @@ import {
   Img,
 } from '@react-email/components'
 
-export default function ReportMail({ nombre, pinCode }: any) {
+export default function ReportMail({ nombre, apellidos, reason }: any) {
   return (
     <Tailwind>
       <Html className="h-full">
@@ -30,7 +30,7 @@ export default function ReportMail({ nombre, pinCode }: any) {
             <Column className="bg-white py-8 border border-[#ddd] rounded-xl shadow-lg">
               <Section className="px-12">
                 <Heading className="mt-0" as="h1">
-                  Hola {nombre}, hemos percibido un comportamiento inadecuado.
+                  Hola {nombre} {apellidos}, hemos percibido un comportamiento inadecuado.
                 </Heading>
                 <Text className="text-base leading-6 mt-4">
                   Tu reserva del gimnasio municipal ha sido realizada correctamente. Con el
@@ -38,7 +38,7 @@ export default function ReportMail({ nombre, pinCode }: any) {
                   la semana, hasta el
                 </Text>
                 <Text className="bg-[#f0f3f7] text-center rounded py-7 text-3xl tracking-[6px] font-semibold my-6">
-                  {pinCode}
+                  {reason}
                 </Text>
                 <Text className="text-base leading-6 mb-0.5">
                   drfgojhdfgj asdfgokfdgjn adfv oisdafgv ojhsv jsfdsfd
