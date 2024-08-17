@@ -17,17 +17,12 @@ import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/dat
 import { toast } from '@payloadcms/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  reportReason,
-  ReportReasonTypes,
-  VisitorFormValues,
-} from '@/utils/dashboard/validationSchema'
+import { reportReason, ReportReasonTypes } from '@/utils/dashboard/validationSchema'
 import { Textarea } from '@/components/lib/textarea'
 import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
-import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { FormErrors } from './FormErrors'
 
-export function ReportMail() {
+export function BanUser() {
   const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const { isDialogOpen, setDialogOpen, dialogType, clientToEdit } = useDashboardStore()
@@ -52,9 +47,9 @@ export function ReportMail() {
           email: clientToEdit.email,
           report_reason: data.report_reason,
         }
-        await sendEmail(visitorData, 'report')
+        await sendEmail(visitorData, 'ban')
         toast.success('Mensaje de incidencia enviado')
-        setDialogOpen(false, 'report')
+        setDialogOpen(false, 'ban')
       } catch (error) {
         console.error('Error updating visitor:', error)
         toast.error('Ha ocurrido un error al enviar el nuevo pin')
@@ -66,17 +61,17 @@ export function ReportMail() {
 
   return (
     <AlertDialog
-      open={isDialogOpen && dialogType === 'report'}
-      onOpenChange={() => setDialogOpen(false, 'report')}
+      open={isDialogOpen && dialogType === 'ban'}
+      onOpenChange={() => setDialogOpen(false, 'ban')}
     >
       <AlertDialogContent className="useTw border-border gap-10 p-6 w-full max-w-3xl">
         <AlertDialogHeader>
           <AlertDialogTitle className="useTw text-2xl font-semibold">
-            Reportar incidencia por Email.
+            Banear a {clientToEdit?.first_name} {clientToEdit?.last_name}.
           </AlertDialogTitle>
           <AlertDialogDescription className="text-base text-white/85 text-pretty">
-            Se generará un nuevo codigo pin para {clientToEdit?.first_name} y se le notificará por
-            correo electrónico.
+            Se eliminara a {clientToEdit?.first_name} retirando su acceso a las instalacciones y se
+            le notificará el motivo del baneo por correo electrónico.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Form {...form}>
@@ -86,13 +81,9 @@ export function ReportMail() {
                 control={form.control}
                 name="report_reason"
                 render={({ field }) => (
-                  <FormItem className="w-full focus-visible:ring-0">
+                  <FormItem className="w-full !focus-visible:ring-offset-0">
                     <FormControl>
-                      <Textarea
-                        className="text-base"
-                        placeholder="Motivo y explicación de la incidencia."
-                        {...field}
-                      />
+                      <Textarea className="text-base" placeholder="Motivo del baneo." {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -104,7 +95,7 @@ export function ReportMail() {
 
         <AlertDialogFooter>
           <AlertDialogCancel
-            onClick={() => setDialogOpen(false, 'report')}
+            onClick={() => setDialogOpen(false, 'ban')}
             className="text-base rounded-md border-border h-full"
           >
             Cancelar

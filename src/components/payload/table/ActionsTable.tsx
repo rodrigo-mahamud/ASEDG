@@ -76,7 +76,7 @@ export default function ActionsTable({ visitor }: { visitor: Visitor }) {
           className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
             setClientToEdit(visitor)
-            setDialogOpen(true, 'report')
+            setDialogOpen(true, 'ban')
           }}
         >
           <IconUserOff className="mr-2" size={15}></IconUserOff>

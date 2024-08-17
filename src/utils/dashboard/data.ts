@@ -22,7 +22,8 @@ import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
 import { Visitor } from './types'
 import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
-import ReportMail from '@/emails/ReportMail'
+import ReportMail from '@/emails/BanUserMail'
+import BanUserMail from '@/emails/BanUserMail'
 
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
@@ -255,7 +256,10 @@ export async function generatePinCode() {
     return { success: false, message: 'Error generating PIN code. Check console for details.' }
   }
 }
-export async function sendEmail(visitorData: any, template: 'confirmation' | 'pinCode' | 'report') {
+export async function sendEmail(
+  visitorData: any,
+  template: 'confirmation' | 'pinCode' | 'report' | 'ban',
+) {
   try {
     let emailHtml: string
     let subject: string
@@ -296,6 +300,17 @@ export async function sendEmail(visitorData: any, template: 'confirmation' | 'pi
           }),
         )
         subject = 'Incidencia con .'
+        break
+      case 'ban':
+        emailHtml = render(
+          BanUserMail({
+            nombre: visitorData.first_name,
+            apellidos: visitorData.last_name,
+            email: visitorData.email,
+            reason: visitorData.report_reason,
+          }),
+        )
+        subject = 'Incidencia con tu acceso al gimnasio.'
         break
       default:
         throw new Error('Plantilla de correo no reconocida')

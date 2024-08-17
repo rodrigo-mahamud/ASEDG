@@ -7,6 +7,7 @@ import { Suspense } from 'react'
 import { SkeletonTable } from './table/SkeletonTable'
 import { EditPinCode } from './table/EditPinCode'
 import { ReportMail } from './table/ReportMail'
+import { BanUser } from './table/BanUser'
 
 export default function ClientsSection() {
   return (
@@ -25,6 +26,7 @@ export default function ClientsSection() {
         <DeleteVisitor />
         <EditPinCode />
         <ReportMail />
+        <BanUser />
       </CardContent>
     </Card>
   )
