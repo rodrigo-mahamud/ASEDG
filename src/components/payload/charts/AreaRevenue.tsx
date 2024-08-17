@@ -37,12 +37,10 @@ export default function AreaRevenue({ period, chartData }: any) {
         >
           <defs>
             <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--color-amount)" stopOpacity={1} />
-              <stop offset="95%" stopColor="var(--color-amount)" stopOpacity={0.1} />
+              <stop stopColor="var(--color-amount)" stopOpacity={0.4} />
             </linearGradient>
             <linearGradient id="fillrevenue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--color-revenue)" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="var(--color-revenue)" stopOpacity={0.1} />
+              <stop stopColor="var(--color-revenue)" stopOpacity={0.4} />
             </linearGradient>
           </defs>
           <CartesianGrid vertical={false} />

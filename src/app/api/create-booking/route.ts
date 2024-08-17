@@ -25,7 +25,7 @@ function prepareVisitorData(
     last_name: data.apellidos,
     mobile_phone: data.telefono,
     email: data.email,
-    remarks: `Edad: ${data.edad} años - ¿Términos aceptados? ${data.terminos}`,
+    remarks: `${data.edad};${data.dni};${'1'};${'20'};${' '}`,
     start_time: startTime,
     end_time: endTime,
     visit_reason: 'Interview',

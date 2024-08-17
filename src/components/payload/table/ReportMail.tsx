@@ -34,7 +34,7 @@ export function ReportMail() {
 
   const form = useForm<ReportReasonTypes>({
     resolver: zodResolver(reportReason),
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues: {
       report_reason: '',
     },
@@ -53,7 +53,7 @@ export function ReportMail() {
           report_reason: data.report_reason,
         }
         await sendEmail(visitorData, 'report')
-        toast.success('Código PIN actualizado correctamenteee')
+        toast.success('Mensaje de incidencia enviado')
         setDialogOpen(false, 'report')
       } catch (error) {
         console.error('Error updating visitor:', error)

@@ -506,8 +506,8 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
 
     return {
       data: revenueData,
-      totalRevenue: totalRevenue,
-      totalAmount: totalAmount,
+      totalRevenue: Number(totalRevenue.toFixed(2)),
+      totalAmount: Number(totalAmount.toFixed(2)),
     }
   } catch (error) {
     console.error('Error calculating revenue:', error)

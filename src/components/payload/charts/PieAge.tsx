@@ -53,7 +53,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function PieTextChart() {
+export function PieAge() {
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
   }, [])
@@ -61,7 +61,7 @@ export function PieTextChart() {
   return (
     <Card className="flex flex-col h-full border border-white/15">
       <CardHeader className="items-start h-1/4 border-b border-border justify-evenly flex flex-col space-y-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
+        <CardTitle>Edad de los usuarios</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 h-4/3">
