@@ -10,6 +10,8 @@ export default async function VisitorsCharts({
   logType: string
 }) {
   const activityLogs = await getActivityLogs(period, logType)
+  console.log(activityLogs)
+
   const getPeriodDescription = (period: string | null) => {
     switch (period) {
       case 'day':

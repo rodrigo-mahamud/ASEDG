@@ -389,21 +389,19 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
 
     const res = await response.json()
 
-    let logCounts: Record<string, number> = {}
+    let logCounts: Record<string, any> = {}
 
     if (period === 'day') {
       for (let i = 0; i < 24; i++) {
         const hourStart = addHours(startOfDay(now), i)
-        const hourEnd = addHours(hourStart, 1)
-        const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
-        logCounts[periodKey] = 0
+        const periodKey = `${format(hourStart, 'H:mm')}`
+        logCounts[periodKey] = ' '
       }
 
       res.data.hits.forEach((log: any) => {
         const logDate = new Date(log['@timestamp'])
         const hourStart = startOfHour(logDate)
-        const hourEnd = addHours(hourStart, 1)
-        const periodKey = `${format(hourStart, 'HH:mm')}-${format(hourEnd, 'HH:mm')}`
+        const periodKey = `${format(hourStart, 'H:mm')}`
         logCounts[periodKey]++
       })
     } else {
