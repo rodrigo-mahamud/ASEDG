@@ -41,8 +41,6 @@ export function ReportMail() {
   })
 
   const handleSave = async (data: ReportReasonTypes) => {
-    console.log('hola me has clickado')
-
     if (clientToEdit && data.report_reason) {
       setIsSaving(true)
       try {

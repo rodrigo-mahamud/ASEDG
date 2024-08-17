@@ -11,6 +11,7 @@ import AreaSellsChart from './charts/AreaRevenue'
 import { PieAge } from './charts/PieAge'
 import RevenueChart from './RevenueChart'
 import SDCards from './cards/SDCards'
+import { SDUsersAge } from './SDUsersAge'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'day'
@@ -53,6 +54,9 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
           </Suspense>
         </div>
         <div className="col-span-2 h-[30rem] relative">
+          <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+            <SDUsersAge period={period} />
+          </Suspense>
           <PieAge />
         </div>
       </div>

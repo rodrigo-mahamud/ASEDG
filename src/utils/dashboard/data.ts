@@ -394,14 +394,14 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     if (period === 'day') {
       for (let i = 0; i < 24; i++) {
         const hourStart = addHours(startOfDay(now), i)
-        const periodKey = `${format(hourStart, 'H:mm')}`
-        logCounts[periodKey] = ' '
+        const periodKey = `${format(hourStart, 'HH:00')}`
+        logCounts[periodKey] = null
       }
 
       res.data.hits.forEach((log: any) => {
         const logDate = new Date(log['@timestamp'])
         const hourStart = startOfHour(logDate)
-        const periodKey = `${format(hourStart, 'H:mm')}`
+        const periodKey = `${format(hourStart, 'HH:00')}`
         logCounts[periodKey]++
       })
     } else {
@@ -419,8 +419,8 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     // Ordenamos los datos
     if (period === 'day') {
       processedData.sort((a, b) => {
-        const timeA = parse(a.date.split('-')[0], 'HH:mm', new Date())
-        const timeB = parse(b.date.split('-')[0], 'HH:mm', new Date())
+        const timeA = parse(a.date, 'HH:00', new Date())
+        const timeB = parse(b.date, 'HH:00', new Date())
         return timeA.getTime() - timeB.getTime()
       })
     } else {
@@ -528,6 +528,42 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
   }
 }
 
+export async function getAges() {
+  try {
+    const visitors = await getVisitors()
+
+    const ageRanges = [
+      { range: 'a', min: 15, max: 20 },
+      { range: 'b', min: 20, max: 30 },
+      { range: 'c', min: 30, max: 40 },
+      { range: 'd', min: 40, max: 50 },
+      { range: 'e', min: 50, max: 60 },
+      { range: 'f', min: 60, max: 150 },
+    ]
+
+    const validStatuses = ['VISITED', 'ACTIVE', 'UPCOMING']
+
+    const ageCounts = ageRanges.map((range) => ({
+      ages: range.range,
+      amount: visitors.filter((visitor) => {
+        const age = visitor.age
+        return (
+          validStatuses.includes(visitor.status) &&
+          age !== undefined &&
+          age >= range.min &&
+          age < range.max
+        )
+      }).length,
+    }))
+
+    return {
+      data: ageCounts,
+    }
+  } catch (error) {
+    console.error('Error en getAges:', error)
+    throw error
+  }
+}
 //CREATE SCHEDULE
 export async function createSchedule(facilityData: any, holidayGroupId: string) {
   try {
