@@ -8,7 +8,6 @@ export async function SDUsersAge({ period }: { period: string }) {
   //     return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
   //   }, [])
   const ageData = await getAges()
-  console.log(ageData)
 
   return (
     <Card className="flex flex-col h-full border border-white/15">
@@ -17,7 +16,7 @@ export async function SDUsersAge({ period }: { period: string }) {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 h-4/3">
-        <PieAge period={period} chartData={ageData.data}></PieAge>
+        <PieAge data={ageData.data} average={ageData.average}></PieAge>
       </CardContent>
     </Card>
   )

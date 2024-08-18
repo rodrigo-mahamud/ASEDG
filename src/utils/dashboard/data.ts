@@ -533,31 +533,42 @@ export async function getAges() {
     const visitors = await getVisitors()
 
     const ageRanges = [
-      { range: 'a', min: 15, max: 20 },
-      { range: 'b', min: 20, max: 30 },
-      { range: 'c', min: 30, max: 40 },
-      { range: 'd', min: 40, max: 50 },
-      { range: 'e', min: 50, max: 60 },
-      { range: 'f', min: 60, max: 150 },
+      { range: '15-20', min: 15, max: 20 },
+      { range: '20-30', min: 20, max: 30 },
+      { range: '30-40', min: 30, max: 40 },
+      { range: '40-50', min: 40, max: 50 },
+      { range: '50-60', min: 50, max: 60 },
+      { range: '60+', min: 60, max: 150 },
     ]
 
     const validStatuses = ['VISITED', 'ACTIVE', 'UPCOMING']
+
+    let totalAge = 0
+    let validVisitorsCount = 0
 
     const ageCounts = ageRanges.map((range) => ({
       ages: range.range,
       amount: visitors.filter((visitor) => {
         const age = visitor.age
-        return (
+        if (
           validStatuses.includes(visitor.status) &&
           age !== undefined &&
           age >= range.min &&
           age < range.max
-        )
+        ) {
+          totalAge += age
+          validVisitorsCount++
+          return true
+        }
+        return false
       }).length,
     }))
 
+    const averageAge = validVisitorsCount > 0 ? totalAge / validVisitorsCount : 0
+
     return {
       data: ageCounts,
+      average: parseFloat(averageAge.toFixed(2)),
     }
   } catch (error) {
     console.error('Error en getAges:', error)

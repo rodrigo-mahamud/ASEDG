@@ -4,47 +4,62 @@ import { Label, Pie, PieChart } from 'recharts'
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/lib/chart'
+import { PieAgeProps } from '@/utils/dashboard/types'
 
 const chartConfig = {
-  a: { label: '15-20', color: 'hsl(var(--chart-1))' },
-  b: { label: '20-30', color: 'hsl(var(--chart-1))' },
-  c: { label: '30-40', color: 'hsl(var(--chart-2))' },
-  d: { label: '40-50', color: 'hsl(var(--chart-3))' },
-  e: { label: '50-60', color: 'hsl(var(--chart-4))' },
-  f: { label: '60+', color: 'hsl(var(--chart-5))' },
+  edad: {
+    label: 'Edad',
+  },
+  '15-20': { label: '15-20 años' },
+  '20-30': { label: '20-30 años' },
+  '30-40': { label: '30-40' },
+  '40-50': { label: '40-50' },
+  '50-60': { label: '50-60' },
+  '60+': { label: '60+' },
 } satisfies ChartConfig
 
-export function PieAge({ period, chartData }: any) {
-  const processedChartData = React.useMemo(() => {
-    if (!chartData || !Array.isArray(chartData)) {
+export function PieAge({ data, average }: PieAgeProps) {
+  console.log(data)
+
+  const processedData = React.useMemo(() => {
+    if (!data || !Array.isArray(data)) {
       return []
     }
-    return chartData.map((item) => ({
-      ...item,
-      fill: chartConfig[item.ages as keyof typeof chartConfig]?.color || 'hsl(var(--chart-1))',
-    }))
-  }, [chartData])
-
-  if (!chartData || processedChartData.length === 0) {
-    return <div>No hay datos disponibles para mostrar.</div>
-  }
+    return data.map((item, index) => {
+      const opacity = Math.max(1 - index * 0.15, 0).toFixed(1)
+      return {
+        ...item,
+        fill: `hsl(var(--chart-1)/${opacity})`,
+      }
+    })
+  }, [data])
 
   return (
     <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-80">
       <PieChart>
-        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+        <ChartTooltip
+          cursor={true}
+          content={
+            <ChartTooltipContent
+              labelClassName="capitalize mb-1"
+              className="shadow-md shadow-black/65 min-w-40 text-sm p-3"
+              labelKey="edad"
+              nameKey="ages"
+              indicator={'line'}
+            />
+          }
+        />
         <Pie
-          data={processedChartData}
+          data={processedData}
           dataKey="amount"
+          fillOpacity={0.9}
           nameKey="ages"
-          innerRadius={60}
-          strokeWidth={5}
-          fillRule="evenodd"
+          innerRadius={90}
+          outerRadius={110}
+          strokeWidth={3}
         >
           <Label
             content={({ viewBox }) => {
@@ -54,25 +69,24 @@ export function PieAge({ period, chartData }: any) {
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-foreground text-3xl font-bold"
-                    ></tspan>
+                      className="fill-foreground text-4xl font-bold"
+                    >
+                      {average}
+                    </tspan>
                     <tspan
                       x={viewBox.cx}
                       y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground"
+                      className="fill-muted-foreground text-base"
                     >
-                      Visitors
+                      Edad promedio
                     </tspan>
                   </text>
                 )
               }
+              return null
             }}
           />
         </Pie>
-        <ChartLegend
-          content={<ChartLegendContent nameKey="ages" />}
-          className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-        />
       </PieChart>
     </ChartContainer>
   )

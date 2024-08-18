@@ -91,3 +91,7 @@ export interface DatePeriodPickerProps {
 export interface PeriodsData {
   bookingOptions: BookingOptionsTypes | undefined
 }
+export interface PieAgeProps {
+  data: Array<{ ages: string; amount: number }>
+  average: number
+}
