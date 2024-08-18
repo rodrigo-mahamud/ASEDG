@@ -548,7 +548,7 @@ export async function getAges() {
 
     const ageCounts = ageRanges.map((range) => ({
       ages: range.range,
-      amount: visitors.filter((visitor) => {
+      amount: visitors.filter((visitor: Visitor) => {
         const age = visitor.age
         if (
           validStatuses.includes(visitor.status) &&

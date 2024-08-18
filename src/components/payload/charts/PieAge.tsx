@@ -29,10 +29,10 @@ export function PieAge({ data, average }: PieAgeProps) {
       return []
     }
     return data.map((item, index) => {
-      const opacity = Math.max(1 - index * 0.15, 0).toFixed(1)
+      const num = (index % 4) + 1
       return {
         ...item,
-        fill: `hsl(var(--chart-1)/${opacity})`,
+        fill: `hsl(var(--chart-${num}))`,
       }
     })
   }, [data])
