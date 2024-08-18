@@ -435,7 +435,7 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     } else {
       // Calcular promedio por día para otros períodos
       const daysDifference = differenceInDays(since, until) + 1 // +1 porque incluimos ambos días
-      average = Math.round((totalAmount / daysDifference) * 100) / 100
+      average = Number((totalAmount / daysDifference).toFixed(2))
     }
 
     return {
@@ -525,11 +525,12 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
 
     const totalRevenue = revenueData.reduce((sum, entry) => sum + entry.revenue, 0)
     const totalAmount = revenueData.reduce((sum, entry) => sum + entry.amount, 0)
-
+    const revenuePerUser = totalAmount > 0 ? totalRevenue / totalAmount : 0
     return {
       data: revenueData,
       totalRevenue: Number(totalRevenue.toFixed(2)),
       totalAmount: Number(totalAmount.toFixed(2)),
+      revenuePerUser: Number(revenuePerUser.toFixed(2)),
     }
   } catch (error) {
     console.error('Error calculating revenue:', error)

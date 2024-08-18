@@ -10,10 +10,13 @@ import { SkeletonChart } from './charts/SkeletonChart'
 import AreaSellsChart from './charts/AreaRevenue'
 import { PieAge } from './charts/PieAge'
 import RevenueChart from './RevenueChart'
-import SDCards from './cards/SDCRevenue'
+import SDCards from './cards/SDCActiveUsers'
 import { SDUsersAge } from './SDUsersAge'
-import SDCRevenue from './cards/SDCRevenue'
-import SDCAverageVisitors from './cards/SDCAverageVisitors'
+import SDCRevenue from './cards/SDCActiveUsers'
+import SDCAverageVisitors from './cards/SDCAverageAccess'
+import SDCActiveUsers from './cards/SDCActiveUsers'
+import SDCAverageAccess from './cards/SDCAverageAccess'
+import SDCRevenuePerUser from './cards/SDCRevenuePerUser'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'day'
@@ -22,39 +25,21 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
       <SDToolbar period={period}></SDToolbar>
       <div className="flex gap-6 w-full">
         <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-          <SDCRevenue
-            period={period}
-            logType={'admin_activity'}
-            className="w-1/4 border border-border"
-          ></SDCRevenue>
+          <SDCActiveUsers className="w-1/4 border border-border"></SDCActiveUsers>
         </Suspense>
         <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-          <SDCAverageVisitors
+          <SDCAverageAccess
             period={period}
             logType={'door_openings'}
             className="w-1/4 border border-border"
-          ></SDCAverageVisitors>
+          ></SDCAverageAccess>
         </Suspense>
         <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-          <SDCRevenue
+          <SDCRevenuePerUser
             period={period}
             logType={'admin_activity'}
             className="w-1/4 border border-border"
-          ></SDCRevenue>
-        </Suspense>
-        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-          <SDCRevenue
-            period={period}
-            logType={'admin_activity'}
-            className="w-1/4 border border-border"
-          ></SDCRevenue>
-        </Suspense>
-        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
-          <SDCRevenue
-            period={period}
-            logType={'admin_activity'}
-            className="w-1/4 border border-border"
-          ></SDCRevenue>
+          ></SDCRevenuePerUser>
         </Suspense>
       </div>
       <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
