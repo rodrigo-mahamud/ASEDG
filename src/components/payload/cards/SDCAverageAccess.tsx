@@ -7,8 +7,8 @@ export default async function SDCAverageAccess({ className, logType, period }: a
 
   return (
     <Card className={className}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-lg font-medium mb-1">Media de accesos</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+        <CardTitle className="text-lg font-medium">Media de accesos</CardTitle>
         <IconLogin className="size-6 text-muted-foreground" />
       </CardHeader>
       <CardContent>
