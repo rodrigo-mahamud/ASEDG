@@ -17,9 +17,10 @@ import SDCAverageVisitors from './cards/SDCAverageAccess'
 import SDCActiveUsers from './cards/SDCActiveUsers'
 import SDCAverageAccess from './cards/SDCAverageAccess'
 import SDCRevenuePerUser from './cards/SDCRevenuePerUser'
+import SDCPeakHour from './cards/SDCPeakHour'
 
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
-  const period = searchParams?.period || 'day'
+  const period = searchParams?.period || 'week'
   return (
     <Gutter className="useTw space-y-6 ">
       <SDToolbar period={period}></SDToolbar>
@@ -40,6 +41,13 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
             logType={'admin_activity'}
             className="w-1/4 border border-border"
           ></SDCRevenuePerUser>
+        </Suspense>
+        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+          <SDCPeakHour
+            period={period}
+            logType={'admin_activity'}
+            className="w-1/4 border border-border"
+          ></SDCPeakHour>
         </Suspense>
       </div>
       <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">

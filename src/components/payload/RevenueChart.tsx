@@ -35,8 +35,8 @@ export default async function RevenueChart({
     <Card className="h-full relative border border-white/15">
       <CardHeader className="flex h-1/4 flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-evenly px-6 py-5 sm:py-6">
-          <CardTitle>Usuarios e ingresos {getPeriodDescription(period)}. </CardTitle>
-          <CardDescription>
+          <CardTitle>Usuarios e ingresos registrados {getPeriodDescription(period)}. </CardTitle>
+          <CardDescription className="text-base">
             Muestra todos los usuarios registrados en a la instalacion{' '}
             {getPeriodDescription(period)}
           </CardDescription>

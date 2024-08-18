@@ -18,6 +18,7 @@ import {
   startOfDay,
   startOfYear,
   differenceInDays,
+  parseISO,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { Visitor, VisitorData } from './types'
@@ -338,7 +339,6 @@ export async function sendEmail(
   }
 }
 //LOGS
-
 export async function getActivityLogs(period: string, type: string = 'door_openings') {
   const now = new Date()
   let since: Date
@@ -431,7 +431,7 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     let average: number
     if (period === 'day') {
       // Calcular promedio por hora
-      average = totalAmount / 24 // Dividimos el total por las 24 horas del día
+      average = Number((totalAmount / 24).toFixed(2))
     } else {
       // Calcular promedio por día para otros períodos
       const daysDifference = differenceInDays(since, until) + 1 // +1 porque incluimos ambos días
@@ -446,6 +446,44 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     }
   } catch (error) {
     console.error('Error fetching activity logs:', error)
+    throw error
+  }
+}
+export async function getPeakHour(period: string, type: string = 'door_openings') {
+  try {
+    const activityData = await getActivityLogs(period, type)
+    const hourCounts: { [hour: string]: number } = {}
+
+    // Procesar cada entrada de actividad
+    activityData.raw.forEach((entry: any) => {
+      const timestamp = parseISO(entry['@timestamp'])
+      const hourKey = format(startOfHour(timestamp), 'HH:00')
+
+      hourCounts[hourKey] = (hourCounts[hourKey] || 0) + 1
+    })
+
+    // Encontrar la hora con más actividad
+    let peakHour = ''
+    let maxCount = 0
+
+    for (const [hour, count] of Object.entries(hourCounts)) {
+      if (count > maxCount) {
+        maxCount = count
+        peakHour = hour
+      }
+    }
+
+    // Calcular el porcentaje de actividad en la hora punta
+    const totalActivity = Object.values(hourCounts).reduce((sum, count) => sum + count, 0)
+    const peakPercentage = totalActivity > 0 ? (maxCount / totalActivity) * 100 : 0
+
+    return {
+      peakHour,
+      activityCount: maxCount,
+      percentage: Number(peakPercentage.toFixed(2)),
+    }
+  } catch (error) {
+    console.error('Error calculating peak hour:', error)
     throw error
   }
 }
@@ -648,53 +686,7 @@ export async function createSchedule(facilityData: any, holidayGroupId: string) 
     return { success: false, message: 'Error creating schedule. Check console for details.' }
   }
 }
-
-//CREATE HOLIDAYS
-export async function createHolidayGroup(facilityData: any) {
-  try {
-    const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
-      name: holiday.holydayName,
-      start_time: new Date(holiday.holydaySince).toISOString(),
-      end_time: new Date(holiday.holydayUntill).toISOString(),
-      repeat: holiday.holydayRepeat,
-    }))
-
-    const requestBody = {
-      name: `HolidayGroup-${Date.now()}`,
-      holidays: holidays,
-    }
-
-    // console.log('Request body for createHolidayGroup:', JSON.stringify(requestBody, null, 2))
-
-    const response = await fetch(`${BASE_URL}/access_policies/holiday_groups`, {
-      method: 'POST',
-      headers: {
-        Authorization: `${API_TOKEN}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-    }
-
-    const result = await response.json()
-
-    if (result.code === 'SUCCESS') {
-      return { success: true, message: 'Holiday Group created successfully', data: result.data }
-    } else {
-      throw new Error(`API error: ${result.msg}`)
-    }
-  } catch (error) {
-    console.error('Error creating Holiday Group:', error)
-    return { success: false, message: 'Error creating Holiday Group. Check console for details.' }
-  }
-}
-
-//EDIT Schedule
+//EDIT SCHEDULE
 export async function editSchedule(facilityData: any, scheduleId: string, holidayGroupId: string) {
   try {
     const formatTime = (dateString: string) => {
@@ -757,6 +749,81 @@ export async function editSchedule(facilityData: any, scheduleId: string, holida
     return { success: false, message: 'Error updating schedule. Check console for details.' }
   }
 }
+//DELETE SCHEDULE
+export async function deleteSchedule(scheduleId: string) {
+  try {
+    console.log(`Deleting schedule with ID: ${scheduleId}`)
+
+    const response = await fetch(`${BASE_URL}/access_policies/schedules/${scheduleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        Accept: 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      revalidateTag('refreshFacilities')
+      return { success: true, message: 'Schedule deleted successfully' }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error deleting schedule:', error)
+    return { success: false, message: 'Error deleting schedule. Check console for details.' }
+  }
+}
+//CREATE HOLIDAYS
+export async function createHolidayGroup(facilityData: any) {
+  try {
+    const holidays = facilityData.holidayschedule.schedule.map((holiday: any) => ({
+      name: holiday.holydayName,
+      start_time: new Date(holiday.holydaySince).toISOString(),
+      end_time: new Date(holiday.holydayUntill).toISOString(),
+      repeat: holiday.holydayRepeat,
+    }))
+
+    const requestBody = {
+      name: `HolidayGroup-${Date.now()}`,
+      holidays: holidays,
+    }
+
+    // console.log('Request body for createHolidayGroup:', JSON.stringify(requestBody, null, 2))
+
+    const response = await fetch(`${BASE_URL}/access_policies/holiday_groups`, {
+      method: 'POST',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (result.code === 'SUCCESS') {
+      return { success: true, message: 'Holiday Group created successfully', data: result.data }
+    } else {
+      throw new Error(`API error: ${result.msg}`)
+    }
+  } catch (error) {
+    console.error('Error creating Holiday Group:', error)
+    return { success: false, message: 'Error creating Holiday Group. Check console for details.' }
+  }
+}
 
 //EDIT HolidayGroup
 export async function editHolidayGroup(facilityData: any, holidayGroupId: string) {
@@ -800,36 +867,5 @@ export async function editHolidayGroup(facilityData: any, holidayGroupId: string
   } catch (error) {
     console.error('Error updating Holiday Group:', error)
     return { success: false, message: 'Error updating Holiday Group. Check console for details.' }
-  }
-}
-
-export async function deleteSchedule(scheduleId: string) {
-  try {
-    console.log(`Deleting schedule with ID: ${scheduleId}`)
-
-    const response = await fetch(`${BASE_URL}/access_policies/schedules/${scheduleId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `${API_TOKEN}`,
-        Accept: 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
-    }
-
-    const result = await response.json()
-
-    if (result.code === 'SUCCESS') {
-      revalidateTag('refreshFacilities')
-      return { success: true, message: 'Schedule deleted successfully' }
-    } else {
-      throw new Error(`API error: ${result.msg}`)
-    }
-  } catch (error) {
-    console.error('Error deleting schedule:', error)
-    return { success: false, message: 'Error deleting schedule. Check console for details.' }
   }
 }
