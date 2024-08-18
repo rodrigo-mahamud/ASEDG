@@ -18,9 +18,9 @@ import SDCAverageVisitors from './cards/SDCAverageVisitors'
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'day'
   return (
-    <Gutter className="useTw space-y-8">
+    <Gutter className="useTw space-y-6 ">
       <SDToolbar period={period}></SDToolbar>
-      <div className="flex gap-8 w-full">
+      <div className="flex gap-6 w-full">
         <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
           <SDCRevenue
             period={period}
@@ -34,6 +34,27 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
             logType={'door_openings'}
             className="w-1/4 border border-border"
           ></SDCAverageVisitors>
+        </Suspense>
+        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+          <SDCRevenue
+            period={period}
+            logType={'admin_activity'}
+            className="w-1/4 border border-border"
+          ></SDCRevenue>
+        </Suspense>
+        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+          <SDCRevenue
+            period={period}
+            logType={'admin_activity'}
+            className="w-1/4 border border-border"
+          ></SDCRevenue>
+        </Suspense>
+        <Suspense key={period} fallback={<SkeletonChart></SkeletonChart>}>
+          <SDCRevenue
+            period={period}
+            logType={'admin_activity'}
+            className="w-1/4 border border-border"
+          ></SDCRevenue>
         </Suspense>
       </div>
       <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">

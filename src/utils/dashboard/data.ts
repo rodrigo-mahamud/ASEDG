@@ -435,7 +435,7 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     } else {
       // Calcular promedio por día para otros períodos
       const daysDifference = differenceInDays(since, until) + 1 // +1 porque incluimos ambos días
-      average = totalAmount / daysDifference
+      average = Math.round((totalAmount / daysDifference) * 100) / 100
     }
 
     return {
