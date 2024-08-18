@@ -1,5 +1,4 @@
 'use client'
-
 import { IconCalendarMonth, IconSettings, IconSettings2, IconWheel } from '@tabler/icons-react'
 import { useDocumentDrawer } from '@payloadcms/ui'
 import {
@@ -14,6 +13,7 @@ import {
 } from '../lib/select'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '../lib/button'
+import DoorButton from './toolbar/DoorButton'
 
 export default function SDToolbar({ period }: { period: string }) {
   const searchParams = useSearchParams()
@@ -83,9 +83,10 @@ export default function SDToolbar({ period }: { period: string }) {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <DoorButton></DoorButton>
           <Button
             variant="outline"
-            className="rounded-md border-border text-base py-3 h-fit"
+            className="rounded-md h-full border-border text-base py-3"
             onClick={openDrawer}
           >
             <IconSettings stroke={1.75} size={18} />

@@ -74,7 +74,6 @@ const AddEditForm = React.memo(function AddEditForm() {
 
   const handleSave = async (data: VisitorFormValues) => {
     const visitorData = { ...data }
-    console.log(visitorData)
 
     if (clientToEdit && !pinCodeChanged) {
       visitorData.pin_code = ''

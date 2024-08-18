@@ -41,7 +41,6 @@ export async function getSchedule() {
       (booking: any) => booking.id === '669147e907d44f5df704e9c1',
     )
 
-    console.log(data)
     return data
   } catch (error) {
     console.error('Error fetching periods:', error)
