@@ -4,10 +4,10 @@ import { TableVisitors } from './TableVisitors'
 import { columns } from './Columns'
 
 export async function TableVisitorsWrapper() {
-  const data: Visitor[] = await getVisitors()
+  const visitors: Visitor = await getVisitors()
   return (
     <div>
-      <TableVisitors columns={columns} data={data} />
+      <TableVisitors columns={columns} data={visitors.data} />
     </div>
   )
 }

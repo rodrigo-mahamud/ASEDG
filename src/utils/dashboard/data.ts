@@ -20,8 +20,7 @@ import {
   differenceInDays,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
-import { VisitorFormValues } from './validationSchema'
-import { Visitor } from './types'
+import { Visitor, VisitorData } from './types'
 import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 import ReportMail from '@/emails/BanUserMail'
 import BanUserMail from '@/emails/BanUserMail'
@@ -74,20 +73,25 @@ export async function getVisitors() {
       },
       next: { tags: ['refreshVisitors'] },
     })
-
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     // await new Promise((resolve) => setTimeout(resolve, 50000))
     const res = await response.json()
-
+    let totalActive = 0
     const processedData = res.data
-      .filter((visitor: any) => visitor.status !== 'CANCELLED')
-      .map((visitor: any) => {
+      .filter((visitor: VisitorData) => visitor.status !== 'CANCELLED')
+      .map((visitor: VisitorData) => {
         const [age = '', dni = '', acceptedTerms = '', price = '', period_id = ''] = (
           visitor.remarks || ''
         ).split(';')
         const { pin_code, ...visitorWithoutPin } = visitor
+
+        // Incrementar totalActive si el visitante está activo o visitando
+        if (visitor.status === 'VISITING' || visitor.status === 'ACTIVE') {
+          totalActive++
+        }
+
         return {
           ...visitorWithoutPin,
           age: age.trim() ? parseInt(age.trim(), 10) : undefined,
@@ -97,14 +101,16 @@ export async function getVisitors() {
           terms: acceptedTerms.trim() === '1',
         }
       })
-
-    return processedData
+    return {
+      data: processedData,
+      totalActive: totalActive,
+    }
   } catch (error) {
     console.error('Error fetching visitors:', error)
     throw error
   }
 }
-export async function addVisitor(visitorData: any) {
+export async function addVisitor(visitorData: VisitorData) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};${
       visitorData.period_id
@@ -390,7 +396,7 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
       for (let i = 0; i < 24; i++) {
         const hourStart = addHours(startOfDay(now), i)
         const periodKey = `${format(hourStart, 'HH:00')}`
-        logCounts[periodKey] = 0
+        logCounts[periodKey] = null
       }
       res.data.hits.forEach((log: any) => {
         const logDate = new Date(log['@timestamp'])
@@ -421,19 +427,21 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     // Calcular el total de amount
     const totalAmount = processedData.reduce((sum, entry) => sum + entry.amount, 0)
 
-    // Calcular el promedio diario
-    let averagePerDay: number
+    // Calcular el promedio
+    let average: number
     if (period === 'day') {
-      averagePerDay = totalAmount / 1
+      // Calcular promedio por hora
+      average = totalAmount / 24 // Dividimos el total por las 24 horas del día
     } else {
-      const daysDifference = differenceInDays(since, until) + 1
-      averagePerDay = Math.round((totalAmount / daysDifference) * 100) / 100
+      // Calcular promedio por día para otros períodos
+      const daysDifference = differenceInDays(since, until) + 1 // +1 porque incluimos ambos días
+      average = totalAmount / daysDifference
     }
 
     return {
       data: processedData,
       totalAmount: totalAmount,
-      average: averagePerDay,
+      average: average,
       raw: res.data.hits,
     }
   } catch (error) {
@@ -446,7 +454,7 @@ export async function getRevenue(period: string, type: string = 'admin_activity'
   try {
     const eventsData = await getActivityLogs(period, type)
     const visitors = await getVisitors()
-    const visitorMap = new Map(visitors.map((visitor: Visitor) => [visitor.id, visitor]))
+    const visitorMap = new Map(visitors.data.map((visitor: VisitorData) => [visitor.id, visitor]))
 
     let revenueData: { date: string; revenue: number; amount: number }[] = []
 
@@ -549,7 +557,7 @@ export async function getAges() {
 
     const ageCounts = ageRanges.map((range) => ({
       ages: range.range,
-      amount: visitors.filter((visitor: Visitor) => {
+      amount: visitors.data.filter((visitor: VisitorData) => {
         const age = visitor.age
         if (
           validStatuses.includes(visitor.status) &&

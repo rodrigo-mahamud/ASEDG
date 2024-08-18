@@ -1,4 +1,4 @@
-export type Visitor = {
+export interface VisitorData {
   id: string
   first_name: string
   last_name: string
@@ -35,7 +35,11 @@ export type Visitor = {
   dni?: string
   age?: number
   price?: number
-  periodId?: string
+  period_id?: string
+}
+export type Visitor = {
+  data: VisitorData[]
+  totalActive: number
 }
 
 export type UserToDelete = {

@@ -25,13 +25,13 @@ import {
 
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Checkbox } from '@/components/lib/checkbox'
-import { Visitor } from '@/utils/dashboard/types'
+import { Visitor, VisitorData } from '@/utils/dashboard/types'
 import { Pagination } from './Pagination'
 import { ToolbarTable } from './ToolbarTable'
 
 interface DataTableProps {
   columns: ColumnDef<Visitor, any>[]
-  data: Visitor[]
+  data: VisitorData[]
 }
 
 export function TableVisitors({ columns, data }: DataTableProps) {
@@ -71,8 +71,8 @@ export function TableVisitors({ columns, data }: DataTableProps) {
   useEffect(() => {
     const selectedIds = Object.keys(rowSelection)
     const selectedUsers = data
-      .filter((row: Visitor) => selectedIds.includes(row.id))
-      .map((row: Visitor) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
+      .filter((row: VisitorData) => selectedIds.includes(row.id))
+      .map((row: VisitorData) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
 
     setSelectedClients(selectedIds)
     setUsersToDelete(selectedUsers)
