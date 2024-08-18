@@ -22,8 +22,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function PieAge({ data, average }: PieAgeProps) {
-  console.log(data)
-
   const processedData = React.useMemo(() => {
     if (!data || !Array.isArray(data)) {
       return []
@@ -38,7 +36,7 @@ export function PieAge({ data, average }: PieAgeProps) {
   }, [data])
 
   return (
-    <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-80">
+    <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-80 mt-5">
       <PieChart>
         <ChartTooltip
           cursor={true}

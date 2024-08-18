@@ -17,6 +17,7 @@ import {
   endOfDay,
   startOfDay,
   startOfYear,
+  differenceInDays,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { VisitorFormValues } from './validationSchema'
@@ -331,11 +332,11 @@ export async function sendEmail(
   }
 }
 //LOGS
+
 export async function getActivityLogs(period: string, type: string = 'door_openings') {
   const now = new Date()
   let since: Date
   let until: Date
-
   switch (period) {
     case 'day':
       since = endOfDay(now)
@@ -364,10 +365,8 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     default:
       throw new Error('Invalid period')
   }
-
   const sinceUnix = getUnixTime(since)
   const untilUnix = getUnixTime(until)
-
   try {
     const response = await fetch(`${BASE_URL}/system/logs`, {
       method: 'POST',
@@ -382,22 +381,17 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
         until: sinceUnix,
       }),
     })
-
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
-
     const res = await response.json()
-
     let logCounts: Record<string, any> = {}
-
     if (period === 'day') {
       for (let i = 0; i < 24; i++) {
         const hourStart = addHours(startOfDay(now), i)
         const periodKey = `${format(hourStart, 'HH:00')}`
-        logCounts[periodKey] = null
+        logCounts[periodKey] = 0
       }
-
       res.data.hits.forEach((log: any) => {
         const logDate = new Date(log['@timestamp'])
         const hourStart = startOfHour(logDate)
@@ -410,12 +404,10 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
         logCounts[dateKey] = (logCounts[dateKey] || 0) + 1
       })
     }
-
     const processedData = Object.entries(logCounts).map(([date, amount]) => ({
       date,
       amount: amount as number,
     }))
-
     // Ordenamos los datos
     if (period === 'day') {
       processedData.sort((a, b) => {
@@ -426,14 +418,23 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     } else {
       processedData.sort((a, b) => a.date.localeCompare(b.date))
     }
-
     // Calcular el total de amount
     const totalAmount = processedData.reduce((sum, entry) => sum + entry.amount, 0)
+
+    // Calcular el promedio diario
+    let averagePerDay: number
+    if (period === 'day') {
+      averagePerDay = totalAmount / 1
+    } else {
+      const daysDifference = differenceInDays(since, until) + 1
+      averagePerDay = Math.round((totalAmount / daysDifference) * 100) / 100
+    }
 
     return {
       data: processedData,
       totalAmount: totalAmount,
-      raw: res.data.hits, // Añadimos los datos sin procesar aquí
+      average: averagePerDay,
+      raw: res.data.hits,
     }
   } catch (error) {
     console.error('Error fetching activity logs:', error)
