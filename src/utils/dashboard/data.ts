@@ -1,5 +1,4 @@
 'use server'
-
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
@@ -21,7 +20,7 @@ import {
   parseISO,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
-import { Visitor, VisitorData } from './types'
+import { VisitorData } from './types'
 import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 import ReportMail from '@/emails/BanUserMail'
 import BanUserMail from '@/emails/BanUserMail'
@@ -29,6 +28,8 @@ import BanUserMail from '@/emails/BanUserMail'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
+const GYM_DOOR_ID = process.env.SECRET_GYM_DOOR_ID
+
 export async function getSchedule() {
   try {
     const payload = await getPayloadHMR({ config: configPromise })
@@ -866,5 +867,52 @@ export async function editHolidayGroup(facilityData: any, holidayGroupId: string
   } catch (error) {
     console.error('Error updating Holiday Group:', error)
     return { success: false, message: 'Error updating Holiday Group. Check console for details.' }
+  }
+}
+
+//DOOR OPENING
+export async function openDoor(minutes?: number) {
+  if (!BASE_URL || !API_TOKEN || !GYM_DOOR_ID) {
+    throw new Error('Required environment variables are missing')
+  }
+
+  let endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/unlock`
+  let body = {}
+
+  if (minutes) {
+    endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/lock_rule`
+    body = {
+      type: 'custom',
+      interval: minutes,
+    }
+  }
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    if (data.code !== 'SUCCESS') {
+      throw new Error(`API error: ${data.msg}`)
+    }
+
+    return {
+      success: true,
+      message: minutes ? `Door opened for ${minutes} minutes` : 'Door opened',
+    }
+  } catch (error) {
+    console.error('Failed to open door:', error)
+    return { success: false, message: 'Failed to open door' }
   }
 }

@@ -8,7 +8,7 @@ import {
   editHolidayGroup,
   editSchedule,
 } from '@/utils/dashboard/data'
-import { toast } from '@payloadcms/ui'
+
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },
   { label: 'Martes', value: 'tuesday' },
