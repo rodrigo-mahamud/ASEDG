@@ -915,11 +915,11 @@ export async function handleDoor(type: DoorOperation, time?: number) {
       throw new Error(`API error: ${data.msg}`)
     }
 
-    let actionMessage = type === 'open' ? 'Puerta abierta' : 'Puerta cerrada'
+    let actionMessage =
+      type === 'open' ? 'La puerta permanecerá abierta' : 'La puerta permanecerá cerrada'
     if (time && type === 'open') {
       actionMessage += ` durante ${time} minutos`
     }
-    toast.success(actionMessage)
 
     return {
       success: true,
@@ -927,7 +927,9 @@ export async function handleDoor(type: DoorOperation, time?: number) {
     }
   } catch (error) {
     console.error('Failed to handle door operation:', error)
-    toast.error('Ha ocurrido un error al manejar la puerta')
-    return { success: false, message: 'Ha ocurrido un error al manejar la puerta' }
+    return {
+      success: false,
+      message: 'Ha ocurrido un error al manejar la puerta',
+    }
   }
 }
