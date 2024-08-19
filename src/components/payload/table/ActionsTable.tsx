@@ -1,4 +1,4 @@
-import { Visitor } from '@/utils/dashboard/types'
+import { Visitor, VisitorData } from '@/utils/dashboard/types'
 import { Button } from '@/components/lib/button'
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ import {
 } from '@tabler/icons-react'
 import { toast } from '@payloadcms/ui'
 
-export default function ActionsTable({ visitor }: { visitor: Visitor }) {
+export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
   const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>

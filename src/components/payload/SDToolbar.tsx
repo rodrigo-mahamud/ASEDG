@@ -14,6 +14,7 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { Button } from '../lib/button'
 import DoorButton from './toolbar/DoorButton'
+import SettingsMenu from './toolbar/SettingsMenu'
 
 export default function SDToolbar({ period }: { period: string }) {
   const searchParams = useSearchParams()
@@ -43,13 +44,11 @@ export default function SDToolbar({ period }: { period: string }) {
   }
   const [DocumentDrawer, DocumentDrawerToggler, { openDrawer }] = useDocumentDrawer({
     id: '669147e907d44f5df704e9c1',
-
     collectionSlug: 'facilities',
   })
 
   return (
     <>
-      <DocumentDrawer />
       <div className="flex w-full justify-between">
         <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
         <div className="flex gap-3">
@@ -83,14 +82,7 @@ export default function SDToolbar({ period }: { period: string }) {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <DoorButton></DoorButton>
-          <Button
-            variant="outline"
-            className="rounded-md h-full border-border text-base py-3"
-            onClick={openDrawer}
-          >
-            <IconSettings stroke={1.75} size={18} />
-          </Button>
+          <SettingsMenu></SettingsMenu>
         </div>
       </div>
     </>
