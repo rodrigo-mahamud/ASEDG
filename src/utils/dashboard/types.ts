@@ -99,3 +99,4 @@ export interface PieAgeProps {
   data: Array<{ ages: string; amount: number }>
   average: number
 }
+export type DoorOperation = 'open' | 'close'

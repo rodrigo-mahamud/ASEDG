@@ -14,27 +14,23 @@ import {
 } from '@/components/lib/dropdown-menu'
 import { Button } from '@/components/lib/button'
 import {
-  IconClipboard,
+  IconAdjustmentsHorizontal,
   IconDoor,
   IconDoorEnter,
   IconDoorOff,
   IconDots,
-  IconEdit,
   IconFileText,
+  IconLock,
+  IconLockOpen2,
   IconSettings2,
-  IconUsersPlus,
+  IconTimeDuration15,
+  IconTimeDuration30,
+  IconTimeDuration5,
 } from '@tabler/icons-react'
 import { useDocumentDrawer, toast } from '@payloadcms/ui'
-import { openDoor } from '@/utils/dashboard/data'
+import { handleDoor } from '@/utils/dashboard/data'
+
 export default function SettingsMenu() {
-  async function handleOpenDoor(minutes?: number) {
-    const result = await openDoor(minutes)
-    if (result.success) {
-      toast.success('Puerta abierta')
-    } else {
-      toast.error('NO aBRIda')
-    }
-  }
   const [DocumentDrawer, DocumentDrawerToggler, { openDrawer }] = useDocumentDrawer({
     id: '669147e907d44f5df704e9c1',
     collectionSlug: 'facilities',
@@ -43,8 +39,8 @@ export default function SettingsMenu() {
     <>
       <DocumentDrawer></DocumentDrawer>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="m-2">
-          <Button variant="outline" className="rounded-md h-full border-border text-base py-3">
+        <DropdownMenuTrigger asChild className="h-full">
+          <Button variant="outline" className="rounded-md  border-border text-base py-3">
             <IconDots size={16} />
           </Button>
         </DropdownMenuTrigger>
@@ -53,23 +49,77 @@ export default function SettingsMenu() {
           align="end"
         >
           <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-lg">
-            Ajustes
+            Opciones
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-base">
+            <DropdownMenuSubTrigger className="text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none">
               <IconDoor size={16} className="mr-2" />
-              <span>Puerta</span>
+              <span>Abrir Puerta</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw text-base">
-                <DropdownMenuItem className="text-base" onClick={() => handleOpenDoor()}>
+                <DropdownMenuItem
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                  onClick={() => handleDoor('open')}
+                >
                   <IconDoorEnter size={16} className="mr-2" />
                   <span>Abrir puerta</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-base">
-                  <IconDoorOff size={16} className="mr-2" />
-                  <span>Cerrar puerta</span>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => handleDoor('open', 5)}
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                >
+                  <IconTimeDuration5 size={18} className="mr-2" />
+                  <span>Abrir 5 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleDoor('open', 15)}
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                >
+                  <IconTimeDuration15 size={18} className="mr-2" />
+                  <span>Abrir 15 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleDoor('open', 30)}
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                >
+                  <IconTimeDuration30 size={18} className="mr-2" />
+                  <span>Abrir 30 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                  <IconAdjustmentsHorizontal size={16} className="mr-2" />
+                  <span>Personalizado</span>
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger className="text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+              <IconDoorOff size={16} className="mr-2" />
+              <span>Cerrar Instalacción</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw text-base">
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                  <IconTimeDuration5 size={18} className="mr-2" />
+                  <span>Cerrar 5 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                  <IconTimeDuration15 size={18} className="mr-2" />
+                  <span>Cerrar 15 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                  <IconTimeDuration30 size={18} className="mr-2" />
+                  <span>Cerrar 30 min</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                  <IconLock size={18} className="mr-2" />
+                  <span>Personalizado</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>

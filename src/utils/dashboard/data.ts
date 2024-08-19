@@ -20,11 +20,11 @@ import {
   parseISO,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
-import { VisitorData } from './types'
+import { DoorOperation, VisitorData } from './types'
 import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 import ReportMail from '@/emails/BanUserMail'
 import BanUserMail from '@/emails/BanUserMail'
-
+import { toast } from '@payloadcms/ui'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
@@ -871,23 +871,31 @@ export async function editHolidayGroup(facilityData: any, holidayGroupId: string
 }
 
 //DOOR OPENING
-export async function openDoor(minutes?: number) {
+
+export async function handleDoor(type: DoorOperation, time?: number) {
   if (!BASE_URL || !API_TOKEN || !GYM_DOOR_ID) {
     throw new Error('Required environment variables are missing')
   }
 
-  let endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/unlock`
-  let body = {}
-
-  if (minutes) {
-    endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/lock_rule`
-    body = {
-      type: 'custom',
-      interval: minutes,
-    }
-  }
-
   try {
+    let endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/`
+    let body: any = {}
+
+    if (type === 'open') {
+      if (time !== undefined) {
+        endpoint += 'lock_rule'
+        body = {
+          type: 'custom',
+          interval: time,
+        }
+      } else {
+        endpoint += 'unlock'
+      }
+    } else {
+      endpoint += 'lock_rule'
+      body = { type: 'keep_lock' }
+    }
+
     const response = await fetch(endpoint, {
       method: 'PUT',
       headers: {
@@ -907,12 +915,19 @@ export async function openDoor(minutes?: number) {
       throw new Error(`API error: ${data.msg}`)
     }
 
+    let actionMessage = type === 'open' ? 'Puerta abierta' : 'Puerta cerrada'
+    if (time && type === 'open') {
+      actionMessage += ` durante ${time} minutos`
+    }
+    toast.success(actionMessage)
+
     return {
       success: true,
-      message: minutes ? `Door opened for ${minutes} minutes` : 'Door opened',
+      actionMessage: actionMessage,
     }
   } catch (error) {
-    console.error('Failed to open door:', error)
-    return { success: false, message: 'Failed to open door' }
+    console.error('Failed to handle door operation:', error)
+    toast.error('Ha ocurrido un error al manejar la puerta')
+    return { success: false, message: 'Ha ocurrido un error al manejar la puerta' }
   }
 }
