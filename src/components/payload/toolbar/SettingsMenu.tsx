@@ -30,12 +30,14 @@ import {
 import { useDocumentDrawer, toast } from '@payloadcms/ui'
 import { handleDoor } from '@/utils/dashboard/data'
 import { DoorOperation } from '@/utils/dashboard/types'
+import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 
 export default function SettingsMenu() {
   const [DocumentDrawer, DocumentDrawerToggler, { openDrawer }] = useDocumentDrawer({
     id: '669147e907d44f5df704e9c1',
     collectionSlug: 'facilities',
   })
+  const { setDialogOpen } = useDashboardStore()
 
   const openCloseDoor = async (type: DoorOperation, time?: number) => {
     const result = await handleDoor(type, time)
@@ -136,7 +138,12 @@ export default function SettingsMenu() {
                   <span>Cerrar durante 30 min</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
+                <DropdownMenuItem
+                  onClick={() => {
+                    setDialogOpen(true, 'openClose')
+                  }}
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                >
                   <IconAdjustmentsHorizontal size={16} className="mr-2" />
                   <span>Personalizado</span>
                 </DropdownMenuItem>

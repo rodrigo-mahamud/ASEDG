@@ -49,7 +49,7 @@ export type UserToDelete = {
 
 export type ClientEditStore = {
   isOpen: boolean
-  clientToEdit: Visitor | null
+  clientToEdit: VisitorData | null
   selectedClients: string[]
   isDialogOpen: boolean
   usersToDelete: UserToDelete[]

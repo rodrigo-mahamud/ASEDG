@@ -266,7 +266,7 @@ export async function generatePinCode() {
 }
 export async function sendEmail(
   visitorData: any,
-  template: 'confirmation' | 'pinCode' | 'report' | 'ban',
+  template: 'confirmation' | 'pinCode' | 'report' | 'ban' | 'openClose',
 ) {
   try {
     let emailHtml: string

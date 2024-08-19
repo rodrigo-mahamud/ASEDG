@@ -14,6 +14,7 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import SettingsMenu from './toolbar/SettingsMenu'
 import { Badge } from '../lib/badge'
+import { OpenCloseCustom } from './toolbar/OpenCloseCustom'
 
 export default function SDToolbar({ period }: { period: string }) {
   const searchParams = useSearchParams()
@@ -48,6 +49,7 @@ export default function SDToolbar({ period }: { period: string }) {
 
   return (
     <>
+      <OpenCloseCustom></OpenCloseCustom>
       <div className="flex w-full justify-between">
         <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
         <div className="flex gap-3">
