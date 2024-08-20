@@ -7,7 +7,7 @@ import {
   deleteSchedule,
   editHolidayGroup,
   editSchedule,
-} from '@/utils/dashboard/data'
+} from '@/utils/dashboard/actions'
 
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },

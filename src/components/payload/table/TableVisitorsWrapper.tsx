@@ -1,4 +1,4 @@
-import { getVisitors } from '@/utils/dashboard/data'
+import { getVisitors } from '@/utils/dashboard/actions'
 import { Visitor } from '@/utils/dashboard/types'
 import { TableVisitors } from './TableVisitors'
 import { columns } from './Columns'

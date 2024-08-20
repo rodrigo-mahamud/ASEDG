@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/lib/card'
-import { getPeakHour, getRevenue, getVisitors } from '@/utils/dashboard/data'
+import { getPeakHour, getRevenue, getVisitors } from '@/utils/dashboard/actions'
 import { IconCurrencyDollar, IconFlame } from '@tabler/icons-react'
 
 export default async function SDCPeakHour({ className, logType, period }: any) {

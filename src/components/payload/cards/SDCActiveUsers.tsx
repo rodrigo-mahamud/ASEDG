@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/lib/card'
-import { getVisitors } from '@/utils/dashboard/data'
+import { getVisitors } from '@/utils/dashboard/actions'
 import { IconEyeDollar, IconUserCheck, IconUsersGroup } from '@tabler/icons-react'
 
 export default async function SDCActiveUsers({ className }: any) {

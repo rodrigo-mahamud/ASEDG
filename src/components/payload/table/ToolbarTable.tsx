@@ -56,7 +56,7 @@ export function ToolbarTable({ table }: ToolbarTableProps) {
               : 'ml-auto rounded-md border-border text-base'
           }
           onClick={() => {
-            ;() => setDialogOpen(true, 'delete')
+            setDialogOpen(true, 'delete')
           }}
         >
           <IconTrash className="mr-2" stroke={1.5} size={16} />

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/lib/card'
-import { getRevenue, getVisitors } from '@/utils/dashboard/data'
+import { getRevenue, getVisitors } from '@/utils/dashboard/actions'
 import { IconCurrencyDollar } from '@tabler/icons-react'
 
 export default async function SDCRevenuePerUser({ className, logType, period }: any) {

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/lib/card'
-import { getActivityLogs, getRevenue } from '@/utils/dashboard/data'
+import { getActivityLogs, getRevenue } from '@/utils/dashboard/actions'
 import { IconLogin } from '@tabler/icons-react'
 
 export default async function SDCAverageAccess({ className, logType, period }: any) {

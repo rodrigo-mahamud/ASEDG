@@ -16,7 +16,7 @@ import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { Alert, AlertTitle } from '@/components/lib/alert'
 import { Input } from '@/components/lib/input'
 import { Label } from '@/components/lib/label'
-import { deleteVisitors } from '@/utils/dashboard/data'
+import { deleteVisitors } from '@/utils/dashboard/actions'
 import { toast } from '@payloadcms/ui'
 export function DeleteVisitor() {
   const [confirmText, setConfirmText] = useState('')

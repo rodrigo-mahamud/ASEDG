@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/lib/card'
 import { PieAge } from './charts/PieAge'
-import { getAges } from '@/utils/dashboard/data'
+import { getAges } from '@/utils/dashboard/actions'
 
 export async function SDUsersAge() {
   //   const totalVisitors = React.useMemo(() => {

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/lib/card'
 import AreaGraph from './charts/AreaGraph'
-import { getActivityLogs } from '@/utils/dashboard/data'
+import { getActivityLogs } from '@/utils/dashboard/actions'
 
 export default async function VisitorsCharts({
   period,

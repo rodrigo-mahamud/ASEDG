@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/lib/button'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
-import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/data'
+import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/actions'
 import { toast } from '@payloadcms/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/lib/button'
 import { IconLoader2 } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
-import { handleDoor } from '@/utils/dashboard/data'
+import { handleDoor } from '@/utils/dashboard/actions'
 import { DoorOperation } from '@/utils/dashboard/types'
 import { toast } from '@payloadcms/ui'
 export function CloseConfirm() {
