@@ -26,6 +26,7 @@ import {
   IconTimeDuration15,
   IconTimeDuration30,
   IconTimeDuration5,
+  IconTimeDuration60,
 } from '@tabler/icons-react'
 import { useDocumentDrawer, toast } from '@payloadcms/ui'
 import { handleDoor } from '@/utils/dashboard/data'
@@ -101,55 +102,23 @@ export default function SettingsMenu() {
                   <IconTimeDuration30 size={18} className="mr-2" />
                   <span>Abrir 30 min</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none">
-                  <IconAdjustmentsHorizontal size={16} className="mr-2" />
-                  <span>Personalizado</span>
+                <DropdownMenuItem
+                  onClick={() => openCloseDoor('open', 60)}
+                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+                >
+                  <IconTimeDuration60 size={18} className="mr-2" />
+                  <span>Abrir 60 min</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none">
-              <IconLock size={16} className="mr-2" />
-              <span>Cerrar Instalación</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw text-base">
-                <DropdownMenuItem
-                  onClick={() => openCloseDoor('close', 5)}
-                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                >
-                  <IconTimeDuration5 size={18} className="mr-2" />
-                  <span>Cerrar durante 5 min</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => openCloseDoor('close', 15)}
-                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                >
-                  <IconTimeDuration15 size={18} className="mr-2" />
-                  <span>Cerrar durante 15 min</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => openCloseDoor('close', 30)}
-                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                >
-                  <IconTimeDuration30 size={18} className="mr-2" />
-                  <span>Cerrar durante 30 min</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => {
-                    setDialogOpen(true, 'openClose')
-                  }}
-                  className="text-base flex items-center outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-                >
-                  <IconAdjustmentsHorizontal size={16} className="mr-2" />
-                  <span>Personalizado</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
+          <DropdownMenuItem
+            onClick={() => setDialogOpen(true, 'closeConfirmation')}
+            className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
+          >
+            <IconLock size={16} className="mr-2" />
+            <span>Cerrar Instalación</span>
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={openDrawer}
             className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"

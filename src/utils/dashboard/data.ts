@@ -18,6 +18,8 @@ import {
   startOfYear,
   differenceInDays,
   parseISO,
+  fromUnixTime,
+  addMinutes,
 } from 'date-fns'
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
 import { DoorOperation, VisitorData } from './types'
@@ -25,6 +27,7 @@ import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 import ReportMail from '@/emails/BanUserMail'
 import BanUserMail from '@/emails/BanUserMail'
 import { toast } from '@payloadcms/ui'
+import { es } from 'date-fns/locale'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
@@ -872,7 +875,7 @@ export async function editHolidayGroup(facilityData: any, holidayGroupId: string
 
 //DOOR OPENING
 
-export async function handleDoor(type: DoorOperation, time?: number) {
+export async function handleDoor(type: DoorOperation, durationMinutes?: number) {
   if (!BASE_URL || !API_TOKEN || !GYM_DOOR_ID) {
     throw new Error('Required environment variables are missing')
   }
@@ -880,24 +883,29 @@ export async function handleDoor(type: DoorOperation, time?: number) {
   try {
     let endpoint = `${BASE_URL}/doors/${GYM_DOOR_ID}/`
     let body: any = {}
+    let method = 'PUT'
 
     if (type === 'open') {
-      if (time !== undefined) {
+      if (durationMinutes !== undefined) {
         endpoint += 'lock_rule'
         body = {
           type: 'custom',
-          interval: time,
+          interval: durationMinutes,
         }
       } else {
         endpoint += 'unlock'
+        method = 'PUT'
+        body = {} // El cuerpo estará vacío para la operación de desbloqueo remoto
       }
     } else {
       endpoint += 'lock_rule'
-      body = { type: 'keep_lock' }
+      body = {
+        type: 'keep_lock',
+      }
     }
 
     const response = await fetch(endpoint, {
-      method: 'PUT',
+      method: method,
       headers: {
         Authorization: `${API_TOKEN}`,
         'Content-Type': 'application/json',
@@ -915,10 +923,17 @@ export async function handleDoor(type: DoorOperation, time?: number) {
       throw new Error(`API error: ${data.msg}`)
     }
 
-    let actionMessage =
-      type === 'open' ? 'La puerta permanecerá abierta' : 'La puerta permanecerá cerrada'
-    if (time && type === 'open') {
-      actionMessage += ` durante ${time} minutos`
+    let actionMessage = ''
+    if (type === 'open') {
+      if (durationMinutes !== undefined) {
+        const endDate = addMinutes(new Date(), durationMinutes)
+        const formattedDate = format(endDate, "d 'de' MMMM 'a las' HH:mm", { locale: es })
+        actionMessage = `La puerta se ha abierto y permanecerá abierta hasta el ${formattedDate}`
+      } else {
+        actionMessage = 'La puerta se ha desbloqueado'
+      }
+    } else {
+      actionMessage = 'La puerta se ha cerrado y permanecerá cerrada indefinidamente'
     }
 
     return {
