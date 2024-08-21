@@ -12,7 +12,11 @@ import BookingsBlock from '../blocks/Bookings'
 const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
-    drafts: false,
+    drafts: {
+      autosave: {
+        interval: 375,
+      },
+    },
   },
   admin: {
     useAsTitle: 'slug',

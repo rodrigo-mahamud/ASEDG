@@ -32,6 +32,12 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   collections: [Users, Pages, Media, News, Facilities, Sports, Categorias],
   globals: [Settings, Header],
+  admin: {
+    livePreview: {
+      url: 'http://localhost:3000',
+      collections: ['pages'],
+    },
+  },
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,

@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import IndexHero from '@/components/IndexHero'
 import Hero from '@/components/Hero'
+import { RefreshRouteOnSave } from '@/components/RefreshRouteOnSave'
 
 // TODO:  fix the types in findGlobal and pageData
 export default async function HomePage() {
@@ -26,13 +27,16 @@ export default async function HomePage() {
   const page = pageData
 
   return (
-    <main>
-      {page.header.style === 'inicio' ? (
-        <IndexHero data={page.header} />
-      ) : (
-        <Hero data={page.header} />
-      )}
-      <RenderBlocks layout={page.body.layout} />
-    </main>
+    <>
+      <RefreshRouteOnSave />
+      <main>
+        {page.header.style === 'inicio' ? (
+          <IndexHero data={page.header} />
+        ) : (
+          <Hero data={page.header} />
+        )}
+        <RenderBlocks layout={page.body.layout} />
+      </main>
+    </>
   )
 }
