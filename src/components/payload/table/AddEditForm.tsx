@@ -22,6 +22,7 @@ const AddEditForm = React.memo(function AddEditForm() {
   const [isLoading, setIsLoading] = useState({
     periods: false,
     pinCode: false,
+    saving: false,
   })
   const [error, setError] = useState<string | null>(null)
 
@@ -75,27 +76,31 @@ const AddEditForm = React.memo(function AddEditForm() {
   const handleSave = async (data: VisitorFormValues) => {
     const visitorData = { ...data }
 
-    if (clientToEdit && !pinCodeChanged) {
-      visitorData.pin_code = ''
-    }
-
     if (clientToEdit) {
+      setIsLoading((prevState) => ({ ...prevState, saving: true }))
       try {
         await updateVisitor(visitorData)
-        setIsOpen(false)
-        toast.success('Usuario editado correctamente')
       } catch (error) {
+        setIsLoading((prevState) => ({ ...prevState, saving: false }))
         console.error('Error updating visitor:', error)
         toast.error('Ha ocurrido un error al editar el usuario')
+      } finally {
+        setIsOpen(false)
+        toast.success('Usuario editado correctamente')
+        setIsLoading((prevState) => ({ ...prevState, saving: false }))
       }
     } else {
+      setIsLoading((prevState) => ({ ...prevState, saving: true }))
       try {
         await addVisitor(visitorData)
-        setIsOpen(false)
-        toast.success('Usuario añadido correctamente')
       } catch (error) {
+        setIsLoading((prevState) => ({ ...prevState, saving: false }))
         console.error('Error adding visitor:', error)
         toast.error('Ha ocurrido un error al añadir al usuario')
+      } finally {
+        toast.success('Usuario añadido correctamente')
+        setIsOpen(false)
+        setIsLoading((prevState) => ({ ...prevState, saving: false }))
       }
     }
   }
@@ -263,11 +268,11 @@ const AddEditForm = React.memo(function AddEditForm() {
         </div>
         <div className="bg-onTop w-full p-6 absolute bottom-0 border-t border-border">
           <Button
-            disabled={isLoading.periods || isLoading.pinCode}
+            disabled={isLoading.periods || isLoading.pinCode || isLoading.saving}
             type="submit"
             className="w-full rounded-md h-fit py-4 flex items-center "
           >
-            {isLoading.periods || isLoading.pinCode ? (
+            {isLoading.periods || isLoading.pinCode || isLoading.saving ? (
               <IconLoader2 size={16} stroke={1.5} className="animate-spin" />
             ) : clientToEdit ? (
               <>

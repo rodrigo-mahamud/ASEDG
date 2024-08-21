@@ -160,7 +160,7 @@ export async function addVisitor(visitorData: VisitorData) {
   }
 }
 
-export async function updateVisitor(visitorData: any) {
+export async function updateVisitor(visitorData: VisitorData) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};${
       visitorData.period_id
