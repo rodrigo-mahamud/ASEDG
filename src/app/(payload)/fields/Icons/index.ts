@@ -1,5 +1,4 @@
 import { Field } from 'payload'
-import IconField from './Component'
 
 const Icon: Field = {
   name: 'icon',
@@ -7,7 +6,7 @@ const Icon: Field = {
   type: 'text',
   admin: {
     components: {
-      Field: IconField,
+      Field: '@/app/(payload)/fields/Icons/Component',
     },
   },
 }

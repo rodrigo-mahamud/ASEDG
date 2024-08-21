@@ -195,6 +195,7 @@ export interface Page {
               isReversed?: boolean | null;
               title: string;
               body: string;
+              icon?: string | null;
               list?:
                 | {
                     isblold?: boolean | null;

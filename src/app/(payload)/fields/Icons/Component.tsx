@@ -1,15 +1,14 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { useFieldProps, useField } from '@payloadcms/ui'
+import { useField } from '@payloadcms/ui'
 import * as TablerIcons from '@tabler/icons-react'
 import { Icon as TablerIcon, IconProps } from '@tabler/icons-react'
 import './style.css'
 
 const PAGE_SIZE = 40
 
-const IconField: React.FC = () => {
-  const { path } = useFieldProps()
-  const { value, setValue } = useField<string>({ path })
+const IconField: React.FC<{ field: { _path: string } }> = ({ field }) => {
+  const { value, setValue } = useField<string>({ path: field._path })
   const [search, setSearch] = useState('')
   const [icons, setIcons] = useState(Object.keys(TablerIcons).slice(0, PAGE_SIZE))
   const [page, setPage] = useState(1)
@@ -55,6 +54,7 @@ const IconField: React.FC = () => {
     ] as React.ComponentType<IconProps>
     return IconComponent ? <IconComponent size={22} stroke={1.5} /> : null
   }
+
   const Default = () => {
     return (
       <>
@@ -63,6 +63,7 @@ const IconField: React.FC = () => {
       </>
     )
   }
+
   return (
     <div className="icon-field">
       <button onClick={toggleDropdown} className="icon-button">

@@ -50,6 +50,7 @@ const TextImagesBlock: Block = {
       label: 'Cuerpo',
       required: true,
     },
+    Icon,
     {
       name: 'list',
       type: 'array',

@@ -75,34 +75,25 @@ const AddEditForm = React.memo(function AddEditForm() {
 
   const handleSave = async (data: VisitorFormValues) => {
     const visitorData = { ...data }
-
+    setIsLoading((prevState) => ({ ...prevState, saving: true }))
     if (clientToEdit) {
-      setIsLoading((prevState) => ({ ...prevState, saving: true }))
       try {
         await updateVisitor(visitorData)
       } catch (error) {
-        setIsLoading((prevState) => ({ ...prevState, saving: false }))
         console.error('Error updating visitor:', error)
         toast.error('Ha ocurrido un error al editar el usuario')
-      } finally {
-        setIsOpen(false)
-        toast.success('Usuario editado correctamente')
-        setIsLoading((prevState) => ({ ...prevState, saving: false }))
       }
     } else {
-      setIsLoading((prevState) => ({ ...prevState, saving: true }))
       try {
+        setIsLoading((prevState) => ({ ...prevState, saving: true }))
         await addVisitor(visitorData)
       } catch (error) {
-        setIsLoading((prevState) => ({ ...prevState, saving: false }))
         console.error('Error adding visitor:', error)
         toast.error('Ha ocurrido un error al añadir al usuario')
-      } finally {
-        toast.success('Usuario añadido correctamente')
-        setIsOpen(false)
-        setIsLoading((prevState) => ({ ...prevState, saving: false }))
       }
     }
+    setIsOpen(false)
+    toast.success('Usuario editado correctamente')
   }
 
   return (
