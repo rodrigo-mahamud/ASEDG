@@ -71,7 +71,6 @@ export default buildConfig({
           },
         },
       }),
-
       BlocksFeature({
         blocks: [TextImagesBlock],
       }),

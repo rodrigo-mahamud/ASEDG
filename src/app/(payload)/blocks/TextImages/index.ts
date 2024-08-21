@@ -37,7 +37,7 @@ const TextImagesBlock: Block = {
       label: 'Invertir Diseño',
       required: false,
     },
-    Icon,
+
     {
       name: 'title',
       type: 'text',

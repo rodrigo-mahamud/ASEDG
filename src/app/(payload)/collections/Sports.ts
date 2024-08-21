@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
-import SportsDashboard from '@/components/payload/SportsDashboard'
+
 const Sports: CollectionConfig = {
   slug: 'sports',
   labels: {
@@ -10,7 +10,9 @@ const Sports: CollectionConfig = {
   admin: {
     components: {
       views: {
-        List: SportsDashboard, // highlight-line
+        list: {
+          Component: '@/components/payload/SportsDashboard',
+        },
       },
     },
   },

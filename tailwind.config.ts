@@ -1,12 +1,7 @@
 import type { Config } from 'tailwindcss'
 const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenColorPalette')
 const svgToDataUri = require('mini-svg-data-uri')
-import {
-  scopedPreflightStyles,
-  isolateInsideOfContainer,
-  isolateOutsideOfContainer,
-  isolateForComponents,
-} from 'tailwindcss-scoped-preflight'
+import { scopedPreflightStyles, isolateInsideOfContainer } from 'tailwindcss-scoped-preflight'
 const colors = require('tailwindcss/colors')
 
 const config = {

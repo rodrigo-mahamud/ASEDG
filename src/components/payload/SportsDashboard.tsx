@@ -19,7 +19,6 @@ const generateKey = (base: string, period: string) => `${base}-${period}-${Date.
 export default function SportsDashboard({ searchParams }: { searchParams?: any }) {
   const period = searchParams?.period || 'week'
 
-  // Uso de useMemo para generar keys únicas que solo cambian cuando period cambia
   const keys = useMemo(
     () => ({
       activeUsers: generateKey('active-users', period),
