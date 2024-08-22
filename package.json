@@ -13,8 +13,7 @@
     "payload": "payload",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
@@ -90,16 +89,19 @@
     "@types/node": "^20.14.9",
     "@types/react": "npm:types-react@19.0.0-rc.0",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-canary.104",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.1.1",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "ts-node": "^10.9.2",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "vitest": "^2.0.5"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0"

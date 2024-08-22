@@ -26,7 +26,7 @@ import { DoorOperation, VisitorData } from './types'
 import PinCodeChangedEmail from '@/emails/PinCodeChangedEmail'
 import ReportMail from '@/emails/BanUserMail'
 import BanUserMail from '@/emails/BanUserMail'
-import { toast } from '@payloadcms/ui'
+
 import { es } from 'date-fns/locale'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
