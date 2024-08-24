@@ -8,7 +8,9 @@ export async function GET() {
     const stream = new ReadableStream({
       start(controller) {
         handleWebSocketMessages(ws, (message) => {
-          controller.enqueue(JSON.stringify(message))
+          console.log('Sending message to client:', message)
+          // Format the message as an SSE
+          controller.enqueue(`data: ${JSON.stringify(message)}\n\n`)
         })
       },
       cancel() {
