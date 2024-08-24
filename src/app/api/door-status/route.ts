@@ -1,16 +1,29 @@
 import { NextResponse } from 'next/server'
 import { connectWebSocket, handleWebSocketMessages } from './websocketHandler'
+import { wsMsgTypes } from '@/utils/dashboard/types'
+
+let doorStatus = 'Cerrada'
 
 export async function GET() {
   try {
-    const ws = await connectWebSocket()
+    const ws = (await connectWebSocket()) as any
 
     const stream = new ReadableStream({
       start(controller) {
-        handleWebSocketMessages(ws, (message) => {
-          console.log('Sending message to client:', message)
-          // Format the message as an SSE
-          controller.enqueue(`data: ${JSON.stringify(message)}\n\n`)
+        handleWebSocketMessages(ws, (message: wsMsgTypes) => {
+          if (message.event === 'access.data.device.remote_unlock') {
+            doorStatus = 'Abierta'
+          } else if (message.event === 'access.data.device.update') {
+            const resetConfig = message.data.configs.find(
+              (config) => config.key === 'input_state_rly-lock_dry' && config.value === 'off',
+            )
+            if (resetConfig) {
+              doorStatus = 'Cerrada'
+            }
+          }
+
+          // Enviar solo el estado de la puerta al cliente
+          controller.enqueue(`data: ${JSON.stringify({ doorStatus })}\n\n`)
         })
       },
       cancel() {

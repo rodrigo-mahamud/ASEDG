@@ -100,3 +100,111 @@ export interface PieAgeProps {
   average: number
 }
 export type DoorOperation = 'open' | 'close'
+
+//WS MSG
+// WebSocket Message Types
+
+export interface wsMsgTypes {
+  event: string
+  receiver_id: string
+  event_object_id: string
+  save_to_history: boolean
+  data: DeviceData
+}
+
+export interface DeviceData {
+  unique_id: string
+  name: string
+  alias: string
+  device_type: string
+  connected_uah_id: string
+  location_id: string
+  firmware: string
+  version: null | string
+  ip: string
+  mac: string
+  hw_type: string
+  start_time: number
+  security_check: boolean
+  source: null | string
+  bom_rev: string
+  guid: string
+  need_advisory: boolean
+  is_adopted: boolean
+  is_managed: boolean
+  is_connected: boolean
+  is_online: boolean
+  adopting: boolean
+  location: Location
+  door: Location
+  floor: Location
+  configs: Config[]
+  update: null | any
+  update_manual: UpdateManual
+  capabilities: string[]
+  resource_name: string
+  display_model: string
+  revision: string
+  revision_update_time: number
+  version_update_time: number
+  firmware_update_time: number
+  adopt_time: number
+  model: string
+  images: Images
+}
+
+export interface Location {
+  unique_id: string
+  name: string
+  up_id: string
+  timezone: string
+  location_type: string
+  extra_type: string
+  full_name: string
+  level: number
+  work_time: string
+  work_time_id: string
+  extras: {
+    door_thumbnail?: string
+    door_thumbnail_last_update?: number
+    'uah-input_state_dps'?: string
+    'uah-wiring_state_dps-neg'?: string
+    'uah-wiring_state_dps-pos'?: string
+    [key: string]: any
+  }
+}
+
+export interface Config {
+  device_id: string
+  key: string
+  value: string
+  tag: string
+  source: string
+}
+
+export interface UpdateManual {
+  device_version_upgrade_status: {
+    completed: boolean
+    is_waiting: boolean
+    is_upgrading: boolean
+    upgrade_seconds: number
+    timed_out: boolean
+    failed: boolean
+    failure_reason: string
+    is_downloading: boolean
+  }
+  from_version: string
+  last_upgrade_start_time: null | number
+  last_upgrade_success: null | boolean
+  last_upgrade_failure_reason: string
+}
+
+export interface Images {
+  xs: string
+  s: string
+  m: string
+  l: string
+  xl: string
+  xxl: string
+  base: string
+}

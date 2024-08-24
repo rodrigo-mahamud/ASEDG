@@ -22,18 +22,12 @@ export async function connectWebSocket() {
       console.error('WebSocket error:', error)
       reject(error)
     })
-
-    // Agregar un registro para todos los mensajes recibidos
-    ws.on('message', (data) => {
-      console.log('WebSocket message received:', data.toString())
-    })
   })
 }
 
-export function handleWebSocketMessages(ws, callback) {
-  ws.on('message', (data) => {
+export function handleWebSocketMessages(ws: any, callback: any) {
+  ws.on('message', (data: any) => {
     const message = JSON.parse(data)
-    console.log('Parsed WebSocket message:', message)
     callback(message)
   })
 }
