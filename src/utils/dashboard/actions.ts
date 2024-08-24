@@ -1,4 +1,5 @@
 'use server'
+import WebSocket from 'ws'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { revalidateTag } from 'next/cache'
 import configPromise from '@payload-config'
@@ -29,6 +30,7 @@ import BanUserMail from '@/emails/BanUserMail'
 
 import { es } from 'date-fns/locale'
 const BASE_URL = process.env.SECRET_GYM_DASHBOARD_API_URL
+const WS_URL = process.env.SECRET_GYM_DASHBOARD_WS_URL
 const API_TOKEN = process.env.SECRET_GYM_DASHBOARD_API_TOKEN
 const GYM_CREDENTIALS_URL = process.env.SECRET_GYM_DASHBOARD_API_URL_CREDENTIALS
 const GYM_DOOR_ID = process.env.SECRET_GYM_DOOR_ID

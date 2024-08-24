@@ -15,6 +15,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import SettingsMenu from './toolbar/SettingsMenu'
 import { Badge } from '../lib/badge'
 import { CloseConfirm } from './toolbar/CloseConfirm'
+import SDDoorStatus from './SDDoorStatus'
 
 export default function SDToolbar({ period }: { period: string }) {
   const searchParams = useSearchParams()
@@ -53,7 +54,8 @@ export default function SDToolbar({ period }: { period: string }) {
       <div className="flex w-full justify-between">
         <h1 className="useTw text-4xl font-semibold">Hola Alejandro👋</h1>
         <div className="flex gap-3">
-          <Badge variant={'outlineGreen'}>Abiertadd</Badge>
+          <SDDoorStatus></SDDoorStatus>
+
           <Select value={period} onValueChange={handlePeriodChange} defaultValue={'currentmonth'}>
             <SelectTrigger className="w-fit focus-visible:outline-none capitalize py-3 px-4 h-fit">
               <SelectValue placeholder={period}>
