@@ -22,6 +22,7 @@ import {
 } from '@/components/lib/drawer'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import LogsSearch from './LogsSearch'
+import LogsFilter from './LogsFilter'
 
 export function LogsModal({ children }: { children: React.ReactNode }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -32,7 +33,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
         open={isDialogOpen && dialogType === 'logs'}
         onOpenChange={() => setDialogOpen(false, 'logs')}
       >
-        <DialogContent className="max-w-4xl useTw border-border">
+        <DialogContent className="max-w-6xl useTw border-border">
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
@@ -40,6 +41,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
             </DialogDescription>
           </DialogHeader>
           <LogsSearch></LogsSearch>
+          <LogsFilter></LogsFilter>
           {children}
         </DialogContent>
       </Dialog>

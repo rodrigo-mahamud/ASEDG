@@ -1,91 +1,63 @@
+import React from 'react'
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/lib/table'
 import { getActivityLogs } from '@/utils/dashboard/actions'
-
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV007',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card',
-  },
-]
+import { format, parseISO } from 'date-fns'
+import { LogsTypes } from '@/utils/dashboard/types'
 
 export async function LogsTable() {
-  const logs = await getActivityLogs('day', 'all')
-  console.log(logs.raw)
+  const logs: LogsTypes = await getActivityLogs('week', 'all')
+
+  if (!logs || logs.raw.length === 0) {
+    return <p>No logs available.</p>
+  }
+
+  const columns = [
+    { key: 'timestamp', label: 'Date and Time' },
+    { key: 'userName', label: 'User Name' },
+    { key: 'action', label: 'Action' },
+    { key: 'userType', label: 'User Type' },
+    { key: 'resourceId', label: 'Resource ID' },
+  ]
+
+  const formatLogData = (log) => ({
+    timestamp: format(parseISO(log['@timestamp']), 'yyyy-MM-dd HH:mm:ss'),
+    userName: log._source.actor.display_name,
+    action: log._source.event.type,
+    userType: log._source.actor.type,
+    resourceId: log._source.target.find((t) => t.type === 'activities_resource')?.id || 'N/A',
+  })
+
+  const formattedLogs = logs.raw.map(formatLogData)
 
   return (
-    <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+    <Table className="block max-h-[45rem] overflow-y-scroll">
+      <TableHeader className="w-full sticky top-0 bg-card">
+        <TableRow className="w-full">
+          {columns.map((column) => (
+            <TableHead className="px-4 py-2" key={column.key}>
+              {column.label}
+            </TableHead>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {formattedLogs.map((log, index: number) => (
+          <TableRow className="border-border" key={index}>
+            {columns.map((column) => (
+              <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
+                {log[column.key]}
+              </TableCell>
+            ))}
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
   )
 }

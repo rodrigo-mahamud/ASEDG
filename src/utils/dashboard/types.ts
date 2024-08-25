@@ -208,3 +208,39 @@ export interface Images {
   xxl: string
   base: string
 }
+
+export interface LogsTypes {
+  raw: Array<{
+    '@timestamp': string
+    _id: string
+    _source: {
+      actor: {
+        alternate_id: string
+        alternate_name: string
+        display_name: string
+        id: string
+        type: 'user' | 'visitor' | 'open_api'
+      }
+      authentication: {
+        credential_provider: string
+        issuer: string
+      } | null
+      event: {
+        display_message: string
+        published: number
+        reason: string
+        result: string
+        type: string
+      }
+      target: Array<{
+        alternate_id: string
+        alternate_name: string
+        display_name: string
+        id: string
+        type: string
+      }>
+    }
+    log_key: string
+    tag: string
+  }>
+}
