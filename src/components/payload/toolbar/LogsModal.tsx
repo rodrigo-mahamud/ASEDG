@@ -40,8 +40,10 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <LogsSearch></LogsSearch>
-          <LogsFilter></LogsFilter>
+          <div className="flex gap-3">
+            <LogsSearch></LogsSearch>
+            <LogsFilter></LogsFilter>
+          </div>
           {children}
         </DialogContent>
       </Dialog>

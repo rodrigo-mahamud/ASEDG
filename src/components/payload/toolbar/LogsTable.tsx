@@ -10,6 +10,7 @@ import {
 import { getActivityLogs } from '@/utils/dashboard/actions'
 import { format, parseISO } from 'date-fns'
 import { LogsTypes } from '@/utils/dashboard/types'
+import { Column, FormattedLog } from '@/utils/dashboard/types'
 
 export async function LogsTable() {
   const logs: LogsTypes = await getActivityLogs('week', 'all')
@@ -18,7 +19,7 @@ export async function LogsTable() {
     return <p>No logs available.</p>
   }
 
-  const columns = [
+  const columns: Column[] = [
     { key: 'timestamp', label: 'Date and Time' },
     { key: 'userName', label: 'User Name' },
     { key: 'action', label: 'Action' },
@@ -26,7 +27,7 @@ export async function LogsTable() {
     { key: 'resourceId', label: 'Resource ID' },
   ]
 
-  const formatLogData = (log) => ({
+  const formatLogData = (log: LogsTypes['raw'][0]): FormattedLog => ({
     timestamp: format(parseISO(log['@timestamp']), 'yyyy-MM-dd HH:mm:ss'),
     userName: log._source.actor.display_name,
     action: log._source.event.type,
@@ -34,7 +35,7 @@ export async function LogsTable() {
     resourceId: log._source.target.find((t) => t.type === 'activities_resource')?.id || 'N/A',
   })
 
-  const formattedLogs = logs.raw.map(formatLogData)
+  const formattedLogs: FormattedLog[] = logs.raw.map(formatLogData)
 
   return (
     <Table className="block max-h-[45rem] overflow-y-scroll">
@@ -52,7 +53,7 @@ export async function LogsTable() {
           <TableRow className="border-border" key={index}>
             {columns.map((column) => (
               <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
-                {log[column.key]}
+                {log[column.key as keyof FormattedLog]}
               </TableCell>
             ))}
           </TableRow>

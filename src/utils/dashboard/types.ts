@@ -244,3 +244,15 @@ export interface LogsTypes {
     tag: string
   }>
 }
+export type Column = {
+  key: string
+  label: string
+}
+
+export type FormattedLog = {
+  timestamp: string
+  userName: string
+  action: string
+  userType: string
+  resourceId: string
+}
