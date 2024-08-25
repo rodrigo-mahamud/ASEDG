@@ -23,7 +23,6 @@ import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
 import { FormErrors } from './FormErrors'
 
 export function BanUser() {
-  const [isGeneratingPin, setIsGeneratingPin] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const { isDialogOpen, setDialogOpen, dialogType, clientToEdit } = useDashboardStore()
 
@@ -36,8 +35,6 @@ export function BanUser() {
   })
 
   const handleSave = async (data: ReportReasonTypes) => {
-    console.log('hola me has clickado')
-
     if (clientToEdit && data.report_reason) {
       setIsSaving(true)
       try {
@@ -104,10 +101,10 @@ export function BanUser() {
             <Button
               type="button"
               variant="default"
-              disabled={isGeneratingPin || isSaving}
+              disabled={isSaving}
               className="flex items-center text-base font-semibold rounded-md leading-none"
             >
-              {isGeneratingPin || isSaving ? (
+              {isSaving ? (
                 <IconLoader2 stroke={1.5} className="animate-spin mr-1 size-4" />
               ) : (
                 <>Confirmar</>

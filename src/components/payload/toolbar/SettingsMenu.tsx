@@ -121,7 +121,7 @@ export default function SettingsMenu() {
             <span>Cerrar Instalación</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={openDrawer}
+            onClick={() => setDialogOpen(true, 'logs')}
             className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           >
             <IconFileText className="mr-2" size={15}></IconFileText>
