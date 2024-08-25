@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/lib/table'
+import { getActivityLogs } from '@/utils/dashboard/actions'
 
 const invoices = [
   {
@@ -54,7 +55,10 @@ const invoices = [
   },
 ]
 
-export function LogsTable() {
+export async function LogsTable() {
+  const logs = await getActivityLogs('day', 'all')
+  console.log(logs.raw)
+
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>

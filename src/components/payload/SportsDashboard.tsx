@@ -13,6 +13,7 @@ import SDCPeakHour from './cards/SDCPeakHour'
 import { SDUsersAge } from './SDUsersAge'
 import { SkeletonCard } from './cards/SkeletonCard'
 import { LogsModal } from './toolbar/LogsModal'
+import { LogsTable } from './toolbar/LogsTable'
 
 // Función para generar una key única
 const generateKey = (base: string, period: string) => `${base}-${period}-${Date.now()}`
@@ -35,7 +36,9 @@ export default function SportsDashboard({ searchParams }: { searchParams?: any }
 
   return (
     <>
-      <LogsModal></LogsModal>
+      <LogsModal>
+        <LogsTable></LogsTable>
+      </LogsModal>
       <Gutter className="useTw space-y-6 ">
         <SDToolbar period={period} />
         <div className="flex gap-6 w-full">

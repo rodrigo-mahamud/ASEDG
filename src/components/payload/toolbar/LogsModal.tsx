@@ -21,6 +21,7 @@ import {
   DrawerTrigger,
 } from '@/components/lib/drawer'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
+import LogsSearch from './LogsSearch'
 
 export function LogsModal({ children }: { children: React.ReactNode }) {
   const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -38,6 +39,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
               Make changes to your profile here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
+          <LogsSearch></LogsSearch>
           {children}
         </DialogContent>
       </Dialog>
@@ -56,6 +58,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
             Make changes to your profile here. Click save when you're done.
           </DrawerDescription>
         </DrawerHeader>
+        <LogsSearch></LogsSearch>
         {children}
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
