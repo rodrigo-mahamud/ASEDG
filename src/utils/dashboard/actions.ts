@@ -454,6 +454,39 @@ export async function getActivityLogs(period: string, type: string = 'door_openi
     throw error
   }
 }
+export async function getLogVideo(resourceId: string): Promise<Blob> {
+  const resourceResponse = await fetch(`${BASE_URL}/system/logs/resource/${resourceId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `${API_TOKEN}`,
+    },
+  })
+
+  if (!resourceResponse.ok) {
+    throw new Error('Failed to fetch video resource information')
+  }
+
+  const resourceData = await resourceResponse.json()
+  console.log(resourceData)
+
+  if (resourceData.code !== 'SUCCESS' || !resourceData.data.video_record) {
+    throw new Error('Invalid video data received')
+  }
+  const videoUrl = `${BASE_URL}/system/static${resourceData.data.video_record}`
+  const videoResponse = await fetch(videoUrl, {
+    method: 'GET',
+    headers: {
+      Authorization: `${API_TOKEN}`,
+    },
+  })
+  console.log(videoResponse)
+  if (!videoResponse.ok) {
+    throw new Error('Failed to fetch video')
+  }
+
+  return await videoResponse.blob()
+}
+
 export async function getPeakHour(period: string, type: string = 'door_openings') {
   try {
     const activityData = await getActivityLogs(period, type)
