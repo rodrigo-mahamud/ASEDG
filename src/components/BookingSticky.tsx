@@ -54,7 +54,7 @@ export default function BookingSticky({ data }: any) {
   }
 
   return (
-    <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit">
+    <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit ">
       {formState !== 'success' && (
         <>
           <h2 className="text-xl font-cal "> Gimnasio municipal</h2>

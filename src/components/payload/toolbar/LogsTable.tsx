@@ -23,9 +23,9 @@ export async function LogsTable() {
   const columns: Column[] = [
     { key: 'timestamp', label: 'Fecha' },
     { key: 'userName', label: 'Usuario' },
+    { key: 'userType', label: 'Tipo de usuario' },
     { key: 'action', label: 'Acción' },
-    { key: 'userType', label: 'User Type' },
-    { key: 'resourceId', label: 'Resource ID' },
+    { key: 'videoID', label: 'Video' },
   ]
   const actionMapping: { [key: string]: string } = {
     'access.door.unlock': 'Apertura de puerta',
@@ -51,8 +51,7 @@ export async function LogsTable() {
       userName: log._source.actor.display_name,
       action: getActionDisplay(log._source.event.type),
       userType: log._source.actor.type,
-      resourceId: activityResource ? activityResource.id : 'N/A',
-      resourceType: activityResource ? activityResource.type : 'N/A',
+      videoID: activityResource ? activityResource.id : 'N/A',
     }
   }
 
@@ -74,14 +73,7 @@ export async function LogsTable() {
           <TableRow className="border-border" key={index}>
             {columns.map((column) => (
               <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
-                {column.key === 'resourceId' ? (
-                  <>
-                    {log[column.key]}
-                    <LogsVideo resourceId={log.resourceId} resourceType={log.resourceType} />
-                  </>
-                ) : (
-                  log[column.key]
-                )}
+                {column.key === 'videoID' ? <LogsVideo videoID={log.videoID} /> : log[column.key]}
               </TableCell>
             ))}
           </TableRow>

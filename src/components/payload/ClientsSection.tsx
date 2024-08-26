@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
 import AddEditVisitor from './table/AddEditVisitor'
 import { DeleteVisitor } from './table/DeleteVisitor'
-import { Visitor } from '@/utils/dashboard/types'
 import { TableVisitorsWrapper } from './table/TableVisitorsWrapper'
 import { Suspense } from 'react'
 import { SkeletonTable } from './table/SkeletonTable'

@@ -3,8 +3,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/lib/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/lib/dialog'
 import { getLogVideo } from '@/utils/dashboard/actions'
+import { SkeletonLogVideo } from './SkeletonLogVideo'
 
-export function LogsVideo({ resourceId }) {
+export function LogsVideo({ videoID }) {
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null)
   const [localVideoUrl, setLocalVideoUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -29,13 +30,12 @@ export function LogsVideo({ resourceId }) {
     setIsLoading(true)
     setError(null)
     try {
-      const blob = await getLogVideo(resourceId)
+      const blob = await getLogVideo(videoID)
       setVideoBlob(blob)
     } catch (error) {
       console.error('Error fetching video:', error)
       setError(error.message)
     } finally {
-      setIsLoading(false)
     }
   }
 
@@ -46,7 +46,7 @@ export function LogsVideo({ resourceId }) {
           {isLoading ? 'Loading...' : 'View Video'}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-full bg-red-500">
         {error ? (
           <p>Error: {error}</p>
         ) : localVideoUrl ? (
@@ -55,7 +55,7 @@ export function LogsVideo({ resourceId }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <p>{isLoading ? 'Loading video...' : 'Click the button to load the video.'}</p>
+          isLoading && <SkeletonLogVideo></SkeletonLogVideo>
         )}
       </DialogContent>
     </Dialog>
