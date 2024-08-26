@@ -28,7 +28,7 @@ export async function LogsTable() {
     { key: 'videoID', label: 'Video' },
   ]
   const actionMapping: { [key: string]: string } = {
-    'access.door.unlock': 'Apertura de puerta',
+    'access.door.unlock': 'Puerta abierta',
     'access.pin_code.update': 'Pin actualizado ',
     'access.settings.change': 'Cambio en la configuración',
     'access.data.device.remote_unlock': 'Apertura remota',
@@ -58,27 +58,33 @@ export async function LogsTable() {
   const formattedLogs = logs.raw.map(formatLogData)
 
   return (
-    <Table className="block max-h-[45rem] overflow-y-scroll">
-      <TableHeader className="w-full sticky top-0 bg-card">
-        <TableRow className="w-full">
-          {columns.map((column) => (
-            <TableHead className="px-4 py-2" key={column.key}>
-              {column.label}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {formattedLogs.map((log, index) => (
-          <TableRow className="border-border" key={index}>
+    <div className="rounded-md border border-border">
+      <Table className="block w-full max-h-[45rem] overflow-y-scroll">
+        <TableHeader className="w-full sticky top-0 bg-card ">
+          <TableRow className="w-full border-border">
             {columns.map((column) => (
-              <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
-                {column.key === 'videoID' ? <LogsVideo videoID={log.videoID} /> : log[column.key]}
-              </TableCell>
+              <TableHead className="px-4 py-2 w-1/4" key={column.key}>
+                {column.label}
+              </TableHead>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {formattedLogs.map((log, index) => (
+            <TableRow className="border-border" key={index}>
+              {columns.map((column) => (
+                <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
+                  {column.key === 'videoID' ? (
+                    <LogsVideo videoID={log.videoID} logs={formattedLogs} currentIndex={index} />
+                  ) : (
+                    log[column.key]
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }
