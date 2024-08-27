@@ -12,10 +12,10 @@ import { format, parseISO } from 'date-fns'
 import { LogsTypes } from '@/utils/dashboard/types'
 import { Column, FormattedLog } from '@/utils/dashboard/types'
 import { LogsDetails } from './LogsDetails'
-
+import { es } from 'date-fns/locale'
 export async function LogsTable() {
   const logs: LogsTypes = await getActivityLogs('week', 'all')
-  console.log(logs.raw)
+
   if (!logs || logs.raw.length === 0) {
     return <p>No logs available.</p>
   }
@@ -47,12 +47,16 @@ export async function LogsTable() {
   const formatLogData = (log) => {
     const activityResource = log._source.target.find((t) => t.type === 'activities_resource')
     return {
-      timestamp: format(parseISO(log['@timestamp']), 'HH:mm:ss dd/MM/yy'),
+      timestamp: format(parseISO(log['@timestamp']), 'dd/MM/yy HH:mm', { locale: es }),
+      daystamp: format(parseISO(log['@timestamp']), 'dd/MM/yyyy - iiii', { locale: es }),
+      hourstamp: format(parseISO(log['@timestamp']), 'HH:mm:ss', { locale: es }),
       userName: log._source.actor.display_name,
       action: getActionDisplay(log._source.event.type),
       userType: log._source.actor.type,
       videoID: activityResource ? activityResource.id : 'N/A',
-      rawLog: log, // Incluimos el log completo para pasarlo a LogsDetails
+      userID: log._source.actor?.id || '',
+      unlockMethod: log._source.authentication?.credential_provider || '',
+      rawLog: log,
     }
   }
 
