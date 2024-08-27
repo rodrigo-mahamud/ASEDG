@@ -116,6 +116,42 @@ export async function getVisitors() {
     throw error
   }
 }
+export async function getSpecificVisitor(id: VisitorData) {
+  try {
+    const response = await fetch(`${BASE_URL}/visitors/aa8a3f42-b62f-43bd-bf9b-e2fc0bc768c5`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${API_TOKEN}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const res = await response.json()
+
+    const processedData = res.data
+
+    const [age = '', dni = '', acceptedTerms = '', price = '', period_id = ''] = (
+      processedData.remarks || ''
+    ).split(';')
+
+    return {
+      data: {
+        ...processedData,
+        age: age.trim() ? parseInt(age.trim(), 10) : undefined,
+        dni: dni.trim(),
+        price: price.trim(),
+        period_id: period_id.trim(),
+        terms: acceptedTerms.trim() === '1',
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching visitors:', error)
+    throw error
+  }
+}
 export async function addVisitor(visitorData: VisitorData) {
   try {
     const remarks = `${visitorData.age};${visitorData.dni};${'1'};${visitorData.price};${

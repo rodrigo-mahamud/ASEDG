@@ -8,18 +8,12 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@/components/lib/dialog'
-import { getLogVideo } from '@/utils/dashboard/actions'
+import { getLogVideo, getSpecificVisitor } from '@/utils/dashboard/actions'
 import { SkeletonLogVideo } from './SkeletonLogVideo'
-import {
-  IconPlayerPlay,
-  IconArrowLeft,
-  IconArrowRight,
-  IconDownload,
-  IconSettings,
-  IconX,
-} from '@tabler/icons-react'
+import { IconArrowLeft, IconArrowRight, IconSettings, IconX } from '@tabler/icons-react'
 import { DialogTitle } from '@radix-ui/react-dialog'
-import { Separator } from '@/components/lib/separator'
+import { VisitorData } from '@/utils/dashboard/types'
+import { LogsDetailsInfo } from './LogsDetailsInfo'
 
 interface LogsDetailsProps {
   log: any
@@ -34,15 +28,19 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
   const [error, setError] = useState<string | null>(null)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(currentIndex)
   const [currentLog, setCurrentLog] = useState(log)
+  const [visitorInfo, setVisitorInfo] = useState<VisitorData | null>(null)
+  const [isLoadingVisitor, setIsLoadingVisitor] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => {
     if (isDialogOpen) {
-      fetchVideo(logs[currentVideoIndex].videoID)
-      setCurrentLog(logs[currentVideoIndex])
+      const newLog = logs[currentVideoIndex]
+      setCurrentLog(newLog)
+      fetchVideo(newLog.videoID)
+      fetchVisitorInfo(newLog.userID)
     }
-  }, [currentVideoIndex, isDialogOpen])
+  }, [currentVideoIndex, isDialogOpen, logs])
 
   useEffect(() => {
     if (videoBlob) {
@@ -51,12 +49,30 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
 
       return () => {
         URL.revokeObjectURL(objectUrl)
-        if (videoRef.current) {
-          videoRef.current.src = ''
-        }
+        setLocalVideoUrl(null)
       }
     }
   }, [videoBlob])
+
+  useEffect(() => {
+    if (videoRef.current && localVideoUrl) {
+      videoRef.current.load()
+    }
+  }, [localVideoUrl])
+
+  const fetchVisitorInfo = async (id: string) => {
+    if (!id) return
+    setIsLoadingVisitor(true)
+    try {
+      const visitorData = await getSpecificVisitor(id)
+      setVisitorInfo(visitorData.data)
+    } catch (error) {
+      console.error('Error fetching visitor info:', error)
+      setError('Error al cargar la información del visitante')
+    } finally {
+      setIsLoadingVisitor(false)
+    }
+  }
 
   const fetchVideo = async (id: string) => {
     setIsLoading(true)
@@ -89,7 +105,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
       const a = document.createElement('a')
       a.style.display = 'none'
       a.href = url
-      a.download = `video_${logs[currentVideoIndex].videoID}.mp4`
+      a.download = `video_${currentLog.videoID}.mp4`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -137,40 +153,16 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
           </div>
         </div>
         <div className="flex w-full gap-6 px-6 pb-6">
-          <div className="w-2/6 space-y-3">
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-lg font-normal ">Día:</h3>
-              <h4 className="useTw text-lg font-normal capitalize">{currentLog.daystamp}</h4>
-            </div>
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-lg font-normal ">Hora:</h3>
-              <h4 className="useTw text-lg font-normal ">{currentLog.hourstamp}</h4>
-            </div>
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-lg font-normal ">Usuario:</h3>
-              <h4 className="useTw text-lg font-normal ">{currentLog.userName}</h4>
-            </div>
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-lg font-normal ">Tipo de usuario:</h3>
-              <h4 className="useTw text-lg font-normal ">{currentLog.userType}</h4>
-            </div>
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-lg font-normal ">Acción:</h3>
-              <h4 className="useTw text-lg font-normal ">{currentLog.action}</h4>
-            </div>
-            {currentLog.unlockMethod && (
-              <div className="flex justify-between items-center">
-                <h3 className="useTw text-lg font-normal ">Método de desbloqueo:</h3>
-                <h4 className="useTw text-lg font-normal ">{currentLog.unlockMethod}</h4>
-              </div>
-            )}
-            <Separator className="my-6">
-              <div className="flex w-full gap-6 px-6 pb-6"></div>
-            </Separator>
-          </div>
+          <LogsDetailsInfo
+            currentLog={currentLog}
+            visitorInfo={visitorInfo}
+            isLoadingVisitor={isLoadingVisitor}
+          />
           <div className="w-4/6">
             {error ? (
               <p>Error: {error}</p>
+            ) : isLoading ? (
+              <SkeletonLogVideo />
             ) : localVideoUrl ? (
               <div className="flex flex-col items-center ">
                 <video ref={videoRef} controls autoPlay muted className="rounded-xl w-full">
@@ -178,9 +170,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
                   Your browser does not support the video tag.
                 </video>
               </div>
-            ) : (
-              isLoading && <SkeletonLogVideo />
-            )}
+            ) : null}
           </div>
         </div>
       </DialogContent>
