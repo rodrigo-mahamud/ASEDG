@@ -467,7 +467,6 @@ export async function getLogVideo(resourceId: string): Promise<Blob> {
   }
 
   const resourceData = await resourceResponse.json()
-  console.log(resourceData)
 
   if (resourceData.code !== 'SUCCESS' || !resourceData.data.video_record) {
     throw new Error('Invalid video data received')
@@ -479,7 +478,7 @@ export async function getLogVideo(resourceId: string): Promise<Blob> {
       Authorization: `${API_TOKEN}`,
     },
   })
-  console.log(videoResponse)
+
   if (!videoResponse.ok) {
     throw new Error('Failed to fetch video')
   }

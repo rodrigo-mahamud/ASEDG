@@ -11,11 +11,11 @@ import { getActivityLogs } from '@/utils/dashboard/actions'
 import { format, parseISO } from 'date-fns'
 import { LogsTypes } from '@/utils/dashboard/types'
 import { Column, FormattedLog } from '@/utils/dashboard/types'
-import { LogsVideo } from './LogsVideo'
+import { LogsDetails } from './LogsDetails'
 
 export async function LogsTable() {
   const logs: LogsTypes = await getActivityLogs('week', 'all')
-
+  console.log(logs.raw)
   if (!logs || logs.raw.length === 0) {
     return <p>No logs available.</p>
   }
@@ -25,7 +25,7 @@ export async function LogsTable() {
     { key: 'userName', label: 'Usuario' },
     { key: 'userType', label: 'Tipo de usuario' },
     { key: 'action', label: 'Acción' },
-    { key: 'videoID', label: 'Video' },
+    { key: 'details', label: 'Detalles' },
   ]
   const actionMapping: { [key: string]: string } = {
     'access.door.unlock': 'Puerta abierta',
@@ -41,7 +41,7 @@ export async function LogsTable() {
   }
 
   const getActionDisplay = (actionType: string): string => {
-    return actionMapping[actionType] || actionType // Si no hay mapeo, devuelve el tipo original
+    return actionMapping[actionType] || actionType
   }
 
   const formatLogData = (log) => {
@@ -52,6 +52,7 @@ export async function LogsTable() {
       action: getActionDisplay(log._source.event.type),
       userType: log._source.actor.type,
       videoID: activityResource ? activityResource.id : 'N/A',
+      rawLog: log, // Incluimos el log completo para pasarlo a LogsDetails
     }
   }
 
@@ -63,7 +64,7 @@ export async function LogsTable() {
         <TableHeader className="w-full sticky top-0 bg-card ">
           <TableRow className="w-full border-border">
             {columns.map((column) => (
-              <TableHead className="px-4 py-2 w-1/4" key={column.key}>
+              <TableHead className="px-4 py-2 w-1/5" key={column.key}>
                 {column.label}
               </TableHead>
             ))}
@@ -74,8 +75,8 @@ export async function LogsTable() {
             <TableRow className="border-border" key={index}>
               {columns.map((column) => (
                 <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
-                  {column.key === 'videoID' ? (
-                    <LogsVideo videoID={log.videoID} logs={formattedLogs} currentIndex={index} />
+                  {column.key === 'details' ? (
+                    <LogsDetails log={log} logs={formattedLogs} currentIndex={index} />
                   ) : (
                     log[column.key]
                   )}
