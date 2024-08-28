@@ -14,6 +14,7 @@ import { IconArrowLeft, IconArrowRight, IconSettings, IconX } from '@tabler/icon
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { VisitorData } from '@/utils/dashboard/types'
 import { LogsDetailsInfo } from './LogsDetailsInfo'
+import { LogsDetailsMenu } from './LogsDetailsMenu'
 
 interface LogsDetailsProps {
   log: any
@@ -119,7 +120,10 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
           Ver detalles
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-5xl h-[90vh] gap-6 flex flex-col p-0 overflow-hidden">
+      <DialogContent
+        closeDefault={false}
+        className="w-full max-w-5xl h-[60rem] gap-6 flex flex-col p-0 overflow-hidden"
+      >
         <div className="flex w-full justify-between items-center bg-onTop p-6">
           <DialogHeader>
             <DialogTitle className="useTw">{currentLog.action}</DialogTitle>
@@ -155,10 +159,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
               visitorInfo={visitorInfo}
               isLoadingVisitor={isLoadingVisitor}
             />
-            <Button variant="default" className="w-full rounded-md useTw" onClick={handleDownload}>
-              <IconSettings size={20} />
-              Ajustes
-            </Button>
+            <LogsDetailsMenu visitor={visitorInfo}></LogsDetailsMenu>
           </div>
 
           <div className="w-4/6">
@@ -167,8 +168,14 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
             ) : isLoading ? (
               <SkeletonLogVideo />
             ) : localVideoUrl ? (
-              <div className="flex flex-col items-center ">
-                <video ref={videoRef} controls autoPlay muted className="rounded-xl size-full">
+              <div className="flex flex-col items-center size-full">
+                <video
+                  ref={videoRef}
+                  controls
+                  autoPlay
+                  muted
+                  className="rounded-xl size-full object-cover"
+                >
                   <source src={localVideoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>

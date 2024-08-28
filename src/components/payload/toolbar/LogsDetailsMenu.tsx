@@ -1,4 +1,16 @@
-import { Visitor, VisitorData } from '@/utils/dashboard/types'
+'use client'
+import {
+  IconSettings,
+  IconDeviceMobile,
+  IconEdit,
+  IconMail,
+  IconRefreshDot,
+  IconTrash,
+  IconUserExclamation,
+  IconUserOff,
+  IconDownload,
+} from '@tabler/icons-react'
+
 import { Button } from '@/components/lib/button'
 import {
   DropdownMenu,
@@ -9,26 +21,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/lib/dropdown-menu'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
-import {
-  IconDeviceMobile,
-  IconDots,
-  IconEdit,
-  IconMail,
-  IconRefreshDot,
-  IconTrash,
-  IconUserExclamation,
-  IconUserOff,
-} from '@tabler/icons-react'
 import { toast } from '@payloadcms/ui'
 
-export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
+export function LogsDetailsMenu({ visitor }: any) {
   const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="m-2">
-        <Button variant="ghost" className="h-10 w-10 p-2 rounded-md">
-          <span className="sr-only">Open menu</span>
-          <IconDots size={16} />
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="useTw w-full rounded-md">
+          <IconSettings size={16}></IconSettings>
+          Opciones
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -111,8 +113,8 @@ export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
             setDialogOpen(true, 'delete')
           }}
         >
-          <IconTrash className="mr-2" size={15}></IconTrash>
-          Eliminar
+          <IconDownload className="mr-2" size={15}></IconDownload>
+          Descargar vídeo
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
