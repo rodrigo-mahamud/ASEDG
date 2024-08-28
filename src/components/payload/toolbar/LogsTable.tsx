@@ -12,6 +12,7 @@ import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { LogsTypes, Column, FormattedLog } from '@/utils/dashboard/types'
 import { LogsDetails } from './LogsDetails'
+import { IconDisplay } from '@/components/IconDisplay' // Make sure to import the new component
 
 const COLUMNS: Column[] = [
   { key: 'timestamp', label: 'Fecha' },
@@ -21,20 +22,21 @@ const COLUMNS: Column[] = [
   { key: 'details', label: 'Detalles' },
 ]
 
-const ACTION_MAPPING: Record<string, string> = {
-  'access.door.unlock': 'Puerta abierta',
-  'access.pin_code.update': 'Pin actualizado',
-  'access.settings.change': 'Cambio en la configuración',
-  'access.data.device.remote_unlock': 'Apertura remota',
-  'access.device.upgrade': 'Dispositivo actualizado',
-  'access.dps.status.update': 'Dispositivo actualizado',
-  'access.device.offline': 'Dispositivo desconectado',
-  'access.device.online': 'Dispositivo conectado',
-  'access.visitor.create': 'Usuario creado',
-  'access.remotecall.request': 'Llamada a la puerta',
+const ACTION_MAPPING: Record<string, ActionInfo> = {
+  'access.door.unlock': { text: 'Puerta abierta', icon: 'IconLogin' },
+  'access.pin_code.update': { text: 'Pin actualizado', icon: 'IconKey' },
+  'access.settings.change': { text: 'Cambio en la configuración', icon: 'IconSettings' },
+  'access.data.device.remote_unlock': { text: 'Apertura remota', icon: 'IconDoorOff' },
+  'access.device.upgrade': { text: 'Dispositivo actualizado', icon: 'IconRefresh' },
+  'access.dps.status.update': { text: 'Dispositivo actualizado', icon: 'IconDeviceMobile' },
+  'access.device.offline': { text: 'Dispositivo desconectado', icon: 'IconWifiOff' },
+  'access.device.online': { text: 'Dispositivo conectado', icon: 'IconWifi' },
+  'access.visitor.create': { text: 'Usuario creado', icon: 'IconUserPlus' },
+  'access.remotecall.request': { text: 'Llamada a la puerta', icon: 'IconPhone' },
 }
 
-const getActionDisplay = (actionType: string): string => ACTION_MAPPING[actionType] || actionType
+const getActionDisplay = (actionType: string): ActionInfo =>
+  ACTION_MAPPING[actionType] || { text: actionType, icon: 'IconQuestionMark' }
 
 const formatLogData = (log: any): FormattedLog => {
   const timestamp = parseISO(log['@timestamp'])
@@ -79,9 +81,14 @@ export async function LogsTable() {
           {formattedLogs.map((log, index) => (
             <TableRow className="border-border" key={index}>
               {COLUMNS.map((column) => (
-                <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
+                <TableCell className="px-4 py-2 " key={`${index}-${column.key}`}>
                   {column.key === 'details' ? (
                     <LogsDetails log={log} logs={formattedLogs} currentIndex={index} />
+                  ) : column.key === 'action' ? (
+                    <div className="flex items-center gap-1">
+                      <IconDisplay iconName={log.action.icon} size={14} />
+                      <span>{log.action.text}</span>
+                    </div>
                   ) : (
                     log[column.key]
                   )}

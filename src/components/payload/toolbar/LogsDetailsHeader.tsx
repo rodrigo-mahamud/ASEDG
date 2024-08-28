@@ -3,15 +3,9 @@ import React from 'react'
 import { VisitorData } from '@/utils/dashboard/types'
 import { DialogClose, DialogHeader, DialogTitle } from '@/components/lib/dialog'
 import { Button } from '@/components/lib/button'
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconChevronCompactDown,
-  IconChevronLeft,
-  IconChevronRight,
-  IconX,
-} from '@tabler/icons-react'
+import { IconChevronLeft, IconChevronRight, IconX } from '@tabler/icons-react'
 import { LogsDetailsMenu } from './LogsDetailsMenu'
+import { IconDisplay } from '@/components/IconDisplay'
 
 export function LogsDetailsHeader({
   handleNavigation,
@@ -23,9 +17,10 @@ export function LogsDetailsHeader({
 }: any) {
   return (
     <>
-      <DialogHeader>
-        <DialogTitle className="useTw text-3xl">{currentLog.action}</DialogTitle>
-      </DialogHeader>
+      <div className="flex items-center gap-1">
+        <IconDisplay iconName={currentLog.action.icon} size={22} />
+        <span className="text-2xl font-semibold">{currentLog.action.text}</span>
+      </div>
       <div className="flex gap-4 useTw">
         <div className="flex">
           <Button
@@ -36,10 +31,7 @@ export function LogsDetailsHeader({
           >
             <IconChevronLeft size={18} />
           </Button>
-          <LogsDetailsMenu
-            handleVideoDownload={handleVideoDownload}
-            visitor={visitorInfo}
-          ></LogsDetailsMenu>
+          <LogsDetailsMenu handleVideoDownload={handleVideoDownload} visitor={visitorInfo} />
           <Button
             variant={'outline'}
             className="aspect-square useTw p-0 rounded-r-md"
@@ -51,7 +43,7 @@ export function LogsDetailsHeader({
         </div>
         <DialogClose asChild>
           <Button variant={'outline'} className="aspect-square useTw p-0 rounded-md">
-            <IconX size={18}></IconX>
+            <IconX size={18} />
           </Button>
         </DialogClose>
       </div>

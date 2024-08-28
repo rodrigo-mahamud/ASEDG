@@ -39,7 +39,7 @@ export function LogsDetailsInfo({
             </div>
             <div className="flex justify-between items-center">
               <h3 className="useTw text-base font-normal text-white/70">Acción:</h3>
-              <h4 className="useTw text-base font-normal">{currentLog.action}</h4>
+              <h4 className="useTw text-base font-normal">{currentLog.action.text}</h4>
             </div>
             {currentLog.unlockMethod && (
               <div className="flex justify-between items-center">
