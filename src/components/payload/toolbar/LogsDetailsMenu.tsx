@@ -9,6 +9,8 @@ import {
   IconUserExclamation,
   IconUserOff,
   IconDownload,
+  IconLeaf,
+  IconAdjustmentsHorizontal,
 } from '@tabler/icons-react'
 
 import { Button } from '@/components/lib/button'
@@ -23,44 +25,23 @@ import {
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 
-export function LogsDetailsMenu({ visitor }: any) {
+export function LogsDetailsMenu({ visitor, handleVideoDownload }: any) {
   const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="useTw w-full rounded-md">
-          <IconSettings size={16}></IconSettings>
-          Opciones
+        <Button variant="outline" className="useTw w-full border-x-0">
+          <IconAdjustmentsHorizontal size={16}></IconAdjustmentsHorizontal>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="p-1 w-56 border border-border rounded-md shadow-xl shadow-black useTw"
+        className="p-1 w-56 border border-border rounded-md shadow-lg shadow-black/50 useTw"
         align="end"
       >
         <DropdownMenuLabel className="py-1.5 px-2 font-semibold text-lg">
-          Acciones
+          Opciones
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-          onClick={() => {
-            setClientToEdit(visitor)
-            setIsOpen(true)
-          }}
-        >
-          <IconEdit className="mr-2" size={15}></IconEdit>
-          Editar Usuario
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="capitalize flex items-center text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-          onClick={() => {
-            setClientToEdit(visitor)
-            setDialogOpen(true, 'pincode')
-          }}
-        >
-          <IconRefreshDot className="mr-2" size={15}></IconRefreshDot>
-          Cambiar PIN
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
@@ -106,12 +87,7 @@ export function LogsDetailsMenu({ visitor }: any) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="capitalize hover:bg-red-600/25 hover:text-red-600 text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
-          onClick={() => {
-            setUsersToDelete([
-              { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
-            ])
-            setDialogOpen(true, 'delete')
-          }}
+          onClick={() => handleVideoDownload()}
         >
           <IconDownload className="mr-2" size={15}></IconDownload>
           Descargar vídeo

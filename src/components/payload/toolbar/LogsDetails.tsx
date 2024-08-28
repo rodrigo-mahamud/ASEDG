@@ -15,6 +15,7 @@ import { DialogTitle } from '@radix-ui/react-dialog'
 import { VisitorData } from '@/utils/dashboard/types'
 import { LogsDetailsInfo } from './LogsDetailsInfo'
 import { LogsDetailsMenu } from './LogsDetailsMenu'
+import { LogsDetailsHeader } from './LogsDetailsHeader'
 
 interface LogsDetailsProps {
   log: any
@@ -100,7 +101,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     }
   }
 
-  const handleDownload = () => {
+  const handleVideoDownload = () => {
     if (videoBlob) {
       const url = window.URL.createObjectURL(videoBlob)
       const a = document.createElement('a')
@@ -122,64 +123,43 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
       </DialogTrigger>
       <DialogContent
         closeDefault={false}
-        className="w-full max-w-5xl h-[60rem] gap-6 flex flex-col p-0 overflow-hidden"
+        className="w-full max-w-5xl h-[62rem] gap-6 flex flex-col p-0 overflow-hidden"
       >
-        <div className="flex w-full justify-between items-center bg-onTop p-6">
-          <DialogHeader>
-            <DialogTitle className="useTw">{currentLog.action}</DialogTitle>
-          </DialogHeader>
-          <div className="flex useTw">
-            <Button
-              variant={'outline'}
-              className="1/4 useTw"
-              onClick={() => handleNavigation('prev')}
-              disabled={currentVideoIndex === 0}
-            >
-              <IconArrowLeft size={20} />
-            </Button>
-            <Button
-              variant={'outline'}
-              className="1/4 useTw"
-              onClick={() => handleNavigation('next')}
-              disabled={currentVideoIndex === logs.length - 1}
-            >
-              <IconArrowRight size={20} />
-            </Button>
-            <DialogClose asChild>
-              <Button variant={'outline'}>
-                <IconX size={20}></IconX>
-              </Button>
-            </DialogClose>
-          </div>
+        <div className="relative flex w-full justify-between items-center bg-onTop p-6">
+          <LogsDetailsHeader
+            logs={logs}
+            handleNavigation={handleNavigation}
+            currentLog={currentLog}
+            visitorInfo={visitorInfo}
+            currentVideoIndex={currentVideoIndex}
+            handleVideoDownload={handleVideoDownload}
+          ></LogsDetailsHeader>
         </div>
-        <div className="flex w-full h-full gap-6 px-6 pb-6">
+        <div className="flex w-full h-full relative gap-6 px-6 mb-6">
           <div className="w-2/6 space-y-4">
             <LogsDetailsInfo
               currentLog={currentLog}
               visitorInfo={visitorInfo}
               isLoadingVisitor={isLoadingVisitor}
             />
-            <LogsDetailsMenu visitor={visitorInfo}></LogsDetailsMenu>
           </div>
 
-          <div className="w-4/6">
+          <div className="w-4/6 relative h-full">
             {error ? (
               <p>Error: {error}</p>
             ) : isLoading ? (
               <SkeletonLogVideo />
             ) : localVideoUrl ? (
-              <div className="flex flex-col items-center size-full">
-                <video
-                  ref={videoRef}
-                  controls
-                  autoPlay
-                  muted
-                  className="rounded-xl size-full object-cover"
-                >
-                  <source src={localVideoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
+              <video
+                ref={videoRef}
+                controls
+                autoPlay
+                muted
+                className="rounded-xl size-full object-cover"
+              >
+                <source src={localVideoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             ) : null}
           </div>
         </div>
