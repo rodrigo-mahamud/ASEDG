@@ -119,16 +119,12 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
           Ver detalles
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-5xl flex flex-col max-h-[90vh] p-0 overflow-hidden">
+      <DialogContent className="w-full max-w-5xl h-[90vh] gap-6 flex flex-col p-0 overflow-hidden">
         <div className="flex w-full justify-between items-center bg-onTop p-6">
           <DialogHeader>
             <DialogTitle className="useTw">{currentLog.action}</DialogTitle>
           </DialogHeader>
           <div className="flex useTw">
-            <Button variant={'outline'} className="w-2/4 mr-6" onClick={handleDownload}>
-              <IconSettings size={20} />
-              Ajustes
-            </Button>
             <Button
               variant={'outline'}
               className="1/4 useTw"
@@ -152,12 +148,19 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
             </DialogClose>
           </div>
         </div>
-        <div className="flex w-full gap-6 px-6 pb-6">
-          <LogsDetailsInfo
-            currentLog={currentLog}
-            visitorInfo={visitorInfo}
-            isLoadingVisitor={isLoadingVisitor}
-          />
+        <div className="flex w-full h-full gap-6 px-6 pb-6">
+          <div className="w-2/6 space-y-4">
+            <LogsDetailsInfo
+              currentLog={currentLog}
+              visitorInfo={visitorInfo}
+              isLoadingVisitor={isLoadingVisitor}
+            />
+            <Button variant="default" className="w-full rounded-md useTw" onClick={handleDownload}>
+              <IconSettings size={20} />
+              Ajustes
+            </Button>
+          </div>
+
           <div className="w-4/6">
             {error ? (
               <p>Error: {error}</p>
@@ -165,7 +168,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
               <SkeletonLogVideo />
             ) : localVideoUrl ? (
               <div className="flex flex-col items-center ">
-                <video ref={videoRef} controls autoPlay muted className="rounded-xl w-full">
+                <video ref={videoRef} controls autoPlay muted className="rounded-xl size-full">
                   <source src={localVideoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
