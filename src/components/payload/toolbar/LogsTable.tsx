@@ -8,11 +8,11 @@ import {
   TableRow,
 } from '@/components/lib/table'
 import { getActivityLogs } from '@/utils/dashboard/actions'
-import { format, parseISO } from 'date-fns'
-import { es } from 'date-fns/locale'
 import { LogsTypes, Column, FormattedLog } from '@/utils/dashboard/types'
 import { LogsDetails } from './LogsDetails'
-import { IconDisplay } from '@/components/IconDisplay' // Make sure to import the new component
+import { IconDisplay } from '@/components/IconDisplay'
+import { formatLogData } from '@/utils/dashboard/logsTableFormat'
+import { Badge } from '@/components/lib/badge'
 
 const COLUMNS: Column[] = [
   { key: 'timestamp', label: 'Fecha' },
@@ -22,37 +22,26 @@ const COLUMNS: Column[] = [
   { key: 'details', label: 'Detalles' },
 ]
 
-const ACTION_MAPPING: Record<string, ActionInfo> = {
-  'access.door.unlock': { text: 'Puerta abierta', icon: 'IconLogin' },
-  'access.pin_code.update': { text: 'Pin actualizado', icon: 'IconKey' },
-  'access.settings.change': { text: 'Cambio en la configuración', icon: 'IconSettings' },
-  'access.data.device.remote_unlock': { text: 'Apertura remota', icon: 'IconDoorOff' },
-  'access.device.upgrade': { text: 'Dispositivo actualizado', icon: 'IconRefresh' },
-  'access.dps.status.update': { text: 'Dispositivo actualizado', icon: 'IconDeviceMobile' },
-  'access.device.offline': { text: 'Dispositivo desconectado', icon: 'IconWifiOff' },
-  'access.device.online': { text: 'Dispositivo conectado', icon: 'IconWifi' },
-  'access.visitor.create': { text: 'Usuario creado', icon: 'IconUserPlus' },
-  'access.remotecall.request': { text: 'Llamada a la puerta', icon: 'IconPhone' },
-}
-
-const getActionDisplay = (actionType: string): ActionInfo =>
-  ACTION_MAPPING[actionType] || { text: actionType, icon: 'IconQuestionMark' }
-
-const formatLogData = (log: any): FormattedLog => {
-  const timestamp = parseISO(log['@timestamp'])
-  const activityResource = log._source.target.find((t: any) => t.type === 'activities_resource')
-
-  return {
-    timestamp: format(timestamp, 'dd/MM/yy HH:mm', { locale: es }),
-    daystamp: format(timestamp, 'dd/MM/yyyy - iiii', { locale: es }),
-    hourstamp: format(timestamp, 'HH:mm:ss', { locale: es }),
-    userName: log._source.actor.display_name,
-    action: getActionDisplay(log._source.event.type),
-    userType: log._source.actor.type,
-    videoID: activityResource ? activityResource.id : 'N/A',
-    userID: log._source.actor?.id || '',
-    unlockMethod: log._source.authentication?.credential_provider || '',
-    rawLog: log,
+const formatCellContent = (
+  key: string,
+  value: any,
+  log: FormattedLog,
+  logs: FormattedLog[],
+  index: number,
+): React.ReactNode => {
+  switch (key) {
+    case 'action':
+      return (
+        <Badge variant={value.variant} className="flex items-center gap-1 w-fit px-3 py-1 ">
+          <IconDisplay iconName={value.icon} size={14} />
+          <span className="leading-none text-sm font-normal">{value.text}</span>
+        </Badge>
+      )
+    case 'details':
+      return <LogsDetails log={log} logs={logs} currentIndex={index} />
+    // Puedes agregar más casos aquí para otros tipos de celdas
+    default:
+      return value
   }
 }
 
@@ -81,17 +70,8 @@ export async function LogsTable() {
           {formattedLogs.map((log, index) => (
             <TableRow className="border-border" key={index}>
               {COLUMNS.map((column) => (
-                <TableCell className="px-4 py-2 " key={`${index}-${column.key}`}>
-                  {column.key === 'details' ? (
-                    <LogsDetails log={log} logs={formattedLogs} currentIndex={index} />
-                  ) : column.key === 'action' ? (
-                    <div className="flex items-center gap-1">
-                      <IconDisplay iconName={log.action.icon} size={14} />
-                      <span>{log.action.text}</span>
-                    </div>
-                  ) : (
-                    log[column.key]
-                  )}
+                <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
+                  {formatCellContent(column.key, log[column.key], log, formattedLogs, index)}
                 </TableCell>
               ))}
             </TableRow>

@@ -6,6 +6,7 @@ import { Button } from '@/components/lib/button'
 import { IconChevronLeft, IconChevronRight, IconX } from '@tabler/icons-react'
 import { LogsDetailsMenu } from './LogsDetailsMenu'
 import { IconDisplay } from '@/components/IconDisplay'
+import { Badge } from '@/components/lib/badge'
 
 export function LogsDetailsHeader({
   handleNavigation,
@@ -17,10 +18,13 @@ export function LogsDetailsHeader({
 }: any) {
   return (
     <>
-      <div className="flex items-center gap-1">
-        <IconDisplay iconName={currentLog.action.icon} size={22} />
-        <span className="text-2xl font-semibold">{currentLog.action.text}</span>
-      </div>
+      <Badge
+        variant={currentLog.action.variant}
+        className="flex items-center gap-1 px-3 py-1 useTw rounded-md"
+      >
+        <IconDisplay iconName={currentLog.action.icon} size={20} stroke={1.75} />
+        <span className="text-2xl font-normal leading-snug ">{currentLog.action.text}</span>
+      </Badge>
       <div className="flex gap-4 useTw">
         <div className="flex">
           <Button
@@ -43,7 +47,7 @@ export function LogsDetailsHeader({
         </div>
         <DialogClose asChild>
           <Button variant={'outline'} className="aspect-square useTw p-0 rounded-md">
-            <IconX size={18} />
+            <IconX size={16} />
           </Button>
         </DialogClose>
       </div>
