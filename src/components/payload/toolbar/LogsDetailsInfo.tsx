@@ -16,7 +16,7 @@ interface LogsDetailsInfoProps {
 
 export function LogsDetailsInfo({ currentLog, userInfo, isLoadingVisitor }: LogsDetailsInfoProps) {
   const formatDate = (timestamp: number) => {
-    return format(new Date(timestamp), "dd 'de' MMMM 'de' yyyy", { locale: es })
+    return format(new Date(timestamp * 1000), "dd 'de' MMMM 'de' yyyy", { locale: es })
   }
 
   return (
