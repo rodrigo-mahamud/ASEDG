@@ -46,7 +46,6 @@ const formatCellContent = (
 
 export async function LogsTable() {
   const logs: LogsTypes = await getActivityLogs('week', 'all')
-  console.log(logs.raw[3]._source)
   if (!logs || logs.raw.length === 0) {
     return <p>No hay registros disponibles.</p>
   }
@@ -54,10 +53,10 @@ export async function LogsTable() {
   const formattedLogs = logs.raw.map(formatLogData)
 
   return (
-    <div className="rounded-md border border-border">
+    <div className="rounded-md border border-border overflow-hidden">
       <Table className="block w-full max-h-[45rem] overflow-y-scroll">
-        <TableHeader className="w-full sticky top-0 bg-card">
-          <TableRow className="w-full border-border">
+        <TableHeader className="w-full sticky top-0 ">
+          <TableRow className="w-full border-border -mt-[1px] bg-card rounded-t-md overflow-hidden">
             {COLUMNS.map((column) => (
               <TableHead
                 className="px-4 py-2 w-1/5 last:w-full last:justify-center last:flex"

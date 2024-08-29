@@ -10,15 +10,11 @@ import { IconAlertCircle } from '@tabler/icons-react'
 
 interface LogsDetailsInfoProps {
   currentLog: any
-  visitorInfo: VisitorData | null
+  userInfo: VisitorData | null
   isLoadingVisitor: boolean
 }
 
-export function LogsDetailsInfo({
-  currentLog,
-  visitorInfo,
-  isLoadingVisitor,
-}: LogsDetailsInfoProps) {
+export function LogsDetailsInfo({ currentLog, userInfo, isLoadingVisitor }: LogsDetailsInfoProps) {
   const formatDate = (timestamp: number) => {
     return format(new Date(timestamp), "dd 'de' MMMM 'de' yyyy", { locale: es })
   }
@@ -54,49 +50,54 @@ export function LogsDetailsInfo({
 
       {isLoadingVisitor ? (
         <SkeletonLogInfo />
-      ) : visitorInfo ? (
+      ) : userInfo ? (
         <div className="space-y-3 mt-10">
-          <h3 className="useTw text-xl font-medium">Información del Visitante</h3>
+          <h3 className="useTw text-xl font-medium">Información del Usuario</h3>
           <div className="flex justify-between items-center">
             <h3 className="useTw text-base font-normal text-white/70">Nombre:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.first_name}</h4>
+            <h4 className="useTw text-base font-normal">{userInfo.first_name}</h4>
           </div>
           <div className="flex justify-between items-center">
             <h3 className="useTw text-base font-normal text-white/70">Apellidos:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.last_name}</h4>
+            <h4 className="useTw text-base font-normal">{userInfo.last_name}</h4>
           </div>
-          <div className="flex justify-between items-center">
-            <h3 className="useTw text-base font-normal text-white/70">DNI:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.dni}</h4>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="useTw text-base font-normal text-white/70">Edad:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.age}</h4>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="useTw text-base font-normal text-white/70">Email:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.email}</h4>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="useTw text-base font-normal text-white/70">Nº Teléfono:</h3>
-            <h4 className="useTw text-base font-normal">{visitorInfo.mobile_phone}</h4>
-          </div>
-          {visitorInfo.start_time && (
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-base font-normal text-white/70">Valido desde:</h3>
-              <h4 className="useTw text-base font-normal">{formatDate(visitorInfo.start_time)}</h4>
-            </div>
-          )}
-          {visitorInfo.end_time && (
-            <div className="flex justify-between items-center">
-              <h3 className="useTw text-base font-normal text-white/70">Valido hasta:</h3>
-              <h4 className="useTw text-base font-normal">{formatDate(visitorInfo.end_time)}</h4>
-            </div>
+          {currentLog.userType === 'visitor' && (
+            <>
+              <div className="flex justify-between items-center">
+                <h3 className="useTw text-base font-normal text-white/70">DNI:</h3>
+                <h4 className="useTw text-base font-normal">{userInfo.dni}</h4>
+              </div>
+              <div className="flex justify-between items-center">
+                <h3 className="useTw text-base font-normal text-white/70">Edad:</h3>
+                <h4 className="useTw text-base font-normal">{userInfo.age}</h4>
+              </div>
+              <div className="flex justify-between items-center">
+                <h3 className="useTw text-base font-normal text-white/70">Email:</h3>
+                <h4 className="useTw text-base font-normal">{userInfo.email}</h4>
+              </div>
+              <div className="flex justify-between items-center">
+                <h3 className="useTw text-base font-normal text-white/70">Nº Teléfono:</h3>
+                <h4 className="useTw text-base font-normal">{userInfo.mobile_phone}</h4>
+              </div>
+              {userInfo.start_time && (
+                <div className="flex justify-between items-center">
+                  <h3 className="useTw text-base font-normal text-white/70">Valido desde:</h3>
+                  <h4 className="useTw text-base font-normal">{formatDate(userInfo.start_time)}</h4>
+                </div>
+              )}
+              {userInfo.end_time && (
+                <div className="flex justify-between items-center">
+                  <h3 className="useTw text-base font-normal text-white/70">Valido hasta:</h3>
+                  <h4 className="useTw text-base font-normal">{formatDate(userInfo.end_time)}</h4>
+                </div>
+              )}
+            </>
           )}
         </div>
       ) : (
         <div className="mt-10 text-white/70">
-          No se muestra información del usuario ya que no está tegistrado en el sistema.
+          No se muestra información adicional ya que el evento ha sido realizado por un usuario
+          desconocido sin registrar en el sistema.
         </div>
       )}
     </div>

@@ -1,28 +1,12 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/lib/button'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from '@/components/lib/dialog'
-import { getLogVideo, getSpecificVisitor } from '@/utils/dashboard/actions'
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/lib/dialog'
+import { getLogVideo, getSpecificUser } from '@/utils/dashboard/actions'
 import { SkeletonLogVideo } from './SkeletonLogVideo'
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconDots,
-  IconPlug,
-  IconPlus,
-  IconSettings,
-  IconX,
-} from '@tabler/icons-react'
-import { DialogTitle } from '@radix-ui/react-dialog'
+import { IconDots } from '@tabler/icons-react'
 import { VisitorData } from '@/utils/dashboard/types'
 import { LogsDetailsInfo } from './LogsDetailsInfo'
-import { LogsDetailsMenu } from './LogsDetailsMenu'
 import { LogsDetailsHeader } from './LogsDetailsHeader'
 
 interface LogsDetailsProps {
@@ -38,7 +22,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
   const [error, setError] = useState<string | null>(null)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(currentIndex)
   const [currentLog, setCurrentLog] = useState(log)
-  const [visitorInfo, setVisitorInfo] = useState<VisitorData | null>(null)
+  const [userInfo, setUserInfo] = useState<VisitorData | null>(null)
   const [isLoadingVisitor, setIsLoadingVisitor] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -50,7 +34,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
       fetchVideo(newLog.videoID)
     }
     if (isDialogOpen && newLog.userID) {
-      fetchVisitorInfo(newLog.userID)
+      fetchUserInfo(newLog.userID, newLog.userType)
     }
   }, [currentVideoIndex, isDialogOpen, logs])
 
@@ -72,12 +56,12 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     }
   }, [localVideoUrl])
 
-  const fetchVisitorInfo = async (id: string) => {
+  const fetchUserInfo = async (id: VisitorData, type: string) => {
     if (!id) return
     setIsLoadingVisitor(true)
     try {
-      const visitorData = await getSpecificVisitor(id)
-      setVisitorInfo(visitorData.data)
+      const userData = await getSpecificUser(id, type)
+      setUserInfo(userData.data)
     } catch (error) {
       console.error('Error fetching visitor info:', error)
       setError('Error al cargar la información del visitante')
@@ -108,7 +92,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     const newIndex = direction === 'prev' ? currentVideoIndex - 1 : currentVideoIndex + 1
     if (newIndex >= 0 && newIndex < logs.length) {
       setCurrentVideoIndex(newIndex)
-      setVisitorInfo(null)
+      setUserInfo(null)
     }
   }
 
@@ -145,7 +129,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
             logs={logs}
             handleNavigation={handleNavigation}
             currentLog={currentLog}
-            visitorInfo={visitorInfo}
+            userInfo={userInfo}
             currentVideoIndex={currentVideoIndex}
             handleVideoDownload={handleVideoDownload}
           ></LogsDetailsHeader>
@@ -154,7 +138,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
           <div className="w-2/6 space-y-4">
             <LogsDetailsInfo
               currentLog={currentLog}
-              visitorInfo={visitorInfo}
+              userInfo={userInfo}
               isLoadingVisitor={isLoadingVisitor}
             />
           </div>

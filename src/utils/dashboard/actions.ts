@@ -116,39 +116,59 @@ export async function getVisitors() {
     throw error
   }
 }
-export async function getSpecificVisitor(id: VisitorData) {
+export async function getSpecificUser(id: VisitorData, type: string) {
   try {
-    const response = await fetch(`${BASE_URL}/visitors/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `${API_TOKEN}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (type === 'visitor') {
+      const response = await fetch(`${BASE_URL}/visitors/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `${API_TOKEN}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const res = await response.json()
+
+      const processedData = res.data
+
+      const [age = '', dni = '', acceptedTerms = '', price = '', period_id = ''] = (
+        processedData.remarks || ''
+      ).split(';')
+
+      return {
+        data: {
+          ...processedData,
+          age: age.trim() ? parseInt(age.trim(), 10) : undefined,
+          dni: dni.trim(),
+          price: price.trim(),
+          period_id: period_id.trim(),
+          terms: acceptedTerms.trim() === '1',
+        },
+      }
     }
-    const res = await response.json()
+    if (type === 'user') {
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `${API_TOKEN}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const res = await response.json()
 
-    const processedData = res.data
-
-    const [age = '', dni = '', acceptedTerms = '', price = '', period_id = ''] = (
-      processedData.remarks || ''
-    ).split(';')
-
-    return {
-      data: {
-        ...processedData,
-        age: age.trim() ? parseInt(age.trim(), 10) : undefined,
-        dni: dni.trim(),
-        price: price.trim(),
-        period_id: period_id.trim(),
-        terms: acceptedTerms.trim() === '1',
-      },
+      return {
+        data: res.data,
+      }
     }
   } catch (error) {
-    console.error('Error fetching visitors:', error)
+    console.error('Error fetching User:', error)
     throw error
   }
 }
