@@ -44,10 +44,12 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => {
+    const newLog = logs[currentVideoIndex]
     if (isDialogOpen) {
-      const newLog = logs[currentVideoIndex]
       setCurrentLog(newLog)
       fetchVideo(newLog.videoID)
+    }
+    if (isDialogOpen && newLog.userID) {
       fetchVisitorInfo(newLog.userID)
     }
   }, [currentVideoIndex, isDialogOpen, logs])
@@ -106,6 +108,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     const newIndex = direction === 'prev' ? currentVideoIndex - 1 : currentVideoIndex + 1
     if (newIndex >= 0 && newIndex < logs.length) {
       setCurrentVideoIndex(newIndex)
+      setVisitorInfo(null)
     }
   }
 

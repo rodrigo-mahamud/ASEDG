@@ -118,7 +118,7 @@ export async function getVisitors() {
 }
 export async function getSpecificVisitor(id: VisitorData) {
   try {
-    const response = await fetch(`${BASE_URL}/visitors/aa8a3f42-b62f-43bd-bf9b-e2fc0bc768c5`, {
+    const response = await fetch(`${BASE_URL}/visitors/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `${API_TOKEN}`,

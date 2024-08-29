@@ -11,6 +11,7 @@ import {
   IconDownload,
   IconLeaf,
   IconAdjustmentsHorizontal,
+  IconDots,
 } from '@tabler/icons-react'
 
 import { Button } from '@/components/lib/button'
@@ -31,7 +32,7 @@ export function LogsDetailsMenu({ visitor, handleVideoDownload }: any) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="useTw w-full border-x-0">
-          <IconAdjustmentsHorizontal size={16}></IconAdjustmentsHorizontal>
+          <IconDots size={16}></IconDots>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
