@@ -20,10 +20,10 @@ export function LogsDetailsHeader({
     <>
       <Badge
         variant={currentLog.action.variant}
-        className="flex items-center gap-1 px-3 py-1 useTw rounded-md"
+        className="flex items-center gap-1 px-4 py-1 useTw "
       >
-        <IconDisplay iconName={currentLog.action.icon} size={20} stroke={1.75} />
-        <span className="text-2xl font-normal leading-snug ">{currentLog.action.text}</span>
+        <IconDisplay className="mt-0.5" iconName={currentLog.action.icon} size={18} stroke={1.75} />
+        <span className="text-xl font-normal">{currentLog.action.text}</span>
       </Badge>
       <div className="flex gap-4 useTw">
         <div className="flex">

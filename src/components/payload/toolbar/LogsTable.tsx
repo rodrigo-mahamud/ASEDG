@@ -39,15 +39,14 @@ const formatCellContent = (
       )
     case 'details':
       return <LogsDetails log={log} logs={logs} currentIndex={index} />
-    // Puedes agregar más casos aquí para otros tipos de celdas
     default:
-      return value
+      return <span className="line-clamp-1">{value}</span>
   }
 }
 
 export async function LogsTable() {
   const logs: LogsTypes = await getActivityLogs('week', 'all')
-
+  console.log(logs.raw[3]._source)
   if (!logs || logs.raw.length === 0) {
     return <p>No hay registros disponibles.</p>
   }
@@ -60,7 +59,10 @@ export async function LogsTable() {
         <TableHeader className="w-full sticky top-0 bg-card">
           <TableRow className="w-full border-border">
             {COLUMNS.map((column) => (
-              <TableHead className="px-4 py-2 w-1/5" key={column.key}>
+              <TableHead
+                className="px-4 py-2 w-1/5 last:w-full last:justify-center last:flex"
+                key={column.key}
+              >
                 {column.label}
               </TableHead>
             ))}
@@ -70,7 +72,10 @@ export async function LogsTable() {
           {formattedLogs.map((log, index) => (
             <TableRow className="border-border" key={index}>
               {COLUMNS.map((column) => (
-                <TableCell className="px-4 py-2" key={`${index}-${column.key}`}>
+                <TableCell
+                  className="p-4  last:justify-center last:flex"
+                  key={`${index}-${column.key}`}
+                >
                   {formatCellContent(column.key, log[column.key], log, formattedLogs, index)}
                 </TableCell>
               ))}

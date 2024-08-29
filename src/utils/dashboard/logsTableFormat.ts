@@ -9,7 +9,6 @@ export interface ActionInfo {
 }
 
 export const ACTION_MAPPING: Record<string, ActionInfo> = {
-  'access.door.unlock': { text: 'Puerta abierta', icon: 'IconLogin', variant: 'outlineYellow' },
   'access.pin_code.update': {
     text: 'Pin actualizado',
     icon: 'IconLockPassword',
@@ -18,7 +17,7 @@ export const ACTION_MAPPING: Record<string, ActionInfo> = {
   'access.settings.change': {
     text: 'Ajustes modificados',
     icon: 'IconSettings',
-    variant: 'outlineBlue',
+    variant: 'outlineYellow',
   },
   'access.data.device.remote_unlock': {
     text: 'Apertura remota',
@@ -26,12 +25,12 @@ export const ACTION_MAPPING: Record<string, ActionInfo> = {
     variant: 'outlineBlue',
   },
   'access.device.upgrade': {
-    text: 'Actualizción Exitosa',
+    text: 'Actualización Exitosa',
     icon: 'IconRefresh',
     variant: 'outlineGreen',
   },
   'access.dps.status.update': {
-    text: 'Actualizción Exitosa',
+    text: 'Actualización Exitosa',
     icon: 'IconRefresh',
     variant: 'outlineGreen',
   },
@@ -51,14 +50,39 @@ export const ACTION_MAPPING: Record<string, ActionInfo> = {
     variant: 'outlineGreen',
   },
   'access.remotecall.request': {
-    text: 'Llamada a la puerta',
+    text: 'Llamada al timbre',
     icon: 'IconBellRinging',
-    variant: 'outlineBlue',
+    variant: 'outlineYellow',
   },
 }
 
-export const getActionDisplay = (actionType: string): ActionInfo =>
-  ACTION_MAPPING[actionType] || { text: actionType, icon: 'IconQuestionMark' }
+export const getActionDisplay = (actionType: string, result: string): ActionInfo => {
+  const baseAction = ACTION_MAPPING[actionType] || {
+    text: actionType,
+    icon: 'IconQuestionMark',
+    variant: 'outline',
+  }
+
+  if (actionType === 'access.door.unlock') {
+    if (result === 'BLOCKED') {
+      return {
+        ...baseAction,
+        icon: 'IconExclamationCircle',
+        text: 'Acceso denegado',
+        variant: 'outlineRed',
+      }
+    } else if (result === 'ACCESS') {
+      return {
+        ...baseAction,
+        icon: 'IconLogin',
+        text: 'Puerta abierta',
+        variant: 'outlineBlue',
+      }
+    }
+  }
+
+  return baseAction
+}
 
 export const formatLogData = (log: any): FormattedLog => {
   const timestamp = parseISO(log['@timestamp'])
@@ -70,7 +94,7 @@ export const formatLogData = (log: any): FormattedLog => {
     hourstamp: format(timestamp, 'HH:mm:ss', { locale: es }),
     userName:
       log._source.actor.display_name === 'N/A' ? 'Desconocido' : log._source.actor.display_name,
-    action: getActionDisplay(log._source.event.type),
+    action: getActionDisplay(log._source.event.type, log._source.event.result),
     userType: log._source.actor.type,
     videoID: activityResource ? activityResource.id : 'N/A',
     userID: log._source.actor?.id || '',

@@ -10,7 +10,15 @@ import {
 } from '@/components/lib/dialog'
 import { getLogVideo, getSpecificVisitor } from '@/utils/dashboard/actions'
 import { SkeletonLogVideo } from './SkeletonLogVideo'
-import { IconArrowLeft, IconArrowRight, IconSettings, IconX } from '@tabler/icons-react'
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconDots,
+  IconPlug,
+  IconPlus,
+  IconSettings,
+  IconX,
+} from '@tabler/icons-react'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { VisitorData } from '@/utils/dashboard/types'
 import { LogsDetailsInfo } from './LogsDetailsInfo'
@@ -117,8 +125,12 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={handleDetailsClick}>
-          Ver detalles
+        <Button
+          variant="outline"
+          className="w-10 h-10 border-border rounded-md p-0"
+          onClick={handleDetailsClick}
+        >
+          <IconDots size={16}></IconDots>
         </Button>
       </DialogTrigger>
       <DialogContent
