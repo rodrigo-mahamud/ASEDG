@@ -4,7 +4,7 @@ import { Button } from '@/components/lib/button'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/lib/dialog'
 import { getLogVideo, getSpecificUser } from '@/utils/dashboard/actions'
 import { SkeletonLogVideo } from './SkeletonLogVideo'
-import { IconDots } from '@tabler/icons-react'
+import { IconDots, IconPlus } from '@tabler/icons-react'
 import { VisitorData } from '@/utils/dashboard/types'
 import { LogsDetailsInfo } from './LogsDetailsInfo'
 import { LogsDetailsHeader } from './LogsDetailsHeader'
@@ -117,7 +117,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
           className="w-10 h-10 border-border rounded-md p-0"
           onClick={handleDetailsClick}
         >
-          <IconDots size={16}></IconDots>
+          <IconPlus size={16}></IconPlus>
         </Button>
       </DialogTrigger>
       <DialogContent
