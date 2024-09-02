@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/lib/select'
-import { IconCalendarMonth, IconFilter } from '@tabler/icons-react'
+import { IconFilter } from '@tabler/icons-react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import React from 'react'
 

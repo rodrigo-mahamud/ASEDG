@@ -27,7 +27,7 @@ import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 
 export function LogsDetailsMenu({ visitor, handleVideoDownload }: any) {
-  const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
+  const { setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

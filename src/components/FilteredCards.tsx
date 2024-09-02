@@ -49,7 +49,7 @@ export default function FilteredCards({
   filterEnabled,
 }: FilteredCardsProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedYear, setSelectedYear] = useState<string | null>(null)
+  const [selectedYear, setSelectedYear] = useState<string | undefined>(undefined)
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     slidesToScroll: 3,
@@ -75,7 +75,7 @@ export default function FilteredCards({
     setSelectedCategory(selectedCategory === category ? null : category)
   }
 
-  const handleYearChange = (year: string | null) => {
+  const handleYearChange = (year: string | undefined) => {
     setSelectedYear(year)
   }
 
@@ -84,7 +84,7 @@ export default function FilteredCards({
       selectedCategory === null ||
       item.categories.some((cat: any) => cat.title === selectedCategory)
     const yearMatch =
-      selectedYear === null ||
+      selectedYear === undefined ||
       new Date(item.publishedDate).getFullYear().toString() === selectedYear
     return categoryMatch && yearMatch
   })

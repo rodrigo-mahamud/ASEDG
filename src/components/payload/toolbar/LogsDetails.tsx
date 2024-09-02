@@ -61,7 +61,9 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     setIsLoadingVisitor(true)
     try {
       const userData = await getSpecificUser(id, type)
-      setUserInfo(userData.data)
+      {
+        userData && setUserInfo(userData.data)
+      }
     } catch (error) {
       console.error('Error fetching visitor info:', error)
       setError('Error al cargar la información del visitante')
@@ -76,7 +78,7 @@ export function LogsDetails({ log, logs, currentIndex }: LogsDetailsProps) {
     try {
       const blob = await getLogVideo(id)
       setVideoBlob(blob)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching video:', error)
       setError(error.message)
     } finally {

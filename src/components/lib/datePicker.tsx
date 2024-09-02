@@ -18,7 +18,8 @@ import {
   SelectValue,
 } from '@/components/lib/select'
 
-interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DatePickerWithRangeProps {
+  className?: string
   value?: DateRange
   onChange?: (range: DateRange | undefined) => void
   onPresetChange?: (preset: string) => void
@@ -54,11 +55,15 @@ export function DatePickerWithRange({
   return (
     <div className={cn('grid gap-2')}>
       <Popover>
-        <PopoverTrigger asChild className={className}>
+        <PopoverTrigger asChild>
           <Button
             id="date"
             variant={'outline'}
-            className={cn('justify-start text-left font-normal', !date && 'text-muted-foreground')}
+            className={cn(
+              'justify-start text-left font-normal',
+              !date && 'text-muted-foreground',
+              className,
+            )}
           >
             <IconCalendar className="mr-2 h-4 w-4" />
             {date?.from ? (
@@ -79,7 +84,7 @@ export function DatePickerWithRange({
           className="useTw w-auto p-0 bg-onTop !mt-2 shadow-lg shadow-black border border-border"
           align="end"
         >
-          <div className="p-4 space-y-2  ">
+          <div className="p-4 space-y-2">
             <Calendar
               initialFocus
               mode="range"
@@ -90,7 +95,7 @@ export function DatePickerWithRange({
               locale={es}
             />
             <Select onValueChange={handlePresetChange}>
-              <SelectTrigger className="dark:bg-white/5 ">
+              <SelectTrigger className="dark:bg-white/5">
                 <SelectValue placeholder="Seleccionar periodo predefinido" />
               </SelectTrigger>
               <SelectContent position="popper" className="bg-onTop shadow-lg shadow-black">
