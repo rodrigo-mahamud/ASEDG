@@ -1,7 +1,4 @@
 import { Block } from 'payload'
-import link from '../../fields/link'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import configPromise from '@payload-config'
 
 export interface LinkItem {
   linkText: string

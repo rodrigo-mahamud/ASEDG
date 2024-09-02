@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Button } from '@/components/lib/button'
 import Link from 'next/link'
 import DynamicIcon from '@/components/DynamicIcon'
-import { LinkItem } from '.' // Asegúrate de ajustar la ruta según tu estructura de carpetas
+import { LinkItem } from '.'
 
 type CardButtonsProps = {
   links: LinkItem[]

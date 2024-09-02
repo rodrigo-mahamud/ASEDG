@@ -186,7 +186,7 @@ const Facilities: CollectionConfig = {
                     },
                   },
                   required: true,
-                  validate: (value, { siblingData }) => {
+                  validate: (value, { siblingData }: any) => {
                     if (siblingData.open && value) {
                       const openTime = new Date(siblingData.open)
                       const closeTime = new Date(value)

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/lib/tabs'
-import { IconBus, IconCalendarEvent, IconNews } from '@tabler/icons-react'
 import RenderBlocks from '@/components/RenderBlocks'
 import Title from '@/components/lib/title'
 import Container from '@/components/Container'

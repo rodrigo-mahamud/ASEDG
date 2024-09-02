@@ -8,7 +8,7 @@ interface NewsItem {
   title: string
   summary: string
   img: string
-  categorias: CatTypes[]
+  categories: CatTypes[]
   buttonVariant?: string
   className?: string
   badgeClass?: string

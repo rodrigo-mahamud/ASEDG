@@ -1,5 +1,4 @@
 import { Block } from 'payload'
-import IconField from '../../fields/Icons/Component'
 import Icon from '../../fields/Icons'
 interface ListTypes {
   text: string
