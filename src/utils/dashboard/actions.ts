@@ -692,6 +692,7 @@ export async function getAges() {
       amount: visitors.data.filter((visitor: VisitorData) => {
         const age = visitor.age
         if (
+          visitor.status &&
           validStatuses.includes(visitor.status) &&
           age !== undefined &&
           age >= range.min &&

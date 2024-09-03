@@ -1,5 +1,5 @@
 'use client'
-import { IconCalendarMonth, IconSettings, IconSettings2, IconWheel } from '@tabler/icons-react'
+import { IconCalendarMonth } from '@tabler/icons-react'
 import { useDocumentDrawer } from '@payloadcms/ui'
 import {
   Select,
@@ -13,7 +13,6 @@ import {
 } from '../lib/select'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import SettingsMenu from './toolbar/SettingsMenu'
-import { Badge } from '../lib/badge'
 import { CloseConfirm } from './toolbar/CloseConfirm'
 import SDDoorStatus from './SDDoorStatus'
 

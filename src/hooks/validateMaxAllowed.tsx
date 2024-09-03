@@ -1,9 +1,9 @@
-import { FieldHook, PayloadRequest } from 'payload'
+import { CollectionSlug, FieldHook, PayloadRequest } from 'payload'
 
 interface ValidateMaxAllowedOptions {
   field: string
   max: number
-  collectionSlug: string
+  collectionSlug: CollectionSlug
 }
 
 const validateMaxAllowed = (options: ValidateMaxAllowedOptions): FieldHook => {

@@ -53,7 +53,7 @@ export type ClientEditStore = {
   selectedClients: string[]
   isDialogOpen: boolean
   usersToDelete: UserToDelete[]
-  editedClient: Visitor | null
+  editedClient: VisitorData | null
   dialogType: string | null
   setIsOpen: (isOpen: boolean) => void
   setDialogOpen: (isOpen: boolean, type: string | null) => void
@@ -61,7 +61,7 @@ export type ClientEditStore = {
   setSelectedClients: (clientIds: string[]) => void
   setUsersToDelete: (users: UserToDelete[] | UserToDelete) => void
   resetStore: () => void
-  setEditedClient: (client: Visitor | null) => void
+  setEditedClient: (client: VisitorData | null) => void
   updateEditedClient: (field: keyof Visitor, value: any) => void
 }
 
@@ -245,14 +245,26 @@ export interface LogsTypes {
   }>
 }
 export type Column = {
-  key: string
+  key: keyof FormattedLog
   label: string
 }
 
 export type FormattedLog = {
+  daystamp: string
   timestamp: string
+  hourstamp: string
   userName: string
-  action: string
+  videoID: string
+  userID: string
+  unlockMethod: string
+  action: ActionInfo
   userType: string
-  resourceId: string
+  details?: any
+  rawLog: LogsTypes
+}
+
+export interface ActionInfo {
+  text: string
+  icon: string
+  variant: string
 }

@@ -2,14 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Badge } from '../lib/badge'
-import {
-  Icon123,
-  Icon360View,
-  IconExclamationCircle,
-  IconLock,
-  IconLockCheck,
-  IconLockOpen2,
-} from '@tabler/icons-react'
+import { IconExclamationCircle, IconLockCheck } from '@tabler/icons-react'
 
 export default function SDDoorStatus() {
   const [doorStatus, setDoorStatus] = useState('Cerrada')

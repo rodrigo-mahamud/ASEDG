@@ -15,8 +15,8 @@ type Option = {
 }
 
 type SelectFilterProps = {
-  value: string | null
-  onValueChange: (value: string | null) => void
+  value: string | undefined
+  onValueChange: (value: string | undefined) => void
   options: Option[]
 }
 

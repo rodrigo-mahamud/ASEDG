@@ -161,10 +161,13 @@ export default function serializeLexicalRichText({
         }
       }
 
-      if (node.type === 'block') {
-        return <RenderBlocks key={i} layout={[node.fields]} />
+      if (node.type === 'block' && node.fields) {
+        const layout = {
+          block: node.fields,
+          blockType: node.fields.blockType || 'defaultBlockType', // Asegúrate de tener un tipo de bloque por defecto
+        }
+        return <RenderBlocks key={i} layout={[layout]} />
       }
-
       switch (node.type) {
         case 'quote':
           return (

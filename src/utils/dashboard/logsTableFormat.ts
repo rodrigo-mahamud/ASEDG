@@ -1,12 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { LogsTypes, FormattedLog } from '@/utils/dashboard/types'
-
-export interface ActionInfo {
-  text: string
-  icon: string
-  variant: string
-}
+import { ActionInfo, FormattedLog } from '@/utils/dashboard/types'
 
 export const ACTION_MAPPING: Record<string, ActionInfo> = {
   'access.pin_code.update': {
