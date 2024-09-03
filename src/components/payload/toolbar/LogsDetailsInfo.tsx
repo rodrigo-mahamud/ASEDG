@@ -1,12 +1,9 @@
 'use client'
 import React from 'react'
-import { Separator } from '@/components/lib/separator'
 import { VisitorData } from '@/utils/dashboard/types'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { SkeletonLogInfo } from './SkeletonLogInfo'
-import { Alert } from '@/components/lib/alert'
-import { IconAlertCircle } from '@tabler/icons-react'
 
 interface LogsDetailsInfoProps {
   currentLog: any

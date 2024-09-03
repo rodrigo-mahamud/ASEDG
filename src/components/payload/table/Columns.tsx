@@ -1,5 +1,5 @@
 'use client'
-import { Visitor } from '@/utils/dashboard/types'
+import { Visitor, VisitorData } from '@/utils/dashboard/types'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/lib/button'
 import {
@@ -55,13 +55,15 @@ const getStatusIcon = (status: string) => {
   }
 }
 
-export const columns: ColumnDef<Visitor>[] = [
+export const columns: ColumnDef<VisitorData>[] = [
   {
     accessorFn: (row) => `${row.first_name} ${row.last_name}`,
     id: 'fullName',
     cell: ({ row }) => {
       const fullName = row.getValue('fullName') as string
-      const initials = `${row.original.first_name[0]}${row.original.last_name[0]}`.toUpperCase()
+      const initials = `${row.original.first_name?.[0] || ''}${
+        row.original.last_name?.[0] || ''
+      }`.toUpperCase()
       return (
         <div className="flex items-center gap-3">
           <Avatar>
@@ -128,8 +130,8 @@ export const columns: ColumnDef<Visitor>[] = [
     id: 'periodo',
     header: 'Periodo',
     cell: ({ row }) => {
-      const startTime = dayjs(row.original.start_time * 1000)
-      const endTime = dayjs(row.original.end_time * 1000)
+      const startTime = dayjs((row.original.start_time ?? 0) * 1000)
+      const endTime = dayjs((row.original.end_time ?? 0) * 1000)
       return (
         <div>
           {startTime.format('DD/MM/YY')} - {endTime.format('DD/MM/YY')}

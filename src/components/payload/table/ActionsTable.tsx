@@ -22,6 +22,8 @@ import {
 import { toast } from '@payloadcms/ui'
 
 export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
+  console.log(visitor)
+
   const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>
@@ -83,8 +85,10 @@ export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
         <DropdownMenuItem
           className="capitalize text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
-            navigator.clipboard.writeText(visitor.email)
-            toast.info('Emial copiado al portapapeles')
+            {
+              visitor.email && navigator.clipboard.writeText(visitor.email)
+              toast.info('Emial copiado al portapapeles')
+            }
           }}
         >
           <IconMail className="mr-2" size={15}></IconMail>
@@ -105,10 +109,13 @@ export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
         <DropdownMenuItem
           className="capitalize hover:bg-red-600/25 hover:text-red-600 text-base outline-none focus-within:outline-none hover:outline-none focus:outline-none"
           onClick={() => {
-            setUsersToDelete([
-              { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
-            ])
-            setDialogOpen(true, 'delete')
+            {
+              visitor.id &&
+                setUsersToDelete([
+                  { id: visitor.id, name: `${visitor.first_name} ${visitor.last_name}` },
+                ])
+              setDialogOpen(true, 'delete')
+            }
           }}
         >
           <IconTrash className="mr-2" size={15}></IconTrash>

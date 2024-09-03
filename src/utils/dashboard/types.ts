@@ -57,7 +57,7 @@ export type ClientEditStore = {
   dialogType: string | null
   setIsOpen: (isOpen: boolean) => void
   setDialogOpen: (isOpen: boolean, type: string | null) => void
-  setClientToEdit: (client: Visitor | null) => void
+  setClientToEdit: (client: VisitorData | null) => void
   setSelectedClients: (clientIds: string[]) => void
   setUsersToDelete: (users: UserToDelete[] | UserToDelete) => void
   resetStore: () => void

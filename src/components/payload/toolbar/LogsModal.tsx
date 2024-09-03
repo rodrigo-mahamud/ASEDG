@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/lib/dialog'
 import {
   Drawer,
@@ -18,7 +17,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from '@/components/lib/drawer'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import LogsSearch from './LogsSearch'

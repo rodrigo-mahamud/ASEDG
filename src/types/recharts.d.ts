@@ -94,20 +94,53 @@ declare module 'recharts' {
 
   export class LabelList extends React.Component<LabelListProps> {}
 
+  export interface TooltipPayload {
+    name: string
+    value: any
+    payload: any
+    dataKey: string
+    fill?: string
+    color?: string
+  }
+
   export interface TooltipProps extends CommonProps {
     content?: React.ReactElement | ((props: any) => React.ReactNode)
     cursor?: boolean | React.ReactElement
-    labelFormatter?: (value: any) => React.ReactNode
+    active?: boolean
+    payload?: TooltipPayload[]
+    label?: any
+    labelFormatter?: (label: any, payload: TooltipPayload[]) => React.ReactNode
     labelClassName?: string
-    indicator?: 'line' | 'circle'
+    formatter?: (
+      value: any,
+      name: string,
+      props: TooltipPayload,
+      index: number,
+      item: any,
+    ) => React.ReactNode
+    indicator?: 'line' | 'dot' | 'dashed'
+    hideLabel?: boolean
+    hideIndicator?: boolean
+    nameKey?: string
+    labelKey?: string
   }
 
   export class Tooltip extends React.Component<TooltipProps> {}
 
+  export interface LegendPayload {
+    value: string
+    id: string
+    type: string
+    color: string
+    dataKey: string
+  }
+
   export interface LegendProps extends CommonProps {
     content?: React.ReactElement
-    payload?: Array<{ value: string; type: string; color: string }>
+    payload?: LegendPayload[]
     verticalAlign?: 'top' | 'middle' | 'bottom'
+    align?: 'left' | 'center' | 'right'
+    layout?: 'horizontal' | 'vertical'
   }
 
   export class Legend extends React.Component<LegendProps> {}
@@ -150,4 +183,6 @@ declare module 'recharts' {
   }
 
   export class Label extends React.Component<LabelProps> {}
+
+  export class ResponsiveContainer extends React.Component<React.ComponentProps<'div'>> {}
 }

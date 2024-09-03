@@ -1,16 +1,10 @@
 'use client'
 import {
-  IconSettings,
   IconDeviceMobile,
-  IconEdit,
   IconMail,
-  IconRefreshDot,
-  IconTrash,
   IconUserExclamation,
   IconUserOff,
   IconDownload,
-  IconLeaf,
-  IconAdjustmentsHorizontal,
   IconDots,
 } from '@tabler/icons-react'
 

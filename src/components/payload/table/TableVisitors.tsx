@@ -30,7 +30,7 @@ import { Pagination } from './Pagination'
 import { ToolbarTable } from './ToolbarTable'
 
 interface DataTableProps {
-  columns: ColumnDef<Visitor, any>[]
+  columns: ColumnDef<VisitorData, any>[]
   data: VisitorData[]
 }
 
@@ -71,8 +71,14 @@ export function TableVisitors({ columns, data }: DataTableProps) {
   useEffect(() => {
     const selectedIds = Object.keys(rowSelection)
     const selectedUsers = data
-      .filter((row: VisitorData) => selectedIds.includes(row.id))
-      .map((row: VisitorData) => ({ id: row.id, name: `${row.first_name} ${row.last_name}` }))
+      .filter(
+        (row: VisitorData): row is VisitorData & { id: string } =>
+          typeof row.id === 'string' && selectedIds.includes(row.id),
+      )
+      .map((row) => ({
+        id: row.id,
+        name: `${row.first_name ?? ''} ${row.last_name ?? ''}`.trim(),
+      }))
 
     setSelectedClients(selectedIds)
     setUsersToDelete(selectedUsers)
