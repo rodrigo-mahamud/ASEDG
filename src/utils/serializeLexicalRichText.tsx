@@ -17,7 +17,7 @@ interface Node {
   text?: string
   format?: number
   textAlign?: 'left' | 'right' | 'center'
-  tag?: keyof JSX.IntrinsicElements
+  tag?: any
   listType?: 'bullet' | 'check' | 'number'
   checked?: boolean
   fields?: { [key: string]: any }
