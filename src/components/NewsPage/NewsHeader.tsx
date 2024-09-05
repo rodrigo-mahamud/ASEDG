@@ -24,7 +24,7 @@ export default function NewsHeader({ style = 'vertical' }) {
   return (
     <div className="pt-16">
       {style === 'vertical' && (
-        <Container>
+        <Container className="pb-10">
           <div className="space-y-5 max-w-screen-md mx-auto">
             <Badge variant={'outline'}>Jewelry</Badge>
             <h1 className="text-5xl font-bold">Trending web & landing page designs in 2023</h1>
@@ -47,7 +47,7 @@ export default function NewsHeader({ style = 'vertical' }) {
 
               <ShareButton
                 iconStroke="1.5"
-                className="w-9 h-9 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-md"
+                className="w-9 h-9 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
                 url={currentUrl}
               />
             </div>
@@ -56,7 +56,7 @@ export default function NewsHeader({ style = 'vertical' }) {
             <Image
               src="/placeholder.webp"
               fill
-              className="mt-10 w-full object-cover scale-125 "
+              className=" w-full object-cover "
               quality={50}
               sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
               alt="{image.alt}"

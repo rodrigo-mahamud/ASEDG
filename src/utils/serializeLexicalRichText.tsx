@@ -44,17 +44,17 @@ export default function serializeLexicalRichText({
   return children
     ?.map((node, i) => {
       const classNames: { [key: string]: string } = {
-        h1: 'mt-6 text-5xl font-bold',
-        h2: 'mt-5 text-4xl font-bold',
-        h3: 'mt-4 text-3xl font-bold',
-        h4: 'mt-3 text-2xl font-bold',
-        h5: 'mt-2 text-xl font-bold',
-        h6: 'mt-1 text-lg font-bold',
-        p: 'text-base',
+        h1: 'mt-6 text-5xl font-semibold',
+        h2: 'mt-5 text-4xl font-medium',
+        h3: 'mt-4 text-3xl font-medium',
+        h4: 'mt-3 text-2xl font-medium',
+        h5: 'mt-2 text-xl font-medium',
+        h6: 'mt-1 text-lg font-medium',
+        p: 'text-lg',
         ul: 'list-disc',
         ol: 'list-decimal',
         li: 'list-item',
-        blockquote: 'font-bold text-lg text-gray-600',
+        blockquote: 'font-medium text-lg text-gray-600',
         a: 'text-blue-500 underline',
       }
 
