@@ -22,9 +22,11 @@ import { toast } from 'sonner'
 interface ShareTypes {
   className: string
   url: string
+  iconStroke?: string
+  iconClassName?: string
 }
 
-export default function ShareButton({ className, url }: ShareTypes) {
+export default function ShareButton({ className, url, iconStroke, iconClassName }: ShareTypes) {
   const generateShareLink = (platform: string) => {
     switch (platform) {
       case 'whatsapp':
@@ -53,7 +55,7 @@ export default function ShareButton({ className, url }: ShareTypes) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className={className}>
-        <IconShare className="w-5 h-5"></IconShare>
+        <IconShare className={`w-5 h-5${iconClassName}`} stroke={iconStroke}></IconShare>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Compartir</DropdownMenuLabel>

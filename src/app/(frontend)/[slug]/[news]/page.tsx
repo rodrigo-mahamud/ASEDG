@@ -6,6 +6,7 @@ import configPromise from '@payload-config'
 import Hero from '@/components/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
+import NewsHeader from '@/components/NewsPage/NewsHeader'
 
 interface Page {
   id: number
@@ -68,6 +69,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <main>
+      <NewsHeader style={'vertical'} />
+
       <RenderBlocks layout={page.layout} />
       <Toaster />
     </main>

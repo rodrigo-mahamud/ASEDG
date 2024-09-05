@@ -34,7 +34,7 @@ export default buildConfig({
   globals: [Settings, Header],
   admin: {
     livePreview: {
-      url: 'http://localhost:3000',
+      url: `http://${process.env.ROOT_DOMAIN}`,
       collections: ['pages'],
     },
   },

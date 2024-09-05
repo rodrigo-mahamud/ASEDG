@@ -283,7 +283,7 @@ export interface Page {
 export interface News {
   id: string;
   title: string;
-  categories: (string | Cat)[];
+  style: 'vertical' | 'horizontal' | 'video' | 'masonry';
   summary: string;
   image: string | Media;
   layout?:
@@ -315,18 +315,9 @@ export interface News {
       }[]
     | null;
   fixed?: boolean | null;
+  Categorías: (string | Cat)[];
   publishedDate: string;
   slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cat".
- */
-export interface Cat {
-  id: string;
-  title: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -348,6 +339,16 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cat".
+ */
+export interface Cat {
+  id: string;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

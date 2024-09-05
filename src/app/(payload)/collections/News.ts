@@ -48,12 +48,29 @@ const News: CollectionConfig = {
           required: true,
         },
         {
-          name: 'categories',
-          type: 'relationship',
-          relationTo: 'cat',
-          hasMany: true,
-          maxRows: 2,
+          name: 'style',
+          label: 'Estilo de la cabecera',
+          type: 'select',
+
           required: true,
+          options: [
+            {
+              label: 'Verical',
+              value: 'vertical',
+            },
+            {
+              label: 'Horizontal',
+              value: 'horizontal',
+            },
+            {
+              label: 'Video',
+              value: 'video',
+            },
+            {
+              label: 'Con mosaico',
+              value: 'masonry',
+            },
+          ],
         },
       ],
     },
@@ -108,6 +125,18 @@ const News: CollectionConfig = {
       // hooks: {
       //   beforeChange: [checkFixedNewsLimit],
       // },
+    },
+
+    {
+      name: 'Categorías',
+      type: 'relationship',
+      relationTo: 'cat',
+      hasMany: true,
+      maxRows: 2,
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'publishedDate',
