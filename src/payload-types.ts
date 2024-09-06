@@ -310,7 +310,7 @@ export interface News {
     | null;
   attachments?:
     | {
-        file: string | Media;
+        file?: string | Media | null;
         id?: string | null;
       }[]
     | null;

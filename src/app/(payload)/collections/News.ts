@@ -111,7 +111,7 @@ const News: CollectionConfig = {
           type: 'upload',
           label: 'Archivo',
           relationTo: 'media',
-          required: true,
+          required: false,
         },
       ],
     },
