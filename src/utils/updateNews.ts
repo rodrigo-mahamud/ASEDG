@@ -3,7 +3,7 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config' // Ajusta esta ruta según la ubicación de tu configuración de Payload
 import type { Payload } from 'payload'
 
-// ... (Mantén las interfaces y tipos existentes)
+// ... (Mantén las interfaces y tipos existentes )
 
 const updateNews = async () => {
   const payload: Payload = await getPayloadHMR({ config: configPromise })
