@@ -8,7 +8,7 @@ import type { Payload } from 'payload'
 const updateNews = async () => {
   const payload: Payload = await getPayloadHMR({ config: configPromise })
 
-  // Obtener todas las noticias
+  // Obtener todas las noticiasj
   const allNewsResponse = await payload.find({
     collection: 'news',
   })
