@@ -87,17 +87,9 @@ const News: CollectionConfig = {
       relationTo: 'media',
       required: true,
     },
-    {
-      name: 'layout',
-      label: ' ',
-      labels: {
-        singular: 'Seccion',
-        plural: 'Secciones',
-      },
-      type: 'blocks',
-      maxRows: 1,
-      blocks: [RichText],
-    },
+
+    { name: 'richtxtcontent', label: 'Icono', type: 'richText' },
+
     {
       name: 'attachments',
       type: 'array',

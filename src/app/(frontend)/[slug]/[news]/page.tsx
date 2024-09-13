@@ -1,59 +1,17 @@
-// app/[slug]/page.tsx
 import React from 'react'
 import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
-import Hero from '@/components/Hero'
-import RenderBlocks from '@/components/RenderBlocks'
-import { Toaster } from 'sonner'
 import NewsHeader from '@/components/NewsPage/NewsHeader'
-
-interface Page {
-  id: number
-  header: {
-    style: string
-    titleIndex: string | null
-    pretitleIndex: string | null
-    description: string | null
-    newsSelection: number[]
-    title: string
-    pretitle: string | null
-  }
-  news: string
-}
+import RichText from '@/app/(payload)/blocks/RichText/Component'
+import { Toaster } from 'sonner'
+import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
+import RichTextParser from '@/utils/richTextParser'
+import Container from '@/components/Container'
 
 interface PageProps {
   params: { news: string }
 }
-
-// export async function generateStaticParams() {
-//   const payload = await getPayloadHMR({ config: configPromise })
-//   const pageData = (await payload.find({
-//     collection: 'news',
-//   })) as any
-
-//   return pageData.docs.map((page: any) => ({
-//     slug: page.slug,
-//   }))
-// }
-
-// export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-//   const payload = await getPayloadHMR({ config: configPromise })
-//   const pageData = (await payload.find({
-//     collection: 'news',
-//   })) as any
-
-//   const page = pageData.docs.find((page: any) => page.slug === params.news)
-
-//   if (!page) {
-//     return { title: 'Page not found' }
-//   }
-
-//   return {
-//     title: page.header.title,
-//     description: page.header.description || '',
-//   }
-// }
 
 export default async function Page({ params }: PageProps) {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -67,13 +25,24 @@ export default async function Page({ params }: PageProps) {
     return <div>Page not found</div>
   }
 
-  return (
-    <main>
-      <NewsHeader style={'horizontal'} />
+  // Extraer richtxtcontent del primer elemento del layout
+  const richtxtcontent = page.layout[0]?.richtxtcontent || {}
 
-      <RenderBlocks layout={page.layout} />
+  return (
+    <>
+      <NewsHeader style={'horizontal'} />
+      <main>
+        <Container className="flex gap-20">
+          <article className="w-4/5">
+            <RichTextParser content={richtxtcontent}></RichTextParser>
+          </article>
+          <aside className="w-1/5">
+            <NewsStickyAside></NewsStickyAside>
+          </aside>
+        </Container>
+      </main>
       <Toaster />
-    </main>
+    </>
   )
 }
 

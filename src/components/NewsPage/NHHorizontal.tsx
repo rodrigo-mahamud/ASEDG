@@ -17,7 +17,7 @@ export default function NHHorizontal({ currentUrl }: any) {
           <h1 className="text-5xl font-bold  text-white">
             Trending web & landing page designs in 2023
           </h1>
-          <h2 className="text-lg text-muted-foreground">
+          <h2 className="text-lg text-white/65">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis tempora obcaecati
             error ipsum voluptatibus sed adipisci ut maiores nesciunt quam.
           </h2>
@@ -30,13 +30,13 @@ export default function NHHorizontal({ currentUrl }: any) {
               </Avatar>
               <div className="flex flex-col ml-3 ">
                 <span className="text-sm text-white">Foulcher Nathanil</span>
-                <span className="text-xs text-muted-foreground">May 20, 2021 · 2 min read</span>
+                <span className="text-xs text-white/65">May 20, 2021 · 2 min read</span>
               </div>
             </div>
 
             <ShareButton
               iconStroke="1.5"
-              className="w-9 h-9 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
+              className="w-9 h-9 outline-none text-white/75 bg-white/10 hover:bg-white/25 flex justify-center items-center rounded-full"
               url={currentUrl}
             />
           </div>
