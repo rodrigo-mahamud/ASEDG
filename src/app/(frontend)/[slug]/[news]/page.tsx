@@ -69,7 +69,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <main>
-      <NewsHeader style={'vertical'} />
+      <NewsHeader style={'horizontal'} />
 
       <RenderBlocks layout={page.layout} />
       <Toaster />

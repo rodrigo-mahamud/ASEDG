@@ -62,7 +62,7 @@ export default function NewsPinged({ newspinged, title, subtitle }: Type) {
                         alt={newsItem.title}
                         width={500}
                         height={500}
-                        className="w-full h-full rounded-lg"
+                        className="w-full h-full rounded-lg object-cover"
                       ></Image>
                     </div>
                   </Link>
