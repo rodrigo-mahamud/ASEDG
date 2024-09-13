@@ -120,7 +120,7 @@ const News: CollectionConfig = {
     },
 
     {
-      name: 'Categorías',
+      name: 'categories',
       type: 'relationship',
       relationTo: 'cat',
       hasMany: true,

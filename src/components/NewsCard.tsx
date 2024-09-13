@@ -39,6 +39,7 @@ interface NewsCardTypes {
 
 export default function NewsCard({ data, className }: NewsCardTypes) {
   const pathname = usePathname()
+  console.log(data.categories)
 
   const getCurrentUrl = () => {
     if (typeof window !== 'undefined') {

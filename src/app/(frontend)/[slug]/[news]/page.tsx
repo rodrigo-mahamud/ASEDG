@@ -24,17 +24,15 @@ export default async function Page({ params }: PageProps) {
   if (!page) {
     return <div>Page not found</div>
   }
-
-  // Extraer richtxtcontent del primer elemento del layout
-  const richtxtcontent = page.layout[0]?.richtxtcontent || {}
+  console.log(page.richtxtcontent.root.children)
 
   return (
     <>
-      <NewsHeader style={'horizontal'} />
+      <NewsHeader style={'vertical'} />
       <main>
         <Container className="flex gap-20">
           <article className="w-4/5">
-            <RichTextParser content={richtxtcontent}></RichTextParser>
+            <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           <aside className="w-1/5">
             <NewsStickyAside></NewsStickyAside>

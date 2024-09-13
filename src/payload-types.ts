@@ -308,7 +308,7 @@ export interface News {
       }[]
     | null;
   fixed?: boolean | null;
-  Categorías: (string | Cat)[];
+  categories: (string | Cat)[];
   publishedDate: string;
   slug: string;
   updatedAt: string;
