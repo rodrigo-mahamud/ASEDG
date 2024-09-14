@@ -54,7 +54,7 @@ function NSADownloadFiles({ attachments }: DownloadAttachmentsProps) {
   }
 
   return (
-    <div className="mt-4 bg-[#f3f4f6] rounded-lg overflow-hidden border border-border">
+    <div className="bg-[#f3f4f6] rounded-lg overflow-hidden border border-border">
       <h2 className="text-lg font-semibold pl-5 py-5">Archivos adjuntos</h2>
       {attachments.map((attachment) => (
         <Button

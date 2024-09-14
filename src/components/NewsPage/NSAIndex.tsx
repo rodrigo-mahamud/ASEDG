@@ -14,16 +14,16 @@ const NSAIndex: React.FC<NSAIndexProps> = ({ indexContent }) => {
   }
 
   return (
-    <nav className="nsa-index">
-      <h3 className="text-xl font-semibold mb-4">Índice</h3>
-      <ul className="space-y-2">
+    <div className="bg-[#f3f4f6] rounded-lg overflow-hidden border border-border">
+      <h2 className="text-lg font-semibold pl-5 py-5">Indice de contenidos</h2>
+      <ul className="space-y-2 p-5 border-t border-border">
         {headings.map((heading, index) => (
           <li key={index}>
             <a href={`#${heading.id}`}>{heading.text}</a>
           </li>
         ))}
       </ul>
-    </nav>
+    </div>
   )
 }
 

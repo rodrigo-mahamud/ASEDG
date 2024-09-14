@@ -6,9 +6,9 @@ import NSAIndex from './NSAIndex'
 
 const NewsStickyAside: React.FC<NewsStickyAsideProps> = ({ attachments, indexContent }) => {
   return (
-    <div className="sticky top-32">
-      <NSADowloadFiles attachments={attachments} />
+    <div className="sticky top-32 space-y-6">
       <NSAIndex indexContent={indexContent}></NSAIndex>
+      <NSADowloadFiles attachments={attachments} />
     </div>
   )
 }
