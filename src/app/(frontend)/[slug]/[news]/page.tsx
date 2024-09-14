@@ -8,27 +8,23 @@ import { Toaster } from 'sonner'
 import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
 import RichTextParser from '@/utils/richTextParser'
 import Container from '@/components/Container'
+import { NewsPageProps, NewsPage, NewsPageData } from '@/types/typesNP'
 
-interface PageProps {
-  params: { news: string }
-}
-
-export default async function Page({ params }: PageProps) {
+const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const payload = await getPayloadHMR({ config: configPromise })
   const pageData = (await payload.find({
     collection: 'news',
-  })) as any
+  })) as NewsPageData
 
-  const page = pageData.docs.find((page: any) => page.slug === params.news)
+  const page = pageData.docs.find((page: NewsPage) => page.slug === params.news)
 
   if (!page) {
     return <div>Page not found</div>
   }
-  console.log(page)
 
   return (
     <>
-      <NewsHeader style={'vertical'} />
+      <NewsHeader style={'horizontal'} />
       <main>
         <Container className="flex gap-20">
           <article className="w-4/6">
@@ -43,5 +39,7 @@ export default async function Page({ params }: PageProps) {
     </>
   )
 }
+
+export default Page
 
 export const revalidate = 60 // Revalidate every 60 seconds

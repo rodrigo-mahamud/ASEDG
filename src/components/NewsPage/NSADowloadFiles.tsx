@@ -3,8 +3,9 @@ import React from 'react'
 import { Button } from '../lib/button'
 import { IconDownload } from '@tabler/icons-react'
 import { IconDisplay } from '../IconDisplay'
+import { DownloadAttachmentsProps, FileAttachment } from '@/types/typesNP'
 
-const getFileIcon = (mimeType) => {
+const getFileIcon = (mimeType: string): string => {
   switch (true) {
     case mimeType.startsWith('image/'):
       return 'IconPhoto'
@@ -23,7 +24,7 @@ const getFileIcon = (mimeType) => {
   }
 }
 
-const formatFileSize = (bytes) => {
+const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes'
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
@@ -31,12 +32,12 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-const DownloadAttachments = ({ attachments }) => {
+function NSADownloadFiles({ attachments }: DownloadAttachmentsProps) {
   if (!attachments || attachments.length === 0) {
     return null
   }
 
-  const handleDownload = (fileUrl, fileName) => {
+  const handleDownload = (fileUrl: string, fileName: string): void => {
     fetch(fileUrl)
       .then((response) => response.blob())
       .then((blob) => {
@@ -87,4 +88,4 @@ const DownloadAttachments = ({ attachments }) => {
   )
 }
 
-export default DownloadAttachments
+export default NSADownloadFiles
