@@ -9,13 +9,30 @@ export interface FileAttachment {
     filesize: number
   }
 }
+interface LexicalNode {
+  type: string
+  tag?: string
+  text?: string
+  format?: number
+  children?: LexicalNode[]
+  // ... otros campos que puedan ser relevantes
+}
+interface LexicalContent {
+  root: {
+    children: LexicalNode[]
+  }
+}
 
+export interface NSAIndexProps {
+  indexContent: LexicalContent
+}
 export interface DownloadAttachmentsProps {
   attachments: FileAttachment[]
 }
 
 export interface NewsStickyAsideProps {
   attachments: FileAttachment[]
+  indexContent: LexicalContent
 }
 
 export interface NewsPageProps {

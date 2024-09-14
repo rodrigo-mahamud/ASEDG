@@ -37,6 +37,18 @@ function generateTextAlign(node: Node): string {
   return ''
 }
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
+}
+
 export default function serializeLexicalRichText({
   children,
   customClassNames,
@@ -103,6 +115,19 @@ export default function serializeLexicalRichText({
 
       if (node.type === 'heading' && node.tag) {
         const Tag = node.tag
+        if (node.tag === 'h2') {
+          const headingText = node.children?.[0]?.text || ''
+          const headingId = slugify(headingText)
+          return (
+            <Tag
+              id={headingId}
+              className={`${classNames[node.tag]} ${generateTextAlign(node)}`}
+              key={i}
+            >
+              {serializeLexicalRichText({ children: node.children || [] })}
+            </Tag>
+          )
+        }
         return (
           <Tag className={`${classNames[node.tag]} ${generateTextAlign(node)}`} key={i}>
             {serializeLexicalRichText({ children: node.children || [] })}
@@ -165,7 +190,7 @@ export default function serializeLexicalRichText({
       if (node.type === 'block' && node.fields) {
         const layout = {
           block: node.fields,
-          blockType: node.fields.blockType || 'defaultBlockType', // Asegúrate de tener un tipo de bloque por defecto
+          blockType: node.fields.blockType || 'defaultBlockType',
         }
         return <RenderBlocks key={i} layout={[layout]} />
       }
@@ -178,14 +203,13 @@ export default function serializeLexicalRichText({
               src={value.url}
               alt={value.alt || value.filename}
               quality={25}
-              width={value.width || 800} // Usa el ancho real de la imagen si está disponible
-              height={value.height || 600} // Usa la altura real de la imagen si está disponible
+              width={value.width || 800}
+              height={value.height || 600}
               className={customClassNames?.image || 'my-4 max-w-full h-auto'}
               layout="responsive"
             />
           )
         } else {
-          // Para otros tipos de archivos, mantenemos el enlace
           return (
             <a
               key={i}
@@ -228,4 +252,22 @@ export default function serializeLexicalRichText({
       }
     })
     .filter((node) => node !== null)
+}
+
+// Función auxiliar para extraer encabezados h2
+export function extractH2Headings(nodes: Node[]): { id: string; text: string }[] {
+  const headings: { id: string; text: string }[] = []
+
+  nodes.forEach((node) => {
+    if (node.type === 'heading' && node.tag === 'h2') {
+      const text = node.children?.[0]?.text || ''
+      const id = slugify(text)
+      headings.push({ id, text })
+    }
+    if (node.children) {
+      headings.push(...extractH2Headings(node.children))
+    }
+  })
+
+  return headings
 }

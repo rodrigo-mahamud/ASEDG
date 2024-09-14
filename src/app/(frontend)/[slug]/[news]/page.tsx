@@ -17,6 +17,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
   })) as NewsPageData
 
   const page = pageData.docs.find((page: NewsPage) => page.slug === params.news)
+  // console.log(page)
 
   if (!page) {
     return <div>Page not found</div>
@@ -31,7 +32,10 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           <aside className="w-2/6">
-            <NewsStickyAside attachments={page.attachments}></NewsStickyAside>
+            <NewsStickyAside
+              attachments={page.attachments}
+              indexContent={page.richtxtcontent}
+            ></NewsStickyAside>
           </aside>
         </Container>
       </main>
