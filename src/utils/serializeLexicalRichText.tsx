@@ -1,5 +1,6 @@
 import RenderBlocks from '@/components/RenderBlocks'
 import escapeHTML from 'escape-html'
+import Image from 'next/image'
 import React, { Fragment, ReactNode } from 'react'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
 
@@ -167,6 +168,36 @@ export default function serializeLexicalRichText({
           blockType: node.fields.blockType || 'defaultBlockType', // Asegúrate de tener un tipo de bloque por defecto
         }
         return <RenderBlocks key={i} layout={[layout]} />
+      }
+      if (node.type === 'upload' && node.value) {
+        const { value } = node
+        if (value.mimeType.startsWith('image')) {
+          return (
+            <Image
+              key={i}
+              src={value.url}
+              alt={value.alt || value.filename}
+              quality={25}
+              width={value.width || 800} // Usa el ancho real de la imagen si está disponible
+              height={value.height || 600} // Usa la altura real de la imagen si está disponible
+              className={customClassNames?.image || 'my-4 max-w-full h-auto'}
+              layout="responsive"
+            />
+          )
+        } else {
+          // Para otros tipos de archivos, mantenemos el enlace
+          return (
+            <a
+              key={i}
+              href={value.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={customClassNames?.fileLink || 'text-blue-500 underline'}
+            >
+              {value.filename}
+            </a>
+          )
+        }
       }
       switch (node.type) {
         case 'quote':

@@ -88,14 +88,16 @@ const News: CollectionConfig = {
       required: true,
     },
 
-    { name: 'richtxtcontent', label: 'Icono', type: 'richText' },
+    { name: 'richtxtcontent', label: 'Contenido de la noticia:', type: 'richText' },
 
     {
       name: 'attachments',
       type: 'array',
       label: 'Adjuntos',
+
       admin: {
         position: 'sidebar',
+        initCollapsed: true,
       },
       fields: [
         {

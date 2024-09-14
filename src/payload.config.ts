@@ -32,6 +32,11 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   collections: [Users, Pages, Media, News, Facilities, Sports, Categorias],
   globals: [Settings, Header],
+  upload: {
+    limits: {
+      fileSize: 5000000, // 5MB, written in bytes
+    },
+  },
   admin: {
     livePreview: {
       url: `http://${process.env.ROOT_DOMAIN}`,
@@ -65,8 +70,6 @@ export default buildConfig({
       UploadFeature({
         collections: {
           uploads: {
-            // Example showing how to customize the built-in fields
-            // of the Upload feature
             fields: [
               {
                 name: 'caption',
