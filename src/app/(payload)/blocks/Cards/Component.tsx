@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/
 import Image from 'next/image'
 import Container from '@/components/Container'
 import Title from '@/components/lib/title'
-import DynamicIcon from '@/components/DynamicIcon'
 import { Type } from '.'
 import { Badge } from '@/components/lib/badge'
 import CardButtons from './CardButtons' // Asegúrate de ajustar la ruta según tu estructura de carpetas

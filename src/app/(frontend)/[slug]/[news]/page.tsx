@@ -24,18 +24,18 @@ export default async function Page({ params }: PageProps) {
   if (!page) {
     return <div>Page not found</div>
   }
-  console.log(page.richtxtcontent.root.children)
+  console.log(page)
 
   return (
     <>
       <NewsHeader style={'vertical'} />
       <main>
         <Container className="flex gap-20">
-          <article className="w-4/5">
+          <article className="w-4/6">
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
-          <aside className="w-1/5">
-            <NewsStickyAside></NewsStickyAside>
+          <aside className="w-2/6">
+            <NewsStickyAside attachments={page.attachments}></NewsStickyAside>
           </aside>
         </Container>
       </main>

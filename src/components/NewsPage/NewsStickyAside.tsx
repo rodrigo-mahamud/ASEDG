@@ -1,11 +1,11 @@
+import { IconFiles } from '@tabler/icons-react'
 import React from 'react'
+import NSADowloadFiles from './NSADowloadFiles'
 
-export default function NewsStickyAside() {
+export default function NewsStickyAside({ attachments }) {
   return (
     <div className="sticky top-32">
-      HOLdsdfjbnvf dsfg Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis tempora
-      nam quibusdam fugiat veniam recusandae tenetur ad sint magnam quae facilis error consectetur
-      laboriosam voluptas, fugit doloremque maiores. Dicta, veniam.
+      <NSADowloadFiles attachments={attachments}></NSADowloadFiles>
     </div>
   )
 }
