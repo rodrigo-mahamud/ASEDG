@@ -3,7 +3,7 @@ import escapeHTML from 'escape-html'
 import Image from 'next/image'
 import React, { Fragment, ReactNode } from 'react'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
-
+import { slugify } from '@/utils/slugify'
 export const IS_BOLD = 1
 export const IS_ITALIC = 1 << 1
 export const IS_STRIKETHROUGH = 1 << 2
@@ -35,18 +35,6 @@ function generateTextAlign(node: Node): string {
   if (node.textAlign === 'right') return 'text-right'
   if (node.textAlign === 'center') return 'text-center'
   return ''
-}
-
-function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-    .replace(/^-+/, '') // Trim - from start of text
-    .replace(/-+$/, '') // Trim - from end of text
 }
 
 export default function serializeLexicalRichText({

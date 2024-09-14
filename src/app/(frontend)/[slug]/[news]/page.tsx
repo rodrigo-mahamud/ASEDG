@@ -28,10 +28,10 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
       <NewsHeader style={'horizontal'} />
       <main>
         <Container className="flex gap-20">
-          <article className="w-4/6">
+          <article className="w-[70%]">
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
-          <aside className="w-2/6">
+          <aside className="w-[30%]">
             <NewsStickyAside
               attachments={page.attachments}
               indexContent={page.richtxtcontent}

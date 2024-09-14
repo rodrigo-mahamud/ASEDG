@@ -286,6 +286,7 @@ export interface News {
   style: 'vertical' | 'horizontal' | 'video' | 'masonry';
   summary: string;
   image: string | Media;
+  newsRelated?: (string | News)[] | null;
   richtxtcontent?: {
     root: {
       type: string;

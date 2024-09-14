@@ -87,6 +87,14 @@ const News: CollectionConfig = {
       relationTo: 'media',
       required: true,
     },
+    {
+      name: 'newsRelated',
+      label: 'Noticias Relaccionadas',
+      type: 'relationship',
+      relationTo: 'news',
+      hasMany: true,
+      maxRows: 8,
+    },
 
     { name: 'richtxtcontent', label: 'Contenido de la noticia:', type: 'richText' },
 
@@ -123,6 +131,7 @@ const News: CollectionConfig = {
 
     {
       name: 'categories',
+      label: 'Categorias',
       type: 'relationship',
       relationTo: 'cat',
       hasMany: true,
