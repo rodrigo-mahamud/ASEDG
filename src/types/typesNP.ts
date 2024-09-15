@@ -31,6 +31,8 @@ export interface NewsItemData {
   image: {
     url: string
   }
+  categories: Array<{ title: string }> // Añadido
+  publishedDate: string // Añadido
 }
 
 export interface NewsItem {

@@ -2,39 +2,50 @@ import React from 'react'
 import Container from '../Container'
 import Title from '../lib/title'
 import Link from 'next/link'
-import { Button } from '../lib/button'
 import { NewsItemData } from '@/types/typesNP'
 import Image from 'next/image'
 
 export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData[] }) {
   console.log(newsRelated)
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString('es-ES', options)
+  }
+
   return (
-    <section className=" overflow-hidden">
+    <section className="overflow-hidden">
       <Container className="py-32">
         <div className="flex justify-between w-full">
           <Title title={'Te puede interesar'} subtitle={'Prueba'} />
         </div>
-        <div className=" flex gap-8">
+        <div className="flex gap-8">
           {newsRelated.map((newsItem) => (
             <div
               key={newsItem.id}
-              className="relative mainShadow transitionAlt hover:rounded-2xl group rounded-lg overflow-hidden"
+              className="relative mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden"
             >
+              <div className=" bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
+                {newsItem.categories && newsItem.categories.length > 0 && (
+                  <p className="text-white px-2 my-1 text-sm leading-normal">
+                    {newsItem.categories[0].title}
+                  </p>
+                )}
+              </div>
               <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
                 <div className="flex relative w-full h-[25rem] items-end">
                   <div className="absolute w-full h-full blurMaskAlt z-10"></div>
-                  <div className="absolute z-10 p-6 flex items-center w-full translate-y-24 group-hover:translate-y-0 transition-transform">
-                    <div className="w-full ">
-                      <h2 className="text-white line-clamp-2 font-bold  text-xl transition-transform">
+                  <div className="absolute z-10 p-6 flex flex-col items-start w-full translate-y-4 group-hover:translate-y-0 transition-generic">
+                    <div className="flex justify-between w-full mb-2"></div>
+                    <div className="w-full">
+                      <h2 className="text-white line-clamp-2 font-bold text-xl transition-generic">
                         {newsItem.summary}
                       </h2>
-                      <h2 className="text-white/75 line-clamp-3 opacity-0 group-hover:opacity-100 transition-transform">
-                        {newsItem.summary}
-                      </h2>
+                      <span className="text-white/75 text-xs opacity-0 group-hover:opacity-100 transition-generic">
+                        {formatDate(newsItem.publishedDate)}
+                      </span>
                     </div>
                   </div>
-
                   <Image
                     src={newsItem.image.url}
                     quality={5}
@@ -42,8 +53,8 @@ export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData
                     alt={newsItem.title}
                     width={500}
                     height={500}
-                    className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-90 transition-transform"
-                  ></Image>
+                    className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-generic"
+                  />
                 </div>
               </Link>
             </div>
