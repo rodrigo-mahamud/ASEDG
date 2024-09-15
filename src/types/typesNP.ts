@@ -1,5 +1,3 @@
-// File: @/types/typesNP.ts
-
 export interface FileAttachment {
   id: string
   file: {
@@ -9,6 +7,7 @@ export interface FileAttachment {
     filesize: number
   }
 }
+
 interface LexicalNode {
   type: string
   tag?: string
@@ -17,15 +16,31 @@ interface LexicalNode {
   children?: LexicalNode[]
   // ... otros campos que puedan ser relevantes
 }
+
 interface LexicalContent {
   root: {
     children: LexicalNode[]
   }
 }
 
+export interface NewsItemData {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  image: {
+    url: string
+  }
+}
+
+export interface NewsItem {
+  newsRelated: NewsItemData[]
+}
+
 export interface NSAIndexProps {
   indexContent: LexicalContent
 }
+
 export interface DownloadAttachmentsProps {
   attachments: FileAttachment[]
 }
@@ -41,8 +56,9 @@ export interface NewsPageProps {
 
 export interface NewsPage {
   slug: string
-  richtxtcontent: any // Reemplazar 'any' con un tipo más específico si se conoce la estructura
+  richtxtcontent: LexicalContent
   attachments: FileAttachment[]
+  newsRelated: NewsItemData[]
 }
 
 export interface NewsPageData {

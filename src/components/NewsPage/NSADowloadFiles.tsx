@@ -72,7 +72,7 @@ function NSADownloadFiles({ attachments }: DownloadAttachmentsProps) {
               />
             </div>
             <div className="flex flex-col items-start w-full">
-              <h3 className="text-sm line-clamp-1 uppercase pr-2 pb-1 w-full">
+              <h3 className="text-sm line-clamp-1 uppercase pr-2 pb-0.5 w-full">
                 {attachment.file.filename}
               </h3>
               <span className="text-xs opacity-70">

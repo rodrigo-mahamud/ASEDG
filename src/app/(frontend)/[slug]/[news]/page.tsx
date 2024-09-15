@@ -9,6 +9,7 @@ import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
 import RichTextParser from '@/utils/richTextParser'
 import Container from '@/components/Container'
 import { NewsPageProps, NewsPage, NewsPageData } from '@/types/typesNP'
+import NewsRelated from '@/components/NewsPage/NewsRelated'
 
 const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -17,7 +18,6 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
   })) as NewsPageData
 
   const page = pageData.docs.find((page: NewsPage) => page.slug === params.news)
-  // console.log(page)
 
   if (!page) {
     return <div>Page not found</div>
@@ -38,6 +38,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
             ></NewsStickyAside>
           </aside>
         </Container>
+        <NewsRelated newsRelated={page.newsRelated}></NewsRelated>
       </main>
       <Toaster />
     </>
