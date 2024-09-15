@@ -139,7 +139,7 @@ const config = {
         fifth: 'moveInCircle 20s ease infinite',
       },
       fontFamily: {
-        cal: ['CalSans-SemiBold'],
+        sans: ['var(--font-SequelSans)'],
       },
     },
   },

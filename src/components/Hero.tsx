@@ -26,7 +26,7 @@ const Hero: FC<HeroTypes> = ({ data, publishedDate }) => {
                 Actualizado el: {formattedDate}
               </span>
             )}
-            <h1 className="text-5xl font-cal tracking-wide my-5">{data.title}</h1>
+            <h1 className="text-5xl font-bold tracking-tight my-5">{data.title}</h1>
             <BreadcrumbDemo />
           </div>
         </Container>
