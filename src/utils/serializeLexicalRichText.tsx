@@ -46,15 +46,13 @@ export default function serializeLexicalRichText({
     ?.map((node, i) => {
       const classNames: { [key: string]: string } = {
         h1: 'mt-6 text-5xl font-semibold',
-        h2: 'mt-5 text-4xl font-medium',
-        h3: 'mt-4 text-3xl font-medium',
-        h4: 'mt-3 text-2xl font-medium',
-        h5: 'mt-2 text-xl font-medium',
-        h6: 'mt-1 text-lg font-medium',
-        p: 'text-lg',
-        ul: 'list-disc',
-        ol: 'list-decimal',
-        li: 'list-item',
+        h2: 'text-3xl font-medium mb-2 mt-10',
+        h3: 'text-xl font-medium mb-2 mt-4',
+        h4: 'text-lg font-medium',
+        p: 'text-base my-2',
+        ul: 'list-disc ml-8 mt-3 mb-4',
+        ol: 'list-decimal ml-8 mt-3 mb-4',
+        li: 'list-item my-4',
         blockquote: 'font-medium text-lg text-gray-600',
         a: 'text-blue-500 underline',
       }
@@ -67,7 +65,7 @@ export default function serializeLexicalRichText({
         let text: ReactNode = node.text ? (
           <span className="">{node.text}</span>
         ) : (
-          <span className="opacity-0">&nbsp;</span>
+          <span className="opacity-0 ">&nbsp;</span>
         )
 
         if (node.format !== undefined && node.format & IS_BOLD) {
@@ -193,7 +191,7 @@ export default function serializeLexicalRichText({
               quality={25}
               width={value.width || 800}
               height={value.height || 600}
-              className={customClassNames?.image || 'my-4 max-w-full h-auto'}
+              className={'my-6 w-full aspect-video rounded-md object-cover'}
               layout="responsive"
             />
           )

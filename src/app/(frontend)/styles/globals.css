@@ -186,8 +186,8 @@
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
 .blurMaskAlt {
-  -webkit-backdrop-filter: blur(1.5px);
-  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.25px);
+  backdrop-filter: blur(1.25px);
   -webkit-mask-image: linear-gradient(0deg, #000000 25%, #fff0 45%);
   background: linear-gradient(0deg, #00000056 10%, #fff0 80%);
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
@@ -195,7 +195,6 @@
 .mainShadow:hover .blurMaskAlt {
   -webkit-backdrop-filter: blur(2.25px);
   backdrop-filter: blur(2.25px);
-  -webkit-mask-image: linear-gradient(0deg, #000000 30%, #fff0 90%);
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
 .bigShadow {

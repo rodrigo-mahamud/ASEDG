@@ -23,7 +23,7 @@ export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData
           {newsRelated.map((newsItem) => (
             <div
               key={newsItem.id}
-              className="relative mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden"
+              className="relative w-1/4 mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden"
             >
               <div className=" bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
                 {newsItem.categories && newsItem.categories.length > 0 && (

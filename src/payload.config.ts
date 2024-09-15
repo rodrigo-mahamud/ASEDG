@@ -6,6 +6,8 @@ import {
   HeadingFeature,
   HorizontalRuleFeature,
   LinkFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
   UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
@@ -48,10 +50,12 @@ export default buildConfig({
       ...defaultFeatures,
       AlignFeature(),
       HeadingFeature({
-        enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'],
+        enabledHeadingSizes: ['h2', 'h3', 'h4'],
       }),
       FixedToolbarFeature(),
       HorizontalRuleFeature(),
+      UnorderedListFeature(),
+      OrderedListFeature(),
       LinkFeature({
         // Example showing how to customize the built-in fields
         // of the Link feature
@@ -81,9 +85,6 @@ export default buildConfig({
             ],
           },
         },
-      }),
-      BlocksFeature({
-        blocks: [TextImagesBlock],
       }),
     ],
   }),
