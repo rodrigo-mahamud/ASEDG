@@ -1,33 +1,8 @@
-import { CollectionConfig, FieldHook } from 'payload'
-// import { APIError } from 'payload/errors' // Importa APIError
+import { CollectionConfig } from 'payload'
 import slug from '../fields/slug'
-import RichText from '../blocks/RichText'
 import updateNews from '@/utils/updateNews'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import configPromise from '@payload-config' // Asegúrate de que esta ruta es correcta
+import { group } from 'console'
 
-// const checkFixedNewsLimit: FieldHook = async ({ data, req, originalDoc }) => {
-//   if (data && data.fixed && (!originalDoc || !originalDoc.fixed)) {
-//     const payload = await getPayloadHMR({ config: configPromise })
-
-//     const { totalDocs } = await payload.find({
-//       collection: 'news',
-//       where: {
-//         fixed: {
-//           equals: true,
-//         },
-//       },
-//     })
-
-//     if (totalDocs >= 8) {
-//       const error = new APIError('No puedes fijar más de 8 noticias.', 400)
-//       error.isPublic = true // Establece el error como público
-//       throw error
-//     }
-//   }
-
-//   return data?.fixed ?? originalDoc?.fixed // Maneja el posible valor undefined de data y originalDoc
-// }
 const News: CollectionConfig = {
   slug: 'news',
   labels: {
@@ -51,11 +26,10 @@ const News: CollectionConfig = {
           name: 'style',
           label: 'Estilo de la cabecera',
           type: 'select',
-
           required: true,
           options: [
             {
-              label: 'Verical',
+              label: 'Vertical',
               value: 'vertical',
             },
             {
@@ -67,7 +41,7 @@ const News: CollectionConfig = {
               value: 'video',
             },
             {
-              label: 'Con mosaico',
+              label: 'Galería de imágenes',
               value: 'masonry',
             },
           ],
@@ -86,23 +60,83 @@ const News: CollectionConfig = {
       label: 'Imagen',
       relationTo: 'media',
       required: true,
+      admin: {
+        condition: (data) => ['vertical', 'horizontal'].includes(data.style),
+      },
     },
     {
+      name: 'videoUrl',
+      type: 'text',
+      label: 'URL del video',
+      required: true,
+      admin: {
+        condition: (data) => data.style === 'video',
+      },
+    },
+    {
+      type: 'group',
+      name: 'masonryImages',
+      label: 'Images Galería',
+      admin: {
+        className: 'masonry-image-group',
+        condition: (data) => data.style === 'masonry',
+      },
+      fields: [
+        {
+          name: 'masonryImage1',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'masonryImage2',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'masonryImage3',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'masonryImage4',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'masonryImage5',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
+
+    {
       name: 'newsRelated',
-      label: 'Noticias Relaccionadas',
+      label: 'Noticias Relacionadas',
       type: 'relationship',
       relationTo: 'news',
       hasMany: true,
       maxRows: 8,
     },
-
-    { name: 'richtxtcontent', label: 'Contenido de la noticia:', type: 'richText' },
-
+    {
+      name: 'richtxtcontent',
+      label: 'Contenido de la noticia:',
+      type: 'richText',
+    },
     {
       name: 'attachments',
       type: 'array',
       label: 'Adjuntos',
-
       admin: {
         position: 'sidebar',
         initCollapsed: true,
@@ -124,11 +158,7 @@ const News: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-      // hooks: {
-      //   beforeChange: [checkFixedNewsLimit],
-      // },
     },
-
     {
       name: 'categories',
       label: 'Categorias',

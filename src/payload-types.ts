@@ -285,7 +285,15 @@ export interface News {
   title: string;
   style: 'vertical' | 'horizontal' | 'video' | 'masonry';
   summary: string;
-  image: string | Media;
+  image?: string | Media | null;
+  videoUrl?: string | null;
+  masonryImages?: {
+    masonryImage1: string | Media;
+    masonryImage2: string | Media;
+    masonryImage3: string | Media;
+    masonryImage4: string | Media;
+    masonryImage5: string | Media;
+  };
   newsRelated?: (string | News)[] | null;
   richtxtcontent?: {
     root: {
