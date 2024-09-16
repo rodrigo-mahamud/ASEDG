@@ -29,11 +29,11 @@ export default function NewsCard({ data, className }: NewsCardProps) {
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300 ${className}`}
     >
       <div className="relative w-full aspect-[4/3]">
-        {data.image && (
+        {(data.masonryImages?.masonryImage1 || data.image) && (
           <Image
-            src={data.image.url}
+            src={data.masonryImages?.masonryImage1?.url || data.image?.url}
             fill
-            alt={data.image.alt || 'Imagen de noticia'}
+            alt={data.masonryImages?.masonryImage1?.alt || data.image?.alt || 'Imagen de noticia'}
             quality={10}
             sizes="(max-width: 1200px) 20vw, 35vw"
             className="w-full -z-10 object-cover"

@@ -42,6 +42,7 @@ interface NewsItemBase {
   title: string
   summary: string
   image: Image
+  masonryImages?: MasonryImages
   publishedDate: string
   categories: Category[]
 }
