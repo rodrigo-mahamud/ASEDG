@@ -36,11 +36,20 @@ export default function NewsPinged({ newspinged, title, subtitle }: Type) {
               {newspinged.map((newsItem) => (
                 <CarouselItem
                   key={newsItem.id}
-                  className="basis-[40%] relative ml-6 mainShadow group "
+                  className="basis-[40%] relative ml-6 mainShadow group hover:rounded-2xl"
                 >
                   <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
                     <div className="embla__slide flex relative w-full h-[22rem] transition-generic items-end rounded-lg group-hover:rounded-2xl overflow-hidden">
-                      <div className="absolute w-full h-full blurMaskAlt rounded-lg z-10"></div>
+                      <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
+                        {newsItem.categories.map((cat, index) => (
+                          <div key={index} className="bg-white/25 backdrop-blur-md rounded-full">
+                            <p className="text-white px-4 my-1 text-sm leading-normal">
+                              {cat.title}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="absolute w-full h-full blurMaskAlt rounded-lg group-hover:rounded-2xl z-10"></div>
                       <div className="absolute z-10 pl-8 pb-8 flex items-center w-full">
                         <div className="w-4/5 pr-5 z-20">
                           <h2 className="text-white line-clamp-1 font-bold mb-1 text-lg">
@@ -55,7 +64,7 @@ export default function NewsPinged({ newspinged, title, subtitle }: Type) {
                           ></Button>
                         </div>
                       </div>
-                      <div className="overflow-hidden rounded-lg h-[inherit] w-full">
+                      <div className="overflow-hidden rounded-lg group-hover:rounded-2xl transition-generic h-[inherit] w-full">
                         <Image
                           src={
                             newsItem.image?.url || newsItem.masonryImages?.masonryImage1?.url || ''

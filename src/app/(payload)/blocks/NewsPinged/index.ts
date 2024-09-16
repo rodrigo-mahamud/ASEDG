@@ -4,10 +4,16 @@ export type Type = {
   title: string
   subtitle: string
 }
-
+interface Category {
+  id: string
+  title: string
+  length: number
+  description?: string
+}
 type NewsItem = {
   id: string
   slug: string
+  categories: Category[]
   title: string
   summary: string
   image: {
