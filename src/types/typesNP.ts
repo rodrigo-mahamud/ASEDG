@@ -1,12 +1,13 @@
 // Tipos básicos
 interface Image {
   url: string
-  alt?: string
+  alt: string
 }
 
 interface Category {
   id: string
   title: string
+  description?: string
 }
 
 interface FileAttachment {
@@ -34,7 +35,7 @@ interface LexicalContent {
   }
 }
 
-// Tipos para los elementos de noticias
+// Tipo base para noticias
 interface NewsItemBase {
   id: string
   slug: string
@@ -45,14 +46,39 @@ interface NewsItemBase {
   categories: Category[]
 }
 
+// Tipo para imágenes de masonry
+interface MasonryImage extends Image {
+  id: string
+  filename: string
+  mimeType: string
+  filesize: number
+  width: number
+  height: number
+  focalX: number
+  focalY: number
+  createdAt: string
+  updatedAt: string
+  thumbnailURL: string | null
+}
+
+interface MasonryImages {
+  masonryImage1: MasonryImage
+  masonryImage2: MasonryImage
+  masonryImage3: MasonryImage
+  masonryImage4: MasonryImage
+  masonryImage5: MasonryImage
+}
+
+// Tipo completo para noticias
 interface NewsItemFull extends NewsItemBase {
   richtxtcontent: LexicalContent
   attachments: FileAttachment[]
   style: 'vertical' | 'horizontal' | 'masonry'
   newsRelated: NewsItemBase[]
+  masonryImages?: MasonryImages
 }
 
-// Tipos para las props de los componentes
+// Tipos para props de componentes
 interface NewsHeaderProps {
   data: NewsItemFull
 }
@@ -70,26 +96,17 @@ interface NewsPageProps {
   params: { news: string }
 }
 
-// Tipos para las respuestas de la API
+interface NewsCardProps {
+  data: NewsItemBase
+  className?: string
+}
+
+// Tipos para respuestas de API
 interface NewsPageData {
   docs: NewsItemFull[]
 }
-// Tipos para NSADownloadFiles
-interface FileAttachment {
-  id: string
-  file: {
-    url: string
-    filename: string
-    mimeType: string
-    filesize: number
-  }
-}
 
-interface DownloadAttachmentsProps {
-  attachments: FileAttachment[]
-}
-
-// Tipos para NSAIndex
+// Tipos adicionales
 interface HeadingInfo {
   id: string
   text: string
@@ -98,20 +115,36 @@ interface HeadingInfo {
 interface NSAIndexProps {
   indexContent: LexicalContent
 }
+
+// Tipos para NSADownloadFiles
+interface DownloadAttachmentsProps {
+  attachments: FileAttachment[]
+}
+
+// Tipos para ImagesMasonry
+interface ImagesMasonryProps {
+  imageSrcs: string[]
+  imageAlts: string[]
+}
+
 export type {
-  FileAttachment,
-  DownloadAttachmentsProps,
-  HeadingInfo,
-  NSAIndexProps,
   Image,
   Category,
+  FileAttachment,
   LexicalNode,
   LexicalContent,
   NewsItemBase,
   NewsItemFull,
+  MasonryImage,
+  MasonryImages,
   NewsHeaderProps,
   NewsRelatedProps,
   NewsStickyAsideProps,
   NewsPageProps,
+  NewsCardProps,
   NewsPageData,
+  HeadingInfo,
+  NSAIndexProps,
+  DownloadAttachmentsProps,
+  ImagesMasonryProps,
 }

@@ -2,70 +2,16 @@
 import * as React from 'react'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/lib/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/lib/card'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/card'
 import Image from 'next/image'
 import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
 import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
+import { NewsCardProps } from '@/types/typesNP'
 
-interface CatTypes {
-  title: string
-  description: string
-}
-interface MasonryImage {
-  id: string
-  alt: string
-  filename: string
-  mimeType: string
-  filesize: number
-  width: number
-  height: number
-  focalX: number
-  focalY: number
-  createdAt: string
-  updatedAt: string
-  url: string
-  thumbnailURL: string | null
-}
-
-interface MasonryImages {
-  masonryImage1: MasonryImage
-  masonryImage2: MasonryImage
-  masonryImage3: MasonryImage
-  masonryImage4: MasonryImage
-  masonryImage5: MasonryImage
-}
-
-interface NewsCardTypes {
-  className?: string
-  data: {
-    slug: string
-    categories: CatTypes[]
-    title: string
-    summary: string
-    badgeClass?: string
-    shareClass?: string
-    masonryImages: MasonryImages
-    image: {
-      url: string
-      alt: string
-    }
-  }
-}
-
-export default function NewsCard({ data, className }: NewsCardTypes) {
-  console.log(data)
-
+export default function NewsCard({ data, className }: NewsCardProps) {
   const pathname = usePathname()
-  console.log(data.categories)
 
   const getCurrentUrl = () => {
     if (typeof window !== 'undefined') {
@@ -83,11 +29,11 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300 ${className}`}
     >
       <div className="relative w-full aspect-[4/3]">
-        {(data.masonryImages?.masonryImage1 || data.image) && (
+        {data.image && (
           <Image
-            src={data.masonryImages?.masonryImage1?.url || data.image?.url}
+            src={data.image.url}
             fill
-            alt={data.masonryImages?.masonryImage1?.alt || data.image?.alt || 'Imagen de noticia'}
+            alt={data.image.alt || 'Imagen de noticia'}
             quality={10}
             sizes="(max-width: 1200px) 20vw, 35vw"
             className="w-full -z-10 object-cover"
