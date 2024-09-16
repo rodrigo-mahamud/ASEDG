@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { extractH2Headings } from '@/utils/serializeLexicalRichText'
-import { NSAIndexProps } from '@/types/typesNP'
+import { NSAIndexProps, HeadingInfo } from '@/types/typesNP'
 
 function toSentenceCase(str: string): string {
   return str.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())
@@ -69,7 +69,7 @@ const NSAIndex: React.FC<NSAIndexProps> = ({ indexContent }) => {
           ></div>
         </div>
         <ul ref={listRef} className="relative flex-1">
-          {headings.map((heading, index) => (
+          {headings.map((heading: HeadingInfo, index: number) => (
             <li className="mb-3 last:mb-0" key={index}>
               <a
                 className={`line-clamp-1 transition-all ${

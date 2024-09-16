@@ -3,13 +3,12 @@ import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import NewsHeader from '@/components/NewsPage/NewsHeader'
-import RichText from '@/app/(payload)/blocks/RichText/Component'
-import { Toaster } from 'sonner'
-import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
 import RichTextParser from '@/utils/richTextParser'
 import Container from '@/components/Container'
-import { NewsPageProps, NewsPage, NewsPageData } from '@/types/typesNP'
 import NewsRelated from '@/components/NewsPage/NewsRelated'
+import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
+import { Toaster } from 'sonner'
+import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/typesNP'
 
 const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -17,7 +16,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
     collection: 'news',
   })) as NewsPageData
 
-  const page = pageData.docs.find((page: NewsPage) => page.slug === params.news)
+  const page = pageData.docs.find((page: NewsItemFull) => page.slug === params.news)
 
   if (!page) {
     return <div>Page not found</div>
@@ -25,20 +24,17 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
 
   return (
     <>
-      <NewsHeader style={'masonry'} />
+      <NewsHeader data={page} />
       <main>
         <Container className="flex gap-20">
           <article className="w-[70%]">
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           <aside className="w-[30%]">
-            <NewsStickyAside
-              attachments={page.attachments}
-              indexContent={page.richtxtcontent}
-            ></NewsStickyAside>
+            <NewsStickyAside attachments={page.attachments} indexContent={page.richtxtcontent} />
           </aside>
         </Container>
-        <NewsRelated newsRelated={page.newsRelated}></NewsRelated>
+        <NewsRelated newsRelated={page.newsRelated} />
       </main>
       <Toaster />
     </>

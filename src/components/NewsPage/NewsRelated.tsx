@@ -2,12 +2,10 @@ import React from 'react'
 import Container from '../Container'
 import Title from '../lib/title'
 import Link from 'next/link'
-import { NewsItemData } from '@/types/typesNP'
 import Image from 'next/image'
+import { NewsRelatedProps, NewsItemBase } from '@/types/typesNP'
 
-export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData[] }) {
-  console.log(newsRelated)
-
+export default function NewsRelated({ newsRelated }: NewsRelatedProps) {
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString('es-ES', options)
@@ -20,12 +18,12 @@ export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData
           <Title title={'Te puede interesar'} subtitle={'Prueba'} />
         </div>
         <div className="flex gap-8">
-          {newsRelated.map((newsItem) => (
+          {newsRelated.map((newsItem: NewsItemBase) => (
             <div
               key={newsItem.id}
               className="relative w-1/4 mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden"
             >
-              <div className=" bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
+              <div className="bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
                 {newsItem.categories && newsItem.categories.length > 0 && (
                   <p className="text-white px-2 my-1 text-sm leading-normal">
                     {newsItem.categories[0].title}

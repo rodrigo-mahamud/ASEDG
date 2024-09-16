@@ -1,4 +1,15 @@
-export interface FileAttachment {
+// Tipos básicos
+interface Image {
+  url: string
+  alt?: string
+}
+
+interface Category {
+  id: string
+  title: string
+}
+
+interface FileAttachment {
   id: string
   file: {
     url: string
@@ -8,13 +19,13 @@ export interface FileAttachment {
   }
 }
 
+// Tipos para el contenido de texto enriquecido
 interface LexicalNode {
   type: string
   tag?: string
   text?: string
   format?: number
   children?: LexicalNode[]
-  // ... otros campos que puedan ser relevantes
 }
 
 interface LexicalContent {
@@ -23,46 +34,84 @@ interface LexicalContent {
   }
 }
 
-export interface NewsItemData {
+// Tipos para los elementos de noticias
+interface NewsItemBase {
   id: string
   slug: string
   title: string
   summary: string
-  image: {
-    url: string
-  }
-  categories: Array<{ title: string }> // Añadido
-  publishedDate: string // Añadido
+  image: Image
+  publishedDate: string
+  categories: Category[]
 }
 
-export interface NewsItem {
-  newsRelated: NewsItemData[]
+interface NewsItemFull extends NewsItemBase {
+  richtxtcontent: LexicalContent
+  attachments: FileAttachment[]
+  style: 'vertical' | 'horizontal' | 'masonry'
+  newsRelated: NewsItemBase[]
 }
 
-export interface NSAIndexProps {
+// Tipos para las props de los componentes
+interface NewsHeaderProps {
+  data: NewsItemFull
+}
+
+interface NewsRelatedProps {
+  newsRelated: NewsItemBase[]
+}
+
+interface NewsStickyAsideProps {
+  attachments: FileAttachment[]
   indexContent: LexicalContent
 }
 
-export interface DownloadAttachmentsProps {
-  attachments: FileAttachment[]
-}
-
-export interface NewsStickyAsideProps {
-  attachments: FileAttachment[]
-  indexContent: LexicalContent
-}
-
-export interface NewsPageProps {
+interface NewsPageProps {
   params: { news: string }
 }
 
-export interface NewsPage {
-  slug: string
-  richtxtcontent: LexicalContent
-  attachments: FileAttachment[]
-  newsRelated: NewsItemData[]
+// Tipos para las respuestas de la API
+interface NewsPageData {
+  docs: NewsItemFull[]
+}
+// Tipos para NSADownloadFiles
+interface FileAttachment {
+  id: string
+  file: {
+    url: string
+    filename: string
+    mimeType: string
+    filesize: number
+  }
 }
 
-export interface NewsPageData {
-  docs: NewsPage[]
+interface DownloadAttachmentsProps {
+  attachments: FileAttachment[]
+}
+
+// Tipos para NSAIndex
+interface HeadingInfo {
+  id: string
+  text: string
+}
+
+interface NSAIndexProps {
+  indexContent: LexicalContent
+}
+export type {
+  FileAttachment,
+  DownloadAttachmentsProps,
+  HeadingInfo,
+  NSAIndexProps,
+  Image,
+  Category,
+  LexicalNode,
+  LexicalContent,
+  NewsItemBase,
+  NewsItemFull,
+  NewsHeaderProps,
+  NewsRelatedProps,
+  NewsStickyAsideProps,
+  NewsPageProps,
+  NewsPageData,
 }

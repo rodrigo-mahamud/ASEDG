@@ -4,8 +4,9 @@ import { usePathname } from 'next/navigation'
 import NHVertical from './NHVertical'
 import NHHorizontal from './NHHorizontal'
 import NHGallery from './NHGallery'
+import { NewsHeaderProps } from '@/types/typesNP'
 
-export default function NewsHeader({ style = 'horizontal' }) {
+export default function NewsHeader({ data }: NewsHeaderProps) {
   const getCurrentUrl = () => {
     if (typeof window !== 'undefined') {
       const baseUrl = window.location.origin
@@ -17,9 +18,9 @@ export default function NewsHeader({ style = 'horizontal' }) {
   const currentUrl = getCurrentUrl()
   return (
     <div className="pt-[84px]">
-      {style === 'vertical' && <NHVertical currentUrl={currentUrl}></NHVertical>}
-      {style === 'horizontal' && <NHHorizontal currentUrl={currentUrl}></NHHorizontal>}
-      {style === 'masonry' && <NHGallery currentUrl={currentUrl}></NHGallery>}
+      {data.style === 'vertical' && <NHVertical data={data} currentUrl={currentUrl} />}
+      {data.style === 'horizontal' && <NHHorizontal data={data} currentUrl={currentUrl} />}
+      {data.style === 'masonry' && <NHGallery data={data} currentUrl={currentUrl} />}
     </div>
   )
 }
