@@ -74,7 +74,7 @@ export default function NewsCard({ data, className }: NewsCardTypes) {
             </Badge>
           ))}
         </div>
-        <CardTitle className="mb-3 line-clamp-1 leading-[0.85]">{data.title}</CardTitle>
+        <CardTitle className="mb-1 line-clamp-1 leading-normal text-xl">{data.title}</CardTitle>
         <CardDescription className="line-clamp-4">{data.summary}</CardDescription>
         <div className="flex items-center gap-3 mt-6 h-11">
           <Button

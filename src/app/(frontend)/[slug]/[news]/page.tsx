@@ -25,7 +25,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
 
   return (
     <>
-      <NewsHeader style={'horizontal'} />
+      <NewsHeader style={'masonry'} />
       <main>
         <Container className="flex gap-20">
           <article className="w-[70%]">

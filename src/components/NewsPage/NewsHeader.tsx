@@ -3,6 +3,7 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 import NHVertical from './NHVertical'
 import NHHorizontal from './NHHorizontal'
+import NHGallery from './NHGallery'
 
 export default function NewsHeader({ style = 'horizontal' }) {
   const getCurrentUrl = () => {
@@ -18,6 +19,7 @@ export default function NewsHeader({ style = 'horizontal' }) {
     <div className="pt-[84px]">
       {style === 'vertical' && <NHVertical currentUrl={currentUrl}></NHVertical>}
       {style === 'horizontal' && <NHHorizontal currentUrl={currentUrl}></NHHorizontal>}
+      {style === 'masonry' && <NHGallery currentUrl={currentUrl}></NHGallery>}
     </div>
   )
 }
