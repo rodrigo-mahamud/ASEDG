@@ -45,8 +45,7 @@ export default function serializeLexicalRichText({
   return children
     ?.map((node, i) => {
       const classNames: { [key: string]: string } = {
-        h1: 'mt-6 text-5xl font-semibold',
-        h2: 'text-3xl font-medium mb-2 mt-10',
+        h2: 'text-3xl font-medium mb-2 mt-10 first:mt-0',
         h3: 'text-xl font-medium mb-2 mt-4',
         h4: 'text-lg font-medium',
         p: 'text-base my-2',
@@ -65,7 +64,7 @@ export default function serializeLexicalRichText({
         let text: ReactNode = node.text ? (
           <span className="">{node.text}</span>
         ) : (
-          <span className="opacity-0 ">&nbsp;</span>
+          <span className="opacity-0">&nbsp;</span>
         )
 
         if (node.format !== undefined && node.format & IS_BOLD) {
@@ -188,11 +187,10 @@ export default function serializeLexicalRichText({
               key={i}
               src={value.url}
               alt={value.alt || value.filename}
-              quality={25}
+              quality={15}
               width={value.width || 800}
               height={value.height || 600}
               className={'my-6 w-full aspect-video rounded-md object-cover'}
-              layout="responsive"
             />
           )
         } else {

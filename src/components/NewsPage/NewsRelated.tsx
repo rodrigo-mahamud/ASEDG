@@ -14,7 +14,7 @@ export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData
   }
 
   return (
-    <section className="overflow-hidden">
+    <section className="overflow-hidden bg-[#f3f4f6] border-t border-border">
       <Container className="py-32">
         <div className="flex justify-between w-full">
           <Title title={'Te puede interesar'} subtitle={'Prueba'} />
@@ -53,7 +53,7 @@ export default function NewsRelated({ newsRelated }: { newsRelated: NewsItemData
                     alt={newsItem.title}
                     width={500}
                     height={500}
-                    className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-generic"
+                    className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-50 transition-generic"
                   />
                 </div>
               </Link>

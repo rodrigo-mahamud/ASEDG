@@ -150,3 +150,14 @@
 ::-webkit-scrollbar-corner {
   background: 0 0;
 }
+.rich-text-lexical .editor-container {
+  font-family: var(--font-SequelSans), sans-serif !important;
+}
+
+.LexicalEditorTheme__h2 {
+  font-weight: 500 !important;
+}
+
+.PayloadLexicalEditor u {
+  text-decoration: underline;
+}
