@@ -15,6 +15,7 @@ export const IS_HIGHLIGHT = 1 << 7
 
 interface Node {
   type: string
+  value?: any
   text?: string
   format?: number
   textAlign?: 'left' | 'right' | 'center'
@@ -52,7 +53,8 @@ export default function serializeLexicalRichText({
         ul: 'list-disc ml-8 mt-3 mb-4',
         ol: 'list-decimal ml-8 mt-3 mb-4',
         li: 'list-item my-4',
-        blockquote: 'font-medium text-lg text-gray-600',
+        blockquote:
+          'p-5 my-8 font-medium text-xl italic border border-border bg-[#f3f4f6] rounded-lg',
         a: 'text-blue-500 underline',
       }
 
@@ -64,7 +66,7 @@ export default function serializeLexicalRichText({
         let text: ReactNode = node.text ? (
           <span className="">{node.text}</span>
         ) : (
-          <span className="opacity-0">&nbsp;</span>
+          <span className="opacity-0 border-foreground">&nbsp;</span>
         )
 
         if (node.format !== undefined && node.format & IS_BOLD) {
@@ -211,7 +213,7 @@ export default function serializeLexicalRichText({
         case 'quote':
           return (
             <blockquote className={`${classNames.blockquote}`} key={i}>
-              {serializeLexicalRichText({ children: node.children || [] })}
+              "{serializeLexicalRichText({ children: node.children || [] })}"
             </blockquote>
           )
 
