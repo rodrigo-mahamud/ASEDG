@@ -461,6 +461,7 @@ export interface PayloadMigration {
 export interface Setting {
   id: string;
   homePage: string | Page;
+  newsPage: string | Page;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

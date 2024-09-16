@@ -175,16 +175,6 @@
   );
 }
 
-.blurMask {
-  backdrop-filter: blur(1.75px);
-  -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 1) 40%, rgba(255, 255, 255, 0) 70%);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.35) 20%, rgba(255, 255, 255, 0) 90%);
-  transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
-}
-.mainShadow:hover .blurMask {
-  backdrop-filter: blur(3.5px);
-  transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
-}
 .blurMaskAlt {
   -webkit-backdrop-filter: blur(1.25px);
   backdrop-filter: blur(1.25px);

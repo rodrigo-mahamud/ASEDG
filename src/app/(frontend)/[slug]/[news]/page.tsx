@@ -12,9 +12,12 @@ import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/typesNP'
 
 const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const payload = await getPayloadHMR({ config: configPromise })
+
   const pageData = (await payload.find({
     collection: 'news',
   })) as NewsPageData
+  const settings = (await payload.findGlobal({ slug: 'settings' })) as any
+  console.log()
 
   const page = pageData.docs.find((page: NewsItemFull) => page.slug === params.news)
 
@@ -24,7 +27,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
 
   return (
     <>
-      <NewsHeader data={page} />
+      <NewsHeader data={page} newsPageSlug={settings.newsPage.slug} />
       <main>
         <Container className="flex gap-20">
           <article className="w-[70%]">

@@ -5,15 +5,33 @@ import { Badge } from '../lib/badge'
 import { Separator } from '../lib/separator'
 import ShareButton from '../lib/shareButton'
 import React from 'react'
+import Link from 'next/link'
+import { IconArrowNarrowLeft } from '@tabler/icons-react'
+import { NewsItemFull } from '@/types/typesNP'
+import { Button } from '../lib/button'
+interface NHVerticalProps {
+  data: NewsItemFull
+  newsPageSlug: string
+  currentUrl: string
+}
 
-export default function NHVertical({ data, currentUrl }: any) {
+export default function NHVertical({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
   return (
     <>
-      <Container className="pb-10">
-        <div className="space-y-5 max-w-screen-md mx-auto">
-          <Badge variant={'outline'}>Jewelry</Badge>
+      <Container className="pb-10 pt-11">
+        <Button
+          asChild
+          variant="outline"
+          className="bg-secondaryAlt/5 hover:bg-secondaryAlt/10 mb-8 rounded-full text-foreground h-8 border-0"
+        >
+          <Link href={`/${newsPageSlug}`} replace>
+            <IconArrowNarrowLeft size={16} className="text-black/70 mr-1" /> Volver
+          </Link>
+        </Button>
+        <div className="space-y-5 ">
           <h1 className="text-5xl font-bold">{data.title}</h1>
           <h2 className="text-lg text-muted-foreground line-clamp-3">{data.summary}</h2>
+
           <Separator></Separator>
           <div className="flex w-full justify-between">
             <div className="flex">
@@ -27,24 +45,34 @@ export default function NHVertical({ data, currentUrl }: any) {
               </div>
             </div>
 
-            <ShareButton
-              iconStroke="1.5"
-              className="w-9 h-9 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
-              url={currentUrl}
-            />
+            <div className="flex">
+              <div className="flex gap-2 pr-3 border-r border-border h-10">
+                {data.categories.map((cat, index) => (
+                  <Badge key={index} variant={'outline'} className="bg-secondaryAlt/5 h-10 px-4">
+                    {cat.title}
+                  </Badge>
+                ))}
+              </div>
+              <ShareButton
+                iconStroke="1.5"
+                className="w-10 h-10 ml-3 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
+                url={currentUrl}
+              />
+            </div>
           </div>
         </div>
+
+        <div className="relative w-full aspect-video mt-10">
+          <Image
+            src="/placeholder.webp"
+            fill
+            className=" w-full object-cover rounded-2xl"
+            quality={50}
+            sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+            alt="{image.alt}"
+          />
+        </div>
       </Container>
-      <div className="relative w-full aspect-video  mt-10">
-        <Image
-          src="/placeholder.webp"
-          fill
-          className=" w-full object-cover "
-          quality={50}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
-          alt="{image.alt}"
-        />
-      </div>
     </>
   )
 }

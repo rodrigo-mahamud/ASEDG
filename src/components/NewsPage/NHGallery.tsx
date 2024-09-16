@@ -8,13 +8,15 @@ import ShareButton from '../lib/shareButton'
 import { Button } from '../lib/button'
 import { IconArrowNarrowLeft } from '@tabler/icons-react'
 import { NewsItemFull } from '@/types/typesNP'
+import Link from 'next/link'
 
 interface NHGalleryProps {
   data: NewsItemFull
+  newsPageSlug: string
   currentUrl: string
 }
 
-export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
+export default function NHGallery({ data, currentUrl, newsPageSlug }: NHGalleryProps) {
   const imageSrcs = data.masonryImages
     ? [
         data.masonryImages.masonryImage1.url,
@@ -39,11 +41,13 @@ export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
     <>
       <Container className="pb-0 pt-11">
         <Button
+          asChild
           variant="outline"
           className="bg-secondaryAlt/5 hover:bg-secondaryAlt/10 mb-8 rounded-full text-foreground h-8"
         >
-          <IconArrowNarrowLeft size={16} className="text-black/70 mr-1" />
-          Volver
+          <Link href={`/${newsPageSlug}`} replace>
+            <IconArrowNarrowLeft size={16} className="text-black/70 mr-1" /> Volver
+          </Link>
         </Button>
         <div className="space-y-5 mx-auto pb-10">
           <h1 className="text-5xl font-bold mb-4 text-pretty">{data.title}</h1>

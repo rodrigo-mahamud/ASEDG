@@ -192,7 +192,7 @@ export default function serializeLexicalRichText({
               quality={15}
               width={value.width || 800}
               height={value.height || 600}
-              className={'my-6 w-full aspect-video rounded-md object-cover'}
+              className={'my-10 w-full aspect-video rounded-xl object-cover'}
             />
           )
         } else {
