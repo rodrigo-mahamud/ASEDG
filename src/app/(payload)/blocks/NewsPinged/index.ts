@@ -12,6 +12,13 @@ type NewsItem = {
   summary: string
   image: {
     url: string
+    alt: string
+  }
+  masonryImages?: {
+    masonryImage1: {
+      url: string
+      alt: string
+    }
   }
 }
 const NewsFeatured: Block = {

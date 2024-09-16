@@ -6,17 +6,14 @@ import { Separator } from '../lib/separator'
 import ShareButton from '../lib/shareButton'
 import React from 'react'
 
-export default function NHVertical({ currentUrl }: any) {
+export default function NHVertical({ data, currentUrl }: any) {
   return (
     <>
       <Container className="pb-10">
         <div className="space-y-5 max-w-screen-md mx-auto">
           <Badge variant={'outline'}>Jewelry</Badge>
-          <h1 className="text-5xl font-bold">Trending web & landing page designs in 2023</h1>
-          <h2 className="text-lg text-muted-foreground">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis tempora obcaecati
-            error ipsum voluptatibus sed adipisci ut maiores nesciunt quam.
-          </h2>
+          <h1 className="text-5xl font-bold">{data.title}</h1>
+          <h2 className="text-lg text-muted-foreground line-clamp-3">{data.summary}</h2>
           <Separator></Separator>
           <div className="flex w-full justify-between">
             <div className="flex">

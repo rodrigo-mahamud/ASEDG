@@ -6,7 +6,7 @@ import { Separator } from '../lib/separator'
 import ShareButton from '../lib/shareButton'
 import React from 'react'
 
-export default function NHHorizontal({ currentUrl }: any) {
+export default function NHHorizontal({ data, currentUrl }: any) {
   return (
     <header className="w-full bg-[#111827] overflow-hidden h-[35rem] relative">
       <Container className="py-28 flex h-full">
@@ -14,9 +14,7 @@ export default function NHHorizontal({ currentUrl }: any) {
           <Badge variant={'outline'} className="bg-rose-100 text-rose-800 border-0">
             Jewelry Hpo
           </Badge>
-          <h1 className="text-5xl font-bold  text-white">
-            Trending web & landing page designs in 2023
-          </h1>
+          <h1 className="text-5xl font-bold">{data.title}</h1>
           <h2 className="text-lg text-white/65">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis tempora obcaecati
             error ipsum voluptatibus sed adipisci ut maiores nesciunt quam.

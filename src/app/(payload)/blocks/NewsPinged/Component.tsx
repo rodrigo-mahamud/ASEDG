@@ -16,7 +16,7 @@ import { Type } from '.'
 export default function NewsPinged({ newspinged, title, subtitle }: Type) {
   return (
     <>
-      <section className=" overflow-hidden">
+      <section className="overflow-hidden">
         <Container className="py-32">
           <Carousel
             opts={{
@@ -56,14 +56,20 @@ export default function NewsPinged({ newspinged, title, subtitle }: Type) {
                         </div>
                       </div>
                       <Image
-                        src={newsItem.image.url}
+                        src={
+                          newsItem.image?.url || newsItem.masonryImages?.masonryImage1?.url || ''
+                        }
                         quality={5}
                         sizes="(max-width: 1200px) 20vw, 35vw"
-                        alt={newsItem.title}
+                        alt={
+                          newsItem.image?.alt ||
+                          newsItem.masonryImages?.masonryImage1?.alt ||
+                          newsItem.title
+                        }
                         width={500}
                         height={500}
                         className="w-full h-full rounded-lg object-cover"
-                      ></Image>
+                      />
                     </div>
                   </Link>
                 </CarouselItem>
