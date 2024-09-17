@@ -5,53 +5,77 @@ import { Badge } from '../lib/badge'
 import { Separator } from '../lib/separator'
 import ShareButton from '../lib/shareButton'
 import React from 'react'
-
-export default function NHHorizontal({ data, currentUrl }: any) {
+import { Button } from '../lib/button'
+import Link from 'next/link'
+import { IconArrowNarrowLeft } from '@tabler/icons-react'
+import { NewsItemFull } from '@/types/typesNP'
+interface NHVerticalProps {
+  data: NewsItemFull
+  newsPageSlug: string
+  currentUrl: string
+}
+export default function NHHorizontal({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
   return (
-    <header className="w-full bg-[#111827] overflow-hidden h-[35rem] relative">
-      <Container className="py-28 flex h-full">
-        <div className="space-y-5 w-4/6">
-          <Badge variant={'outline'} className="bg-rose-100 text-rose-800 border-0">
-            Jewelry Hpo
-          </Badge>
-          <h1 className="text-5xl font-bold">{data.title}</h1>
-          <h2 className="text-lg text-white/65">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis tempora obcaecati
-            error ipsum voluptatibus sed adipisci ut maiores nesciunt quam.
-          </h2>
-          <Separator className="opacity-15"></Separator>
-          <div className="flex w-full justify-between">
-            <div className="flex">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col ml-3 ">
-                <span className="text-sm text-white">Foulcher Nathanil</span>
-                <span className="text-xs text-white/65">May 20, 2021 · 2 min read</span>
+    <header className="w-full bg-[#f3f4f6] border-y border-border overflow-hidden  relative">
+      <Container className="py-40 flex items-center h-fit">
+        <div className="w-7/12">
+          <Button
+            asChild
+            variant="outline"
+            className="bg-secondaryAlt/5 hover:bg-secondaryAlt/10 mb-8 rounded-full text-foreground h-8 border-0"
+          >
+            <Link href={`/${newsPageSlug}`} replace>
+              <IconArrowNarrowLeft size={16} className="text-black/70 mr-1" /> Volver
+            </Link>
+          </Button>
+          <div className="space-y-5 ">
+            <h1 className="text-5xl font-bold">{data.title}</h1>
+            <h2 className="text-lg">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis tempora
+              obcaecati error ipsum voluptatibus sed adipisci ut maiores nesciunt quam.
+            </h2>
+            <Separator></Separator>
+            <div className="flex w-full justify-between">
+              <div className="flex">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col ml-3 ">
+                  <span className="text-sm">Foulcher Nathanil</span>
+                  <span className="text-xs">May 20, 2021 · 2 min read</span>
+                </div>
+              </div>
+
+              <div className="flex">
+                <div className="flex gap-2 pr-3 border-r border-border h-10">
+                  {data.categories.map((cat, index) => (
+                    <Badge key={index} variant={'outline'} className="bg-secondaryAlt/5 h-10 px-4">
+                      {cat.title}
+                    </Badge>
+                  ))}
+                </div>
+                <ShareButton
+                  iconStroke="1.5"
+                  className="w-10 h-10 ml-3 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
+                  url={currentUrl}
+                />
               </div>
             </div>
-
-            <ShareButton
-              iconStroke="1.5"
-              className="w-9 h-9 outline-none text-white/75 bg-white/10 hover:bg-white/25 flex justify-center items-center rounded-full"
-              url={currentUrl}
-            />
           </div>
         </div>
+        <div className="h-[80%] absolute right-0 w-5/12">
+          <Image
+            src={data.image.url}
+            width={500}
+            height={800}
+            className="block h-full object-scale-down rounded-xl !w-auto m-auto shadow-lg "
+            quality={50}
+            sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+            alt={data.image.alt}
+          />
+        </div>
       </Container>
-      <div className="h-[inherit] mt-8 md:mt-0 md:absolute md:top-0 md:right-0 md:bottom-0 md:w-1/2 lg:w-2/5 2xl:w-1/3">
-        <div className="hidden md:block absolute top-0 left-0 bottom-0 w-1/5 from-[#111827] dark:from-black bg-gradient-to-r z-10"></div>
-        <Image
-          src="/placeholder.webp"
-          width={500}
-          height={800}
-          className="block w-full h-full object-cover opacity-85"
-          quality={50}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
-          alt="{image.alt}"
-        />
-      </div>
     </header>
   )
 }

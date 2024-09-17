@@ -68,7 +68,7 @@ const NSAIndex: React.FC<NSAIndexProps> = ({ indexContent }) => {
             style={{ height: `${progressHeight}%` }}
           ></div>
         </div>
-        <ul ref={listRef} className="relative flex-1">
+        <ul ref={listRef} className="relative flex-1 pr-5">
           {headings.map((heading: HeadingInfo, index: number) => (
             <li className="mb-3 last:mb-0" key={index}>
               <a

@@ -15,7 +15,7 @@ interface NHVerticalProps {
   currentUrl: string
 }
 
-export default function NHVertical({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
+export default function NHVideo({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
   return (
     <>
       <Container className="pb-10 pt-11">

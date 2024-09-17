@@ -21,7 +21,9 @@ export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {
       {data.style === 'vertical' && (
         <NHVertical data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
       )}
-      {data.style === 'horizontal' && <NHHorizontal data={data} currentUrl={currentUrl} />}
+      {data.style === 'horizontal' && (
+        <NHHorizontal data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
+      )}
       {data.style === 'masonry' && (
         <NHGallery data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
       )}
