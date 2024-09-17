@@ -41,6 +41,7 @@ interface NewsItemBase {
   slug: string
   title: string
   summary: string
+  videoUrl: string
   image: Image
   masonryImages?: MasonryImages
   publishedDate: string

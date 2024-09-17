@@ -17,14 +17,12 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
     collection: 'news',
   })) as NewsPageData
   const settings = (await payload.findGlobal({ slug: 'settings' })) as any
-  console.log()
 
   const page = pageData.docs.find((page: NewsItemFull) => page.slug === params.news)
-
   if (!page) {
     return <div>Page not found</div>
   }
-  console.log(page.richtxtcontent.root.children)
+
   const hasAsides = (page: NewsItemFull) => {
     const hasAttachments = page.attachments?.length > 0
     const hasH2Tags =
