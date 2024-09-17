@@ -193,3 +193,34 @@
 .transition-generic {
   transition: all 0.75s cubic-bezier(0.14, 1, 0.34, 1);
 }
+.playButton::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  content: '';
+  border-color: #0000 #0000 #0000 #ffffff;
+  border-style: solid;
+  border-width: 14px 0 14px 24px;
+}
+.playButton:hover {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+.playButton {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 5rem;
+  height: 5rem;
+  background-color: #00000028;
+  border: solid 1px #ffffff;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+  border-radius: 100%;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.lyt-activated > .playButton {
+  display: none;
+}

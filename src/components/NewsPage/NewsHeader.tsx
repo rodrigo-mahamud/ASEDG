@@ -5,6 +5,7 @@ import NHVertical from './NHVertical'
 import NHHorizontal from './NHHorizontal'
 import NHGallery from './NHGallery'
 import { NewsHeaderProps } from '@/types/typesNP'
+import NHVideo from './NHVideo'
 
 export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {
   const getCurrentUrl = () => {
@@ -23,6 +24,9 @@ export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {
       )}
       {data.style === 'horizontal' && (
         <NHHorizontal data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
+      )}
+      {data.style === 'video' && (
+        <NHVideo data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
       )}
       {data.style === 'masonry' && (
         <NHGallery data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />

@@ -74,7 +74,8 @@ interface MasonryImages {
 interface NewsItemFull extends NewsItemBase {
   richtxtcontent: LexicalContent
   attachments: FileAttachment[]
-  style: 'vertical' | 'horizontal' | 'masonry'
+  style: 'vertical' | 'horizontal' | 'masonry' | 'video'
+  videoUrl: string
   newsRelated: NewsItemBase[]
   masonryImages?: MasonryImages
 }
