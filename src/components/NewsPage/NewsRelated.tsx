@@ -30,7 +30,7 @@ export default function NewsRelated({ newsRelated }: NewsRelatedProps) {
             >
               <div className="bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
                 {newsItem.categories && newsItem.categories.length > 0 && (
-                  <p className="text-white px-4 my-1 text-sm leading-normal">
+                  <p className="text-white px-4 my-1 text-xs leading-normal">
                     {newsItem.categories[0].title}
                   </p>
                 )}

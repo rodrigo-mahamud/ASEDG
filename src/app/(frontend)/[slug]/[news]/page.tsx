@@ -24,18 +24,29 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
   if (!page) {
     return <div>Page not found</div>
   }
-
+  console.log(page.richtxtcontent.root.children)
+  const hasAsides = (page: NewsItemFull) => {
+    const hasAttachments = page.attachments?.length > 0
+    const hasH2Tags =
+      page.richtxtcontent?.root?.children?.some((child) => child.tag === 'h2') || false
+    return hasAttachments || hasH2Tags
+  }
+  const shouldShowAside = hasAsides(page)
   return (
     <>
       <NewsHeader data={page} newsPageSlug={settings.newsPage.slug} />
       <main>
         <Container className="flex gap-20">
-          <article className="w-[70%]">
+          <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
-          <aside className="w-[30%]">
-            <NewsStickyAside attachments={page.attachments} indexContent={page.richtxtcontent} />
-          </aside>
+          {shouldShowAside ? (
+            <aside className="w-[30%]">
+              <NewsStickyAside attachments={page.attachments} indexContent={page.richtxtcontent} />
+            </aside>
+          ) : (
+            ''
+          )}
         </Container>
         <NewsRelated newsRelated={page.newsRelated} />
       </main>

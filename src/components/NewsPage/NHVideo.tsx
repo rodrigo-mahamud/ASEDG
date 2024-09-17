@@ -60,12 +60,14 @@ export default function NHVideo({ data, currentUrl, newsPageSlug }: NHVerticalPr
           </div>
 
           <div className="relative w-8/12 aspect-video rounded-[2rem] overflow-hidden border-4 border-white shadow-xl">
-            <LiteYouTubeEmbed
-              id={VideoId.id}
-              poster="hqdefault"
-              playerClass="playButton"
-              title={`Vídeo de la noticia ${data.title}`}
-            />
+            {VideoId.id && (
+              <LiteYouTubeEmbed
+                id={VideoId.id}
+                poster="hqdefault"
+                playerClass="playButton"
+                title={`Vídeo de la noticia ${data.title}`}
+              />
+            )}
           </div>
         </div>
       </Container>
