@@ -54,31 +54,24 @@ export default function NewsCard({ data, className }: NewsCardProps) {
 
   return (
     <Card
-      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform transition duration-300 ${
-        hasVideo ? 'col-span-2 z-30 group' : 'col-span-1'
+      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
+        hasVideo ? 'col-span-2 z-30 group hover:cursor-pointer' : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className={`relative w-full  ${hasVideo ? 'h-full ' : 'h-72'}`}>
+      <div className={`relative w-full  ${hasVideo ? 'h-full rounded-xl' : 'h-72'}`}>
+        {isClient && hasVideo && <div className="absolute w-full h-full blurMaskAlt z-10"></div>}
         {data.image && (
           <>
-            <Skeleton
-              className={`transition-generic rounded-xl${
-                isHovering
-                  ? 'w-full h-full absolute z-0 bg-black/75 mix-blend-soft-light opacity-100'
-                  : 'opacity-0 '
-              }`}
-            ></Skeleton>
-
             <Image
               src={data.image.url}
               fill
               alt={data.image.alt || 'Imagen de noticia'}
               quality={10}
               sizes="(max-width: 1200px) 20vw, 35vw"
-              className={`w-full -z-10 object-cover transition-opacity duration-300 opacity-100 transition-generic 
-              ${isHovering && ' group-hover:blur-md group-hover:scale-105 '}
+              className={`w-full -z-10 object-cover duration-300 opacity-100  transition-generic 
+              ${isHovering && 'blur scale-105 rounded-xl saturate-0'}
               ${isVideoReady && 'opacity-0 group-hover:blur group-hover:scale-105 '}`}
             />
           </>
@@ -104,18 +97,17 @@ export default function NewsCard({ data, className }: NewsCardProps) {
         )}
       </div>
       {hasVideo ? (
-        <CardContent className="absolute z-30 pl-8 pb-8 flex items-center w-full bottom-0">
-          <div className="w-4/5 pr-5 z-20">
-            <CardTitle className="text-white line-clamp-1 font-bold mb-1 text-lg">
+        <CardContent className="absolute z-30 p-0 w-full bottom-0">
+          <div className="w-full absolute bottom-0 z-20 p-6 translate-y-0 group-hover:-translate-y-12 transition-generic ">
+            <CardTitle className="text-white line-clamp-1 font-bold mb-1 text-xl">
               {data.title}
             </CardTitle>
-            <CardDescription className="text-white line-clamp-2">{data.summary}</CardDescription>
+            <CardDescription className="text-white/75 line-clamp-2">{data.summary}</CardDescription>
           </div>
-          <div className="w-1/5 flex justify-center">
-            <Button
-              variant="arrow"
-              className="text-white bg-white/20 w-10 h-10 backdrop-blur-md"
-            ></Button>
+          <div className="flex justify-center w-fullb backdrop-blur-md opacity-0 group-hover:opacity-100 transition-generic bg-white/15">
+            <Button variant="ghost" className="text-white py-4 h-fit">
+              <span className="mr-1 text-base">Ver Vídeo</span>
+            </Button>
           </div>
         </CardContent>
       ) : (
