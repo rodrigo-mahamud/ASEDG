@@ -60,25 +60,34 @@ export default function NewsCard({ data, className }: NewsCardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
+        {data.categories.map((cat, index) => (
+          <div key={index} className="bg-white/15 backdrop-blur-md rounded-full">
+            <p className="text-white px-4 my-1 text-sm leading-normal">{cat.title}</p>
+          </div>
+        ))}
+      </div>
       <div className={`relative w-full  ${hasVideo ? 'h-full rounded-xl' : 'h-72'}`}>
-        {isClient && hasVideo && <div className="absolute w-full h-full blurMaskAlt z-10"></div>}
-        {data.image && (
-          <>
-            <Image
-              src={data.image.url}
-              fill
-              alt={data.image.alt || 'Imagen de noticia'}
-              quality={10}
-              sizes="(max-width: 1200px) 20vw, 35vw"
-              className={`w-full -z-10 object-cover duration-300 opacity-100  transition-generic 
+        <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>
+          {isClient && hasVideo && <div className="absolute w-full h-full blurMaskAlt z-10"></div>}
+          {data.image && (
+            <>
+              <Image
+                src={data.image.url}
+                fill
+                alt={data.image.alt || 'Imagen de noticia'}
+                quality={10}
+                sizes="(max-width: 1200px) 20vw, 35vw"
+                className={`w-full -z-10 object-cover duration-300 opacity-100 transition-generic 
               ${isHovering && 'blur scale-105 rounded-xl saturate-0'}
               ${isVideoReady && 'opacity-0 group-hover:blur group-hover:scale-105 '}`}
-            />
-          </>
-        )}
+              />
+            </>
+          )}
+        </Link>
 
         {isClient && hasVideo && isHovering && (
-          <div className="absolute inset-0 flex items-center justify-center scale-150">
+          <div className="absolute inset-0 flex items-center justify-center rounded-xl scale-150">
             <ReactPlayer
               url={getVideoUrl()}
               playing={true}
@@ -104,7 +113,7 @@ export default function NewsCard({ data, className }: NewsCardProps) {
             </CardTitle>
             <CardDescription className="text-white/75 line-clamp-2">{data.summary}</CardDescription>
           </div>
-          <div className="flex justify-center w-fullb backdrop-blur-md opacity-0 group-hover:opacity-100 transition-generic bg-white/15">
+          <div className="flex justify-center w-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-generic bg-white/15">
             <Button variant="ghost" className="text-white py-4 h-fit">
               <span className="mr-1 text-base">Ver Vídeo</span>
             </Button>
