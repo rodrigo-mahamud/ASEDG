@@ -11,7 +11,7 @@ const NewsBlock: React.FC<Type> = ({ allNews, subtitle, title, filter }) => {
     <Container>
       <Title title={title} subtitle={subtitle} />
       <FilteredCards data={allNews} filterEnabled={filter} className="grid grid-cols-4 gap-8">
-        {(item) => <NewsCard className="btnShadow h-fit" data={item} />}
+        {(item) => <NewsCard className="btnShadow " data={item} />}
       </FilteredCards>
     </Container>
   )

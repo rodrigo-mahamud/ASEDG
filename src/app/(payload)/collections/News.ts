@@ -61,7 +61,7 @@ const News: CollectionConfig = {
       relationTo: 'media',
       required: true,
       admin: {
-        condition: (data) => ['vertical', 'horizontal'].includes(data.style),
+        condition: (data) => ['vertical', 'horizontal', 'video'].includes(data.style),
       },
     },
     {
