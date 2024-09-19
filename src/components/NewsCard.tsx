@@ -54,8 +54,8 @@ export default function NewsCard({ data, className }: NewsCardProps) {
 
   return (
     <Card
-      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
-        hasVideo ? 'col-span-2 z-30 group hover:cursor-pointer' : 'col-span-1'
+      className={`rounded-xl  overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
+        hasVideo ? 'col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl' : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -67,27 +67,32 @@ export default function NewsCard({ data, className }: NewsCardProps) {
           </div>
         ))}
       </div>
-      <div className={`relative w-full  ${hasVideo ? 'h-full rounded-xl' : 'h-72'}`}>
+      <div
+        className={`relative w-full  ${
+          hasVideo ? 'h-full rounded-xl group-hover:rounded-2xl  overflow-hidden' : 'h-72'
+        }`}
+      >
         <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>
           {isClient && hasVideo && <div className="absolute w-full h-full blurMaskAlt z-10"></div>}
-          {data.image && (
+          {(data.masonryImages?.masonryImage1 || data.image) && (
             <>
               <Image
-                src={data.image.url}
+                src={data.masonryImages?.masonryImage1?.url || data.image?.url}
                 fill
-                alt={data.image.alt || 'Imagen de noticia'}
-                quality={10}
-                sizes="(max-width: 1200px) 20vw, 35vw"
+                alt={data.masonryImages?.masonryImage1?.alt || data.image?.alt}
+                quality={5}
+                sizes="(max-width: 1200px) 15vw, 25vw"
                 className={`w-full -z-10 object-cover duration-300 opacity-100 transition-generic 
-              ${isHovering && 'blur scale-105 rounded-xl saturate-0'}
-              ${isVideoReady && 'opacity-0 group-hover:blur group-hover:scale-105 '}`}
+                  ${hasVideo && 'scale-[1.005]'}
+                  ${isHovering && 'blur scale-105 group-hover:rounded-2xl rounded-xl saturate-0'}
+                  ${isVideoReady && 'opacity-0 group-hover:blur group-hover:scale-105 '}`}
               />
             </>
           )}
         </Link>
 
         {isClient && hasVideo && isHovering && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-xl scale-150">
+          <div className="absolute inset-0 flex items-center justify-center group-hover:rounded-2xl rounded-xl scale-150">
             <ReactPlayer
               url={getVideoUrl()}
               playing={true}
@@ -120,10 +125,10 @@ export default function NewsCard({ data, className }: NewsCardProps) {
           </div>
         </CardContent>
       ) : (
-        <CardContent className="p-6">
+        <CardContent className="p-5">
           <CardTitle className="mb-1 line-clamp-1 leading-normal text-xl">{data.title}</CardTitle>
           <CardDescription className="line-clamp-3">{data.summary}</CardDescription>
-          <div className="flex items-center gap-3 mt-6 h-11">
+          <div className="flex items-center gap-3 mt-5 h-10">
             <Button
               asChild
               variant="expandIcon"

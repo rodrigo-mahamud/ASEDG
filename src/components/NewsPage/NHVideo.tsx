@@ -23,13 +23,14 @@ export default function NHVideo({ data, currentUrl, newsPageSlug }: NHVerticalPr
   return (
     <div className="h-fit relative w-full">
       <Container className="py-28 px-0 z-10">
-        {/* <Button
+        {/*        <Button
           asChild
-          variant="outline"
-          className="bg-secondaryAlt/5 hover:bg-secondaryAlt/10 mb-8 rounded-full text-foreground h-8 border-0"
+          variant="arrowReversed"
+          iconClass="w-3 h-3"
+          className="bg-secondaryAlt/5 w-fit gap-1 hover:bg-secondaryAlt/10 mb-8 flex flex-row-reverse rounded-full text-foreground h-8 border-0"
         >
           <Link href={`/${newsPageSlug}`} replace>
-            <IconArrowNarrowLeft size={16} className="text-black/70 mr-1" /> Volver
+            Volver
           </Link>
         </Button> */}
 

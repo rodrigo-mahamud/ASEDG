@@ -24,7 +24,7 @@ export function SelectFilter({ value, onValueChange, options }: SelectFilterProp
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a year" />
+        <SelectValue placeholder="Filtrar por años" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

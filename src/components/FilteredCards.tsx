@@ -138,7 +138,7 @@ export default function FilteredCards({
           <div className="flex w-3/12 justify-end">
             <Select value={selectedYear} onValueChange={handleYearChange}>
               <SelectTrigger className="w-[180px] bg-secondary border-0 outline-0">
-                <SelectValue placeholder="Select a year" />
+                <SelectValue placeholder="Filtrar por años" />
               </SelectTrigger>
               <SelectContent className="text-foreground">
                 <SelectGroup>
