@@ -1,42 +1,26 @@
 import * as React from 'react'
 import { Button } from '@/components/lib/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/lib/card'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/card'
 import Image from 'next/image'
-import { Badge } from '@/components/lib/badge'
+
 import ShareButton from '@/components/lib/shareButton'
-interface NewsCardTypes {
-  className?: string
-  badgeClass?: string
-  shareClass?: string
-  buttonVariant?: any
-  title: string
-  summary: string
-  image: Image
-}
-interface Image {
-  id: number
-  alt: string
-  url: string
-}
+import { NewsItemBase } from '@/types/typesNP'
 
 export default function IndexHighlightedNew({
-  className,
-  buttonVariant,
-  badgeClass,
   shareClass,
   title,
   summary,
   image,
-}: NewsCardTypes) {
+  masonryImages,
+  videoUrl,
+}: NewsItemBase) {
+  console.log(masonryImages)
+
+  const imageUrl = masonryImages?.masonryImage1?.url || image?.url
+  const imageAlt = masonryImages?.masonryImage1?.alt || image?.alt
+
   return (
-    <Card className=" overflow-hidden relative flex flex-col gap-6 bg-secondary p-6">
+    <Card className="overflow-hidden relative flex flex-col gap-6 bg-secondary p-6">
       <CardContent>
         <div className="flex w-full flex-col">
           <CardTitle className="mb-3 line-clamp-1">{title}</CardTitle>
@@ -53,7 +37,17 @@ export default function IndexHighlightedNew({
         </div>
       </CardContent>
       <div className="h-[28rem] relative overflow-hidden rounded-md">
-        <Image src={image.url} fill alt={image.alt} className=" object-cover w-full h-full"></Image>
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            fill
+            alt={imageAlt || 'Image'}
+            quality={5}
+            sizes="(max-width: 1200px) 15vw, 25vw"
+            className="object-cover w-full h-full"
+          />
+        )}
+        {videoUrl && <div>Va el video</div>}
       </div>
     </Card>
   )

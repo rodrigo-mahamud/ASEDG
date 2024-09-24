@@ -110,7 +110,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
             >
               <IndexHeroNews>
                 {data.newsFour.map((newsItem) => (
-                  <IndexHighlightedNew key={newsItem.id} {...newsItem} buttonVariant="secondary" />
+                  <IndexHighlightedNew key={newsItem.id} {...newsItem} />
                 ))}
               </IndexHeroNews>
             </MotionDiv>

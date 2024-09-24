@@ -46,6 +46,7 @@ interface NewsItemBase {
   masonryImages?: MasonryImages
   publishedDate: string
   categories: Category[]
+  shareClass?: string
 }
 
 // Tipo para imágenes de masonry
