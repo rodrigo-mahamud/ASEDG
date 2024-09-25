@@ -18,7 +18,7 @@ export default function NRCard({ newsItem, className }: NRCardProps) {
   return (
     <div
       className={cn(
-        'relative w-1/4 mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden',
+        'relative w-1/4 h-[27rem] mainShadow transitionAlt hover:rounded-xl group rounded-lg overflow-hidden',
         className,
       )}
     >
@@ -30,7 +30,7 @@ export default function NRCard({ newsItem, className }: NRCardProps) {
         )}
       </div>
       <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
-        <div className="flex relative w-full h-[27rem] items-end">
+        <div className="flex relative w-full h-full items-end">
           <div className="absolute w-full h-full blurMaskAlt z-10"></div>
           <div className="absolute z-10 p-6 flex flex-col items-start w-full translate-y-4 group-hover:translate-y-0 transition-generic">
             <div className="flex justify-between w-full mb-2"></div>

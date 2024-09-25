@@ -141,7 +141,10 @@ const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
       <div ref={carouselRef} className={`overflow-hidden ${className}`}>
         <div
           ref={ref}
-          className={cn('flex', orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col')}
+          className={cn(
+            'flex items-center',
+            orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+          )}
           {...props}
         />
       </div>

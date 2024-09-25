@@ -226,11 +226,10 @@
 }
 
 .maskNewsIndex {
-  mask-image: linear-gradient(
-    0deg,
-    rgb(0 0 0 / 0%) 0%,
-    rgb(0 0 0) 20%,
-    rgb(0 0 0) 80%,
-    rgba(0, 0, 0, 0) 100%
+  mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 1) 40%,
+    rgba(255, 0, 0, 0) 75%,
+    rgba(255, 0, 0, 0) 80%
   );
 }

@@ -32,88 +32,31 @@ interface IndexHeroTypes {
 }
 const IndexHero = ({ data }: IndexHeroTypes) => {
   return (
-    <header className="h-screen flex items-center mb-32">
-      <div className="absolute w-full z-10">
-        <Container>
-          <div className="w-full flex gap-16 items-center">
-            <div className="w-1/2">
-              <MotionDiv
-                animate={{ y: 0, opacity: 1 }}
-                initial={{ y: 100, opacity: 0 }}
-                transition={{
-                  ease: [0.14, 1, 0.34, 1],
-                  duration: 1.75,
-                }}
-                className="text-primary font-semibold tracking-tight"
-              >
-                {data.pretitleIndex}
-              </MotionDiv>
-              <MotionDiv
-                animate={{ y: 0, opacity: 1 }}
-                initial={{ y: 100, opacity: 0 }}
-                transition={{
-                  ease: [0.14, 1, 0.34, 1],
-                  duration: 1.75,
-                  delay: 0.05,
-                }}
-              >
-                <h1 className="text-2xl mt-8 md:text-3xl lg:text-7xl font-cal text-balance pr-10 lg:leading-[72px] tracking-wide">
-                  {data.titleIndex}
-                </h1>
-              </MotionDiv>
+    <header className="min-h-screen flex items-center mb-32">
+      <div className="w-full z-10 flex flex-col gap-20">
+        <Container className="pb-0">
+          <div className=" flex flex-col items-center gap-4">
+            {data.pretitleIndex}
 
-              <MotionDiv
-                animate={{ y: 0, opacity: 1 }}
-                initial={{ y: 100, opacity: 0 }}
-                transition={{
-                  ease: [0.14, 1, 0.34, 1],
-                  duration: 1.75,
-                  delay: 0.1,
-                }}
-              >
-                <h2 className="text-xl mt-8 mb-10 text-balance text-foreground leading-9">
-                  {data.description}
-                </h2>
-              </MotionDiv>
-              <MotionDiv
-                animate={{ y: 0, opacity: 1 }}
-                initial={{ y: 100, opacity: 0 }}
-                transition={{
-                  ease: [0.14, 1, 0.34, 1],
-                  duration: 1.75,
-                  delay: 0.15,
-                }}
-                className="flex gap-5"
-              >
-                <Button
-                  variant="expandIcon"
-                  size="lg"
-                  iconClass="w-6 h-6"
-                  Icon={IconArrowRight}
-                  iconPlacement="right"
-                  className="text-lg bg-primary hover:bg-primary/90 rounded-full"
-                >
-                  ¿Qué ver?
-                </Button>
-                <Button variant="linkHover2" size="lg" className="text-lg ">
-                  Explorar
-                </Button>
-              </MotionDiv>
-            </div>
-            <MotionDiv
-              animate={{ y: 0, opacity: 1 }}
-              initial={{ y: 100, opacity: 0 }}
-              transition={{
-                ease: [0.14, 1, 0.34, 1],
-                duration: 1.75,
-                delay: 0.15,
-              }}
-              className="w-1/2 flex gap-5 justify-center"
+            <h1 className="text-xl md:text-2xl lg:text-6xl text-balance  tracking-tight font-semibold">
+              {data.titleIndex}
+            </h1>
+
+            <h2 className="text-lg text-balance text-foreground leading-9">{data.description}</h2>
+
+            <Button
+              variant="expandIcon"
+              size="lg"
+              iconClass="w-6 h-6"
+              Icon={IconArrowRight}
+              iconPlacement="right"
+              className="text-lg bg-primary hover:bg-primary/90 rounded-full"
             >
-              <IndexHighlightedNew />
-            </MotionDiv>
+              ¿Qué ver?
+            </Button>
           </div>
         </Container>
+        <IndexHighlightedNew />
       </div>
     </header>
   )
