@@ -77,18 +77,12 @@ const secondRow = reviews.slice(reviews.length / 2)
 export function IndexHighlightedNew() {
   return (
     <div className="maskNewsIndex flex w-full flex-row items-center justify-center border-0 bg-transparent h-screen">
-      <Marquee pauseOnHover vertical repeat={8} className="[--duration:20s] overflow-hidden">
+      <Marquee pauseOnHover vertical repeat={4} className="[--duration:30s]">
         {firstRow.map((newsItem) => (
           <NRCard className="w-full" newsItem={newsItem}></NRCard>
         ))}
       </Marquee>
-      <Marquee
-        reverse
-        pauseOnHover
-        repeat={8}
-        vertical
-        className="[--duration:20s] overflow-hidden "
-      >
+      <Marquee reverse pauseOnHover repeat={4} vertical className="[--duration:30s]">
         {secondRow.map((newsItem) => (
           <NRCard className="w-full" newsItem={newsItem}></NRCard>
         ))}

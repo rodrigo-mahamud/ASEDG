@@ -6,6 +6,8 @@ import { IndexHeroNews } from '@/components/IndexHeroNews'
 import { IndexHighlightedNew } from '@/components/IndexHighlightedNew'
 import Container from '@/components/Container'
 import { IconArrowRight } from '@tabler/icons-react'
+import AnimatedGridPattern from './lib/animatedGridPattern'
+import { cn } from '@/utils/utils'
 interface NewsTypes {
   id: string
   className?: string
@@ -33,7 +35,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
     <header className="h-screen flex items-center mb-32">
       <div className="absolute w-full z-10">
         <Container>
-          <div className="w-full flex gap-10 items-center">
+          <div className="w-full flex gap-16 items-center">
             <div className="w-1/2">
               <MotionDiv
                 animate={{ y: 0, opacity: 1 }}
@@ -106,7 +108,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
                 duration: 1.75,
                 delay: 0.15,
               }}
-              className="w-1/2 flex gap-5 justify-center overflow-hidden "
+              className="w-1/2 flex gap-5 justify-center"
             >
               <IndexHighlightedNew />
             </MotionDiv>
