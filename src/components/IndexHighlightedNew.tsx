@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, useRef } from 'react'
 import {
   Carousel,
   CarouselApi,
@@ -10,76 +10,88 @@ import {
 } from '@/components/lib/carousel'
 import NRCard from './NewsPage/NRCard'
 import { reviews } from './reviews'
+import BlurFade from './lib/blurFade'
 
 const TRANSITION_DURATION = 300 // ms
 
 export function IndexHighlightedNew() {
   const [api, setApi] = useState<CarouselApi>()
-  const [scrollSnap, setScrollSnap] = useState(0)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const scrollSnapRef = useRef(0)
 
   useEffect(() => {
     if (!api) return
 
-    const onSelect = () => {
-      setScrollSnap(api.selectedScrollSnap())
+    const onScroll = () => {
+      const progress = api.scrollProgress()
+      setScrollProgress(progress)
+      scrollSnapRef.current = api.selectedScrollSnap()
     }
 
-    api.on('select', onSelect)
+    api.on('scroll', onScroll)
     api.scrollTo(2) // Move to third element at start to center the carousel
 
     return () => {
-      api.off('select', onSelect)
+      api.off('scroll', onScroll)
     }
   }, [api])
 
   const getItemStyle = useCallback(
     (index: number) => {
       const itemCount = reviews.length
-      const centerIndex = 2 // The index of the center item
-      const distance = Math.abs(((index - scrollSnap + itemCount) % itemCount) - centerIndex)
 
-      let scale
-      if (distance === 0) {
-        scale = 1 // Center item at full scale
-      } else if (distance === 1) {
-        scale = 0.9 // Adjacent items slightly smaller
-      } else {
-        scale = 0.8 // Outer items smallest
+      // Calculate the distance considering the circular nature of the carousel
+      let distance = Math.abs(index - scrollSnapRef.current)
+      if (distance > itemCount / 2) {
+        distance = itemCount - distance
       }
+
+      // Interpolate the height based on the scroll progress
+      let height
+      if (distance < 1) {
+        height = 100 - distance * 10 // Linear interpolation between 100% and 90%
+      } else {
+        height = 90 - (distance - 1) * 10 // Linear interpolation between 90% and 80%
+      }
+
+      height = Math.max(80, Math.min(100, height)) // Clamp between 80% and 100%
 
       return {
-        transform: `scaleY(${scale})`,
-        transition: `transform ${TRANSITION_DURATION}ms ease-in-out`,
+        height: `${height}%`,
+        transition: `height ${TRANSITION_DURATION}ms ease-in-out`,
       }
     },
-    [scrollSnap],
+    [scrollProgress],
   )
 
   return (
     <Carousel
       setApi={setApi}
-      className="w-full maskNewsIndex"
+      className="relative w-screen"
       opts={{
-        align: 'start',
-        skipSnaps: false,
+        align: 'center',
         loop: true,
-        startIndex: 2,
+        startIndex: 3,
       }}
     >
-      <CarouselPrevious />
-      <CarouselNext />
-      <CarouselContent>
+      <CarouselPrevious className="absolute z-20 text-white size-12 top-1/2 left-1/3 bg-white/15 shadow-md backdrop-blur-lg" />
+      <CarouselNext className="absolute z-20 text-white size-12 top-1/2 right-1/3 bg-white/15 shadow-md backdrop-blur-lg" />
+      <CarouselContent className="z-0 maskNewsIndex">
         {reviews.map((newsItem, index) => (
-          <CarouselItem key={index} className="pl-3">
-            <div
-              style={getItemStyle(index)}
-              className="aspect-[9/16] h-[38.5rem] transition-transform duration-300 ease-in-out"
-            >
-              <NRCard
-                className="w-full h-full rounded-3xl hover:rounded-[2rem]"
-                newsItem={newsItem}
-              />
-            </div>
+          <CarouselItem key={index} className="w-1/5 p-3">
+            <BlurFade delay={0.25} inView>
+              <div className="aspect-[9/16] flex justify-center items-center">
+                <div
+                  style={getItemStyle(index)}
+                  className="transition-all duration-300 ease-in-out flex items-center"
+                >
+                  <NRCard
+                    className="w-full h-full rounded-3xl hover:rounded-[2rem]"
+                    newsItem={newsItem}
+                  />
+                </div>
+              </div>
+            </BlurFade>
           </CarouselItem>
         ))}
       </CarouselContent>

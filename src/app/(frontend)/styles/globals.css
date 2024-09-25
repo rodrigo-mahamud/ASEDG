@@ -229,7 +229,8 @@
   mask-image: radial-gradient(
     circle,
     rgba(0, 0, 0, 1) 40%,
-    rgba(255, 0, 0, 0) 75%,
-    rgba(255, 0, 0, 0) 80%
+    rgba(255, 0, 0, 0) 70%,
+    rgba(255, 0, 0, 0) 100%
   );
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 }
