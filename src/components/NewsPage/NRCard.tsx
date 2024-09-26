@@ -1,38 +1,20 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { NewsItemBase } from '@/types/typesNP'
+
 import { cn } from '@/utils/utils'
+import { NewsCardProps, NewsItemBase } from '@/types/types'
 
-interface NRCardProps {
-  newsItem: NewsItemBase & {
-    masonryImages?: {
-      masonryImage1?: {
-        url?: string
-        alt?: string
-      }
-    }
-    image?: {
-      url?: string
-      alt?: string
-    }
-  }
-  className?: string
-}
-
-export default function NRCard({ newsItem, className }: NRCardProps) {
+export default function NRCard({ data, className }: NewsCardProps) {
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString('es-ES', options)
   }
 
   const imageUrl =
-    newsItem.masonryImages?.masonryImage1?.url || newsItem.image?.url || '/placeholder-image.jpg'
+    data.masonryImages?.masonryImage1?.url || data.image?.url || '/placeholder-image.jpg'
   const imageAlt =
-    newsItem.masonryImages?.masonryImage1?.alt ||
-    newsItem.image?.alt ||
-    newsItem.title ||
-    'News image'
+    data.masonryImages?.masonryImage1?.alt || data.image?.alt || data.title || 'News image'
 
   return (
     <div
@@ -42,23 +24,21 @@ export default function NRCard({ newsItem, className }: NRCardProps) {
       )}
     >
       <div className="bg-white/25 absolute backdrop-blur-md z-20 m-6 rounded-full opacity-0 group-hover:opacity-100 transition-generic">
-        {newsItem.categories && newsItem.categories.length > 0 && (
-          <p className="text-white px-4 my-1 text-xs leading-normal">
-            {newsItem.categories[0].title}
-          </p>
+        {data.categories && data.categories.length > 0 && (
+          <p className="text-white px-4 my-1 text-xs leading-normal">{data.categories[0].title}</p>
         )}
       </div>
-      <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
+      <Link href={`/noticias-san-esteban-de-gormaz/${data.slug}`}>
         <div className="flex relative w-full h-full items-end">
           <div className="absolute w-full h-full blurMaskAlt z-10"></div>
           <div className="absolute z-10 p-6 flex flex-col items-start w-full translate-y-4 group-hover:translate-y-0 transition-generic">
             <div className="flex justify-between w-full mb-2"></div>
             <div className="w-full">
               <h2 className="text-white line-clamp-2 font-bold text-xl transition-generic">
-                {newsItem.summary}
+                {data.summary}
               </h2>
               <span className="text-white/75 text-xs opacity-0 group-hover:opacity-100 transition-generic">
-                {formatDate(newsItem.publishedDate)}
+                {formatDate(data.publishedDate)}
               </span>
             </div>
           </div>

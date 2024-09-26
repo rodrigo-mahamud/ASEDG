@@ -11,8 +11,9 @@ import {
 import NRCard from './NewsPage/NRCard'
 import { reviews } from './reviews'
 import BlurFade from './lib/blurFade'
+import { IndexHighlightedNewProps } from '@/types/types'
 
-export function IndexHighlightedNew({ data }: NewsTypes) {
+export function IndexHighlightedNew({ data }: IndexHighlightedNewProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [scrollProgress, setScrollProgress] = useState(0)
   const scrollSnapRef = useRef(0)
@@ -94,10 +95,7 @@ export function IndexHighlightedNew({ data }: NewsTypes) {
                   style={getItemStyles(index).innerStyle}
                   className=" md:h-80 lg:h-96 xl:h-[30rem] 2xl:h-[38.5rem] aspect-[9/16] transition-all duration-300 ease-in-out flex items-center"
                 >
-                  <NRCard
-                    className="w-full h-full rounded-2xl hover:rounded-3xl"
-                    newsItem={newsItem}
-                  />
+                  <NRCard className="w-full h-full rounded-2xl hover:rounded-3xl" data={newsItem} />
                 </div>
               </div>
             </CarouselItem>

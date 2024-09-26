@@ -5,6 +5,7 @@ import { IconArrowRight } from '@tabler/icons-react'
 import AnimatedGridPattern from './lib/animatedGridPattern'
 import { cn } from '@/utils/utils'
 import BlurFade from './lib/blurFade'
+import { IndexHeroTypes } from '@/types/types'
 
 const IndexHero = ({ data }: IndexHeroTypes) => {
   return (
