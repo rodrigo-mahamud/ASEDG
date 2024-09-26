@@ -88,7 +88,7 @@ const Pages: CollectionConfig = {
                   relationTo: 'news',
                   label: 'Noticias destacadas (4 ultimas por defecto)',
                   hasMany: true,
-                  maxRows: 4,
+                  maxRows: 8,
                   admin: {
                     condition: (_, siblingData) => siblingData.style === 'inicio',
                   },

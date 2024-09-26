@@ -5,7 +5,18 @@ import { NewsItemBase } from '@/types/typesNP'
 import { cn } from '@/utils/utils'
 
 interface NRCardProps {
-  newsItem: NewsItemBase
+  newsItem: NewsItemBase & {
+    masonryImages?: {
+      masonryImage1?: {
+        url?: string
+        alt?: string
+      }
+    }
+    image?: {
+      url?: string
+      alt?: string
+    }
+  }
   className?: string
 }
 
@@ -14,6 +25,14 @@ export default function NRCard({ newsItem, className }: NRCardProps) {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString('es-ES', options)
   }
+
+  const imageUrl =
+    newsItem.masonryImages?.masonryImage1?.url || newsItem.image?.url || '/placeholder-image.jpg'
+  const imageAlt =
+    newsItem.masonryImages?.masonryImage1?.alt ||
+    newsItem.image?.alt ||
+    newsItem.title ||
+    'News image'
 
   return (
     <div
@@ -44,10 +63,10 @@ export default function NRCard({ newsItem, className }: NRCardProps) {
             </div>
           </div>
           <Image
-            src={newsItem.image.url}
+            src={imageUrl}
             quality={5}
-            sizes="(max-width: 1200px) 20vw, 35vw"
-            alt={newsItem.title}
+            sizes="(max-width: 1200px) 10vw, 35vw"
+            alt={imageAlt}
             width={500}
             height={500}
             className="w-full h-full object-cover group-hover:scale-105 group-hover:brightness-50 transition-generic"
