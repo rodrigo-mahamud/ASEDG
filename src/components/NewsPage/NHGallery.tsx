@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../lib/avatar'
 import ShareButton from '../lib/shareButton'
 import { Button } from '../lib/button'
 import { IconArrowNarrowLeft } from '@tabler/icons-react'
-import { NewsItemFull } from '@/types/typesNP'
+import { NewsItemFull } from '@/types/types'
 import Link from 'next/link'
 
 interface NHGalleryProps {

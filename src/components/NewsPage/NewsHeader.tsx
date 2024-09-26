@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import NHVertical from './NHVertical'
 import NHHorizontal from './NHHorizontal'
 import NHGallery from './NHGallery'
-import { NewsHeaderProps } from '@/types/typesNP'
+import { NewsHeaderProps } from '@/types/types'
 import NHVideo from './NHVideo'
 
 export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {

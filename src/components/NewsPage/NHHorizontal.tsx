@@ -8,7 +8,7 @@ import React from 'react'
 import { Button } from '../lib/button'
 import Link from 'next/link'
 import { IconArrowNarrowLeft } from '@tabler/icons-react'
-import { NewsItemFull } from '@/types/typesNP'
+import { NewsItemFull } from '@/types/types'
 interface NHVerticalProps {
   data: NewsItemFull
   newsPageSlug: string

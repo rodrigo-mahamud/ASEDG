@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { NewsStickyAsideProps } from '@/types/typesNP'
+import { NewsStickyAsideProps } from '@/types/types'
 import NSADowloadFiles from './NSADowloadFiles'
 import NSAIndex from './NSAIndex'
 

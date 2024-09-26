@@ -8,7 +8,7 @@ import Container from '@/components/Container'
 import NewsRelated from '@/components/NewsPage/NewsRelated'
 import NewsStickyAside from '@/components/NewsPage/NewsStickyAside'
 import { Toaster } from 'sonner'
-import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/typesNP'
+import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/types'
 
 const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const payload = await getPayloadHMR({ config: configPromise })

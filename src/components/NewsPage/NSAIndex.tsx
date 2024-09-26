@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { extractH2Headings } from '@/utils/serializeLexicalRichText'
-import { NSAIndexProps, HeadingInfo } from '@/types/typesNP'
+import { NSAIndexProps, HeadingInfo } from '@/types/types'
 
 function toSentenceCase(str: string): string {
   return str.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())

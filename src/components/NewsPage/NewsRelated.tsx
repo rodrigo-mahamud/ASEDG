@@ -1,7 +1,7 @@
 import React from 'react'
 import Container from '../Container'
 import Title from '../lib/title'
-import { NewsRelatedProps } from '@/types/typesNP'
+import { NewsRelatedProps } from '@/types/types'
 import NRCard from './NRCard'
 
 export default function NewsRelated({ newsRelated }: NewsRelatedProps) {

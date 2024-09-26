@@ -7,7 +7,7 @@ import ShareButton from '../lib/shareButton'
 import React from 'react'
 import Link from 'next/link'
 import { IconArrowNarrowLeft } from '@tabler/icons-react'
-import { NewsItemFull } from '@/types/typesNP'
+import { NewsItemFull } from '@/types/types'
 import { Button } from '../lib/button'
 interface NHVerticalProps {
   data: NewsItemFull
