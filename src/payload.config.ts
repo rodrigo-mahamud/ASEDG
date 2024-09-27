@@ -41,8 +41,16 @@ export default buildConfig({
   },
   admin: {
     livePreview: {
-      url: `http://${process.env.ROOT_DOMAIN}`,
+      url: `http://${process.env.ROOT_DOMAIN}/preview`,
       collections: ['pages'],
+      breakpoints: [
+        {
+          label: 'Mobile',
+          name: 'mobile',
+          width: 375,
+          height: 667,
+        },
+      ],
     },
   },
   editor: lexicalEditor({

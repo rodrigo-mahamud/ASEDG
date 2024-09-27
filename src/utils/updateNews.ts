@@ -7,122 +7,55 @@ const updateNews = async () => {
   const payload: Payload = await getPayloadHMR({ config: configPromise })
 
   try {
-    // Obtener todas las noticias
+    // Obtener todas las noticias, ordenadas por fecha de publicación descendente
     const allNewsResponse = await payload.find({
       collection: 'news',
+      sort: '-publishedDate',
+      limit: 8, // Limitamos a 8 noticias
     })
     const allNews = allNewsResponse.docs as any[]
 
-    // Obtener las noticias fijas (fixed)
-    const fixedNewsResponse = await payload.find({
-      collection: 'news',
-      where: {
-        fixed: { equals: true },
-      },
-    })
-    const fixedNews = fixedNewsResponse.docs as any[]
-
-    // Buscar todas las páginas que contienen los bloques 'newsblock', 'newsfeatured' o 'newspinged'
+    // Buscar todas las páginas publicadas que contienen el campo 'header.newsFour'
     const pagesResponse = await payload.find({
       collection: 'pages',
       where: {
-        or: [
-          {
-            'body.layout.blockType': {
-              in: ['newsblock', 'newspinged'],
-            },
-          },
-          {
-            'body.layout.tabs.content.blockType': {
-              equals: 'newsfeatured',
-            },
-          },
-        ],
+        and: [{ _status: { equals: 'published' } }, { 'header.newsFour': { exists: true } }],
       },
     })
     const pages = pagesResponse.docs as any[]
 
-    // Actualizar cada página que contiene los bloques 'newsblock', 'newsfeatured' o 'newspinged'
+    // Actualizar cada página que tiene el campo 'header.newsFour'
     for (const page of pages) {
       try {
-        // Verificar si la página aún existe
-        const pageExists = await payload.findByID({
-          collection: 'pages',
-          id: page.id,
-        })
+        const updatedNewsFour = allNews.map((news: any) => news.id)
 
-        if (!pageExists) {
-          console.log(`La página ${page.id} ya no existe, saltando...`)
-          continue // Salta a la siguiente iteración del bucle
-        }
+        // Comparar si realmente hubo cambios antes de actualizar
+        const newsFourChanged =
+          JSON.stringify(updatedNewsFour) !== JSON.stringify(page.header.newsFour)
 
-        let updated = false
-        const updatedLayout = page.body.layout.map((block: any) => {
-          if (block.blockType === 'newsblock') {
-            updated = true
-            return {
-              ...block,
-              allNews: allNews.map((news: any) => news.id),
-            }
-          }
-          if (block.blockType === 'newspinged') {
-            updated = true
-            return {
-              ...block,
-              newspinged: fixedNews.map((news: any) => news.id),
-            }
-          }
-          if (block.tabs) {
-            updated = true
-            return {
-              ...block,
-              tabs: block.tabs.map((tab: any) => ({
-                ...tab,
-                content: tab.content.map((contentBlock: any) => {
-                  if (contentBlock.blockType === 'newsfeatured') {
-                    return {
-                      ...contentBlock,
-                      newsFour: allNews.slice(0, 4).map((news: any) => news.id),
-                    }
-                  }
-                  return contentBlock
-                }),
-              })),
-            }
-          }
-          return block
-        })
-
-        // Actualiza el campo `newsFour` en el header si existe
-        const updatedHeader = page.header
-          ? {
-              ...page.header,
-              newsFour: allNews.slice(0, 4).map((news: any) => news.id),
-            }
-          : page.header
-
-        // Si se realizó alguna actualización, guardar la página
-        if (updated) {
+        if (newsFourChanged) {
           await payload.update({
             collection: 'pages',
             id: page.id,
             data: {
-              body: { layout: updatedLayout },
-              ...(updatedHeader && { header: updatedHeader }),
+              header: {
+                ...page.header,
+                newsFour: updatedNewsFour,
+              },
             },
           })
-          console.log(`Página ${page.id} actualizada con éxito`)
+          console.log(`Página ${page.id}: campo 'header.newsFour' actualizado con éxito`)
         } else {
-          console.log(`No se requirieron actualizaciones para la página ${page.id}`)
+          console.log(`Página ${page.id}: No se requirieron actualizaciones para 'header.newsFour'`)
         }
       } catch (error) {
         console.error(`Error al procesar la página ${page.id}:`, error)
       }
     }
 
-    console.log('Proceso de actualización de noticias completado')
+    console.log('Proceso de actualización de newsFour completado')
   } catch (error) {
-    console.error('Error en el proceso de actualización de noticias:', error)
+    console.error('Error en el proceso de actualización de newsFour:', error)
   }
 }
 

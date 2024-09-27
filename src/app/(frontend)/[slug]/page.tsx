@@ -1,4 +1,3 @@
-// app/[slug]/page.tsx
 import React from 'react'
 import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
@@ -7,42 +6,34 @@ import Hero from '@/components/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
 
-interface Page {
-  id: number
-  header: {
-    style: string
-    titleIndex: string | null
-    pretitleIndex: string | null
-    description: string | null
-    newsSelection: number[]
-    title: string
-    pretitle: string | null
-  }
-  slug: string
-}
-
 interface PageProps {
   params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
+  const pageData = await payload.find({
     collection: 'pages',
-  })) as any
+  })
 
   return pageData.docs.map((page: any) => ({
     slug: page.slug,
   }))
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
-    collection: 'pages',
-  })) as any
+  let page
 
-  const page = pageData.docs.find((page: any) => page.slug === params.slug)
+  if (searchParams.payload_json) {
+    page = JSON.parse(searchParams.payload_json as string)
+  } else {
+    page = await payload.findByID({
+      collection: 'pages',
+      id: params.slug,
+    })
+  }
 
   if (!page) {
     return { title: 'Page not found' }
@@ -54,25 +45,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
-    collection: 'pages',
-  })) as any
+  let pageData
 
-  const page = pageData.docs.find((page: any) => page.slug === params.slug)
+  if (searchParams.payload_json) {
+    pageData = JSON.parse(searchParams.payload_json as string)
+  } else {
+    pageData = await payload.findByID({
+      collection: 'pages',
+      id: params.slug,
+    })
+  }
 
-  if (!page) {
+  if (!pageData) {
     return <div>Page not found</div>
   }
 
   return (
     <main>
-      <Hero data={page.header} publishedDate={page.publishedDate} />
-      <RenderBlocks layout={page.body.layout} />
+      <Hero data={pageData.header} publishedDate={pageData.publishedDate} />
+      <RenderBlocks layout={pageData.body.layout} />
       <Toaster />
     </main>
   )
 }
 
-export const revalidate = 10 // Revalidate every 60 seconds
+export const revalidate = 10 // Mantén el ISR para las versiones publicadas

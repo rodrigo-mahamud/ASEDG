@@ -9,7 +9,6 @@ import {
   CarouselPrevious,
 } from '@/components/lib/carousel'
 import NRCard from './NewsPage/NRCard'
-import { reviews } from './reviews'
 import BlurFade from './lib/blurFade'
 import { IndexHighlightedNewProps } from '@/types/types'
 
@@ -37,7 +36,7 @@ export function IndexHighlightedNew({ data }: IndexHighlightedNewProps) {
 
   const getItemStyles = useCallback(
     (index: number) => {
-      const itemCount = reviews.length
+      const itemCount = data.length
 
       // Calculate the distance considering the circular nature of the carousel
       let distance = index - scrollSnapRef.current
