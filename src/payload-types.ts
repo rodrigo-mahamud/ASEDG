@@ -248,6 +248,7 @@ export interface Page {
               title?: string | null;
               subtitle?: string | null;
               filter?: boolean | null;
+              pinged?: boolean | null;
               allNews?: (string | News)[] | null;
               id?: string | null;
               blockName?: string | null;

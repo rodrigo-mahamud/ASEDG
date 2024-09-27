@@ -25,6 +25,7 @@ export type Type = {
   title: string
   subtitle: string
   filter: boolean
+  pingedNews: boolean
   allNews: NewsItem[]
 }
 const NewsBlock: Block = {
@@ -54,6 +55,11 @@ const NewsBlock: Block = {
       name: 'filter',
       type: 'checkbox',
       label: 'Mostrar filtro de noticias',
+    },
+    {
+      name: 'pingedNews',
+      type: 'checkbox',
+      label: '¿Mostrar noticias fijadas?',
     },
     {
       name: 'allNews',
