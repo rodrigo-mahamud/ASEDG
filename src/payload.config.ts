@@ -41,8 +41,9 @@ export default buildConfig({
   },
   admin: {
     livePreview: {
-      url: `http://${process.env.ROOT_DOMAIN}/preview`,
-      collections: ['pages'],
+      url: ({ data }) => {
+        return `http://${process.env.ROOT_DOMAIN}/preview/${data.slug}`
+      },
       breakpoints: [
         {
           label: 'Movil',
@@ -57,6 +58,7 @@ export default buildConfig({
           height: 460,
         },
       ],
+      collections: ['pages'],
     },
   },
   editor: lexicalEditor({

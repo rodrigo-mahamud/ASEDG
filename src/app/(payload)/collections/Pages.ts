@@ -14,12 +14,18 @@ const Pages: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 1000,
+        interval: 375,
       },
     },
   },
   admin: {
     useAsTitle: 'slug',
+    preview: (doc) => {
+      if (doc?.slug) {
+        return `http://${process.env.ROOT_DOMAIN}/preview/${doc.slug}`
+      }
+      return null
+    },
   },
   fields: [
     {
