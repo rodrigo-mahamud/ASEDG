@@ -45,10 +45,16 @@ export default buildConfig({
       collections: ['pages'],
       breakpoints: [
         {
-          label: 'Mobile',
+          label: 'Movil',
           name: 'mobile',
           width: 375,
           height: 667,
+        },
+        {
+          label: 'Escritorio',
+          name: 'desktop',
+          width: 875,
+          height: 460,
         },
       ],
     },

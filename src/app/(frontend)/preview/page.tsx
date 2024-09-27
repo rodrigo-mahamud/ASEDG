@@ -4,6 +4,7 @@ import { RefreshRouteOnSave } from '@/components/RefreshRouteOnSave'
 import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/Hero'
 import { Toaster } from 'sonner'
+import IndexHero from '@/components/IndexHero'
 
 export default async function Page() {
   const payload = await getPayloadHMR({ config })
@@ -17,7 +18,11 @@ export default async function Page() {
   return (
     <>
       <RefreshRouteOnSave />
-      <Hero data={pageData.header} publishedDate={pageData.publishedDate} />
+      {pageData.header && pageData.header.style === 'inicio' ? (
+        <IndexHero data={pageData.header} />
+      ) : pageData.header ? (
+        <Hero data={pageData.header} />
+      ) : null}
       <RenderBlocks layout={pageData.body.layout} />
       <Toaster />
     </>
