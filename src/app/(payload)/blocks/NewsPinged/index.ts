@@ -1,6 +1,6 @@
 import { Block } from 'payload'
 export type Type = {
-  newspinged: NewsItem[]
+  newspinged?: NewsItem[]
   title: string
   subtitle: string
 }
