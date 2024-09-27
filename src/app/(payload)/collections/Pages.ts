@@ -21,8 +21,8 @@ const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'slug',
     preview: (doc) => {
-      if (doc?.slug) {
-        return `http://${process.env.ROOT_DOMAIN}/preview/${doc.slug}`
+      if (doc?.id) {
+        return `http://${process.env.ROOT_DOMAIN}/preview/${doc.id}`
       }
       return null
     },

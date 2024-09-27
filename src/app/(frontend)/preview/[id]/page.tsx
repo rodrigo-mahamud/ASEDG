@@ -7,36 +7,29 @@ import { Toaster } from 'sonner'
 import IndexHero from '@/components/IndexHero'
 import { notFound } from 'next/navigation'
 
-export default async function PreviewPage({ params }: { params: { slug: string } }) {
+export default async function PreviewPage({ params }: { params: { id: string } }) {
   const payload = await getPayloadHMR({ config })
 
-  const pageData = await payload.find({
+  const pageData = await payload.findByID({
     collection: 'pages',
-    where: {
-      slug: {
-        equals: params.slug,
-      },
-    },
-    limit: 1,
+    id: params.id,
     draft: true,
   })
 
-  if (!pageData.docs[0]) {
+  if (!pageData) {
     notFound()
   }
 
-  const page = pageData.docs[0]
-
   return (
-    <>
+    <main>
       <RefreshRouteOnSave />
-      {page.header && page.header.style === 'inicio' ? (
-        <IndexHero data={page.header} />
-      ) : page.header ? (
-        <Hero data={page.header} />
+      {pageData.header && pageData.header.style === 'inicio' ? (
+        <IndexHero data={pageData.header} />
+      ) : pageData.header ? (
+        <Hero data={pageData.header} />
       ) : null}
-      <RenderBlocks layout={page.body.layout} />
+      <RenderBlocks layout={pageData.body.layout} />
       <Toaster />
-    </>
+    </main>
   )
 }

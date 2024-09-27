@@ -4,7 +4,6 @@ import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import IndexHero from '@/components/IndexHero'
 import Hero from '@/components/Hero'
-import { RefreshRouteOnSave } from '@/components/RefreshRouteOnSave'
 
 export default async function HomePage() {
   try {
@@ -40,17 +39,14 @@ export default async function HomePage() {
     const page = pageData
 
     return (
-      <>
-        <RefreshRouteOnSave />
-        <main>
-          {page.header && page.header.style === 'inicio' ? (
-            <IndexHero data={page.header} />
-          ) : page.header ? (
-            <Hero data={page.header} />
-          ) : null}
-          {page.body && page.body.layout && <RenderBlocks layout={page.body.layout} />}
-        </main>
-      </>
+      <main>
+        {page.header && page.header.style === 'inicio' ? (
+          <IndexHero data={page.header} />
+        ) : page.header ? (
+          <Hero data={page.header} />
+        ) : null}
+        {page.body && page.body.layout && <RenderBlocks layout={page.body.layout} />}
+      </main>
     )
   } catch (error) {
     console.error('Error al cargar la página de inicio:', error)

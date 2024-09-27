@@ -42,7 +42,7 @@ export default buildConfig({
   admin: {
     livePreview: {
       url: ({ data }) => {
-        return `http://${process.env.ROOT_DOMAIN}/preview/${data.slug}`
+        return `http://${process.env.ROOT_DOMAIN}/preview/${data.id}`
       },
       breakpoints: [
         {
