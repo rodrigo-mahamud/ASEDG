@@ -1,16 +1,16 @@
 // Tipos básicos
-interface Image {
+export interface Image {
   url: string
   alt: string
 }
 
-interface Category {
+export interface Category {
   id: string
   title: string
   description?: string
 }
 
-interface FileAttachment {
+export interface FileAttachment {
   id: string
   file: {
     url: string
@@ -21,7 +21,7 @@ interface FileAttachment {
 }
 
 // Tipos para el contenido de texto enriquecido
-interface LexicalNode {
+export interface LexicalNode {
   type: string
   tag?: string
   text?: string
@@ -29,14 +29,14 @@ interface LexicalNode {
   children?: LexicalNode[]
 }
 
-interface LexicalContent {
+export interface LexicalContent {
   root: {
     children: LexicalNode[]
   }
 }
 
 // Tipo base para noticias
-interface NewsItemBase {
+export interface NewsItemBase {
   id: string
   slug: string
   title: string
@@ -50,7 +50,7 @@ interface NewsItemBase {
 }
 
 // Tipo para imágenes de masonry
-interface MasonryImage extends Image {
+export interface MasonryImage extends Image {
   id: string
   filename: string
   mimeType: string
@@ -64,7 +64,7 @@ interface MasonryImage extends Image {
   thumbnailURL: string | null
 }
 
-interface MasonryImages {
+export interface MasonryImages {
   masonryImage1: MasonryImage
   masonryImage2: MasonryImage
   masonryImage3: MasonryImage
@@ -73,7 +73,7 @@ interface MasonryImages {
 }
 
 // Tipo completo para noticias
-interface NewsItemFull extends NewsItemBase {
+export interface NewsItemFull extends NewsItemBase {
   richtxtcontent: LexicalContent
   attachments: FileAttachment[]
   style: 'vertical' | 'horizontal' | 'masonry' | 'video'
@@ -83,40 +83,40 @@ interface NewsItemFull extends NewsItemBase {
 }
 
 // Tipos para props de componentes
-interface NewsHeaderProps {
+export interface NewsHeaderProps {
   data: NewsItemFull
   newsPageSlug: string
 }
 
-interface NewsRelatedProps {
+export interface NewsRelatedProps {
   newsRelated: NewsItemBase[]
 }
 
-interface NewsStickyAsideProps {
+export interface NewsStickyAsideProps {
   attachments: FileAttachment[]
   indexContent: LexicalContent
 }
 
-interface NewsPageProps {
+export interface NewsPageProps {
   params: { news: string }
 }
 
-interface NewsCardProps {
+export interface NewsCardProps {
   data: NewsItemBase
   className?: string
 }
 
 // Tipos para respuestas de API
-interface NewsPageData {
+export interface NewsPageData {
   docs: NewsItemFull[]
 }
 
 // Tipos adicionales
-interface HeadingInfo {
+export interface HeadingInfo {
   id: string
   text: string
 }
-interface IndexHeroTypes {
+export interface IndexHeroTypes {
   data: {
     pretitleIndex: string
     titleIndex: string
@@ -124,44 +124,27 @@ interface IndexHeroTypes {
     newsFour: NewsItemBase[]
   }
 }
-interface IndexHighlightedNewProps {
+export interface IndexHighlightedNewProps {
   data: NewsItemBase[]
 }
-interface NSAIndexProps {
+export interface NSAIndexProps {
   indexContent: LexicalContent
 }
 
 // Tipos para NSADownloadFiles
-interface DownloadAttachmentsProps {
+export interface DownloadAttachmentsProps {
   attachments: FileAttachment[]
 }
 
 // Tipos para ImagesMasonry
-interface ImagesMasonryProps {
+export interface ImagesMasonryProps {
   imageSrcs: string[]
   imageAlts: string[]
 }
-
-export type {
-  IndexHeroTypes,
-  Image,
-  Category,
-  FileAttachment,
-  LexicalNode,
-  LexicalContent,
-  NewsItemBase,
-  NewsItemFull,
-  MasonryImage,
-  MasonryImages,
-  NewsHeaderProps,
-  NewsRelatedProps,
-  NewsStickyAsideProps,
-  NewsPageProps,
-  NewsCardProps,
-  NewsPageData,
-  HeadingInfo,
-  NSAIndexProps,
-  DownloadAttachmentsProps,
-  IndexHighlightedNewProps,
-  ImagesMasonryProps,
+export interface HeroGlowTypes {
+  publishedDate?: string
+  data: {
+    title: any
+    displaydate?: boolean
+  }
 }

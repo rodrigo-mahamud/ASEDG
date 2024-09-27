@@ -2,8 +2,7 @@ import React from 'react'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
-import IndexHero from '@/components/IndexHero'
-import Hero from '@/components/Hero'
+import Hero from '@/components/hero/Hero'
 
 export default async function HomePage() {
   try {
@@ -40,11 +39,8 @@ export default async function HomePage() {
 
     return (
       <main>
-        {page.header && page.header.style === 'inicio' ? (
-          <IndexHero data={page.header} />
-        ) : page.header ? (
-          <Hero data={page.header} />
-        ) : null}
+        <Hero data={page}></Hero>
+
         {page.body && page.body.layout && <RenderBlocks layout={page.body.layout} />}
       </main>
     )

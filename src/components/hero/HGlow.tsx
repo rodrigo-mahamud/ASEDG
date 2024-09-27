@@ -1,18 +1,11 @@
 import React, { FC } from 'react'
 import dayjs from 'dayjs'
-import { AuroraBackground } from './lib/auroraBackground'
-import Container from './Container'
-import { BreadcrumbDemo } from './BreadcrumbDemo'
+import { AuroraBackground } from '../lib/auroraBackground'
+import Container from '../Container'
+import { BreadcrumbDemo } from '../BreadcrumbDemo'
+import { HeroGlowTypes } from '@/types/types'
 
-interface HeroTypes {
-  publishedDate?: string
-  data: {
-    title: any
-    displaydate?: boolean
-  }
-}
-
-const Hero: FC<HeroTypes> = ({ data, publishedDate }) => {
+export default function HGlow({ data, publishedDate }: HeroGlowTypes) {
   dayjs.locale('es')
   const formattedDate = dayjs(publishedDate).format('DD MMM YYYY')
 
@@ -34,5 +27,3 @@ const Hero: FC<HeroTypes> = ({ data, publishedDate }) => {
     </header>
   )
 }
-
-export default Hero

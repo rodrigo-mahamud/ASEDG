@@ -2,7 +2,7 @@ import React from 'react'
 import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
-import Hero from '@/components/Hero'
+import Hero from '@/components/hero/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
 
@@ -64,7 +64,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <main>
-      <Hero data={pageData.header} publishedDate={pageData.publishedDate} />
+      <Hero data={pageData} />
       <RenderBlocks layout={pageData.body.layout} />
       <Toaster />
     </main>

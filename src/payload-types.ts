@@ -101,7 +101,7 @@ export interface User {
 export interface Page {
   id: string;
   header: {
-    style: 'inicio' | 'pagina';
+    style: 'index' | 'glow' | 'grid';
     titleIndex?: string | null;
     pretitleIndex?: string | null;
     description?: string | null;

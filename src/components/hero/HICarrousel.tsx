@@ -9,10 +9,10 @@ import {
   CarouselPrevious,
 } from '@/components/lib/carousel'
 import NRCard from '@/components/news-page/NRCard'
-import BlurFade from './lib/blurFade'
+import BlurFade from '@/components/lib/blurFade'
 import { IndexHighlightedNewProps } from '@/types/types'
 
-export function IndexHighlightedNew({ data }: IndexHighlightedNewProps) {
+export function HICarrousel({ data }: IndexHighlightedNewProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [scrollProgress, setScrollProgress] = useState(0)
   const scrollSnapRef = useRef(0)

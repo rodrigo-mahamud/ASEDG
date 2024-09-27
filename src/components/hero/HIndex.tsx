@@ -1,13 +1,13 @@
 import { Button } from '@/components/lib/button'
-import { IndexHighlightedNew } from '@/components/IndexHighlightedNew'
 import Container from '@/components/Container'
 import { IconArrowRight } from '@tabler/icons-react'
-import AnimatedGridPattern from './lib/animatedGridPattern'
+import AnimatedGridPattern from '@/components/lib/animatedGridPattern'
 import { cn } from '@/utils/utils'
-import BlurFade from './lib/blurFade'
+import BlurFade from '@/components/lib/blurFade'
 import { IndexHeroTypes } from '@/types/types'
+import { HICarrousel } from './HICarrousel'
 
-const IndexHero = ({ data }: IndexHeroTypes) => {
+export default function HIndex({ data }: IndexHeroTypes) {
   return (
     <header className="min-h-screen flex items-center mb-32">
       <div className="w-full z-10 flex flex-col gap-24">
@@ -35,7 +35,7 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
             </BlurFade>
           </div>
         </Container>
-        <IndexHighlightedNew data={data.newsFour} />
+        <HICarrousel data={data.newsFour} />
         <AnimatedGridPattern
           numSquares={30}
           maxOpacity={0.1}
@@ -50,4 +50,3 @@ const IndexHero = ({ data }: IndexHeroTypes) => {
     </header>
   )
 }
-export default IndexHero

@@ -42,11 +42,15 @@ const Pages: CollectionConfig = {
               options: [
                 {
                   label: 'Cabecera de Inicio',
-                  value: 'inicio',
+                  value: 'index',
                 },
                 {
                   label: 'Cabecera de Página',
-                  value: 'pagina',
+                  value: 'glow',
+                },
+                {
+                  label: 'Cabecera 2',
+                  value: 'grid',
                 },
               ],
               required: true,
@@ -60,7 +64,7 @@ const Pages: CollectionConfig = {
                   type: 'text',
                   required: true,
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'inicio',
+                    condition: (_, siblingData) => siblingData.style === 'index',
                   },
                 },
                 {
@@ -69,7 +73,7 @@ const Pages: CollectionConfig = {
                   type: 'text',
                   required: true,
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'inicio',
+                    condition: (_, siblingData) => siblingData.style === 'index',
                   },
                 },
               ],
@@ -80,7 +84,7 @@ const Pages: CollectionConfig = {
               type: 'textarea',
               admin: {
                 width: '100%',
-                condition: (_, siblingData) => siblingData.style === 'inicio',
+                condition: (_, siblingData) => siblingData.style === 'index',
               },
               required: true,
             },
@@ -96,7 +100,7 @@ const Pages: CollectionConfig = {
                   hasMany: true,
                   maxRows: 8,
                   admin: {
-                    condition: (_, siblingData) => siblingData.style === 'inicio',
+                    condition: (_, siblingData) => siblingData.style === 'index',
                   },
                 },
               ],
@@ -107,13 +111,13 @@ const Pages: CollectionConfig = {
               label: '¿Mostrar la fehca en la cabecera?',
               required: false,
               admin: {
-                condition: (_, siblingData) => siblingData.style === 'pagina',
+                condition: (_, siblingData) => siblingData.style === 'glow',
               },
             },
             {
               type: 'row',
               admin: {
-                condition: (_, siblingData) => siblingData.style === 'pagina',
+                condition: (_, siblingData) => siblingData.style === 'glow',
               },
               fields: [
                 {
