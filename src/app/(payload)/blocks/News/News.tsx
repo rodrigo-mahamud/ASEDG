@@ -4,8 +4,9 @@ import FilteredCards from '@/components/FilteredCards'
 import Title from '@/components/lib/title'
 import NewsCard from '@/components/NewsCard'
 import React from 'react'
+import { NewsTypes } from '.'
 
-export default function News({ allNews, subtitle, title, filter }) {
+export default function News({ allNews, subtitle, title, filter }: NewsTypes) {
   return (
     <Container>
       <Title title={title} subtitle={subtitle} />

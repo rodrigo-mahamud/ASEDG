@@ -20,14 +20,22 @@ interface NewsItem {
     alt: string
   }
 }
-
+export interface NewsTypes {
+  title: string
+  subtitle: string
+  filter: boolean
+  allNews: NewsItem[]
+}
 export type Type = {
   title: string
   subtitle: string
   filter: boolean
   pingedNews: boolean
+  pntitle: string
+  pnsubtitle: string
   allNews: NewsItem[]
 }
+
 const NewsBlock: Block = {
   slug: 'newsblock',
   labels: {
@@ -39,28 +47,58 @@ const NewsBlock: Block = {
       type: 'row',
       fields: [
         {
-          name: 'title',
-          type: 'text',
-          label: 'Titulo de la seccion',
+          name: 'filter',
+          type: 'checkbox',
+          label: 'Mostrar filtro de noticias',
         },
-
         {
-          name: 'subtitle',
-          type: 'text',
-          label: 'Descripción de la sección',
+          name: 'pingedNews',
+          type: 'checkbox',
+          label: '¿Mostrar noticias fijadas?',
         },
       ],
     },
     {
-      name: 'filter',
-      type: 'checkbox',
-      label: 'Mostrar filtro de noticias',
+      type: 'row',
+      fields: [
+        {
+          name: 'pntitle',
+          type: 'text',
+          required: true,
+          label: 'Título de noticias fijadas',
+          admin: {
+            condition: (_, siblingData) => siblingData.pingedNews,
+          },
+        },
+        {
+          name: 'pnsubtitle',
+          type: 'text',
+          required: true,
+          label: 'Subtítulo de noticias fijadas',
+          admin: {
+            condition: (_, siblingData) => siblingData.pingedNews,
+          },
+        },
+      ],
     },
     {
-      name: 'pingedNews',
-      type: 'checkbox',
-      label: '¿Mostrar noticias fijadas?',
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          label: 'Titulo de la seccion',
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          required: true,
+          label: 'Descripción de la sección',
+        },
+      ],
     },
+
     {
       name: 'allNews',
       type: 'relationship',

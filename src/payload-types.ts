@@ -245,10 +245,12 @@ export interface Page {
               blockType: 'cardsblock';
             }
           | {
-              title?: string | null;
-              subtitle?: string | null;
               filter?: boolean | null;
               pingedNews?: boolean | null;
+              pntitle?: string | null;
+              pnsubtitle?: string | null;
+              title: string;
+              subtitle: string;
               allNews?: (string | News)[] | null;
               id?: string | null;
               blockName?: string | null;
