@@ -5,6 +5,9 @@ import React from 'react'
 
 export const RefreshRouteOnSave: React.FC = () => {
   const router = useRouter()
-
-  return <PayloadLivePreview refresh={() => router.refresh()} serverURL={process.env.ROOT_DOMAIN} />
+  if (process.env.ROOT_DOMAIN) {
+    return (
+      <PayloadLivePreview refresh={() => router.refresh()} serverURL={process.env.ROOT_DOMAIN} />
+    )
+  }
 }

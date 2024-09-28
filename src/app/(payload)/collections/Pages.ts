@@ -187,35 +187,27 @@ const Pages: CollectionConfig = {
       name: 'slug',
       label: 'Url de la página - Generado automáticamente',
       type: 'text',
-      required: true,
       admin: {
         position: 'sidebar',
         readOnly: true, // Siempre será de solo lectura en la interfaz de administración
       },
       hooks: {
         beforeValidate: [
-          ({ data, value, originalDoc }) => {
-            let newSlug = value
-            let isEditable = false
+          (args) => {
+            const { data, value } = args
 
             if (data?.header?.pagetype === 'indexPage') {
-              newSlug = '/'
+              return 'index'
             } else if (data?.header?.pagetype === 'newsPage') {
-              newSlug = 'noticias-san-esteban-de-gormaz'
+              return 'noticias-san-esteban-de-gormaz'
             } else if (data?.header?.pagetype === 'facilitiesPage') {
-              newSlug = 'instalaciones-deportivas-san-esteban-de-gormaz'
+              return 'instalaciones-deportivas-san-esteban-de-gormaz'
             } else if (data?.header?.pagetype === 'standarPage') {
-              isEditable = true
-              if (!value || value === originalDoc?.slug) {
-                newSlug = formatSlug('header', 'title')({ data, value })
-              }
+              // Usamos el hook formatSlug directamente aquí
+              return formatSlug('header', 'title')(args)
             }
-
-            if (data) {
-              data.isSlugEditable = isEditable
-            }
-
-            return newSlug
+            // Si no se cumple ninguna condición, devolvemos el valor actual
+            return value
           },
         ],
       },

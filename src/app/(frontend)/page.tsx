@@ -4,48 +4,38 @@ import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
 
-export default async function HomePage() {
+import { notFound } from 'next/navigation'
+
+export async function generateStaticParams() {
+  return [{}]
+}
+export default async function NewsMainPage() {
   try {
     const payload = await getPayloadHMR({ config: configPromise })
-
-    // Obtener configuración global
-    const settings = (await payload.findGlobal({ slug: 'settings' })) as any
-
-    if (!settings || !settings.homePage || !settings.homePage.id) {
-      return (
-        <main>
-          La configuración global no está completa. Por favor, configure la página de inicio en el
-          CMS.
-        </main>
-      )
-    }
-
-    // Obtener la página con el id especificado en settings.homepage.id
-    const pageId = settings.homePage.id
-    const pageData = (await payload.findByID({
+    const indexPage = await payload.find({
       collection: 'pages',
-      id: pageId,
-    })) as any
+      where: {
+        'header.pagetype': {
+          equals: 'indexPage',
+        },
+      },
+    })
 
-    if (!pageData) {
-      return (
-        <main>
-          No se encontró la página principal. Por favor, verifique la configuración en el CMS.
-        </main>
-      )
+    if (!indexPage) {
+      notFound()
     }
 
-    const page = pageData
+    const data = indexPage.docs[0]
 
     return (
       <main>
-        <Hero data={page}></Hero>
-
-        {page.body && page.body.layout && <RenderBlocks layout={page.body.layout} />}
+        <Hero data={data} />
+        {data.body && data.body.layout && <RenderBlocks layout={data.body.layout} />}
       </main>
     )
   } catch (error) {
-    console.error('Error al cargar la página de inicio:', error)
-    return <main>Error al cargar la página. Por favor, intente más tarde.</main>
+    console.error('Error al cargar la página principal de noticias:', error)
+    return <div>Error al cargar la página. Por favor, revisa que exsiste el contenido.</div>
   }
 }
+export const revalidate = 60

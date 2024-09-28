@@ -40,26 +40,26 @@ export default buildConfig({
     },
   },
   admin: {
-    // livePreview: {
-    //   url: ({ data }) => {
-    //     return `http://${process.env.ROOT_DOMAIN}/preview/${data.id}`
-    //   },
-    //   breakpoints: [
-    //     {
-    //       label: 'Movil',
-    //       name: 'mobile',
-    //       width: 375,
-    //       height: 667,
-    //     },
-    //     {
-    //       label: 'Escritorio',
-    //       name: 'desktop',
-    //       width: 875,
-    //       height: 460,
-    //     },
-    //   ],
-    //   collections: ['pages'],
-    // },
+    livePreview: {
+      url: ({ data }) => {
+        return `http://${process.env.ROOT_DOMAIN}/preview/${data.id}`
+      },
+      breakpoints: [
+        {
+          label: 'Movil',
+          name: 'mobile',
+          width: 375,
+          height: 667,
+        },
+        {
+          label: 'Escritorio',
+          name: 'desktop',
+          width: 875,
+          height: 460,
+        },
+      ],
+      collections: ['pages'],
+    },
   },
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
