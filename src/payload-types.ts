@@ -274,7 +274,7 @@ export interface Page {
       | null;
   };
   publishedDate: string;
-  slug?: string | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;

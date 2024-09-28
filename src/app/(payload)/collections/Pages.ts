@@ -31,6 +31,7 @@ const Pages: CollectionConfig = {
   fields: [
     {
       name: 'adminPanelTitle',
+      label: 'Título',
       type: 'text',
       admin: {
         hidden: true,
@@ -184,17 +185,42 @@ const Pages: CollectionConfig = {
     },
     {
       name: 'slug',
-      label: 'Slug (Url de esta página)',
-      required: true,
+      label: 'Url de la página - Generado automáticamente',
       type: 'text',
+      required: true,
       admin: {
         position: 'sidebar',
-        condition: (_, siblingData) => siblingData.header?.pagetype === 'standarPage',
+        readOnly: true, // Siempre será de solo lectura en la interfaz de administración
       },
       hooks: {
-        beforeChange: [formatSlug('header', 'titleIndex')],
+        beforeValidate: [
+          ({ data, value, originalDoc }) => {
+            let newSlug = value
+            let isEditable = false
+
+            if (data?.header?.pagetype === 'indexPage') {
+              newSlug = '/'
+            } else if (data?.header?.pagetype === 'newsPage') {
+              newSlug = 'noticias-san-esteban-de-gormaz'
+            } else if (data?.header?.pagetype === 'facilitiesPage') {
+              newSlug = 'instalaciones-deportivas-san-esteban-de-gormaz'
+            } else if (data?.header?.pagetype === 'standarPage') {
+              isEditable = true
+              if (!value || value === originalDoc?.slug) {
+                newSlug = formatSlug('header', 'title')({ data, value })
+              }
+            }
+
+            if (data) {
+              data.isSlugEditable = isEditable
+            }
+
+            return newSlug
+          },
+        ],
       },
     },
   ],
 }
+
 export default Pages
