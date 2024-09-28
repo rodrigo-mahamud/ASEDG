@@ -165,6 +165,10 @@ html[data-theme='dark'] .LexicalEditorTheme__h3 {
   margin: 0 0 20px 20px !important;
   font-style: italic;
 }
+.tabs-field {
+  margin-top: 0px;
+}
+//Massonry
 .masonry-image-group .render-fields,
 .masonry-image-group .render-fields--margins-small {
   grid-template-columns: repeat(4, 1fr);

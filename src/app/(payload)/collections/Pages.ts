@@ -8,6 +8,7 @@ import CardsBlock from '../blocks/Cards'
 import NewsBlock from '../blocks/News'
 import NewsPinged from '../blocks/NewsPinged'
 import BookingsBlock from '../blocks/Bookings'
+import formatSlug from '@/utils/formatSlug'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -19,7 +20,7 @@ const Pages: CollectionConfig = {
     },
   },
   admin: {
-    useAsTitle: 'slug',
+    useAsTitle: 'adminPanelTitle',
     preview: (doc) => {
       if (doc?.id) {
         return `http://${process.env.ROOT_DOMAIN}/preview/${doc.id}`
@@ -29,6 +30,22 @@ const Pages: CollectionConfig = {
   },
   fields: [
     {
+      name: 'adminPanelTitle',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      hooks: {
+        beforeChange: [
+          ({ data }) => {
+            if (data) {
+              return data.header?.title || ''
+            }
+          },
+        ],
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -36,8 +53,32 @@ const Pages: CollectionConfig = {
           name: 'header',
           fields: [
             {
+              name: 'pagetype',
+              label: 'Tipo de Página',
+              type: 'select',
+              options: [
+                {
+                  label: 'Página de inicio',
+                  value: 'indexPage',
+                },
+                {
+                  label: 'Página principal de noticias',
+                  value: 'newsPage',
+                },
+                {
+                  label: 'Página principal de Instalacciones deportivas',
+                  value: 'facilitiesPage',
+                },
+                {
+                  label: 'Página estandar',
+                  value: 'standarPage',
+                },
+              ],
+              required: true,
+            },
+            {
               name: 'style',
-              label: 'Tipo de cabecera.',
+              label: 'Estilo de la cabecera',
               type: 'select',
               options: [
                 {
@@ -59,24 +100,29 @@ const Pages: CollectionConfig = {
               type: 'row',
               fields: [
                 {
-                  name: 'titleIndex',
+                  name: 'title',
                   label: 'Titulo',
                   type: 'text',
                   required: true,
-                  admin: {
-                    condition: (_, siblingData) => siblingData.style === 'index',
-                  },
                 },
                 {
-                  name: 'pretitleIndex',
+                  name: 'pretitle',
                   label: 'Pretitulo',
                   type: 'text',
                   required: true,
-                  admin: {
-                    condition: (_, siblingData) => siblingData.style === 'index',
-                  },
                 },
               ],
+            },
+            {
+              name: 'newsFour',
+              type: 'relationship',
+              relationTo: 'news',
+              label: 'Noticias destacadas (8 ultimas por defecto)',
+              hasMany: true,
+              maxRows: 8,
+              admin: {
+                condition: (_, siblingData) => siblingData.style === 'index',
+              },
             },
             {
               name: 'description',
@@ -84,27 +130,10 @@ const Pages: CollectionConfig = {
               type: 'textarea',
               admin: {
                 width: '100%',
-                condition: (_, siblingData) => siblingData.style === 'index',
               },
               required: true,
             },
-            {
-              type: 'row',
 
-              fields: [
-                {
-                  name: 'newsFour',
-                  type: 'relationship',
-                  relationTo: 'news',
-                  label: 'Noticias destacadas (4 ultimas por defecto)',
-                  hasMany: true,
-                  maxRows: 8,
-                  admin: {
-                    condition: (_, siblingData) => siblingData.style === 'index',
-                  },
-                },
-              ],
-            },
             {
               name: 'displaydate',
               type: 'checkbox',
@@ -113,26 +142,6 @@ const Pages: CollectionConfig = {
               admin: {
                 condition: (_, siblingData) => siblingData.style === 'glow',
               },
-            },
-            {
-              type: 'row',
-              admin: {
-                condition: (_, siblingData) => siblingData.style === 'glow',
-              },
-              fields: [
-                {
-                  name: 'title',
-                  required: true,
-                  label: 'Titulo de la cabecera',
-                  type: 'text',
-                },
-                {
-                  name: 'pretitle',
-                  required: true,
-                  label: 'Preitulo de la cabecera',
-                  type: 'text',
-                },
-              ],
             },
           ],
         },
@@ -173,7 +182,19 @@ const Pages: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    slug,
+    {
+      name: 'slug',
+      label: 'Slug (Url de esta página)',
+      required: true,
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        condition: (_, siblingData) => siblingData.header?.pagetype === 'standarPage',
+      },
+      hooks: {
+        beforeChange: [formatSlug('header', 'titleIndex')],
+      },
+    },
   ],
 }
 export default Pages

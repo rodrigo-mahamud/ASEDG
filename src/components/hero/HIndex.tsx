@@ -13,9 +13,10 @@ export default function HIndex({ data }: IndexHeroTypes) {
       <div className="w-full z-10 flex flex-col gap-24">
         <Container className="pt-48 pb-0">
           <div className=" flex flex-col items-center gap-4">
+            {data.pretitle}
             <BlurFade delay={0.2} inView>
               <h1 className="text-xl md:text-2xl lg:text-6xl text-balance  tracking-tight font-semibold">
-                {data.titleIndex}
+                {data.title}
               </h1>
             </BlurFade>
             <BlurFade delay={0.3} inView>

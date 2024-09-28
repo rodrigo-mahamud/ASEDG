@@ -8,7 +8,9 @@ const slug: Field = {
   type: 'text',
   admin: {
     position: 'sidebar',
+    condition: (_, siblingData) => siblingData.pageType === 'normalPage',
   },
+
   hooks: {
     beforeValidate: [formatSlug('title')],
   },

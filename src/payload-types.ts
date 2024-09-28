@@ -100,15 +100,15 @@ export interface User {
  */
 export interface Page {
   id: string;
+  adminPanelTitle?: string | null;
   header: {
+    pagetype: 'indexPage' | 'newsPage' | 'facilitiesPage' | 'standarPage';
     style: 'index' | 'glow' | 'grid';
-    titleIndex?: string | null;
-    pretitleIndex?: string | null;
-    description?: string | null;
-    newsFour?: (string | News)[] | null;
-    displaydate?: boolean | null;
     title: string;
     pretitle: string;
+    newsFour?: (string | News)[] | null;
+    description: string;
+    displaydate?: boolean | null;
   };
   body?: {
     layout?:
@@ -274,7 +274,7 @@ export interface Page {
       | null;
   };
   publishedDate: string;
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -322,7 +322,7 @@ export interface News {
   fixed?: boolean | null;
   categories: (string | Cat)[];
   publishedDate: string;
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -408,7 +408,7 @@ export interface Facility {
   holidayschedule?: {
     schedule?: HorarioDeVacaciones;
   };
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -419,7 +419,7 @@ export interface Facility {
 export interface Sport {
   id: string;
   title: string;
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }

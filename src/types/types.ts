@@ -118,8 +118,8 @@ export interface HeadingInfo {
 }
 export interface IndexHeroTypes {
   data: {
-    pretitleIndex: string
-    titleIndex: string
+    pretitle: string
+    title: string
     description: string
     newsFour: NewsItemBase[]
   }
