@@ -6,7 +6,6 @@ import TabsBlock from '../blocks/Tabs'
 import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
 import NewsBlock from '../blocks/News'
-import NewsPinged from '../blocks/NewsPinged'
 import BookingsBlock from '../blocks/Bookings'
 import formatSlug from '@/utils/formatSlug'
 
@@ -165,7 +164,6 @@ const Pages: CollectionConfig = {
                 TextImagesBlock,
                 CardsBlock,
                 NewsBlock,
-                NewsPinged,
                 BookingsBlock,
               ],
             },

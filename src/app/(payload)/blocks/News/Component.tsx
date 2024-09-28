@@ -1,9 +1,5 @@
 import React from 'react'
-import NewsCard from '@/components/NewsCard'
-import { Type } from '.'
-import Container from '@/components/Container'
-import Title from '@/components/lib/title'
-import FilteredCards from '@/components/FilteredCards'
+import { NewsBlockProps } from '.'
 import Pinged from './Pinged'
 import News from './News'
 
@@ -15,14 +11,14 @@ export default function NewsBlock({
   pntitle,
   pnsubtitle,
   pingedNews,
-}: Type) {
+}: NewsBlockProps) {
   return (
     <>
       <section className="w-full overflow-hidden">
-        {pingedNews && <Pinged title={pntitle} subtitle={pnsubtitle}></Pinged>}
+        {pingedNews && <Pinged title={pntitle} subtitle={pnsubtitle} allNews={allNews} />}
       </section>
       <section>
-        <News allNews={allNews} subtitle={subtitle} title={title} filter={filter}></News>
+        <News allNews={allNews} subtitle={subtitle} title={title} filter={filter} />
       </section>
     </>
   )

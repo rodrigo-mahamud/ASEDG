@@ -6,13 +6,8 @@ interface BlockComponents {
   [key: string]: React.FC<any>
 }
 
-interface Layout {
-  block: any
-  blockType: keyof BlockComponents
-}
-
 type Props = {
-  layout: Layout[]
+  layout: any
   className?: string
 }
 
@@ -22,7 +17,7 @@ const typedComponents: BlockComponents = components
 const RenderBlocks = ({ layout, className }: Props) => {
   return (
     <div className={[className].filter(Boolean).join(' ')}>
-      {layout.map((block, i) => {
+      {layout.map((block: any, i: number) => {
         const Block = typedComponents[block.blockType]
 
         if (Block) {

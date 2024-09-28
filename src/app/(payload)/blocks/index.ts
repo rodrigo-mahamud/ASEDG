@@ -8,7 +8,6 @@ import TabsBlock from './Tabs/Component'
 import TextImagesBlock from './TextImages/Component'
 import RichText from './RichText/Component'
 import NewsBlock from './News/Component'
-import NewsPinged from './NewsPinged/Component'
 import BookingsBlock from './Bookings/Component'
 
 export const components = {
@@ -22,6 +21,5 @@ export const components = {
   textimagesblock: TextImagesBlock,
   cardsblock: CardsBlock,
   richtext: RichText,
-  newspinged: NewsPinged,
   bookingsblock: BookingsBlock,
 }

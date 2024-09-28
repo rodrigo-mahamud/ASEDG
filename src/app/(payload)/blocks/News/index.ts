@@ -1,32 +1,48 @@
 import { Block } from 'payload'
 
-interface CatTypes {
+export interface CatTypes {
+  id: string
   title: string
-  description: string
+  description?: string
 }
-interface NewsItem {
+
+export interface NewsItem {
+  id: string
   title: string
   summary: string
-  img: string
+  slug: string
+  fixed: boolean
   categories: CatTypes[]
+  image?: {
+    url: string
+    alt: string
+  }
+  masonryImages?: {
+    masonryImage1?: {
+      url: string
+      alt: string
+    }
+  }
   buttonVariant?: string
   className?: string
   badgeClass?: string
   shareClass?: string
   shareUrl: string
-  slug: string
-  image: {
-    url: string
-    alt: string
-  }
 }
+
 export interface NewsTypes {
   title: string
   subtitle: string
   filter: boolean
   allNews: NewsItem[]
 }
-export type Type = {
+
+export interface PingedProps {
+  title: string
+  subtitle: string
+}
+
+export interface NewsBlockProps {
   title: string
   subtitle: string
   filter: boolean

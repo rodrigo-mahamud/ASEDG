@@ -11,13 +11,13 @@ import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react'
 export default async function PreviewPage({ params }: { params: { id: string } }) {
   const payload = await getPayloadHMR({ config })
 
-  const pageData = await payload.findByID({
+  const data = await payload.findByID({
     collection: 'pages',
     id: params.id,
     draft: true,
   })
 
-  if (!pageData) {
+  if (!data) {
     notFound()
   }
 
@@ -28,8 +28,8 @@ export default async function PreviewPage({ params }: { params: { id: string } }
         <IconAlertTriangle color="#fff" size={18}></IconAlertTriangle>
         Vista previa.
       </Alert>
-      <Hero data={pageData}></Hero>
-      <RenderBlocks layout={pageData.body.layout} />
+      <Hero data={data}></Hero>
+      {data.body && data.body.layout && <RenderBlocks layout={data.body.layout} />}
       <Toaster />
     </main>
   )

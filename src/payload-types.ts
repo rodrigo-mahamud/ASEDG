@@ -257,14 +257,6 @@ export interface Page {
               blockType: 'newsblock';
             }
           | {
-              title: string;
-              subtitle: string;
-              newspinged?: (string | News)[] | null;
-              id?: string | null;
-              blockName?: string | null;
-              blockType: 'newspinged';
-            }
-          | {
               texs?: string | null;
               id?: string | null;
               blockName?: string | null;

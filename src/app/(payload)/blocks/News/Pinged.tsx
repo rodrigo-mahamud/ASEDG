@@ -11,22 +11,15 @@ import { Button } from '@/components/lib/button'
 import Title from '@/components/lib/title'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Type } from '../NewsPinged'
-import configPromise from '@payload-config'
-import { Badge } from '@/components/lib/badge'
 import { Alert } from '@/components/lib/alert'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { PingedProps, NewsItem } from '.'
 
-export default async function Pinged({ title, subtitle }: Type) {
-  const payload = await getPayloadHMR({ config: configPromise })
-  const data = await payload.find({
-    collection: 'news',
-    where: {
-      fixed: { equals: true },
-    },
-    draft: true,
-  })
-  const newspinged = data.docs
+interface ExtendedPingedProps extends PingedProps {
+  allNews: NewsItem[]
+}
+
+export default function Pinged({ title, subtitle, allNews }: ExtendedPingedProps) {
+  const fixedNews = allNews.filter((news) => news.fixed === true)
 
   return (
     <>
@@ -45,9 +38,9 @@ export default async function Pinged({ title, subtitle }: Type) {
               <CarouselNext className="w-10 h-10 hover:text-secondaryAlt hover:border-secondaryAlt ease-in-out duration-300 border border-secondaryAlt/35 text-secondaryAlt/45" />
             </div>
           </div>
-          {newspinged ? (
+          {fixedNews.length > 0 ? (
             <CarouselContent className="-ml-6 overflow-visible">
-              {newspinged.map((newsItem) => (
+              {fixedNews.map((newsItem) => (
                 <CarouselItem
                   key={newsItem.id}
                   className="basis-[40%] relative ml-6 mainShadow group hover:rounded-2xl"
@@ -102,7 +95,7 @@ export default async function Pinged({ title, subtitle }: Type) {
             </CarouselContent>
           ) : (
             <Alert className="text-red-950" variant={'destructive'}>
-              Debes añadir las noticias
+              No hay noticias fijadas para mostrar
             </Alert>
           )}
         </Carousel>
