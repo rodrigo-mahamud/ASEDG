@@ -290,7 +290,7 @@ export interface News {
     masonryImage4: string | Media;
     masonryImage5: string | Media;
   };
-  newsRelated?: (string | News)[] | null;
+  newsRelated: (string | News)[];
   richtxtcontent?: {
     root: {
       type: string;

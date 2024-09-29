@@ -125,6 +125,7 @@ const News: CollectionConfig = {
       label: 'Noticias Relacionadas',
       type: 'relationship',
       relationTo: 'news',
+      required: true,
       hasMany: true,
       maxRows: 8,
     },

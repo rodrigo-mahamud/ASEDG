@@ -169,71 +169,71 @@ html[data-theme='dark'] .LexicalEditorTheme__h3 {
   margin-top: 0px !important;
 }
 //Massonry
-.masonry-image-group .render-fields,
-.masonry-image-group .render-fields--margins-small {
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-  display: grid;
-  height: 40vh;
-}
+// .masonry-image-group .render-fields,
+// .masonry-image-group .render-fields--margins-small {
+//   grid-template-columns: repeat(4, 1fr);
+//   grid-template-rows: repeat(2, 1fr);
+//   grid-column-gap: 10px;
+//   grid-row-gap: 10px;
+//   display: grid;
+//   height: 40vh;
+// }
 
-.masonry-image-group .render-fields > .field-type:first-child {
-  grid-row: span 2 / span 2;
-  grid-column: span 2 / span 2;
-  overflow: hidden;
-  border-radius: 0.75rem;
-}
+// .masonry-image-group .render-fields > .field-type:first-child {
+//   grid-row: span 2 / span 2;
+//   grid-column: span 2 / span 2;
 
-.masonry-image-group .render-fields > .field-type {
-  grid-row: span 1 / span 1;
-  grid-column: span 1 / span 1;
-  overflow: hidden;
-  border-radius: 0.75rem;
-}
-.masonry-image-group .upload {
-  margin-bottom: 0 !important;
-}
-.masonry-image-group .upload__wrap {
-  height: 100%;
-  margin-bottom: 0 !important;
-  border-radius: 0.75rem;
-  display: flex;
-}
-.masonry-image-group .upload__buttons {
-  justify-content: center;
-}
-.masonry-image-group .field-type__wrap {
-  height: 100%;
-}
-.masonry-image-group .file-details {
-  height: 100%;
-}
-.masonry-image-group .thumbnail--size-medium {
-  width: 100%;
-  height: 100%;
-}
-.masonry-image-group .file-details__main-detail {
-  padding: 1rem;
-  width: 100%;
-  flex-grow: 1;
-  min-width: unset;
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: stretch;
-  gap: 4px;
-  position: absolute;
-  background: #14141463;
-  bottom: 0;
-  backdrop-filter: blur(8px);
-}
-.masonry-image-group header {
-  height: 100%;
-}
-.masonry-image-group .file-details__remove {
-  top: 1rem !important;
-  right: 1rem !important;
-}
+//   border-radius: 0.75rem;
+// }
+
+// .masonry-image-group .render-fields > .field-type {
+//   grid-row: span 1 / span 1;
+//   grid-column: span 1 / span 1;
+
+//   border-radius: 0.75rem;
+// }
+// .masonry-image-group .upload {
+//   margin-bottom: 0 !important;
+// }
+// .masonry-image-group .upload__wrap {
+//   height: 100%;
+//   margin-bottom: 0 !important;
+//   border-radius: 0.75rem;
+//   display: flex;
+// }
+// .masonry-image-group .upload__buttons {
+//   justify-content: center;
+// }
+// .masonry-image-group .field-type__wrap {
+//   height: 100%;
+// }
+// .masonry-image-group .file-details {
+//   height: 100%;
+// }
+// .masonry-image-group .thumbnail--size-medium {
+//   width: 100%;
+//   height: 100%;
+// }
+// .masonry-image-group .file-details__main-detail {
+//   padding: 1rem;
+//   width: 100%;
+//   flex-grow: 1;
+//   min-width: unset;
+//   max-width: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-self: stretch;
+//   gap: 4px;
+//   position: absolute;
+//   background: #14141463;
+//   bottom: 0;
+//   backdrop-filter: blur(8px);
+// }
+// .masonry-image-group header {
+//   height: 100%;
+// }
+// .masonry-image-group .file-details__remove {
+//   top: 1rem !important;
+//   right: 1rem !important;
+// }

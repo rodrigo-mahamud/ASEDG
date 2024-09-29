@@ -18,7 +18,7 @@ export default function NewsRelated({ newsRelated }: NewsRelatedProps) {
         </div>
         <div className="flex gap-8">
           {newsRelated.map((newsItem) => (
-            <NRCard key={newsItem.id} newsItem={newsItem} />
+            <NRCard key={newsItem.id} data={newsItem} />
           ))}
         </div>
       </Container>
