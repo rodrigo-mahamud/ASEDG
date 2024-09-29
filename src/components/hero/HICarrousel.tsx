@@ -87,8 +87,8 @@ export function HICarrousel({ data }: IndexHighlightedNewProps) {
       <CarouselNext className="absolute z-20 text-white size-12 top-1/2 right-1/3 bg-white/15 shadow-md backdrop-blur-lg" />
       <CarouselContent className="z-0 h-full maskNewsIndex">
         {data.map((newsItem, index) => (
-          <BlurFade delay={0.5} inView>
-            <CarouselItem key={index} className="w-1/5 h-full">
+          <BlurFade key={index} delay={0.5} inView>
+            <CarouselItem className="w-1/5 h-full">
               <div style={getItemStyles(index).outerStyle} className="flex ">
                 <div
                   style={getItemStyles(index).innerStyle}
