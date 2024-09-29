@@ -1,6 +1,6 @@
 import React from 'react'
-import Container from '../Container'
-import Title from '../lib/title'
+import Container from '../../Container'
+import Title from '../../lib/title'
 import { NewsRelatedProps } from '@/types/types'
 import NRCard from './NRCard'
 

@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/lib/carousel'
-import NRCard from '@/components/news-page/NRCard'
+import NRCard from '@/components/news/news-page/NRCard'
 import BlurFade from '@/components/lib/blurFade'
 import { IndexHighlightedNewProps } from '@/types/types'
 

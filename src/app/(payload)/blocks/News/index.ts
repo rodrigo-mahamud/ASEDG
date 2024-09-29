@@ -9,6 +9,7 @@ export interface CatTypes {
 export interface NewsItem {
   id: string
   title: string
+  publishedDate: number
   summary: string
   slug: string
   fixed: boolean
@@ -33,6 +34,7 @@ export interface NewsItem {
 export interface NewsTypes {
   title: string
   subtitle: string
+
   filter: boolean
   allNews: NewsItem[]
 }

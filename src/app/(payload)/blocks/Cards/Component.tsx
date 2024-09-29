@@ -18,7 +18,8 @@ export default function CardsBlock({ cards, title, description, filter }: Type) 
 
   return (
     <Container>
-      <Title title={title} subtitle={description}></Title>
+      hola
+      {/* <Title title={title} subtitle={description}></Title>
       <FilteredCards data={cards} filterEnabled={filter} className="grid grid-cols-4 w-full gap-8">
         {(item) => (
           <Card className="rounded-xl h-full overflow-hidden hover:-translate-y-2 transform transition duration-300 btnShadow">
@@ -53,7 +54,7 @@ export default function CardsBlock({ cards, title, description, filter }: Type) 
             </CardContent>
           </Card>
         )}
-      </FilteredCards>
+      </FilteredCards> */}
     </Container>
   )
 }

@@ -12,13 +12,15 @@ import Title from '@/components/lib/title'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Alert } from '@/components/lib/alert'
-import { PingedProps, NewsItem } from '.'
+import { NewsItem, PingedProps } from '@/app/(payload)/blocks/News'
 
 interface ExtendedPingedProps extends PingedProps {
   allNews: NewsItem[]
+  title: string
+  subtitle: string
 }
 
-export default function Pinged({ title, subtitle, allNews }: ExtendedPingedProps) {
+export default function NewsPinged({ title, subtitle, allNews }: ExtendedPingedProps) {
   const fixedNews = allNews.filter((news) => news.fixed === true)
 
   return (
@@ -48,7 +50,7 @@ export default function Pinged({ title, subtitle, allNews }: ExtendedPingedProps
                   <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
                     <div className="embla__slide flex relative w-full h-[22rem] transition-generic items-end rounded-lg group-hover:rounded-2xl overflow-hidden">
                       <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
-                        {newsItem.categories.map((cat, index) => (
+                        {newsItem.categories.map((cat: any, index: number) => (
                           <div key={index} className="bg-white/25 backdrop-blur-md rounded-full">
                             <p className="text-white px-4 my-1 text-sm leading-normal">
                               {cat.title}

@@ -1,14 +1,14 @@
 import Image from 'next/image'
-import Container from '../Container'
-import { Avatar, AvatarFallback, AvatarImage } from '../lib/avatar'
-import { Badge } from '../lib/badge'
-import { Separator } from '../lib/separator'
-import ShareButton from '../lib/shareButton'
+import Container from '../../Container'
+import { Avatar, AvatarFallback, AvatarImage } from '../../lib/avatar'
+import { Badge } from '../../lib/badge'
+import { Separator } from '../../lib/separator'
+import ShareButton from '../../lib/shareButton'
 import React from 'react'
 import Link from 'next/link'
 import { IconArrowNarrowLeft } from '@tabler/icons-react'
 import { NewsItemFull } from '@/types/types'
-import { Button } from '../lib/button'
+import { Button } from '../../lib/button'
 interface NHVerticalProps {
   data: NewsItemFull
 

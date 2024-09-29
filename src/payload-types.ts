@@ -44,6 +44,7 @@ export interface Config {
     facilities: Facility;
     sports: Sport;
     cat: Cat;
+    'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -170,7 +171,7 @@ export interface Page {
                 | null;
               speed?: number | null;
               decoration?: boolean | null;
-              image?: string | Media | null;
+              image?: (string | null) | Media;
               id?: string | null;
               blockName?: string | null;
               blockType: 'calltoaction';
@@ -200,7 +201,7 @@ export interface Page {
                 | {
                     isblold?: boolean | null;
                     text: string;
-                    listImage?: string | Media | null;
+                    listImage?: (string | null) | Media;
                     id?: string | null;
                   }[]
                 | null;
@@ -220,7 +221,7 @@ export interface Page {
                     cardAtributes?: ('image' | 'links' | 'cat')[] | null;
                     title: string;
                     description: string;
-                    cardImage?: string | Media | null;
+                    cardImage?: (string | null) | Media;
                     categories?: (string | Cat)[] | null;
                     links?: {
                       link?:
@@ -280,7 +281,7 @@ export interface News {
   title: string;
   style: 'vertical' | 'horizontal' | 'video' | 'masonry';
   summary: string;
-  image?: string | Media | null;
+  image?: (string | null) | Media;
   videoUrl?: string | null;
   masonryImages?: {
     masonryImage1: string | Media;
@@ -307,7 +308,7 @@ export interface News {
   } | null;
   attachments?:
     | {
-        file?: string | Media | null;
+        file?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -378,7 +379,7 @@ export interface Facility {
   summary: string;
   images?:
     | {
-        image?: string | Media | null;
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -412,6 +413,49 @@ export interface Sport {
   id: string;
   title: string;
   slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents".
+ */
+export interface PayloadLockedDocument {
+  id: string;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'news';
+        value: string | News;
+      } | null)
+    | ({
+        relationTo: 'facilities';
+        value: string | Facility;
+      } | null)
+    | ({
+        relationTo: 'sports';
+        value: string | Sport;
+      } | null)
+    | ({
+        relationTo: 'cat';
+        value: string | Cat;
+      } | null);
+  globalSlug?: string | null;
+  user: {
+    relationTo: 'users';
+    value: string | User;
+  };
   updatedAt: string;
   createdAt: string;
 }

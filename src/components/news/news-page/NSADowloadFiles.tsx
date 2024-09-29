@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
-import { Button } from '../lib/button'
+import { Button } from '../../lib/button'
 import { IconDownload } from '@tabler/icons-react'
-import { IconDisplay } from '../IconDisplay'
+import { IconDisplay } from '../../IconDisplay'
 import { DownloadAttachmentsProps, FileAttachment } from '@/types/types'
 
 const getFileIcon = (mimeType: string): string => {
