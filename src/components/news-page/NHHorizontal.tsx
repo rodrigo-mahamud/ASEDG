@@ -11,10 +11,9 @@ import { IconArrowNarrowLeft } from '@tabler/icons-react'
 import { NewsItemFull } from '@/types/types'
 interface NHVerticalProps {
   data: NewsItemFull
-  newsPageSlug: string
   currentUrl: string
 }
-export default function NHHorizontal({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
+export default function NHHorizontal({ data, currentUrl }: NHVerticalProps) {
   return (
     <header className="w-full bg-[#f3f4f6] border-y border-border overflow-hidden  relative">
       <Container className="py-40 flex items-center h-fit">
@@ -25,7 +24,7 @@ export default function NHHorizontal({ data, currentUrl, newsPageSlug }: NHVerti
             iconClass="w-3 h-3"
             className="bg-secondaryAlt/5 w-fit gap-1 hover:bg-secondaryAlt/10 mb-8 flex flex-row-reverse rounded-full text-foreground h-8 border-0"
           >
-            <Link href={`/${newsPageSlug}`} replace>
+            <Link href="/noticias-san-esteban-de-gormaz" replace>
               Volver
             </Link>
           </Button>

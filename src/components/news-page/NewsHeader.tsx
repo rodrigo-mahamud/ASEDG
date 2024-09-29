@@ -7,7 +7,7 @@ import NHGallery from './NHGallery'
 import { NewsHeaderProps } from '@/types/types'
 import NHVideo from './NHVideo'
 
-export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {
+export default function NewsHeader({ data }: NewsHeaderProps) {
   const getCurrentUrl = () => {
     if (typeof window !== 'undefined') {
       const baseUrl = window.location.origin
@@ -19,18 +19,10 @@ export default function NewsHeader({ data, newsPageSlug }: NewsHeaderProps) {
   const currentUrl = getCurrentUrl()
   return (
     <div className="pt-[84px]">
-      {data.style === 'vertical' && (
-        <NHVertical data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
-      )}
-      {data.style === 'horizontal' && (
-        <NHHorizontal data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
-      )}
-      {data.style === 'video' && (
-        <NHVideo data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
-      )}
-      {data.style === 'masonry' && (
-        <NHGallery data={data} currentUrl={currentUrl} newsPageSlug={newsPageSlug} />
-      )}
+      {data.style === 'vertical' && <NHVertical data={data} currentUrl={currentUrl} />}
+      {data.style === 'horizontal' && <NHHorizontal data={data} currentUrl={currentUrl} />}
+      {data.style === 'video' && <NHVideo data={data} currentUrl={currentUrl} />}
+      {data.style === 'masonry' && <NHGallery data={data} currentUrl={currentUrl} />}
     </div>
   )
 }

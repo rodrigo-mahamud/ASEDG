@@ -11,11 +11,11 @@ import { NewsItemFull } from '@/types/types'
 import { Button } from '../lib/button'
 interface NHVerticalProps {
   data: NewsItemFull
-  newsPageSlug: string
+
   currentUrl: string
 }
 
-export default function NHVertical({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
+export default function NHVertical({ data, currentUrl }: NHVerticalProps) {
   return (
     <>
       <Container className="pb-10 pt-11">
@@ -25,7 +25,7 @@ export default function NHVertical({ data, currentUrl, newsPageSlug }: NHVertica
           iconClass="w-3 h-3"
           className="bg-secondaryAlt/5 w-fit gap-1 hover:bg-secondaryAlt/10 mb-8 flex flex-row-reverse rounded-full text-foreground h-8 border-0"
         >
-          <Link href={`/${newsPageSlug}`} replace>
+          <Link href="/noticias-san-esteban-de-gormaz" replace>
             Volver
           </Link>
         </Button>

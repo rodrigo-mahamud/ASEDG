@@ -12,11 +12,10 @@ import Link from 'next/link'
 
 interface NHGalleryProps {
   data: NewsItemFull
-  newsPageSlug: string
   currentUrl: string
 }
 
-export default function NHGallery({ data, currentUrl, newsPageSlug }: NHGalleryProps) {
+export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
   const imageSrcs = data.masonryImages
     ? [
         data.masonryImages.masonryImage1.url,
@@ -46,7 +45,7 @@ export default function NHGallery({ data, currentUrl, newsPageSlug }: NHGalleryP
           iconClass="w-3 h-3"
           className="bg-secondaryAlt/5 w-fit gap-1 hover:bg-secondaryAlt/10 mb-8 flex flex-row-reverse rounded-full text-foreground h-8 border-0"
         >
-          <Link href={`/${newsPageSlug}`} replace>
+          <Link href="/noticias-san-esteban-de-gormaz" replace>
             Volver
           </Link>
         </Button>

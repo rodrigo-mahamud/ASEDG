@@ -14,11 +14,11 @@ import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import getVideoId from 'get-video-id'
 interface NHVerticalProps {
   data: NewsItemFull
-  newsPageSlug: string
+
   currentUrl: string
 }
 
-export default function NHVideo({ data, currentUrl, newsPageSlug }: NHVerticalProps) {
+export default function NHVideo({ data, currentUrl }: NHVerticalProps) {
   const VideoId = getVideoId(data.videoUrl)
   return (
     <div className="h-fit relative w-full">
@@ -31,7 +31,7 @@ export default function NHVideo({ data, currentUrl, newsPageSlug }: NHVerticalPr
               iconClass="w-3 h-3"
               className="bg-white/5 w-fit gap-1 hover:bg-white/10 mb-8 flex flex-row-reverse rounded-full text-white h-8 border-0"
             >
-              <Link href={`/${newsPageSlug}`} replace>
+              <Link href="/noticias-san-esteban-de-gormaz" replace>
                 Volver
               </Link>
             </Button>
