@@ -122,7 +122,7 @@ const News: CollectionConfig = {
 
     {
       name: 'newsRelated',
-      label: 'Noticias Relacionadas',
+      label: 'Noticias Relacionadas (4 como minimo) Nota: hacerlo automatico',
       type: 'relationship',
       relationTo: 'news',
       required: true,

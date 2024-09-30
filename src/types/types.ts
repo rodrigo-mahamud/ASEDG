@@ -85,7 +85,6 @@ export interface NewsItemFull extends NewsItemBase {
 // Tipos para props de componentes
 export interface NewsHeaderProps {
   data: NewsItemFull
-  newsPageSlug: string
 }
 
 export interface NewsRelatedProps {

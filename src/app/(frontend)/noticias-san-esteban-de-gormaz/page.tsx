@@ -3,8 +3,9 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
-import Link from 'next/link'
+
 import { notFound } from 'next/navigation'
+
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
   const indexPage = await payload.find({
@@ -15,10 +16,6 @@ async function getPageData() {
       },
     },
   })
-  const settings = await payload.findGlobal({
-    slug: 'settings',
-  })
-  console.log(settings)
 
   if (!indexPage || indexPage.docs.length === 0) {
     notFound()
@@ -36,14 +33,24 @@ async function getSettings() {
 }
 export async function generateMetadata() {
   const data = await getPageData()
-  console.log(data)
-
   const seoData = data.meta || ({} as any)
   const settings = await getSettings()
 
   return {
-    title: seoData.title,
-    description: seoData.description,
+    title: seoData.title || settings.defaultTitle,
+    description: seoData.description || settings.defaultDescription,
+    icons: {
+      icon: [
+        {
+          url: settings.faviconLight.url,
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: settings.faviconDark.url,
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+    },
     openGraph: {
       locale: 'es_ES',
       title: seoData.title || settings.defaultTitle,

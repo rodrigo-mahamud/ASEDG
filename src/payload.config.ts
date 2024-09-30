@@ -128,18 +128,23 @@ export default buildConfig({
   sharp,
   plugins: [
     seoPlugin({
-      collections: ['pages', 'posts'], // Agrega aquí las colecciones donde quieres habilitar SEO
+      collections: ['pages', 'news'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => `${doc.adminPanelTitle}`,
-      generateDescription: ({ doc }) => doc.header.description,
-      generateURL: ({ doc }) => `https://${process.env.ROOT_DOMAIN}/${doc.slug}`,
-      // fields: [
-      //   {
-      //     type: 'text',
-      //     name: 'url',
-      //     defaultValue: ({ doc }: any) => `https://${process.env.ROOT_DOMAIN}/${doc.slug}`,
-      //   },
-      // ],
+      generateTitle: ({ doc }) => (doc.adminPanelTitle ? doc.adminPanelTitle : doc.title),
+      generateDescription: ({ doc }) =>
+        doc.header.description ? doc.header.description : doc.summary,
+      generateURL: ({ doc, collectionSlug }) => {
+        const baseURL = `https://${process.env.ROOT_DOMAIN}`
+
+        switch (collectionSlug) {
+          case 'pages':
+            return `${baseURL}/${doc.slug}`
+          case 'news':
+            return `${baseURL}/noticias-san-esteban-de-gormaz/${doc.slug}`
+          default:
+            return `${baseURL}/${doc.slug}`
+        }
+      },
     }),
   ],
 })

@@ -9,18 +9,54 @@ import NewsRelated from '@/components/news/news-page/NewsRelated'
 import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
 import { Toaster } from 'sonner'
 import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/types'
+import { notFound } from 'next/navigation'
 
-const Page: React.FC<NewsPageProps> = async ({ params }) => {
+async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-
-  const pageData = (await payload.find({
+  const singleNewsPage = (await payload.find({
     collection: 'news',
   })) as NewsPageData
-  const settings = (await payload.findGlobal({ slug: 'settings' })) as any
+  return singleNewsPage
+}
+async function getSettings() {
+  const payload = await getPayloadHMR({ config: configPromise })
+  const settings = await payload.findGlobal({
+    slug: 'settings',
+  })
+  return settings
+}
+export async function generateMetadata() {
+  const data = await getPageData()
+  const seoData = data.meta || ({} as any)
+  const settings = await getSettings()
 
-  const page = pageData.docs.find((page: NewsItemFull) => page.slug === params.news)
+  return {
+    title: seoData.title,
+    description: seoData.description,
+    openGraph: {
+      locale: 'es_ES',
+      title: seoData.title || settings.defaultTitle,
+      siteName: settings.defaultTitle,
+      url: `https://${process.env.ROOT_DOMAIN}/noticias-san-esteban-de-gormaz`,
+      description: seoData.description || settings.defaultDescription,
+      images: seoData?.image?.url || settings.defaultOgImage,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      domain: process.env.ROOT_DOMAIN,
+      title: seoData.title || settings.defaultTitle,
+      description: seoData.description || settings.defaultDescription,
+      images: seoData?.image?.url || settings.defaultOgImage,
+    },
+  }
+}
+export default async function singleNewPage({ params }: NewsPageProps) {
+  const data = await getPageData()
+
+  const page = data.docs.find((page: NewsItemFull) => page.slug === params.news)
   if (!page) {
-    return <div>Page not found</div>
+    return notFound()
   }
 
   const hasAsides = (page: NewsItemFull) => {
@@ -32,7 +68,7 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
   const shouldShowAside = hasAsides(page)
   return (
     <>
-      <NewsHeader data={page} newsPageSlug={settings.newsPage.slug} />
+      <NewsHeader data={page} />
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
@@ -52,7 +88,5 @@ const Page: React.FC<NewsPageProps> = async ({ params }) => {
     </>
   )
 }
-
-export default Page
 
 export const revalidate = 60 // Revalidate every 60 seconds

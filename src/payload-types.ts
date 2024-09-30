@@ -321,6 +321,11 @@ export interface News {
   categories: (string | Cat)[];
   publishedDate: string;
   slug?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -506,7 +511,8 @@ export interface Setting {
   id: string;
   defaultTitle: string;
   defaultDescription: string;
-  favicon: string | Media;
+  faviconLight: string | Media;
+  faviconDark: string | Media;
   defaultOgImage: string | Media;
   updatedAt?: string | null;
   createdAt?: string | null;

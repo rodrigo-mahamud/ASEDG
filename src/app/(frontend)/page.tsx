@@ -15,10 +15,6 @@ async function getPageData() {
       },
     },
   })
-  const settings = await payload.findGlobal({
-    slug: 'settings',
-  })
-  console.log(settings)
 
   if (!indexPage || indexPage.docs.length === 0) {
     notFound()
@@ -36,7 +32,6 @@ async function getSettings() {
 }
 export async function generateMetadata() {
   const data = await getPageData()
-  console.log(data)
 
   const seoData = data.meta || ({} as any)
   const settings = await getSettings()
