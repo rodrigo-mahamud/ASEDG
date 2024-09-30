@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import '@/app/(frontend)/styles/globals.css'
 import NavBar from '@/components/NavBar'
-import { GeistSans } from 'geist/font/sans'
 import SmoothScrolling from '@/components/SmoothScrolling'
 import Footer from '@/components/Footer'
 import { getPayloadHMR } from '@payloadcms/next/utilities'

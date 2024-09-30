@@ -504,8 +504,10 @@ export interface PayloadMigration {
  */
 export interface Setting {
   id: string;
-  homePage: string | Page;
-  newsPage: string | Page;
+  defaultTitle: string;
+  defaultDescription: string;
+  favicon: string | Media;
+  defaultOgImage: string | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

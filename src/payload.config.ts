@@ -130,9 +130,16 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'posts'], // Agrega aquí las colecciones donde quieres habilitar SEO
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => `Mi Sitio | ${doc.title}`,
-      generateDescription: ({ doc }) => doc.excerpt,
-      generateURL: ({ doc }) => `https://misitio.com/${doc.slug}`,
+      generateTitle: ({ doc }) => `${doc.adminPanelTitle}`,
+      generateDescription: ({ doc }) => doc.header.description,
+      generateURL: ({ doc }) => `https://${process.env.ROOT_DOMAIN}/${doc.slug}`,
+      // fields: [
+      //   {
+      //     type: 'text',
+      //     name: 'url',
+      //     defaultValue: ({ doc }: any) => `https://${process.env.ROOT_DOMAIN}/${doc.slug}`,
+      //   },
+      // ],
     }),
   ],
 })
