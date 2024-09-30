@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
-import { extractH2Headings } from '@/utils/serializeLexicalRichText'
 import { NSAIndexProps, HeadingInfo } from '@/types/types'
+import { slugify } from '@/utils/slugify'
 
 function toSentenceCase(str: string): string {
   return str.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())
@@ -13,7 +13,23 @@ const NSAIndex: React.FC<NSAIndexProps> = ({ indexContent }) => {
   const observerRef = useRef<IntersectionObserver | null>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const headings = extractH2Headings(indexContent.root.children)
+  // Nueva función para extraer los encabezados H2
+  const extractHeadings = (nodes: any[]): HeadingInfo[] => {
+    const headings: HeadingInfo[] = []
+    nodes.forEach((node) => {
+      if (node.type === 'heading' && node.tag === 'h2') {
+        const text = node.children?.[0]?.text || ''
+        const id = node.id || slugify(text)
+        headings.push({ id, text })
+      }
+      if (node.children) {
+        headings.push(...extractHeadings(node.children))
+      }
+    })
+    return headings
+  }
+
+  const headings = extractHeadings(indexContent.root.children)
 
   useEffect(() => {
     const callback: IntersectionObserverCallback = (entries) => {

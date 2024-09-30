@@ -24,6 +24,7 @@ interface Node {
   checked?: boolean
   fields?: { [key: string]: any }
   children?: Node[]
+  isIndexMarker?: boolean
 }
 
 interface SerializeProps {
@@ -110,6 +111,7 @@ export default function serializeLexicalRichText({
               id={headingId}
               className={`${classNames[node.tag]} ${generateTextAlign(node)}`}
               key={i}
+              data-index-marker={true}
             >
               {serializeLexicalRichText({ children: node.children || [] })}
             </Tag>
@@ -238,22 +240,4 @@ export default function serializeLexicalRichText({
       }
     })
     .filter((node) => node !== null)
-}
-
-// Función auxiliar para extraer encabezados h2
-export function extractH2Headings(nodes: Node[]): { id: string; text: string }[] {
-  const headings: { id: string; text: string }[] = []
-
-  nodes.forEach((node) => {
-    if (node.type === 'heading' && node.tag === 'h2') {
-      const text = node.children?.[0]?.text || ''
-      const id = slugify(text)
-      headings.push({ id, text })
-    }
-    if (node.children) {
-      headings.push(...extractH2Headings(node.children))
-    }
-  })
-
-  return headings
 }

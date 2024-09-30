@@ -68,7 +68,9 @@ export default function NewsCard({ data, className }: NewsCardProps) {
   return (
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
-        hasVideo ? 'col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl' : 'col-span-1'
+        hasVideo
+          ? 'aspect-[9/16] lg:aspect-auto lg:col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl'
+          : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
