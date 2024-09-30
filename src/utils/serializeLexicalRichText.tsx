@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React, { Fragment, ReactNode } from 'react'
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
 import { slugify } from '@/utils/slugify'
+
 export const IS_BOLD = 1
 export const IS_ITALIC = 1 << 1
 export const IS_STRIKETHROUGH = 1 << 2
@@ -24,7 +25,7 @@ interface Node {
   checked?: boolean
   fields?: { [key: string]: any }
   children?: Node[]
-  isIndexMarker?: boolean
+  parentType?: string // Nueva propiedad para rastrear el tipo del nodo padre
 }
 
 interface SerializeProps {
@@ -183,6 +184,7 @@ export default function serializeLexicalRichText({
         }
         return <RenderBlocks key={i} layout={[layout]} />
       }
+
       if (node.type === 'upload' && node.value) {
         const { value } = node
         if (value.mimeType.startsWith('image')) {
@@ -211,11 +213,39 @@ export default function serializeLexicalRichText({
           )
         }
       }
+
+      if (node.type === 'paragraph' || (!node.type && node.children)) {
+        // Verificamos si este párrafo está dentro de otro párrafo
+        if (parentNode && parentNode.type === 'paragraph') {
+          // Si es un párrafo anidado, lo renderizamos como un span
+          return (
+            <span key={i} className={`inline-block ${classNames.p} ${generateTextAlign(node)}`}>
+              {serializeLexicalRichText({
+                children: node.children || [],
+                customClassNames,
+                parentNode: { ...node, parentType: 'paragraph' },
+              })}
+            </span>
+          )
+        } else {
+          // Si no es un párrafo anidado, lo renderizamos normalmente como un p
+          return (
+            <p key={i} className={`${classNames.p} ${generateTextAlign(node)}`}>
+              {serializeLexicalRichText({
+                children: node.children || [],
+                customClassNames,
+                parentNode: { ...node, parentType: 'paragraph' },
+              })}
+            </p>
+          )
+        }
+      }
+
       switch (node.type) {
         case 'quote':
           return (
             <blockquote className={`${classNames.blockquote}`} key={i}>
-              "{serializeLexicalRichText({ children: node.children || [] })}"
+              &quot;{serializeLexicalRichText({ children: node.children || [] })}&quot;
             </blockquote>
           )
 
@@ -232,11 +262,18 @@ export default function serializeLexicalRichText({
           )
 
         default:
-          return (
-            <p className={`${classNames.p} ${generateTextAlign(node)}`} key={i}>
-              {serializeLexicalRichText({ children: node.children || [] })}
-            </p>
-          )
+          if (node.children) {
+            return (
+              <Fragment key={i}>
+                {serializeLexicalRichText({
+                  children: node.children,
+                  customClassNames,
+                  parentNode: node,
+                })}
+              </Fragment>
+            )
+          }
+          return null
       }
     })
     .filter((node) => node !== null)
