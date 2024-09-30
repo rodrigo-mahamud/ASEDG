@@ -127,7 +127,8 @@ const News: CollectionConfig = {
       relationTo: 'news',
       required: true,
       hasMany: true,
-      maxRows: 8,
+      minRows: 4,
+      maxRows: 4,
     },
     {
       name: 'richtxtcontent',

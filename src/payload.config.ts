@@ -22,6 +22,7 @@ import Media from './app/(payload)/collections/Media'
 import Pages from './app/(payload)/collections/Pages'
 import Users from './app/(payload)/collections/Users'
 
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
 import TextImagesBlock from './app/(payload)/blocks/TextImages'
@@ -126,6 +127,12 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // storage-adapter-placeholder
+    seoPlugin({
+      collections: ['pages', 'posts'], // Agrega aquí las colecciones donde quieres habilitar SEO
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `Mi Sitio | ${doc.title}`,
+      generateDescription: ({ doc }) => doc.excerpt,
+      generateURL: ({ doc }) => `https://misitio.com/${doc.slug}`,
+    }),
   ],
 })

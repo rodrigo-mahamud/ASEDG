@@ -5,6 +5,7 @@ import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import SEO from '@/components/SEO'
 
 export async function generateStaticParams() {
   return [{}]
@@ -29,6 +30,12 @@ export default async function NewsMainPage() {
 
     return (
       <main>
+        {/* <SEO
+          title={data.meta.title}
+          description={data.meta.description}
+          image={data.meta.image?.url}
+          url={`https://misitio.com/${data.slug}`}
+        /> */}
         <Hero data={data} />
         {data.body && data.body.layout && <RenderBlocks layout={data.body.layout} />}
       </main>
