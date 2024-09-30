@@ -3,13 +3,25 @@ import Container from '@/components/Container'
 import Title from '@/components/lib/title'
 import NewsFilter from './NewsFilter'
 import NewsGrid from './NewsGrid'
-import { NewsTypes } from '@/app/(payload)/blocks/News'
+import { News as NewsType, Cat } from '@/payload-types'
 
-export default function News({ allNews, subtitle, title }: NewsTypes) {
-  // Extraer categorías únicas por ID
-  const uniqueCategoriesMap = new Map(
-    allNews.flatMap((item) => item.categories.map((category) => [category.id, category])),
-  )
+interface NewsProps {
+  allNews: NewsType[]
+  subtitle: string
+  title: string
+  filter: boolean
+}
+
+export default function News({ allNews, subtitle, title, filter }: NewsProps) {
+  // Extraer categorías únicas
+  const uniqueCategoriesMap = new Map<string, Cat>()
+  allNews.forEach((item) => {
+    item.categories.forEach((category) => {
+      if (typeof category !== 'string') {
+        uniqueCategoriesMap.set(category.id, category)
+      }
+    })
+  })
   const uniqueCategories = Array.from(uniqueCategoriesMap.values())
 
   // Extraer años únicos
@@ -18,7 +30,7 @@ export default function News({ allNews, subtitle, title }: NewsTypes) {
   return (
     <Container>
       <Title title={title} subtitle={subtitle} />
-      <NewsFilter categories={uniqueCategories} years={years} className="mb-8" />
+      {filter && <NewsFilter categories={uniqueCategories} years={years} className="mb-8" />}
       <NewsGrid allNews={allNews} />
     </Container>
   )

@@ -1,3 +1,4 @@
+import { News } from '@/payload-types'
 import { Block } from 'payload'
 
 export interface CatTypes {
@@ -28,15 +29,13 @@ export interface NewsItem {
   className?: string
   badgeClass?: string
   shareClass?: string
-  shareUrl: string
 }
 
 export interface NewsTypes {
   title: string
   subtitle: string
-
   filter: boolean
-  allNews: NewsItem[]
+  allNews: News[]
 }
 
 export interface PingedProps {

@@ -1,5 +1,5 @@
 import React from 'react'
-import NewsCard from '@/components/NewsCard'
+import NewsCard from '@/components/news/NewsCard'
 import { Type } from '.'
 
 const NewsFeatured: React.FC<Type> = ({ newsFour }) => {

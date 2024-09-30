@@ -1,10 +1,11 @@
 'use client'
 import React, { useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
-import NewsCard from '@/components/NewsCard'
+import NewsCard from '@/components/news/NewsCard'
+import { News } from '@/payload-types'
 
 type FilteredNewsProps = {
-  allNews: any[] // Ajusta este tipo según la estructura de tus noticias
+  allNews: News[]
 }
 
 export default function NewsGrid({ allNews }: FilteredNewsProps) {

@@ -12,16 +12,31 @@ import Title from '@/components/lib/title'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Alert } from '@/components/lib/alert'
-import { NewsItem, PingedProps } from '@/app/(payload)/blocks/News'
+import { News, Media, Cat } from '@/payload-types'
 
-interface ExtendedPingedProps extends PingedProps {
-  allNews: NewsItem[]
+interface NewsPingedProps {
+  allNews: News[]
   title: string
   subtitle: string
 }
 
-export default function NewsPinged({ title, subtitle, allNews }: ExtendedPingedProps) {
+export default function NewsPinged({ title, subtitle, allNews }: NewsPingedProps) {
   const fixedNews = allNews.filter((news) => news.fixed === true)
+
+  const getImageUrl = (image: string | Media | null | undefined): string => {
+    if (typeof image === 'string') return image
+    return (image as Media)?.url || ''
+  }
+
+  const getImageAlt = (image: string | Media | null | undefined, fallback: string): string => {
+    if (typeof image === 'string') return fallback
+    return (image as Media)?.alt || fallback
+  }
+
+  const getCategoryTitle = (category: string | Cat): string => {
+    if (typeof category === 'string') return category
+    return category.title
+  }
 
   return (
     <>
@@ -50,10 +65,10 @@ export default function NewsPinged({ title, subtitle, allNews }: ExtendedPingedP
                   <Link href={`/noticias-san-esteban-de-gormaz/${newsItem.slug}`}>
                     <div className="embla__slide flex relative w-full h-[22rem] transition-generic items-end rounded-lg group-hover:rounded-2xl overflow-hidden">
                       <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
-                        {newsItem.categories.map((cat: any, index: number) => (
+                        {newsItem.categories.map((cat, index) => (
                           <div key={index} className="bg-white/25 backdrop-blur-md rounded-full">
                             <p className="text-white px-4 my-1 text-sm leading-normal">
-                              {cat.title}
+                              {getCategoryTitle(cat)}
                             </p>
                           </div>
                         ))}
@@ -76,14 +91,15 @@ export default function NewsPinged({ title, subtitle, allNews }: ExtendedPingedP
                       <div className="overflow-hidden rounded-lg group-hover:rounded-2xl transition-generic h-[inherit] w-full">
                         <Image
                           src={
-                            newsItem.image?.url || newsItem.masonryImages?.masonryImage1?.url || ''
+                            getImageUrl(newsItem.image) ||
+                            getImageUrl(newsItem.masonryImages?.masonryImage1) ||
+                            ''
                           }
                           quality={5}
                           sizes="(max-width: 1200px) 20vw, 35vw"
                           alt={
-                            newsItem.image?.alt ||
-                            newsItem.masonryImages?.masonryImage1?.alt ||
-                            newsItem.title
+                            getImageAlt(newsItem.image, newsItem.title) ||
+                            getImageAlt(newsItem.masonryImages?.masonryImage1, newsItem.title)
                           }
                           width={500}
                           height={500}

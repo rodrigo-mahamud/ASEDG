@@ -11,9 +11,10 @@ import {
   SelectValue,
 } from '@/components/lib/select'
 import useEmblaCarousel from 'embla-carousel-react'
+import { Cat } from '@/payload-types'
 
 type FilteredCardsProps = {
-  categories: { id: string; title: string }[]
+  categories: Cat[]
   years: number[]
   className: string
 }
@@ -106,7 +107,7 @@ export default function NewsFilter({ categories, years, className }: FilteredCar
             />
             <div className="embla__viewport overflow-hidden py-3 -my-3" ref={emblaRef}>
               <div className="embla__container flex backface-hidden touch-pan-y gap-2 px-1">
-                {categories.map((category) => (
+                {categories.map((category: Cat) => (
                   <Button
                     key={category.id}
                     variant="ringHover"

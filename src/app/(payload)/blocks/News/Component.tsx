@@ -1,11 +1,11 @@
 import React from 'react'
 import { NewsBlockProps } from '.'
-
+import configPromise from '@payload-config'
 import News from '@/components/news/News'
 import NewsPinged from '@/components/news/NewsPinged'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
 
-export default function NewsBlock({
-  allNews,
+export default async function NewsBlock({
   subtitle,
   title,
   filter,
@@ -13,6 +13,12 @@ export default function NewsBlock({
   pnsubtitle,
   pingedNews,
 }: NewsBlockProps) {
+  const payload = await getPayloadHMR({ config: configPromise })
+  const news = await payload.find({
+    collection: 'news',
+  })
+  const allNews = news.docs
+
   return (
     <>
       <section className="w-full overflow-hidden">

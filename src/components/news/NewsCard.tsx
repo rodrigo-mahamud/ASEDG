@@ -4,15 +4,18 @@ import { usePathname } from 'next/navigation'
 import { Button } from '@/components/lib/button'
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/card'
 import Image from 'next/image'
-import { Badge } from '@/components/lib/badge'
 import ShareButton from '@/components/lib/shareButton'
-import { IconArrowRight, IconLoader2 } from '@tabler/icons-react'
+import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
-import { NewsCardProps } from '@/types/types'
 import getVideoId from 'get-video-id'
 import ReactPlayer from 'react-player/lazy'
 import { useState, useEffect } from 'react'
-import { Skeleton } from './lib/skeleton'
+import { News, Media } from '@/payload-types'
+
+interface NewsCardProps {
+  data: News
+  className?: string
+}
 
 export default function NewsCard({ data, className }: NewsCardProps) {
   const pathname = usePathname()
@@ -52,9 +55,19 @@ export default function NewsCard({ data, className }: NewsCardProps) {
     }
   }
 
+  const getImageUrl = (image: string | Media | null | undefined): string => {
+    if (typeof image === 'string') return image
+    return (image as Media)?.url || ''
+  }
+
+  const getImageAlt = (image: string | Media | null | undefined): string => {
+    if (typeof image === 'string') return ''
+    return (image as Media)?.alt || data.title
+  }
+
   return (
     <Card
-      className={`rounded-xl  overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
+      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
         hasVideo ? 'col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl' : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
@@ -63,23 +76,25 @@ export default function NewsCard({ data, className }: NewsCardProps) {
       <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
         {data.categories.map((cat, index) => (
           <div key={index} className="bg-white/15 backdrop-blur-md rounded-full">
-            <p className="text-white px-4 my-1 text-sm leading-normal">{cat.title}</p>
+            <p className="text-white px-4 my-1 text-sm leading-normal">
+              {typeof cat === 'string' ? cat : cat.title}
+            </p>
           </div>
         ))}
       </div>
       <div
-        className={`relative w-full  ${
-          hasVideo ? 'h-full rounded-xl group-hover:rounded-2xl  overflow-hidden' : 'h-72'
+        className={`relative w-full ${
+          hasVideo ? 'h-full rounded-xl group-hover:rounded-2xl overflow-hidden' : 'h-72'
         }`}
       >
-        <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>
+        <Link href={`noticias-san-esteban-de-gormaz/${data.slug || ''}`}>
           {isClient && hasVideo && <div className="absolute w-full h-full blurMaskAlt z-10"></div>}
           {(data.masonryImages?.masonryImage1 || data.image) && (
             <>
               <Image
-                src={data.masonryImages?.masonryImage1?.url || data.image?.url}
+                src={getImageUrl(data.masonryImages?.masonryImage1) || getImageUrl(data.image)}
                 fill
-                alt={data.masonryImages?.masonryImage1?.alt || data.image?.alt}
+                alt={getImageAlt(data.masonryImages?.masonryImage1) || getImageAlt(data.image)}
                 quality={5}
                 sizes="(max-width: 1200px) 15vw, 25vw"
                 className={`w-full -z-10 object-cover duration-300 opacity-100 transition-generic 
@@ -137,7 +152,7 @@ export default function NewsCard({ data, className }: NewsCardProps) {
               iconPlacement="right"
               className="w-4/5 flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md h-full"
             >
-              <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>Ver Más</Link>
+              <Link href={`noticias-san-esteban-de-gormaz/${data.slug || ''}`}>Ver Más</Link>
             </Button>
 
             <ShareButton
