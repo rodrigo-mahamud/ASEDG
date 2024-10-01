@@ -26,9 +26,9 @@ async function getPageData() {
 }
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const settings = await payload.findGlobal({
+  const settings = (await payload.findGlobal({
     slug: 'settings',
-  })
+  })) as any
 
   return settings
 }
@@ -43,18 +43,18 @@ export async function generateMetadata() {
     icons: {
       icon: [
         {
-          url: settings.faviconLight.url,
+          url: settings.faviconLight.url || ' ',
           media: '(prefers-color-scheme: light)',
         },
         {
-          url: settings.faviconDark.url,
+          url: settings.faviconDark.url || ' ',
           media: '(prefers-color-scheme: dark)',
         },
       ],
     },
     openGraph: {
       locale: 'es_ES',
-      title: seoData.title || settings.defaultTitle,
+      title: seoData.title || settings.defaultTitle || ' ',
       siteName: settings.defaultTitle,
       url: `https://${process.env.ROOT_DOMAIN}/noticias-san-esteban-de-gormaz`,
       description: seoData.description || settings.defaultDescription,
