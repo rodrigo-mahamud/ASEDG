@@ -15,9 +15,12 @@ const validateImageDimensions: Validate<any, any> = async (value) => {
     if (!media?.url) {
       return 'Imagen no encontrada'
     }
-    console.log(media)
+
     if (media.width !== 195 || media.height !== 195) {
       return 'La imagen debe ser exactamente de 195x195 píxeles.'
+    }
+    if (media.mimeType !== 'image/png') {
+      return 'La imagen debe estar en PNG.'
     }
     return true
   } catch (error) {
@@ -53,7 +56,7 @@ const Settings: GlobalConfig = {
       required: true,
       admin: {
         description:
-          'Para dispositivos con el navegador en modo claro. Debe ser una imagen de 195x195 píxeles.',
+          'Para dispositivos con el navegador en modo claro. Debe ser una imagen PNG de 195x195 píxeles.',
       },
     },
     {
@@ -65,7 +68,7 @@ const Settings: GlobalConfig = {
       required: true,
       admin: {
         description:
-          'Para dispositivos con el navegador en modo oscuro. Debe ser una imagen de 195x195 píxeles.',
+          'Para dispositivos con el navegador en modo oscuro. Debe ser una imagen PNG de 195x195 píxeles.',
       },
     },
     {
