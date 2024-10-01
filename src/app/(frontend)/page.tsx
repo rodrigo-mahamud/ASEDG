@@ -39,6 +39,18 @@ export async function generateMetadata() {
   return {
     title: seoData.title,
     description: seoData.description,
+    icons: {
+      icon: [
+        {
+          url: settings.faviconLight.url,
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: settings.faviconDark.url,
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+    },
     openGraph: {
       locale: 'es_ES',
       title: seoData.title || settings.defaultTitle,

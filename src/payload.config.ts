@@ -131,8 +131,26 @@ export default buildConfig({
       collections: ['pages', 'news'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => (doc.adminPanelTitle ? doc.adminPanelTitle : doc.title),
-      generateDescription: ({ doc }) =>
-        doc.header.description ? doc.header.description : doc.summary,
+      generateDescription: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
+          case 'pages':
+            return doc.header.description
+          case 'news':
+            return doc.summary
+          default:
+            return doc.header.description
+        }
+      },
+      generateImage: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
+          case 'pages':
+            return doc.header.description
+          case 'news':
+            return doc.summary
+          default:
+            return doc.header.description
+        }
+      },
       generateURL: ({ doc, collectionSlug }) => {
         const baseURL = `https://${process.env.ROOT_DOMAIN}`
 

@@ -108,6 +108,11 @@ export interface NewsCardProps {
 // Tipos para respuestas de API
 export interface NewsPageData {
   docs: NewsItemFull[]
+  meta?: {
+    title?: string | null
+    description?: string | null
+    image?: any
+  }
 }
 
 // Tipos adicionales
