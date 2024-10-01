@@ -130,7 +130,18 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'news'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => (doc.adminPanelTitle ? doc.adminPanelTitle : doc.title),
+      generateTitle: ({ doc }) => (doc.header.title ? doc.header.title : doc.title),
+      generateDescription: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
+          case 'pages':
+            return doc.header.description
+          case 'news':
+            return doc.summary
+          default:
+            return doc.header.description
+        }
+      },
+
       generateURL: ({ doc, collectionSlug }) => {
         const baseURL = `https://${process.env.ROOT_DOMAIN}`
         switch (collectionSlug) {
