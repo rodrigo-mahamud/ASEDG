@@ -12,6 +12,9 @@ import BookingsBlock from './Bookings/Component'
 import Faqs from './Faqs/Component'
 import StickyTextImages from './StickyTextImages/Component'
 
+//RICH TEXT LEXICAL BLOCKS
+import IconList from './RTBlocks/IconList/Component'
+
 export const components = {
   tabsblock: TabsBlock,
   buslist: BusList,
@@ -26,4 +29,7 @@ export const components = {
   bookingsblock: BookingsBlock,
   faqs: Faqs,
   stickytextimages: StickyTextImages,
+
+  //RICH TEXT LEXICAL BLOCKS
+  iconlist: IconList,
 }

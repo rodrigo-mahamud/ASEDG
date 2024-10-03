@@ -54,27 +54,6 @@ const TextImagesBlock: Block = {
     },
 
     {
-      name: 'list',
-      type: 'array',
-      maxRows: 3,
-      label: 'Lista',
-      fields: [
-        Icon,
-        {
-          name: 'isblold',
-          type: 'checkbox',
-          label: 'Destacar en Negrita',
-        },
-        {
-          name: 'text',
-          type: 'text',
-          label: 'Texto',
-          required: true,
-        },
-      ],
-      required: false,
-    },
-    {
       type: 'row',
       fields: [
         {

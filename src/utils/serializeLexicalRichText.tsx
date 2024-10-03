@@ -184,6 +184,9 @@ export default function serializeLexicalRichText({
         }
         return <RenderBlocks key={i} layout={[layout]} />
       }
+      // if (node.type === 'linebreak' && node.fields) {
+      //   return <br key={i}></br>
+      // }
 
       if (node.type === 'upload' && node.value) {
         const { value } = node

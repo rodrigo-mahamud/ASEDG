@@ -15,15 +15,15 @@ export type Type = {
 const IconList: Block = {
   slug: 'iconlist',
   labels: {
-    singular: 'Bloque de Texto e Imágenes',
-    plural: 'Bloques de Texto e Imágenes',
+    singular: 'Lista con iconos',
+    plural: 'Listas con iconos',
   },
   fields: [
     {
       name: 'list',
       type: 'array',
       maxRows: 3,
-      label: 'Lista',
+      label: ' ',
       fields: [
         {
           name: 'isblold',
