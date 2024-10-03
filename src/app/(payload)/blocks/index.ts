@@ -10,6 +10,7 @@ import RichText from './RichText/Component'
 import NewsBlock from './News/Component'
 import BookingsBlock from './Bookings/Component'
 import Faqs from './Faqs/Component'
+import StickyTextImages from './StickyTextImages/Component'
 
 export const components = {
   tabsblock: TabsBlock,
@@ -24,4 +25,5 @@ export const components = {
   richtext: RichText,
   bookingsblock: BookingsBlock,
   faqs: Faqs,
+  stickytextimages: StickyTextImages,
 }

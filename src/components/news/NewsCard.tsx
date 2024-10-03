@@ -69,7 +69,7 @@ export default function NewsCard({ data, className }: NewsCardProps) {
     <Card
       className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
         hasVideo
-          ? 'aspect-[9/16] lg:aspect-auto lg:col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl'
+          ? 'aspect-[9/16] lg:aspect-[4/3] lg:col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl'
           : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
@@ -109,7 +109,7 @@ export default function NewsCard({ data, className }: NewsCardProps) {
         </Link>
 
         {isClient && hasVideo && isHovering && (
-          <div className="absolute inset-0 flex items-center justify-center group-hover:rounded-2xl rounded-xl scale-150">
+          <div className="absolute inset-0 flex items-center justify-center group-hover:rounded-2xl rounded-xl scale-[1.85]">
             <ReactPlayer
               url={getVideoUrl()}
               playing={true}
