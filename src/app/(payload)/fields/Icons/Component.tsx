@@ -58,14 +58,14 @@ const IconField: React.FC<{ field: { _path: string } }> = ({ field }) => {
   const Default = () => {
     return (
       <>
-        <span>Añadir Icono</span>
-        <TablerIcons.IconPlus size={16}></TablerIcons.IconPlus>
+        <TablerIcons.IconMoodSearch size={16}></TablerIcons.IconMoodSearch>
       </>
     )
   }
 
   return (
     <div className="icon-field">
+      <span className="text-[13px] leading-[20px] pb-[5px]"> Icono</span>
       <button onClick={toggleDropdown} className="icon-button">
         {value ? renderIcon(value) : <Default />}
       </button>

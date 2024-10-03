@@ -25,17 +25,22 @@ const IconList: Block = {
       maxRows: 3,
       label: 'Lista',
       fields: [
-        Icon,
         {
           name: 'isblold',
           type: 'checkbox',
           label: 'Destacar en Negrita',
         },
         {
-          name: 'text',
-          type: 'text',
-          label: 'Texto',
-          required: true,
+          type: 'row',
+          fields: [
+            Icon,
+            {
+              name: 'text',
+              type: 'text',
+              label: 'Texto',
+              required: true,
+            },
+          ],
         },
       ],
       required: false,
