@@ -12,7 +12,7 @@ interface ListTypes {
 export type Type = {
   isReversed: boolean
   title: string
-  body: string
+  text: string
   image: {
     url: string
     alt: string
@@ -44,18 +44,22 @@ const TextImagesBlock: Block = {
       required: true,
     },
     {
-      name: 'body',
-      type: 'textarea',
+      name: 'text',
+      type: 'richText',
       label: 'Cuerpo',
+      admin: {
+        className: 'richTextEmbed',
+      },
       required: true,
     },
-    Icon,
+
     {
       name: 'list',
       type: 'array',
       maxRows: 3,
       label: 'Lista',
       fields: [
+        Icon,
         {
           name: 'isblold',
           type: 'checkbox',
@@ -66,14 +70,6 @@ const TextImagesBlock: Block = {
           type: 'text',
           label: 'Texto',
           required: true,
-        },
-
-        {
-          name: 'listImage',
-          type: 'upload',
-          label: 'Imagen',
-          relationTo: 'media',
-          required: false,
         },
       ],
       required: false,

@@ -14,6 +14,10 @@ export type Type = {
 
 const StickyTextImages: Block = {
   slug: 'stickytextimages',
+  labels: {
+    singular: 'Tarjeta con desplazamiento fijo ',
+    plural: 'Tarjetas con desplazamiento fijo ',
+  },
 
   fields: [
     {
@@ -23,32 +27,37 @@ const StickyTextImages: Block = {
       minRows: 1,
       maxRows: 10,
       labels: {
-        singular: 'Section',
-        plural: 'Sections',
+        singular: 'Tarjeta',
+        plural: 'Tarjetas',
       },
       fields: [
         {
-          name: 'pretitle',
-          type: 'text',
-          label: 'Pre-title',
-          required: true,
-        },
-        {
-          name: 'title',
-          type: 'text',
-          label: 'Title',
-          required: true,
+          type: 'row',
+          fields: [
+            {
+              name: 'pretitle',
+              type: 'text',
+              label: 'Pretitulo',
+              required: true,
+            },
+            {
+              name: 'title',
+              type: 'text',
+              label: 'Título',
+              required: true,
+            },
+          ],
         },
         {
           name: 'text',
           type: 'textarea',
-          label: 'Text',
+          label: 'Texto',
           required: true,
         },
         {
           name: 'image',
           type: 'upload',
-          label: 'Image',
+          label: 'Imagen ',
           relationTo: 'media',
           required: true,
         },

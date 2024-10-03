@@ -168,6 +168,20 @@ html[data-theme='dark'] .LexicalEditorTheme__h3 {
 .tabs-field {
   margin-top: 0px !important;
 }
+// .richTextEmbed > .rich-text-lexical__wrap > .editor-container > .editor-scroller {
+//   max-height: 50rem;
+//   overflow-y: scroll;
+// }
+.richTextEmbed
+  > .rich-text-lexical__wrap
+  > .fixed-toolbar
+  > .fixed-toolbar__group-text
+  > .toolbar-popup__dropdown {
+  display: none;
+}
+.richTextEmbed > .rich-text-lexical__wrap > .fixed-toolbar > .fixed-toolbar__group-indent {
+  display: none;
+}
 //Massonry
 // .masonry-image-group .render-fields,
 // .masonry-image-group .render-fields--margins-small {

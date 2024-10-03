@@ -25,9 +25,9 @@ import Users from './app/(payload)/collections/Users'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
-import TextImagesBlock from './app/(payload)/blocks/TextImages'
 import Facilities from './app/(payload)/collections/Facilities'
 import Sports from './app/(payload)/collections/Sports'
+import IconList from './app/(payload)/blocks/RTBlocks/IconList'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -102,6 +102,9 @@ export default buildConfig({
             ],
           },
         },
+      }),
+      BlocksFeature({
+        blocks: [IconList],
       }),
     ],
   }),

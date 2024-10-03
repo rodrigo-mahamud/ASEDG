@@ -48,7 +48,7 @@ export default function StickyTextImages({ sections }: Type) {
               className={`lg:sticky top-36 rounded-xl overflow-hidden h-fit cardShadow z-${index * 10}`}
             >
               <div className="flex flex-col lg:h-full lg:flex-row ">
-                <div className="w-2/5 flex items-stretch p-10 border border-border bg-white rounded-l-xl">
+                <div className="w-2/5 flex items-stretch p-8 border border-border bg-white rounded-l-xl">
                   <div className=" flex flex-col justify-between">
                     <div className="flex flex-col space-y-4">
                       <Badge variant={'outline'} className="bg-secondary px-3 py-1 w-fit">
