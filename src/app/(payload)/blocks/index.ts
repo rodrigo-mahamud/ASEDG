@@ -9,6 +9,7 @@ import TextImagesBlock from './TextImages/Component'
 import RichText from './RichText/Component'
 import NewsBlock from './News/Component'
 import BookingsBlock from './Bookings/Component'
+import Faqs from './Faqs/Component'
 
 export const components = {
   tabsblock: TabsBlock,
@@ -22,4 +23,5 @@ export const components = {
   cardsblock: CardsBlock,
   richtext: RichText,
   bookingsblock: BookingsBlock,
+  faqs: Faqs,
 }

@@ -1,5 +1,8 @@
 import slug from '../fields/slug'
+import formatSlug from '@/utils/formatSlug'
 import type { CollectionConfig } from 'payload'
+
+//BLOCKS
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
 import TabsBlock from '../blocks/Tabs'
@@ -7,7 +10,8 @@ import TextImagesBlock from '../blocks/TextImages'
 import CardsBlock from '../blocks/Cards'
 import NewsBlock from '../blocks/News'
 import BookingsBlock from '../blocks/Bookings'
-import formatSlug from '@/utils/formatSlug'
+import RichText from '../blocks/RichText'
+import Faqs from '../blocks/Faqs'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -165,6 +169,8 @@ const Pages: CollectionConfig = {
                 CardsBlock,
                 NewsBlock,
                 BookingsBlock,
+                RichText,
+                Faqs,
               ],
             },
           ],
