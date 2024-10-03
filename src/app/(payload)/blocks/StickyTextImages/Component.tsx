@@ -5,6 +5,7 @@ import { Type } from '.'
 import Container from '@/components/Container'
 import { Button } from '@/components/lib/button'
 import { IconArrowRight } from '@tabler/icons-react'
+import { Badge } from '@/components/lib/badge'
 
 export default function StickyTextImages({ sections }: Type) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -50,7 +51,10 @@ export default function StickyTextImages({ sections }: Type) {
                 <div className="w-2/5 flex items-stretch p-10 border border-border bg-white rounded-l-xl">
                   <div className=" flex flex-col justify-between">
                     <div className="flex flex-col space-y-4">
-                      <div className="relative inline-flex ">{section.pretitle}</div>
+                      <Badge variant={'outline'} className="bg-secondary px-3 py-1 w-fit">
+                        {section.pretitle}
+                      </Badge>
+
                       <h2 className="text-3xl font-semibold">{section.title}</h2>
                       <p className="text-base text-pretty line-clamp-6">{section.text}</p>
                     </div>

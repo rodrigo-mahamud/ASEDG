@@ -75,7 +75,7 @@ const NSAIndex: React.FC<NSAIndexProps> = ({ indexContent }) => {
   }
 
   return (
-    <div className="bg-[#f3f4f6] rounded-lg overflow-hidden border border-border">
+    <div className="bg-secondary rounded-lg overflow-hidden border border-border">
       <h2 className="text-lg font-semibold p-5">Indice de contenidos</h2>
       <div className="border-t border-border py-5 flex">
         <div className="w-1 bg-foreground/15 mx-5 rounded-full overflow-hidden relative">

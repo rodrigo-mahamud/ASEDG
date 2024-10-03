@@ -6,7 +6,7 @@ import NRCard from './NRCard'
 
 export default function NewsRelated({ newsRelated }: NewsRelatedProps) {
   return (
-    <section className="overflow-hidden bg-[#f3f4f6] border-t border-border">
+    <section className="overflow-hidden bg-secondary border-t border-border">
       <Container className="py-32">
         <div className="flex justify-between w-full">
           <Title

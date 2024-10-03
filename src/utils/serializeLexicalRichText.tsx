@@ -56,7 +56,7 @@ export default function serializeLexicalRichText({
         ol: 'list-decimal ml-8 mt-3 mb-4',
         li: 'list-item my-4',
         blockquote:
-          'p-5 my-8 font-medium text-xl italic border border-border bg-[#f3f4f6] rounded-lg',
+          'p-5 my-8 font-medium text-xl italic border border-border bg-secondary rounded-lg',
         a: 'text-blue-500 underline',
       }
 

@@ -15,7 +15,7 @@ interface NHVerticalProps {
 }
 export default function NHHorizontal({ data, currentUrl }: NHVerticalProps) {
   return (
-    <header className="w-full bg-[#f3f4f6] border-y border-border overflow-hidden  relative">
+    <header className="w-full bg-secondary border-y border-border overflow-hidden  relative">
       <Container className="py-40 flex items-center h-fit">
         <div className="w-7/12">
           <Button
@@ -50,14 +50,14 @@ export default function NHHorizontal({ data, currentUrl }: NHVerticalProps) {
               <div className="flex">
                 <div className="flex gap-2 pr-3 border-r border-border h-10">
                   {data.categories.map((cat, index) => (
-                    <Badge key={index} variant={'outline'} className="bg-secondaryAlt/5 h-10 px-4">
+                    <Badge key={index} variant={'outline'} className="bg-secondary h-10 px-4">
                       {cat.title}
                     </Badge>
                   ))}
                 </div>
                 <ShareButton
                   iconStroke="1.5"
-                  className="w-10 h-10 ml-3 outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-full"
+                  className="w-10 h-10 ml-3 outline-none bg-secondary hover:bg-secondaryAlt/10 border-border border flex justify-center items-center rounded-full"
                   url={currentUrl}
                 />
               </div>
