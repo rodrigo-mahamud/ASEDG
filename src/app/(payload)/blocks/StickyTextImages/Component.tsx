@@ -2,6 +2,9 @@
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { Type } from '.'
+import Container from '@/components/Container'
+import { Button } from '@/components/lib/button'
+import { IconArrowRight } from '@tabler/icons-react'
 
 export default function StickyTextImages({ sections }: Type) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -35,25 +38,37 @@ export default function StickyTextImages({ sections }: Type) {
   }, [sections.length])
 
   return (
-    <div className="w-full max-w-6xl h-[200vh] mx-auto px-4 md:px-6 py-24">
-      <div className="max-w-md mx-auto lg:max-w-none">
-        <div className="lg:sticky lg:top-0 h-fit space-y-16 lg:space-y-0">
-          {sections.map((section, index) => (
-            <div key={index} className={`lg:sticky top-12 bg-red-600 h-fit z-${index * 10}`}>
-              <div className="flex flex-col lg:h-full lg:flex-row space-y-4 space-y-reverse lg:space-y-0 lg:space-x-20">
-                <div className="flex-1 flex items-center">
-                  <div className="space-y-3">
-                    <div className="relative inline-flex ">{section.pretitle}</div>
-                    <h2 className="text-4xl font-extrabold">{section.title}</h2>
-                    <p>{section.text}</p>
+    <Container className=" px-4 md:px-6 ">
+      <div className="lg:sticky flex flex-col lg:top-0 h-fit  lg:space-y-0">
+        {sections.map((section, index) => (
+          <>
+            <div
+              key={index}
+              className={`lg:sticky top-36 rounded-xl overflow-hidden h-fit cardShadow z-${index * 10}`}
+            >
+              <div className="flex flex-col lg:h-full lg:flex-row ">
+                <div className="w-2/5 flex items-stretch p-10 border border-border bg-white rounded-l-xl">
+                  <div className=" flex flex-col justify-between">
+                    <div className="flex flex-col space-y-4">
+                      <div className="relative inline-flex ">{section.pretitle}</div>
+                      <h2 className="text-3xl font-semibold">{section.title}</h2>
+                      <p className="text-base text-pretty line-clamp-6">{section.text}</p>
+                    </div>
+                    <div className="flex items-center gap-3 mt-5 h-10">
+                      <Button
+                        variant="expandIcon"
+                        iconClass="w-4 h-4"
+                        Icon={IconArrowRight}
+                        iconPlacement="right"
+                        className="w-full flex gap-1 py-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md h-full"
+                      >
+                        Ver Más
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                <div
-                  className={`flex-1 flex items-center transition duration-300 transform ${
-                    index === activeIndex ? 'scale-100' : 'scale-80'
-                  }`}
-                >
-                  <div className="relative w-full aspect-square">
+                <div className="w-3/5 flex items-center">
+                  <div className="relative w-full aspect-[15/9]">
                     <Image
                       src={section.image.url}
                       alt={section.title}
@@ -68,9 +83,10 @@ export default function StickyTextImages({ sections }: Type) {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+            <div className="h-20"></div>
+          </>
+        ))}
       </div>
-    </div>
+    </Container>
   )
 }
