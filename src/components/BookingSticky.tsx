@@ -54,13 +54,12 @@ export default function BookingSticky({ data }: any) {
   }
 
   return (
-    <aside className="btnShadow p-7 w-2/6 sticky top-28 rounded-lg h-fit ">
+    <aside className=" bg-white p-5 w-2/6 sticky top-28 rounded-lg h-fit shadow-[#1900541a_0px_6px_16px_0px]">
       {formState !== 'success' && (
         <>
-          <h2 className="text-xl font-cal "> Gimnasio municipal</h2>
-          <h3 className="text-sm opacity-75 text-pretty">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. olor sit amet consectetur
-            adipisic
+          <h2 className="text-xl font-semibold "> Reservar gimnasio municipal</h2>
+          <h3 className="text-sm opacity-75">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </h3>
         </>
       )}

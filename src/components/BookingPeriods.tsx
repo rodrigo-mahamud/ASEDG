@@ -46,10 +46,10 @@ export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPe
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <CollapsibleTrigger className="flex justify-between items-center w-full p-4 hover:bg-secondary ease-in-out duration-300 transition-all">
+        <CollapsibleTrigger className="flex justify-between items-center w-full px-5 py-3 hover:bg-secondary ease-in-out duration-300 transition-all">
           <div className="flex flex-col text-start justify-start w-10/12">
-            <h3 className="text-lg font-semibold">Tipo de reserva</h3>
-            <h4 className="text-sm">{getDisplayText()}</h4>
+            <h3 className="text-base font-semibold">Tipo de reserva</h3>
+            <h4 className="text-sm text-muted-foreground">{getDisplayText()}</h4>
           </div>
           <div className="pr-2">
             <IconChevronDown
@@ -71,13 +71,13 @@ export function BookingPeriods({ field, initiallyOpen = false, data }: BookingPe
                 onClick={() => handleValueChange(option)}
               >
                 <div className="flex justify-between items-center w-full px-4 py-3">
-                  <div className="flex space-x-4 w-10/12 items-center">
+                  <div className="flex space-x-4 w-9/12 items-center">
                     <div className="flex items-center bg-secondaryAlt justify-center w-8 h-8 rounded-full">
                       <IconClock stroke={2} className="h-4 w-4 text-white" />
                     </div>
                     <div className="flex flex-col">
                       <p className="font-semibold">{option.name}</p>
-                      <p className="text-sm opacity-75">Hasta el {getEndDate(option.daysAmount)}</p>
+                      <p className="text-xs opacity-75">Hasta el {getEndDate(option.daysAmount)}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-end w-2/12">

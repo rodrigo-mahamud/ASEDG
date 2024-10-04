@@ -6,6 +6,7 @@ import configPromise from '@payload-config'
 import { Toaster } from 'sonner'
 import ImagesMasonry from '@/components/ImagesMasonry'
 import BookingSection from '@/components/BookingSection'
+import Container from '@/components/Container'
 
 type PageProps = {
   params: { slug: string }
@@ -13,6 +14,21 @@ type PageProps = {
 
 export default async function BookingPage({ params }: PageProps) {
   const payload = await getPayloadHMR({ config: configPromise })
+  const imageSrcs = [
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+  ]
+
+  const imageAlts = [
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+    '/placeholder.jpg',
+  ]
 
   const facilitiesData = (await payload.find({
     collection: 'facilities',
@@ -26,9 +42,11 @@ export default async function BookingPage({ params }: PageProps) {
 
   return (
     <main>
-      <ImagesMasonry></ImagesMasonry>
-      <BookingSection data={data}></BookingSection>
       <Toaster />
+      <Container>
+        <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />
+        <BookingSection data={data}></BookingSection>
+      </Container>
     </main>
   )
 }

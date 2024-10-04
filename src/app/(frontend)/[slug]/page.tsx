@@ -6,6 +6,7 @@ import configPromise from '@payload-config'
 import Hero from '@/components/hero/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
+import { notFound } from 'next/navigation'
 
 interface Page {
   id: number
@@ -63,7 +64,7 @@ export default async function Page({ params }: PageProps) {
   const page = pageData.docs.find((page: any) => page.slug === params.slug)
 
   if (!page) {
-    return <div>Page not found</div>
+    return notFound()
   }
 
   return (

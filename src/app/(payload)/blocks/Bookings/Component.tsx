@@ -8,7 +8,7 @@ export default function BookingsBlock() {
   return (
     <Container>
       <Title
-        title="Reservas no se XD"
+        title="Reservas del gimnasio"
         subtitle="Lorem ipsum dolor sit amet consectetur, adipisicing elit. "
       ></Title>
       <div className="grid grid-cols-1 gap-6 md:gap-8 xl:grid-cols-2">

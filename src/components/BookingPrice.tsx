@@ -17,17 +17,17 @@ export function BookingPrice() {
   const endDate = dayjs().add(daysAmount, 'day').format('DD/MM/YYYY')
 
   return (
-    <div className="mt-0 mb-8 p-4 bg-secondary rounded-md">
-      <div className="flex justify-between mb-2">
+    <div className="mt-0 mb-5 p-5 bg-secondary rounded-md">
+      <div className="flex justify-between mb-1 text-sm">
         <span>Finaliza el :</span>
         <span>{endDate}</span>
       </div>
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between mb-1 text-sm">
         <span>Nº de días:</span>
         <span>{daysAmount}</span>
       </div>
 
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between text-sm">
         <span>Precio por día:</span>
         <span>{pricePerDay.toFixed(2)}€</span>
       </div>

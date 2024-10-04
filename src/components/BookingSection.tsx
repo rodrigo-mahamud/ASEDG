@@ -5,11 +5,9 @@ import BookingInfo from './BookingInfo'
 
 export default function BookingSection({ data }: any) {
   return (
-    <Container className="pt-8">
-      <div className="w-full flex gap-9 relative">
-        <BookingInfo></BookingInfo>
-        <BookingSticky data={data.bookingOptions}></BookingSticky>
-      </div>
-    </Container>
+    <div className="w-full flex gap-9 relative mt-8">
+      <BookingInfo></BookingInfo>
+      <BookingSticky data={data.bookingOptions}></BookingSticky>
+    </div>
   )
 }

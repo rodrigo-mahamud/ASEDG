@@ -57,7 +57,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-5">
         <FormField
           control={form.control}
           name={'daysAmount'}
@@ -68,12 +68,12 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="border-x border-b border-input rounded-b-md"
+          className="border-x border-b border-input rounded-b-md overflow-hidden"
         >
-          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 hover:bg-secondary ease-in-out  p-4 duration-200">
+          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 hover:bg-secondary ease-in-out px-5 py-3 duration-200">
             <div className="flex flex-col text-start justify-start w-10/12">
-              <h3 className="text-lg font-semibold">Datos Personales</h3>
-              <h4 className="text-sm">Completa tus datos personales.</h4>
+              <h3 className="text-base font-semibold">Datos Personales</h3>
+              <h4 className="text-sm text-muted-foreground">Completa tus datos personales.</h4>
             </div>
             <div className="pr-2">
               <IconChevronDown

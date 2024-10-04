@@ -63,7 +63,7 @@ export function BookingCheckout({
   }
 
   return (
-    <form id="stripe-form" onSubmit={handleSubmit} className="bg-white py-8 rounded-md">
+    <form id="stripe-form" onSubmit={handleSubmit} className="bg-white py-5 rounded-md">
       <PaymentElement />
     </form>
   )
