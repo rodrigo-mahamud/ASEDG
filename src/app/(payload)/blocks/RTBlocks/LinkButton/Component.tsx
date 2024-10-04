@@ -1,8 +1,13 @@
 import React from 'react'
-import * as Icons from '@tabler/icons-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import ParallaxItem from '@/components/ParallaxItem'
+import * as Icons from '@tabler/icons-react' // Importa todos los iconos
+import { Button } from '@/components/lib/button'
 import { Type } from '.'
+import RichTextParser from '@/utils/richTextParser'
 
-export default function IconList({ block }: Type) {
+export default function LinkButton({ block }: Type) {
   return (
     <div className="flex items-start md:w-3/5">
       <ul className="pt-5">

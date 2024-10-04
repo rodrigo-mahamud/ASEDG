@@ -1,6 +1,6 @@
 import { Button } from '@/components/lib/button'
 import ShareButton from '@/components/lib/shareButton'
-import { Icon360View, IconArrowRight, IconClock24 } from '@tabler/icons-react'
+import { Icon360View, IconArrowRight, IconClock24, IconUser } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -35,15 +35,15 @@ export default function BookingsCard() {
             <Button
               asChild
               variant="expandIcon"
-              iconClass="w-4 h-4"
+              iconClass="w-5 h-5"
               Icon={IconArrowRight}
               iconPlacement="right"
               className="flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md w-full h-full"
             >
-              <Link href={`noticias-san-esteban-de-gormaz/`}>Ver Más</Link>
+              <Link href={`noticias-san-esteban-de-gormaz/`}>Reservar</Link>
             </Button>
             <ShareButton
-              className="w-1/5 h-full outline-none bg-secondaryAlt/5 hover:bg-secondaryAlt/10 flex justify-center items-center rounded-md"
+              className="w-1/5 h-full outline-none bg-secondary border-border border hover:bg-secondaryAlt/5 flex justify-center items-center rounded-md"
               url="s"
             />
           </div>

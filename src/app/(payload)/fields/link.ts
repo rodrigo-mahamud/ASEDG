@@ -1,4 +1,5 @@
 import type { Field } from 'payload'
+import Icon from './Icons'
 
 const link: Field = {
   name: 'link',
@@ -48,25 +49,62 @@ const link: Field = {
           required: true,
         },
         {
+          name: 'linkStyle',
+          label: 'Estilo del enlace',
+          type: 'select',
+          admin: {
+            width: '50%',
+          },
+          options: [
+            {
+              label: 'Básico',
+              value: 'default',
+            },
+            {
+              label: 'Secundario',
+              value: 'ghost',
+            },
+            {
+              label: 'Destacado',
+              value: 'highlighted',
+            },
+            {
+              label: 'Con Icono',
+              value: 'expandIcon',
+            },
+            {
+              label: 'Subrayado',
+              value: 'linkHover1',
+            },
+          ],
+          defaultValue: 'default', // "Interno" por defecto
+          required: true,
+        },
+      ],
+    },
+
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'icon',
+          label: 'Icono',
+          type: 'text',
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkStyle.includes('expandIcon'),
+            components: {
+              Field: '@/app/(payload)/fields/Icons/Component',
+            },
+          },
+        },
+        {
           name: 'linkText',
           type: 'text',
           label: 'Texto del enlace',
           required: true,
           admin: {
-            width: '50%',
             condition: (data, siblingData) =>
               ['internal', 'external'].includes(siblingData?.linkType),
-          },
-        },
-        {
-          name: 'linkIcon',
-          type: 'text',
-          label: 'Icono del enlace',
-          required: true,
-          admin: {
-            width: '50%',
-            condition: (data, siblingData) =>
-              ['mail', 'location', 'tel'].includes(siblingData?.linkType),
           },
         },
       ],

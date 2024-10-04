@@ -1,8 +1,8 @@
-import { RichTextCell as RichTextCell_0 } from '@payloadcms/richtext-lexical/client'
-import { RichTextField as RichTextField_1 } from '@payloadcms/richtext-lexical/client'
-import { getGenerateComponentMap as getGenerateComponentMap_2 } from '@payloadcms/richtext-lexical/generateComponentMap'
-import { BlocksFeatureClient as BlocksFeatureClient_3 } from '@payloadcms/richtext-lexical/client'
-import { default as default_4 } from '@/app/(payload)/fields/Icons/Component'
+import { default as default_0 } from '@/app/(payload)/fields/Icons/Component'
+import { RichTextCell as RichTextCell_1 } from '@payloadcms/richtext-lexical/client'
+import { RichTextField as RichTextField_2 } from '@payloadcms/richtext-lexical/client'
+import { getGenerateComponentMap as getGenerateComponentMap_3 } from '@payloadcms/richtext-lexical/generateComponentMap'
+import { BlocksFeatureClient as BlocksFeatureClient_4 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_5 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_6 } from '@payloadcms/richtext-lexical/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_7 } from '@payloadcms/richtext-lexical/client'
@@ -32,11 +32,11 @@ import { PreviewComponent as PreviewComponent_30 } from '@payloadcms/plugin-seo/
 import { default as default_31 } from '@/components/payload/SportsDashboard'
 
 export const importMap = {
-  "@payloadcms/richtext-lexical/client#RichTextCell": RichTextCell_0,
-  "@payloadcms/richtext-lexical/client#RichTextField": RichTextField_1,
-  "@payloadcms/richtext-lexical/generateComponentMap#getGenerateComponentMap": getGenerateComponentMap_2,
-  "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_3,
-  "@/app/(payload)/fields/Icons/Component#default": default_4,
+  "@/app/(payload)/fields/Icons/Component#default": default_0,
+  "@payloadcms/richtext-lexical/client#RichTextCell": RichTextCell_1,
+  "@payloadcms/richtext-lexical/client#RichTextField": RichTextField_2,
+  "@payloadcms/richtext-lexical/generateComponentMap#getGenerateComponentMap": getGenerateComponentMap_3,
+  "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_4,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_5,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_6,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_7,

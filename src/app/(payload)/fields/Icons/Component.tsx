@@ -58,7 +58,11 @@ const IconField: React.FC<{ field: { _path: string } }> = ({ field }) => {
   const Default = () => {
     return (
       <>
-        <TablerIcons.IconMoodSearch size={22} stroke={1.5}></TablerIcons.IconMoodSearch>
+        <TablerIcons.IconMoodSearch
+          size={22}
+          stroke={1.5}
+          className="opacity-50"
+        ></TablerIcons.IconMoodSearch>
       </>
     )
   }

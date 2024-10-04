@@ -28,6 +28,7 @@ import Header from './app/(payload)/globals/Header'
 import Facilities from './app/(payload)/collections/Facilities'
 import Sports from './app/(payload)/collections/Sports'
 import IconList from './app/(payload)/blocks/RTBlocks/IconList'
+import LinkButton from './app/(payload)/blocks/RTBlocks/LinkButton'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -104,7 +105,7 @@ export default buildConfig({
         },
       }),
       BlocksFeature({
-        blocks: [IconList],
+        blocks: [IconList, LinkButton],
       }),
     ],
   }),

@@ -22,17 +22,15 @@ export default function TextImagesBlock({
         isReversed ? 'md:flex-row-reverse' : 'md:flex-row'
       }`}
     >
-      <div className="flex md:w-2/5 overflow-hidden rounded-xl">
-        <ParallaxItem className="aspect-[4/3] w-full" speed={1.15}>
-          <Image
-            src={image.url}
-            fill
-            className="mt-10 w-full object-cover scale-125 "
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            quality={35}
-            alt={image.alt}
-          />
-        </ParallaxItem>
+      <div className="flex relative md:w-2/5 overflow-hidden rounded-xl aspect-[4/3]">
+        <Image
+          src={image.url}
+          fill
+          className="w-full object-cover "
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          quality={35}
+          alt={image.alt}
+        />
       </div>
       <div className="flex items-start justify-center md:w-3/5">
         <div className="flex flex-col justify-start">

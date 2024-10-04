@@ -9,8 +9,12 @@ interface ListTypes {
     alt: string
   }
 }
-export type Type = {
+interface BlockTypes {
   list: ListTypes[]
+}
+
+export type Type = {
+  block: BlockTypes
 }
 const IconList: Block = {
   slug: 'iconlist',
@@ -24,6 +28,9 @@ const IconList: Block = {
       type: 'array',
       maxRows: 3,
       label: ' ',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
           name: 'isblold',

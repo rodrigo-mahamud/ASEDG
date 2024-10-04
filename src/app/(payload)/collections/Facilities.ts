@@ -147,7 +147,7 @@ const Facilities: CollectionConfig = {
           maxRows: 2,
           validate: (value) => {
             if (Array.isArray(value)) {
-              const allDays = value.flatMap((item) => item.days || [])
+              const allDays = value.flatMap((item: any) => item.days || [])
               const uniqueDays = new Set(allDays)
               if (allDays.length !== uniqueDays.size) {
                 return 'No puedes asignar 2 horarios al mismo dia de la semana.'
@@ -224,7 +224,7 @@ const Facilities: CollectionConfig = {
           maxRows: 2,
           validate: (value) => {
             if (Array.isArray(value)) {
-              const allDays = value.flatMap((item) => item.days || [])
+              const allDays = value.flatMap((item: any) => item.days || [])
               const uniqueDays = new Set(allDays)
               if (allDays.length !== uniqueDays.size) {
                 return 'No puedes asignar 2 horarios al mismo dia de la semana.'

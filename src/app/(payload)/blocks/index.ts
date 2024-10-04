@@ -14,6 +14,7 @@ import StickyTextImages from './StickyTextImages/Component'
 
 //RICH TEXT LEXICAL BLOCKS
 import IconList from './RTBlocks/IconList/Component'
+import { LinkButton } from '@/components/lib/linkButton'
 
 export const components = {
   tabsblock: TabsBlock,
@@ -32,4 +33,5 @@ export const components = {
 
   //RICH TEXT LEXICAL BLOCKS
   iconlist: IconList,
+  linkbutton: LinkButton,
 }

@@ -1,5 +1,5 @@
 import { Block } from 'payload'
-import link from '../../fields/link'
+import link from '@/app/(payload)/fields/link'
 export type Type = {
   style: string
   title: string
