@@ -67,8 +67,8 @@ const link: Field = {
               value: 'withicon',
             },
             {
-              label: 'Subrayado',
-              value: 'underline',
+              label: 'Brillo',
+              value: 'shine',
             },
           ],
           defaultValue: 'default', // "Interno" por defecto

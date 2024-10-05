@@ -152,3 +152,43 @@ export interface HeroGlowTypes {
     displaydate?: boolean
   }
 }
+
+//variableButton
+export type LinkType = 'internal' | 'external' | 'mail' | 'location' | 'tel'
+export type ButtonStyle = 'basic' | 'secondary' | 'highlighted' | 'withicon' | 'shine'
+export type ButtonVariant =
+  | 'default'
+  | 'destructive'
+  | 'outline'
+  | 'secondary'
+  | 'ghost'
+  | 'link'
+  | 'expandIcon'
+  | 'ringHover'
+  | 'shine'
+  | 'gooeyRight'
+  | 'gooeyLeft'
+  | 'linkHover1'
+  | 'linkHover2'
+  | 'arrow'
+  | 'arrowReversed'
+
+export interface ButtonData {
+  linkStyle: ButtonStyle
+  linkText: string
+  internal?: { slug: string }
+  external?: { slug: string }
+  mail?: string
+  location?: string
+  tel?: string
+  gIcon?: {
+    icon: string
+  }
+}
+
+export interface ButtonConfig {
+  variant: ButtonVariant
+  className: string
+}
+
+export type IconComponent = React.ComponentType<any>

@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ringHover:
           'bg-primary text-primary-foreground transition-all duration-300 hover:ring-2 hover:ring-primary/90 hover:ring-offset-2',
         shine:
-          'text-white hover:bg-secondaryAlt/90 hover:animate-none animate-shine bg-gradient-to-r from-secondaryAlt via-secondaryAlt/75 to-secondaryAlt bg-[length:200%_100%] rounded-md',
+          'text-white hover:bg-secondaryAlt/90 hover:animate-none animate-shine bg-gradient-to-r from-secondaryAlt via-secondaryAlt/85 to-secondaryAlt bg-[length:200%_100%] rounded-md',
         gooeyRight:
           'text-primary-foreground relative bg-primary z-0 overflow-hidden transition-all duration-300 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-zinc-400 before:transition-transform before:duration-1000  hover:before:translate-x-[0%] hover:before:translate-y-[0%]',
         gooeyLeft:
