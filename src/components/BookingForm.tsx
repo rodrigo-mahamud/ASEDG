@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -33,22 +33,24 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
     defaultValues: formData,
   })
 
+  const validateForm = useCallback(
+    async (data: BookingFormTypes) => {
+      try {
+        await bookingSchema.parseAsync(data)
+        setDataState()
+      } catch (error) {
+        setEmptyState()
+      }
+    },
+    [setDataState, setEmptyState],
+  )
   useEffect(() => {
     const subscription = form.watch((data) => {
       updateFormData(data as BookingFormTypes)
       validateForm(data as BookingFormTypes)
     })
     return () => subscription.unsubscribe()
-  }, [form, updateFormData])
-
-  const validateForm = async (data: BookingFormTypes) => {
-    try {
-      await bookingSchema.parseAsync(data)
-      setDataState()
-    } catch (error) {
-      setEmptyState()
-    }
-  }
+  }, [form, updateFormData, validateForm])
 
   const handleSubmit = (data: BookingFormTypes) => {
     updateFormData(data)

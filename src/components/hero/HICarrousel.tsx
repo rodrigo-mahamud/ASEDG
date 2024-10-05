@@ -46,18 +46,16 @@ export function HICarrousel({ data }: IndexHighlightedNewProps) {
         distance += itemCount
       }
 
-      // Determine if the item is before or after the center
       const isBefore = distance < 0
 
-      // Interpolate the scale based on the scroll progress
       let scale
       if (Math.abs(distance) < 1) {
-        scale = 1 - Math.abs(distance) * 0.1 // Interpolación lineal entre 1 y 0.85
+        scale = 1 - Math.abs(distance) * 0.1
       } else {
-        scale = 0.9 - (Math.abs(distance) - 1) * 0.1 // Interpolación lineal entre 0.85 y 0.70
+        scale = 0.9 - (Math.abs(distance) - 1) * 0.1
       }
 
-      scale = Math.max(0.8, Math.min(1, scale)) // Limitar entre 0.70 y 1
+      scale = Math.max(0.8, Math.min(1, scale))
 
       const isMinScale = scale === 0.8
 
@@ -70,7 +68,7 @@ export function HICarrousel({ data }: IndexHighlightedNewProps) {
         },
       }
     },
-    [scrollProgress],
+    [data.length],
   )
 
   return (

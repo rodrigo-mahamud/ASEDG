@@ -35,7 +35,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Make changes to your profile here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3">
@@ -57,7 +57,7 @@ export function LogsModal({ children }: { children: React.ReactNode }) {
         <DrawerHeader className="text-left useTw">
           <DrawerTitle>Edit profile</DrawerTitle>
           <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when done.
           </DrawerDescription>
         </DrawerHeader>
         <LogsSearch></LogsSearch>
