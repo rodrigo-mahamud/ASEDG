@@ -6,7 +6,13 @@ const colors = require('tailwindcss/colors')
 
 const config = {
   darkMode: ['class', "[data-theme='dark']"],
-  content: ['./src/**/*.{ts,tsx}'],
+  content: [
+    './src/components/**/*.{jsx,tsx}',
+    './src/app/**/*.{jsx,tsx}',
+    './src/emails/**/*.{jsx,tsx}',
+    './src/utils/**/*.{jsx,tsx}',
+    './src/hooks/**/*.{jsx,tsx}',
+  ],
   prefix: '',
   theme: {
     container: {

@@ -2,8 +2,8 @@ import RenderBlocks from '@/components/RenderBlocks'
 import escapeHTML from 'escape-html'
 import Image from 'next/image'
 import React, { Fragment, ReactNode } from 'react'
-import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md'
 import { slugify } from '@/utils/slugify'
+import { IconCheckbox, IconSquare } from '@tabler/icons-react'
 
 export const IS_BOLD = 1
 export const IS_ITALIC = 1 << 1
@@ -152,7 +152,7 @@ export default function serializeLexicalRichText({
           return (
             <li className={`${classNames.li} flex gap-1`} key={i}>
               <div>
-                <MdCheckBox className="w-4 h-4 text-green-500" />
+                <IconCheckbox className="w-4 h-4 text-green-500" />
               </div>
               <div className="line-through">
                 {serializeLexicalRichText({ children: node.children || [] })}
@@ -163,7 +163,7 @@ export default function serializeLexicalRichText({
           return (
             <li className={`${classNames.li} flex gap-1`} key={i}>
               <div>
-                <MdCheckBoxOutlineBlank className="w-4 h-4 text-green-500" />
+                <IconSquare className="w-4 h-4 text-green-500" />
               </div>
               <div className="">{serializeLexicalRichText({ children: node.children || [] })}</div>
             </li>

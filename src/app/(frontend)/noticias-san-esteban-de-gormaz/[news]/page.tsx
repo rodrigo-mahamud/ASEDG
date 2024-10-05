@@ -1,5 +1,4 @@
 import React from 'react'
-import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import NewsHeader from '@/components/news/news-page/NewsHeader'
