@@ -62,7 +62,9 @@ export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
 
               <div className="flex flex-col ml-3">
                 <span className="text-sm">Foulcher Nathanil</span>
-                <span className="text-xs">May 20, 2021 · 2 min read</span>
+                <span className="text-xs">
+                  Creado el: May 20, 2021 · Actualizado el : 15 de mayo del 24
+                </span>
               </div>
             </div>
             <div className="flex">
