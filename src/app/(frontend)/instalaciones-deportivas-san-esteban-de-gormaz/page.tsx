@@ -5,7 +5,6 @@ import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import SEO from '@/components/SEO'
 
 export async function generateStaticParams() {
   return [{}]

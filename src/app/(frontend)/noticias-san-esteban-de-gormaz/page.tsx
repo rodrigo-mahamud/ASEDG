@@ -3,9 +3,7 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
-
 import { notFound } from 'next/navigation'
-import { Setting } from '@/payload-types'
 
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })

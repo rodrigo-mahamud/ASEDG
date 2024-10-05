@@ -26,42 +26,71 @@ interface PageProps {
   params: { slug: string }
 }
 
-export async function generateStaticParams() {
+async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
+  const data = (await payload.find({
     collection: 'pages',
   })) as any
+  return data
+}
 
-  return pageData.docs.map((page: any) => ({
+async function getSettings() {
+  const payload = await getPayloadHMR({ config: configPromise })
+  const settings = (await payload.findGlobal({
+    slug: 'settings',
+  })) as any
+
+  return settings
+}
+
+export async function generateStaticParams() {
+  const data = await getPageData()
+  return data.docs.map((page: any) => ({
     slug: page.slug,
   }))
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
-    collection: 'pages',
-  })) as any
-
-  const page = pageData.docs.find((page: any) => page.slug === params.slug)
-
-  if (!page) {
-    return { title: 'Page not found' }
-  }
+export async function generateMetadata({ params }: PageProps) {
+  const data = await getPageData()
+  const seoData = data.meta || ({} as any)
+  const settings = await getSettings()
 
   return {
-    title: page.header.title,
-    description: page.header.description || '',
+    title: seoData.title || settings.defaultTitle,
+    description: seoData.description || settings.defaultDescription,
+    icons: {
+      icon: [
+        {
+          url: settings.faviconLight.url || ' ',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: settings.faviconDark.url || ' ',
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+    },
+    openGraph: {
+      locale: 'es_ES',
+      title: seoData.title || settings.defaultTitle || ' ',
+      siteName: settings.defaultTitle,
+      url: `https://${process.env.ROOT_DOMAIN}/${params.slug}`,
+      description: seoData.description || settings.defaultDescription,
+      images: seoData?.image?.url || settings.defaultOgImage,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      domain: process.env.ROOT_DOMAIN,
+      title: seoData.title || settings.defaultTitle,
+      description: seoData.description || settings.defaultDescription,
+      images: seoData?.image?.url || settings.defaultOgImage,
+    },
   }
 }
-
 export default async function Page({ params }: PageProps) {
-  const payload = await getPayloadHMR({ config: configPromise })
-  const pageData = (await payload.find({
-    collection: 'pages',
-  })) as any
-
-  const page = pageData.docs.find((page: any) => page.slug === params.slug)
+  const data = await getPageData()
+  const page = data.docs.find((page: any) => page.slug === params.slug)
 
   if (!page) {
     return notFound()
