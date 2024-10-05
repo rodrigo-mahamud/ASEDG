@@ -64,21 +64,27 @@ export default function NewsCard({ data, className }: NewsCardProps) {
     if (typeof image === 'string') return ''
     return (image as Media)?.alt || data.title
   }
-
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString('es-ES', options)
+  }
   return (
     <Card
-      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic ${
+      className={`rounded-xl overflow-hidden hover:-translate-y-2 transform-gpu transition-generic group ${
         hasVideo
-          ? 'aspect-[9/16] lg:aspect-[4/3] lg:col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl'
+          ? 'aspect-[9/16] lg:aspect-auto lg:col-span-2 z-30 group hover:cursor-pointer hover:rounded-2xl'
           : 'col-span-1'
       } ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex gap-2 m-8 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic">
+      <div
+        className={`flex gap-2 z-20 absolute top-0 opacity-0 group-hover:opacity-100 transition-generic 
+           ${hasVideo ? ' m-8 text-sm ' : 'm-5 text-xs'}`}
+      >
         {data.categories.map((cat, index) => (
-          <div key={index} className="bg-white/15 backdrop-blur-md rounded-full">
-            <p className="text-white px-4 my-1 text-sm leading-normal">
+          <div key={index} className="bg-white/15 backdrop-blur-md rounded-full z-20">
+            <p className="text-white px-4 my-1 leading-normal">
               {typeof cat === 'string' ? cat : cat.title}
             </p>
           </div>
@@ -86,7 +92,7 @@ export default function NewsCard({ data, className }: NewsCardProps) {
       </div>
       <div
         className={`relative w-full ${
-          hasVideo ? 'h-full rounded-xl group-hover:rounded-2xl overflow-hidden' : 'h-72'
+          hasVideo ? 'h-full rounded-xl group-hover:rounded-2xl overflow-hidden' : 'h-56'
         }`}
       >
         <Link href={`noticias-san-esteban-de-gormaz/${data.slug || ''}`}>
@@ -143,9 +149,12 @@ export default function NewsCard({ data, className }: NewsCardProps) {
         </CardContent>
       ) : (
         <CardContent className="p-5">
-          <CardTitle className="mb-1 line-clamp-1 leading-normal text-xl">{data.title}</CardTitle>
-          <CardDescription className="line-clamp-3">{data.summary}</CardDescription>
-          <div className="flex items-center gap-3 mt-5 h-10">
+          <time className=" text-xs text-muted" dateTime={data.publishedDate}>
+            {formatDate(data.publishedDate)}
+          </time>
+          <CardTitle className="line-clamp-1 text-xl">{data.title}</CardTitle>
+          <CardDescription className="line-clamp-3 mt-1 mb-3">{data.summary}</CardDescription>
+          <div className="flex items-center gap-3  h-10">
             <Button
               asChild
               variant="expandIcon"
