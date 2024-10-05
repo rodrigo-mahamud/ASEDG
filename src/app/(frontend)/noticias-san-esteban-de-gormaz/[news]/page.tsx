@@ -25,14 +25,15 @@ async function getSettings() {
   })) as any
   return settings
 }
+
 export async function generateMetadata() {
   const data = await getPageData()
   const seoData = data.meta || ({} as any)
   const settings = await getSettings()
 
   return {
-    title: seoData.title,
-    description: seoData.description,
+    title: seoData.title || settings.defaultTitle,
+    description: seoData.description || settings.defaultDescription,
     icons: {
       icon: [
         {
