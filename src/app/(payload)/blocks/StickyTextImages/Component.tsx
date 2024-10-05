@@ -42,9 +42,8 @@ export default function StickyTextImages({ sections }: Type) {
     <Container className=" px-4 md:px-6 ">
       <div className="lg:sticky flex flex-col lg:top-0 h-fit  lg:space-y-0">
         {sections.map((section, index) => (
-          <>
+          <div key={index}>
             <div
-              key={index}
               className={`lg:sticky top-36 rounded-xl overflow-hidden h-fit cardShadow z-${index * 10}`}
             >
               <div className="flex flex-col lg:h-full lg:flex-row ">
@@ -88,7 +87,7 @@ export default function StickyTextImages({ sections }: Type) {
               </div>
             </div>
             <div className="h-20"></div>
-          </>
+          </div>
         ))}
       </div>
     </Container>
