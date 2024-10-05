@@ -1,4 +1,5 @@
 import React from 'react'
+import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import NewsHeader from '@/components/news/news-page/NewsHeader'
@@ -84,7 +85,7 @@ export default async function singleNewPage({ params }: NewsPageProps) {
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            <RichTextParser content={page.richtxtcontent}></RichTextParser>
+            {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> aqui el problema */}
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">
