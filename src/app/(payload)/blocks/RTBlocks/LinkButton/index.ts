@@ -19,6 +19,7 @@ export type Type = {
 }
 const LinkButton: Block = {
   slug: 'linkbutton',
+
   labels: {
     singular: 'Boton de enlace',
     plural: 'Botones de enlace',

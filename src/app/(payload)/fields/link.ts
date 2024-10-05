@@ -20,9 +20,6 @@ const link: Field = {
           name: 'linkType',
           label: 'Tipo de enlace',
           type: 'select',
-          admin: {
-            width: '50%',
-          },
           options: [
             {
               label: 'Enlace Interno',
@@ -52,17 +49,14 @@ const link: Field = {
           name: 'linkStyle',
           label: 'Estilo del enlace',
           type: 'select',
-          admin: {
-            width: '50%',
-          },
           options: [
             {
               label: 'Básico',
-              value: 'default',
+              value: 'basic',
             },
             {
               label: 'Secundario',
-              value: 'ghost',
+              value: 'secondary',
             },
             {
               label: 'Destacado',
@@ -70,11 +64,11 @@ const link: Field = {
             },
             {
               label: 'Con Icono',
-              value: 'expandIcon',
+              value: 'withicon',
             },
             {
               label: 'Subrayado',
-              value: 'linkHover1',
+              value: 'underline',
             },
           ],
           defaultValue: 'default', // "Interno" por defecto
@@ -87,15 +81,14 @@ const link: Field = {
       type: 'row',
       fields: [
         {
-          name: 'icon',
-          label: 'Icono',
-          type: 'text',
+          type: 'group',
+          name: 'gIcon',
+          label: '',
           admin: {
-            condition: (data, siblingData) => siblingData?.linkStyle.includes('expandIcon'),
-            components: {
-              Field: '@/app/(payload)/fields/Icons/Component',
-            },
+            className: 'iconFixUI',
+            condition: (data, siblingData) => siblingData.linkStyle === 'withicon',
           },
+          fields: [Icon],
         },
         {
           name: 'linkText',
@@ -107,34 +100,34 @@ const link: Field = {
               ['internal', 'external'].includes(siblingData?.linkType),
           },
         },
+        {
+          name: 'mail',
+          type: 'text',
+          label: 'Email',
+          required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkType.includes('mail'),
+          },
+        },
+        {
+          name: 'location',
+          type: 'text',
+          label: 'Ubicación',
+          required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkType.includes('location'),
+          },
+        },
+        {
+          name: 'tel',
+          type: 'text',
+          label: 'Teléfono',
+          required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData?.linkType.includes('tel'),
+          },
+        },
       ],
-    },
-    {
-      name: 'mail',
-      type: 'text',
-      label: 'Email',
-      required: true,
-      admin: {
-        condition: (data, siblingData) => siblingData?.linkType.includes('mail'),
-      },
-    },
-    {
-      name: 'location',
-      type: 'text',
-      label: 'Ubicación',
-      required: true,
-      admin: {
-        condition: (data, siblingData) => siblingData?.linkType.includes('location'),
-      },
-    },
-    {
-      name: 'tel',
-      type: 'text',
-      label: 'Teléfono',
-      required: true,
-      admin: {
-        condition: (data, siblingData) => siblingData?.linkType.includes('tel'),
-      },
     },
     {
       name: 'internal',

@@ -182,6 +182,16 @@ html[data-theme='dark'] .LexicalEditorTheme__h3 {
 .richTextEmbed > .rich-text-lexical__wrap > .fixed-toolbar > .fixed-toolbar__group-indent {
   display: none;
 }
+.iconFixUI {
+  flex: unset !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-end !important;
+}
+.iconFixUI > .group-field__wrap > .group-field__header {
+  display: none;
+}
 //Massonry
 // .masonry-image-group .render-fields,
 // .masonry-image-group .render-fields--margins-small {

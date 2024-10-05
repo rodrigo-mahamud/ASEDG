@@ -1,6 +1,7 @@
 .icon-field {
   position: relative;
   display: flex !important;
+  flex-direction: column;
   justify-content: flex-end !important;
 }
 

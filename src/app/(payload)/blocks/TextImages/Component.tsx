@@ -1,21 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-import ParallaxItem from '@/components/ParallaxItem'
-import * as Icons from '@tabler/icons-react' // Importa todos los iconos
-import { Button } from '@/components/lib/button'
+
 import { Type } from '.'
 import RichTextParser from '@/utils/richTextParser'
 
-export default function TextImagesBlock({
-  isReversed,
-  title,
-  text,
-  image,
-  list,
-  linkText,
-  link,
-}: Type) {
+export default function TextImagesBlock({ isReversed, title, text, image, list }: Type) {
   return (
     <section
       className={`flex container py-32 flex-col gap-10  ${
@@ -36,19 +25,6 @@ export default function TextImagesBlock({
         <div className="flex flex-col justify-start">
           <h2 className="mb-2 text-3xl font-semibold md:mb-5 md:text-3xl">{title}</h2>
           <RichTextParser content={text}></RichTextParser>
-
-          {link && (
-            <Button
-              asChild
-              variant="expandIcon"
-              size="lg"
-              Icon={Icons.IconArrowRight}
-              iconPlacement="right"
-              className="text-lg bg-primary hover:bg-primary/90 rounded-full py-0 px-8 w-fit"
-            >
-              <Link href={link.slug}>{linkText}</Link>
-            </Button>
-          )}
         </div>
       </div>
     </section>

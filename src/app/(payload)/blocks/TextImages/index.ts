@@ -54,24 +54,6 @@ const TextImagesBlock: Block = {
     },
 
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'linkText',
-          type: 'text',
-          label: 'Texto del Enlace',
-          required: false,
-        },
-        {
-          name: 'link',
-          type: 'relationship',
-          label: 'Enlace',
-          relationTo: 'pages',
-          required: false,
-        },
-      ],
-    },
-    {
       name: 'image',
       type: 'upload',
       label: 'Imagen',
