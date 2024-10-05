@@ -26,8 +26,8 @@ export type Type = {
 const TextImagesBlock: Block = {
   slug: 'textimagesblock',
   labels: {
-    singular: 'Bloque de Texto e Imágenes',
-    plural: 'Bloques de Texto e Imágenes',
+    singular: 'Texto e Imágen',
+    plural: 'Texto e Imágen',
   },
   fields: [
     {

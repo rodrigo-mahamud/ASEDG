@@ -3,10 +3,12 @@ import dynamic from 'next/dynamic'
 
 interface DynamicIconProps {
   iconName: string
+  className?: string
+  stroke?: number
 }
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ iconName }) => {
-  const IconComponent = dynamic(
+const DynamicIcon: React.FC<DynamicIconProps> = ({ iconName, className, stroke }) => {
+  const IconComponent = dynamic<any>(
     async () => {
       const mod = (await import('@tabler/icons-react')) as any
       return mod[iconName]
@@ -18,7 +20,7 @@ const DynamicIcon: React.FC<DynamicIconProps> = ({ iconName }) => {
 
   return (
     <Suspense fallback={<span>Loading...</span>}>
-      <IconComponent />
+      <IconComponent className={className} stroke={stroke} />
     </Suspense>
   )
 }

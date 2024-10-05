@@ -1,24 +1,23 @@
 import React from 'react'
-import * as Icons from '@tabler/icons-react'
 import { Type } from '.'
+import DynamicIcon from '@/components/DynamicIcon'
 
 export default function IconList({ block }: Type) {
   return (
     <div className="flex items-start md:w-3/5">
-      <ul className="pt-5">
+      <ul className="pt-4">
         {block.list.map((item, index) => {
-          const IconComponent = (Icons as any)[item.icon]
           return (
-            <li key={index} className={` ${item.isblold ? 'ml-0' : 'ml-5'}mb-2 flex items-center`}>
-              {IconComponent && (
-                <IconComponent className="stroke-1.5 mr-2 h-7 w-7 md:mr-1.5 md:h-5 md:w-5" />
+            <li key={index} className="my-2 flex items-center">
+              {item.icon && (
+                <DynamicIcon
+                  stroke={1.5}
+                  className="mr-2 h-7 w-7 md:mr-1.5 md:h-5 md:w-5"
+                  iconName={item.icon || ''}
+                />
               )}
               <div className="flex flex-col">
-                <h3
-                  className={`line-clamp-1 text-base md:text-lg ${
-                    item.isblold ? 'font-semibold' : ''
-                  }`}
-                >
+                <h3 className={`line-clamp-1 text-base ${item.isblold ? 'font-semibold' : ''}`}>
                   {item.text}
                 </h3>
               </div>
