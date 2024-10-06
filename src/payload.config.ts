@@ -43,8 +43,16 @@ export default buildConfig({
   },
   admin: {
     livePreview: {
-      url: ({ data }) => {
-        return `http://${process.env.ROOT_DOMAIN}/preview/${data.id}`
+      url: ({ collectionConfig, data }) => {
+        const baseURL = `http://${process.env.ROOT_DOMAIN}`
+        switch (collectionConfig?.slug) {
+          case 'pages':
+            return `${baseURL}/preview/pages/${data.id}`
+          case 'news':
+            return `${baseURL}/preview/news/${data.id}`
+          default:
+            return `${baseURL}/preview/pages/${data.id}`
+        }
       },
       breakpoints: [
         {
@@ -60,7 +68,7 @@ export default buildConfig({
           height: 460,
         },
       ],
-      collections: ['pages'],
+      collections: ['pages', 'news'],
     },
   },
   editor: lexicalEditor({

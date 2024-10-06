@@ -4,12 +4,25 @@ import subslug from '../fields/subslug'
 
 const News: CollectionConfig = {
   slug: 'news',
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 375,
+      },
+    },
+  },
   labels: {
     singular: 'Noticia',
     plural: 'Noticias',
   },
   admin: {
     useAsTitle: 'title',
+    preview: (doc) => {
+      if (doc?.id) {
+        return `http://${process.env.ROOT_DOMAIN}/preview/news/${doc.id}`
+      }
+      return null
+    },
   },
   fields: [
     {
