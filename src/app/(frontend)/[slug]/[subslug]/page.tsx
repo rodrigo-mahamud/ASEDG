@@ -111,11 +111,11 @@ export default async function Page({ params }: PageProps) {
   const shouldShowAside = hasAsides(page)
   return (
     <>
-      {/* <NewsHeader data={page} />
+      <NewsHeader data={page} />
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-          <RichTextParser content={page.richtxtcontent}></RichTextParser> 
+            <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">
@@ -127,7 +127,7 @@ export default async function Page({ params }: PageProps) {
         </Container>
         <NewsRelated newsRelated={page.newsRelated} />
       </main>
-      <Toaster /> */}
+      <Toaster />
     </>
   )
 }

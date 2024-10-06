@@ -8,66 +8,59 @@ import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
 import { notFound } from 'next/navigation'
 
-interface Page {
-  id: number
-  header: {
-    style: string
-    titleIndex: string | null
-    pretitleIndex: string | null
-    description: string | null
-    newsSelection: number[]
-    title: string
-    pretitle: string | null
-  }
-  slug: string
-}
-
 interface PageProps {
   params: { slug: string }
 }
 
-async function getPageData() {
+async function getPageBySlug(slug: string) {
   const payload = await getPayloadHMR({ config: configPromise })
-  const data = (await payload.find({
+  const page = await payload.find({
     collection: 'pages',
-  })) as any
-  return data
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  })
+  return page.docs[0]
+}
+
+async function getAllPageSlugs() {
+  const payload = await getPayloadHMR({ config: configPromise })
+  const pages = await payload.find({
+    collection: 'pages',
+    limit: 1000,
+    where: {
+      slug: {
+        not_equals: null,
+      },
+    },
+  })
+  return pages.docs.map((page: any) => page.slug)
 }
 
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const settings = (await payload.findGlobal({
-    slug: 'settings',
-  })) as any
-
-  return settings
+  return await payload.findGlobal({ slug: 'settings' })
 }
 
 export async function generateStaticParams() {
-  const data = await getPageData()
-  return data.docs.map((page: any) => ({
-    slug: page.slug,
-  }))
+  const slugs = await getAllPageSlugs()
+  return slugs.map((slug: string) => ({ slug }))
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const data = await getPageData()
-  const seoData = data.meta || ({} as any)
-  const settings = await getSettings()
+  const page = await getPageBySlug(params.slug)
+  const settings = (await getSettings()) as any
+  const seoData = page?.meta || ({} as any)
 
   return {
     title: seoData.title || settings.defaultTitle,
     description: seoData.description || settings.defaultDescription,
     icons: {
       icon: [
-        {
-          url: settings.faviconLight.url || ' ',
-          media: '(prefers-color-scheme: light)',
-        },
-        {
-          url: settings.faviconDark.url || ' ',
-          media: '(prefers-color-scheme: dark)',
-        },
+        { url: settings.faviconLight?.url || ' ', media: '(prefers-color-scheme: light)' },
+        { url: settings.faviconDark?.url || ' ', media: '(prefers-color-scheme: dark)' },
       ],
     },
     openGraph: {
@@ -88,9 +81,9 @@ export async function generateMetadata({ params }: PageProps) {
     },
   }
 }
+
 export default async function Page({ params }: PageProps) {
-  const data = await getPageData()
-  const page = data.docs.find((page: any) => page.slug === params.slug)
+  const page = await getPageBySlug(params.slug)
 
   if (!page) {
     return notFound()
@@ -99,10 +92,10 @@ export default async function Page({ params }: PageProps) {
   return (
     <main>
       <Hero data={page} />
-      <RenderBlocks layout={page.body.layout} />
+      {page.body && <RenderBlocks layout={page.body.layout} />}
       <Toaster />
     </main>
   )
 }
 
-export const revalidate = 10
+export const revalidate = 60

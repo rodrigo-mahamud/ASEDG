@@ -1,4 +1,4 @@
-import serializeLexicalRichText from '@/utils/serializeLexicalRichText'
+import SerializeLexicalRichText from '@/utils/serializeLexicalRichText'
 import React from 'react'
 
 export default function RichTextParser({ className, content, customClassNames }: any) {
@@ -6,7 +6,7 @@ export default function RichTextParser({ className, content, customClassNames }:
 
   return (
     <div className={`${[className].filter(Boolean).join(' ')} richText`}>
-      {serializeLexicalRichText({ children: content.root.children, customClassNames })}
+      {SerializeLexicalRichText({ children: content.root.children, customClassNames })}
     </div>
   )
 }

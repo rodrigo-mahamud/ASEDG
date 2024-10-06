@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Container from '@/components/Container'
 import Title from '@/components/lib/title'
 import NewsFilter from './NewsFilter'
@@ -30,8 +30,10 @@ export default function News({ allNews, subtitle, title, filter }: NewsProps) {
   return (
     <Container>
       <Title title={title} subtitle={subtitle} />
-      {filter && <NewsFilter categories={uniqueCategories} years={years} className="mb-8" />}
-      <NewsGrid allNews={allNews} />
+      <Suspense fallback={<div>Loading...</div>}>
+        {filter && <NewsFilter categories={uniqueCategories} years={years} className="mb-8" />}
+        <NewsGrid allNews={allNews} />
+      </Suspense>
     </Container>
   )
 }
