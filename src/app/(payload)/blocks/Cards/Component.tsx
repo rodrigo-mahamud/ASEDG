@@ -8,7 +8,6 @@ import Title from '@/components/lib/title'
 import { Type } from '.'
 import { Badge } from '@/components/lib/badge'
 import CardButtons from './CardButtons' // Asegúrate de ajustar la ruta según tu estructura de carpetas
-import FilteredCards from '@/components/FilteredCards'
 
 export default function CardsBlock({ cards, title, description, filter }: Type) {
   const generateGoogleMapsLink = (location: string) => {

@@ -153,7 +153,7 @@ export interface HeroGlowTypes {
   }
 }
 
-//variableButton
+//Variable Button
 export type LinkType = 'internal' | 'external' | 'mail' | 'location' | 'tel'
 export type ButtonStyle = 'basic' | 'secondary' | 'highlighted' | 'withicon' | 'shine'
 export type ButtonVariant =
@@ -174,6 +174,7 @@ export type ButtonVariant =
   | 'arrowReversed'
 
 export interface ButtonData {
+  linkType: LinkType
   linkStyle: ButtonStyle
   linkText: string
   internal?: { slug: string }

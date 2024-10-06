@@ -77,7 +77,7 @@ const CalendarBlock: React.FC<any> = ({ events }) => {
         views={['month']}
         eventPropGetter={eventStyleGetter}
         components={{
-          toolbar: CustomToolbar,
+          toolbar: CustomToolbar as React.ComponentType<ToolbarProps<CustomEvent, object>>,
           event: CustomEventComponent,
         }}
         onSelectEvent={handleSelectEvent}

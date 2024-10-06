@@ -1,28 +1,8 @@
+import { News } from '@/payload-types'
 import { Block } from 'payload'
 
-interface CatTypes {
-  title: string
-  description: string
-}
-interface NewsItem {
-  title: string
-  summary: string
-  img: string
-  categories: CatTypes[]
-  buttonVariant?: string
-  className?: string
-  badgeClass?: string
-  shareClass?: string
-  shareUrl: string
-  slug: string
-  image: {
-    url: string
-    alt: string
-  }
-}
-
 export type Type = {
-  newsFour: NewsItem[]
+  newsFour: News[]
 }
 const NewsPinged: Block = {
   slug: 'newsfeatured',

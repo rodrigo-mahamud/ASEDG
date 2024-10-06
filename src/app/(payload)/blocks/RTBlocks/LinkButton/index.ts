@@ -1,22 +1,17 @@
 import { Block } from 'payload'
 
 import link from '@/app/(payload)/fields/link'
-interface ListTypes {
-  text: string
-  isblold: boolean
-  icon: string
-  listImage: {
-    url: string
-    alt: string
-  }
-}
-interface BlockTypes {
-  list: ListTypes[]
+import { Page } from '@/payload-types'
+import { ButtonData } from '@/types/types'
+
+export type LinkButtonType = {
+  link: ButtonData[]
 }
 
 export type Type = {
-  block: BlockTypes
+  block: LinkButtonType
 }
+
 const LinkButton: Block = {
   slug: 'linkbutton',
 
