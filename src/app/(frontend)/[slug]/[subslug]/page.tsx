@@ -1,32 +1,62 @@
+// app/[slug]/page.tsx
 import React from 'react'
 import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
-import NewsHeader from '@/components/news/news-page/NewsHeader'
-import RichTextParser from '@/utils/richTextParser'
-import Container from '@/components/Container'
-import NewsRelated from '@/components/news/news-page/NewsRelated'
-import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
+import Hero from '@/components/hero/Hero'
+import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
-import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/types'
 import { notFound } from 'next/navigation'
+import { NewsItemFull } from '@/types/types'
+import NewsHeader from '@/components/news/news-page/NewsHeader'
+import Container from '@/components/Container'
+import RichTextParser from '@/utils/richTextParser'
+import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
+import NewsRelated from '@/components/news/news-page/NewsRelated'
+
+interface Page {
+  id: number
+  header: {
+    style: string
+    titleIndex: string | null
+    pretitleIndex: string | null
+    description: string | null
+    newsSelection: number[]
+    title: string
+    pretitle: string | null
+  }
+  slug: string
+}
+
+interface PageProps {
+  params: { subslug: string }
+}
 
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const singleNewsPage = (await payload.find({
+  const data = (await payload.find({
     collection: 'news',
-  })) as NewsPageData
-  return singleNewsPage
+  })) as any
+  return data
 }
+
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
   const settings = (await payload.findGlobal({
     slug: 'settings',
   })) as any
+
   return settings
 }
 
-export async function generateMetadata() {
+export async function generateStaticParams() {
+  const data = await getPageData()
+  return data.docs.map((page: any) => ({
+    slug: page.slug,
+  }))
+}
+
+export async function generateMetadata({ params }: PageProps) {
   const data = await getPageData()
   const seoData = data.meta || ({} as any)
   const settings = await getSettings()
@@ -50,7 +80,7 @@ export async function generateMetadata() {
       locale: 'es_ES',
       title: seoData.title || settings.defaultTitle || ' ',
       siteName: settings.defaultTitle,
-      url: `https://${process.env.ROOT_DOMAIN}/noticias-san-esteban-de-gormaz`,
+      url: `https://${process.env.ROOT_DOMAIN}/${params.subslug}`,
       description: seoData.description || settings.defaultDescription,
       images: seoData?.image?.url || settings.defaultOgImage,
       type: 'website',
@@ -64,10 +94,10 @@ export async function generateMetadata() {
     },
   }
 }
-export default async function singleNewPage({ params }: NewsPageProps) {
+export default async function Page({ params }: PageProps) {
   const data = await getPageData()
 
-  const page = data.docs.find((page: NewsItemFull) => page.slug === params.news)
+  const page = data.docs.find((page: NewsItemFull) => page.subslug === params.subslug)
   if (!page) {
     return notFound()
   }
@@ -81,11 +111,11 @@ export default async function singleNewPage({ params }: NewsPageProps) {
   const shouldShowAside = hasAsides(page)
   return (
     <>
-      <NewsHeader data={page} />
+      {/* <NewsHeader data={page} />
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> aqui el problema */}
+          <RichTextParser content={page.richtxtcontent}></RichTextParser> 
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">
@@ -97,9 +127,8 @@ export default async function singleNewPage({ params }: NewsPageProps) {
         </Container>
         <NewsRelated newsRelated={page.newsRelated} />
       </main>
-      <Toaster />
+      <Toaster /> */}
     </>
   )
 }
-
-export const revalidate = 60 // Revalidate every 60 seconds
+export const revalidate = 10

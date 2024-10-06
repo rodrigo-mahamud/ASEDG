@@ -1,7 +1,6 @@
 import { CollectionConfig } from 'payload'
-import slug from '../fields/slug'
 import updateNews from '@/utils/updateNews'
-import { group } from 'console'
+import subslug from '../fields/subslug'
 
 const News: CollectionConfig = {
   slug: 'news',
@@ -183,7 +182,7 @@ const News: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    slug,
+    subslug,
   ],
   hooks: {
     afterChange: [updateNews],

@@ -1,8 +1,8 @@
 import { Field } from 'payload'
 import formatSlug from '@/utils/formatSlug'
 
-const slug: Field = {
-  name: 'slug',
+const subslug: Field = {
+  name: 'subslug',
   label: 'Slug (Url de esta página)',
   required: true,
   type: 'text',
@@ -14,4 +14,4 @@ const slug: Field = {
   },
 }
 
-export default slug
+export default subslug
