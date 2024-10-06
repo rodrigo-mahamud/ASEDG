@@ -4,16 +4,16 @@ import subslug from '../fields/subslug'
 
 const News: CollectionConfig = {
   slug: 'news',
+  labels: {
+    singular: 'Noticia',
+    plural: 'Noticias',
+  },
   versions: {
     drafts: {
       autosave: {
         interval: 375,
       },
     },
-  },
-  labels: {
-    singular: 'Noticia',
-    plural: 'Noticias',
   },
   admin: {
     useAsTitle: 'title',
@@ -139,7 +139,6 @@ const News: CollectionConfig = {
       relationTo: 'news',
       required: true,
       hasMany: true,
-      minRows: 4,
       maxRows: 4,
     },
     {

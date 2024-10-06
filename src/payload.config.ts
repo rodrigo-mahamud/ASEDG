@@ -142,7 +142,16 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'news'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => (doc.header.title ? doc.header.title : doc.title),
+      generateTitle: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
+          case 'pages':
+            return doc.header.title
+          case 'news':
+            return doc.title
+          default:
+            return doc.header.title
+        }
+      },
       generateDescription: ({ doc, collectionSlug }) => {
         switch (collectionSlug) {
           case 'pages':
