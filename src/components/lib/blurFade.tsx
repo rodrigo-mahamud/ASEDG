@@ -31,7 +31,7 @@ export default function BlurFade({
   inViewMargin = '-50px',
   blur = '6px',
 }: BlurFadeProps) {
-  const ref = useRef(null)
+  const ref = useRef<any>(null)
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin })
   const isInView = !inView || inViewResult
   const defaultVariants: Variants = {
@@ -42,17 +42,19 @@ export default function BlurFade({
   return (
     <AnimatePresence>
       <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        exit="hidden"
-        variants={combinedVariants}
-        transition={{
-          delay: 0.04 + delay,
-          duration,
-          ease: 'easeOut',
-        }}
-        className={className}
+        {...({
+          ref,
+          initial: 'hidden',
+          animate: isInView ? 'visible' : 'hidden',
+          exit: 'hidden',
+          variants: combinedVariants,
+          transition: {
+            delay: 0.04 + delay,
+            duration,
+            ease: 'easeOut',
+          },
+          className,
+        } as const)}
       >
         {children}
       </motion.div>
