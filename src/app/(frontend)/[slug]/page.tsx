@@ -22,6 +22,8 @@ async function getPageBySlug(slug: string) {
       },
     },
   })
+  console.log(page)
+
   return page.docs[0]
 }
 

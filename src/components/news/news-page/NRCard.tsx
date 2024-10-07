@@ -28,7 +28,7 @@ export default function NRCard({ data, className }: NewsCardProps) {
           <p className="text-white px-4 my-1 text-xs leading-normal">{data.categories[0].title}</p>
         )}
       </div>
-      <Link href={`/noticias-san-esteban-de-gormaz/${data.subslug}`}>
+      <Link href={`/noticias-san-esteban-de-gormaz/${data.slug}`}>
         <div className="flex relative w-full h-full items-end">
           <div className="absolute w-full h-full blurMaskAlt z-10"></div>
           <div className="absolute z-10 p-6 flex flex-col items-start w-full translate-y-4 group-hover:translate-y-0 transition-generic">

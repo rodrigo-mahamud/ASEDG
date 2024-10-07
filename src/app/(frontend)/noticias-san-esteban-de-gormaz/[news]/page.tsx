@@ -1,69 +1,38 @@
-// app/[slug]/page.tsx
 import React from 'react'
 import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
-import Hero from '@/components/hero/Hero'
-import RenderBlocks from '@/components/RenderBlocks'
-import { Toaster } from 'sonner'
-import { notFound } from 'next/navigation'
-import { NewsItemFull } from '@/types/types'
 import NewsHeader from '@/components/news/news-page/NewsHeader'
-import Container from '@/components/Container'
 import RichTextParser from '@/utils/richTextParser'
-import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
+import Container from '@/components/Container'
 import NewsRelated from '@/components/news/news-page/NewsRelated'
-
-interface Page {
-  id: number
-  header: {
-    style: string
-    titleIndex: string | null
-    pretitleIndex: string | null
-    description: string | null
-    newsSelection: number[]
-    title: string
-    pretitle: string | null
-  }
-  slug: string
-}
-
-interface PageProps {
-  params: { subslug: string }
-}
+import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
+import { Toaster } from 'sonner'
+import { NewsPageProps, NewsPageData, NewsItemFull } from '@/types/types'
+import { notFound } from 'next/navigation'
 
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const data = (await payload.find({
+  const singleNewsPage = (await payload.find({
     collection: 'news',
-  })) as any
-  return data
+  })) as NewsPageData
+  return singleNewsPage
 }
-
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
   const settings = (await payload.findGlobal({
     slug: 'settings',
   })) as any
-
   return settings
 }
-
-export async function generateStaticParams() {
-  const data = await getPageData()
-  return data.docs.map((page: any) => ({
-    slug: page.slug,
-  }))
-}
-
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata() {
   const data = await getPageData()
   const seoData = data.meta || ({} as any)
   const settings = await getSettings()
 
   return {
-    title: seoData.title || settings.defaultTitle,
-    description: seoData.description || settings.defaultDescription,
+    title: seoData.title,
+    description: seoData.description,
     icons: {
       icon: [
         {
@@ -80,7 +49,7 @@ export async function generateMetadata({ params }: PageProps) {
       locale: 'es_ES',
       title: seoData.title || settings.defaultTitle || ' ',
       siteName: settings.defaultTitle,
-      url: `https://${process.env.ROOT_DOMAIN}/${params.subslug}`,
+      url: `https://${process.env.ROOT_DOMAIN}/noticias-san-esteban-de-gormaz`,
       description: seoData.description || settings.defaultDescription,
       images: seoData?.image?.url || settings.defaultOgImage,
       type: 'website',
@@ -94,10 +63,10 @@ export async function generateMetadata({ params }: PageProps) {
     },
   }
 }
-export default async function Page({ params }: PageProps) {
+export default async function singleNewPage({ params }: NewsPageProps) {
   const data = await getPageData()
 
-  const page = data.docs.find((page: NewsItemFull) => page.subslug === params.subslug)
+  const page = data.docs.find((page: NewsItemFull) => page.slug === params.news)
   if (!page) {
     return notFound()
   }
@@ -115,7 +84,7 @@ export default async function Page({ params }: PageProps) {
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            <RichTextParser content={page.richtxtcontent}></RichTextParser>
+            {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> */}
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">
@@ -131,4 +100,5 @@ export default async function Page({ params }: PageProps) {
     </>
   )
 }
-export const revalidate = 10
+
+export const revalidate = 60 // Revalidate every 60 seconds

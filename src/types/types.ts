@@ -38,7 +38,7 @@ export interface LexicalContent {
 // Tipo base para noticias
 export interface NewsItemBase {
   id: string
-  subslug: string
+  slug: string
   title: string
   summary: string
   videoUrl: string
