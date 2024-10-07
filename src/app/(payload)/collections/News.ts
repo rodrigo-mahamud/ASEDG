@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload'
 import updateNews from '@/utils/updateNews'
 
 import slug from '../fields/slug'
+import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const News: CollectionConfig = {
   slug: 'news',
@@ -147,6 +148,7 @@ const News: CollectionConfig = {
       label: 'Contenido de la noticia:',
       type: 'richText',
     },
+    lexicalHTML('richtxtcontent', { name: 'richtxtcontent_html' }),
     {
       name: 'attachments',
       type: 'array',

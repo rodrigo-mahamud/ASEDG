@@ -75,6 +75,7 @@ export interface MasonryImages {
 // Tipo completo para noticias
 export interface NewsItemFull extends NewsItemBase {
   richtxtcontent: LexicalContent
+  richtxtcontent_html: any
   attachments: FileAttachment[]
   style: 'vertical' | 'horizontal' | 'masonry' | 'video'
   videoUrl: string

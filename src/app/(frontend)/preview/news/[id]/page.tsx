@@ -40,7 +40,7 @@ export default async function PreviewPage({ params }: { params: { id: string } }
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            <RichTextParser content={page.richtxtcontent}></RichTextParser>
+            {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> */}
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">

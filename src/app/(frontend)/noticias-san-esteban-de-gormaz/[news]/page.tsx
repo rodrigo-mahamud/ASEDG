@@ -15,7 +15,7 @@ async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
   const singleNewsPage = (await payload.find({
     collection: 'news',
-  })) as NewsPageData
+  })) as any
   return singleNewsPage
 }
 async function getSettings() {
@@ -78,12 +78,14 @@ export default async function singleNewPage({ params }: NewsPageProps) {
     return hasAttachments || hasH2Tags
   }
   const shouldShowAside = hasAsides(page)
+
   return (
     <>
       <NewsHeader data={page} />
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
+            <div dangerouslySetInnerHTML={{ __html: page.richtxtcontent_html }} />
             {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> */}
           </article>
           {shouldShowAside ? (

@@ -3,6 +3,7 @@ import {
   AlignFeature,
   BlocksFeature,
   FixedToolbarFeature,
+  HTMLConverterFeature,
   HeadingFeature,
   HorizontalRuleFeature,
   LinkFeature,
@@ -74,6 +75,8 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
+      HTMLConverterFeature({}),
+
       AlignFeature(),
       HeadingFeature({
         enabledHeadingSizes: ['h2', 'h3', 'h4'],
@@ -83,8 +86,6 @@ export default buildConfig({
       UnorderedListFeature(),
       OrderedListFeature(),
       LinkFeature({
-        // Example showing how to customize the built-in fields
-        // of the Link feature
         fields: [
           {
             name: 'rel',
@@ -117,6 +118,7 @@ export default buildConfig({
       }),
     ],
   }),
+
   secret: process.env.PAYLOAD_SECRET || '',
   email: nodemailerAdapter({
     defaultFromAddress: 'contacto@rodrigomahamud.com',
