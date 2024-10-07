@@ -13,6 +13,7 @@ import BookingsBlock from '../blocks/Bookings'
 import RichText from '../blocks/RichText'
 import Faqs from '../blocks/Faqs'
 import StickyTextImages from '../blocks/StickyTextImages'
+import StripeTPV from '../blocks/StripeTPV'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -173,6 +174,7 @@ const Pages: CollectionConfig = {
                 RichText,
                 Faqs,
                 StickyTextImages,
+                StripeTPV,
               ],
             },
           ],

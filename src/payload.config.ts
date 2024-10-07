@@ -21,7 +21,7 @@ import News from './app/(payload)/collections/News'
 import Media from './app/(payload)/collections/Media'
 import Pages from './app/(payload)/collections/Pages'
 import Users from './app/(payload)/collections/Users'
-
+import { stripePlugin } from '@payloadcms/plugin-stripe'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
@@ -174,6 +174,10 @@ export default buildConfig({
             return `${baseURL}/${doc.slug}`
         }
       },
+    }),
+    stripePlugin({
+      stripeSecretKey: process.env.STRIPE_SECRET_KEY as string,
+      rest: true, // Habilita el endpoint REST de Stripe
     }),
   ],
 })

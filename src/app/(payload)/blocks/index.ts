@@ -11,6 +11,7 @@ import NewsBlock from './News/Component'
 import BookingsBlock from './Bookings/Component'
 import Faqs from './Faqs/Component'
 import StickyTextImages from './StickyTextImages/Component'
+import StripeTPV from './StripeTPV/Component'
 
 //RICH TEXT LEXICAL BLOCKS
 import IconList from './RTBlocks/IconList/Component'
@@ -30,6 +31,7 @@ export const components = {
   bookingsblock: BookingsBlock,
   faqs: Faqs,
   stickytextimages: StickyTextImages,
+  stripetpv: StripeTPV,
 
   //RICH TEXT LEXICAL BLOCKS
   iconlist: IconList,

@@ -22,6 +22,7 @@
     "@payloadcms/next": "beta",
     "@payloadcms/plugin-cloud": "beta",
     "@payloadcms/plugin-seo": "^3.0.0-beta.109",
+    "@payloadcms/plugin-stripe": "^3.0.0-beta.109",
     "@payloadcms/richtext-lexical": "beta",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.1",

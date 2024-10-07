@@ -40,6 +40,10 @@ export type Type = {
 
 const RichText: Block = {
   slug: 'richtext',
+  labels: {
+    singular: 'Texto enrriquecido',
+    plural: 'Textos enrriquecidos',
+  },
   fields: [
     {
       type: 'richText',
