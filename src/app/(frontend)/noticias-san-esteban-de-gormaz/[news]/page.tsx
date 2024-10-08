@@ -86,7 +86,6 @@ export default async function singleNewPage({ params }: NewsPageProps) {
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            {/* <PayloadLexicalReactRenderer content={page.richtxtcontent.root.children} /> */}
             <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           {shouldShowAside ? (

@@ -1,7 +1,8 @@
 import slug from '../fields/slug'
 import formatSlug from '@/utils/formatSlug'
 import type { CollectionConfig } from 'payload'
-
+import configPromise from '@payload-config'
+import { toast } from '@payloadcms/ui'
 //BLOCKS
 import CallToAction from '../blocks/CallToAction'
 import BentoBlock from '../blocks/Bento'
@@ -14,6 +15,7 @@ import RichText from '../blocks/RichText'
 import Faqs from '../blocks/Faqs'
 import StickyTextImages from '../blocks/StickyTextImages'
 import StripeTPV from '../blocks/StripeTPV'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -59,49 +61,84 @@ const Pages: CollectionConfig = {
           name: 'header',
           fields: [
             {
-              name: 'pagetype',
-              label: 'Tipo de Página',
-              type: 'select',
-              options: [
+              type: 'row',
+              fields: [
                 {
-                  label: 'Página de inicio',
-                  value: 'indexPage',
+                  name: 'pagetype',
+                  label: 'Tipo de Página',
+                  type: 'select',
+                  options: [
+                    {
+                      label: 'Página estandar',
+                      value: 'standarPage',
+                    },
+                    {
+                      label: 'Página de inicio',
+                      value: 'indexPage',
+                    },
+                    {
+                      label: 'Página de noticias',
+                      value: 'newsPage',
+                    },
+                    {
+                      label: 'Página de Instalacciones deportivas',
+                      value: 'facilitiesPage',
+                    },
+                  ],
+                  defaultValue: 'standarPage',
+                  required: true,
+                  validate: async (value: any) => {
+                    const uniqueTypes = ['indexPage', 'newsPage', 'facilitiesPage']
+                    if (value === 'standardPage') return true
+                    if (uniqueTypes.includes(value)) {
+                      const payload = await getPayloadHMR({ config: configPromise })
+
+                      const existingPage = await payload.find({
+                        collection: 'pages',
+                        where: {
+                          'header.pagetype': {
+                            equals: 'newsPage',
+                          },
+                        },
+                      })
+
+                      if (existingPage.totalDocs > 0 && value === 'newsPage') {
+                        return `Ya existe una página de Noticias. Este tipo de página debe ser única.`
+                      }
+                      if (existingPage.totalDocs > 0 && value === 'indexPage') {
+                        return `Ya existe una página de inicio. Este tipo de página debe ser única.`
+                      }
+                      if (existingPage.totalDocs > 0 && value === 'facilitiesPage') {
+                        return `Ya existe una página de instalacciones deportivas. Este tipo de página debe ser única.`
+                      }
+                    }
+
+                    return true
+                  },
                 },
                 {
-                  label: 'Página principal de noticias',
-                  value: 'newsPage',
-                },
-                {
-                  label: 'Página principal de Instalacciones deportivas',
-                  value: 'facilitiesPage',
-                },
-                {
-                  label: 'Página estandar',
-                  value: 'standarPage',
+                  name: 'style',
+                  label: 'Estilo de la cabecera',
+                  type: 'select',
+                  options: [
+                    {
+                      label: 'Cabecera de Inicio',
+                      value: 'index',
+                    },
+                    {
+                      label: 'Cabecera de Página',
+                      value: 'glow',
+                    },
+                    {
+                      label: 'Cabecera 2',
+                      value: 'grid',
+                    },
+                  ],
+                  required: true,
                 },
               ],
-              required: true,
             },
-            {
-              name: 'style',
-              label: 'Estilo de la cabecera',
-              type: 'select',
-              options: [
-                {
-                  label: 'Cabecera de Inicio',
-                  value: 'index',
-                },
-                {
-                  label: 'Cabecera de Página',
-                  value: 'glow',
-                },
-                {
-                  label: 'Cabecera 2',
-                  value: 'grid',
-                },
-              ],
-              required: true,
-            },
+
             {
               type: 'row',
               fields: [
