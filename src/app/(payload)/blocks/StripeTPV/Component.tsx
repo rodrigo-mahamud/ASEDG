@@ -32,6 +32,7 @@ export default function StripePaymentComponent({
           cardTitle={cardTitle}
           cardDescription={cardDescription}
           cardIncluded={cardIncluded}
+          stripeInfo={stripeInfo}
         ></StripeCard>
       </Elements>
     </Container>

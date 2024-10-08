@@ -28,8 +28,8 @@
   background: #141414;
   border: 1px solid #3c3c3c;
   z-index: 1000;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 225px;
   overflow: hidden;
   border-radius: var(--style-radius-s);
   box-shadow: 0 10px 20px 5px #00000064;
@@ -53,10 +53,10 @@
 .icon-grid {
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(auto-fill, minmax(25px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
   gap: 0.5rem;
   padding: 1rem;
-  max-height: 175px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
