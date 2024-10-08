@@ -78,7 +78,6 @@ export default async function singleNewPage({ params }: NewsPageProps) {
     return hasAttachments || hasH2Tags
   }
   const shouldShowAside = hasAsides(page)
-  console.log(page.richtxtcontent.root.children)
 
   return (
     <>

@@ -147,6 +147,20 @@ const Pages: CollectionConfig = {
                   label: 'Titulo',
                   type: 'text',
                   required: true,
+                  validate: (value: any, { data }: any) => {
+                    if (data.header?.pagetype === 'standarPage') {
+                      const forbiddenTitles = [
+                        'noticias san esteban de gormaz',
+                        'noticias-san-esteban-de-gormaz',
+                        'instalaciones deportivas san esteban de gormaz',
+                        'instalaciones-deportivas-san-esteban-de-gormaz',
+                      ]
+                      if (forbiddenTitles.includes(value.toLowerCase().trim())) {
+                        return 'Este título está reservado y no puede ser utilizado.'
+                      }
+                    }
+                    return true
+                  },
                 },
                 {
                   name: 'pretitle',
