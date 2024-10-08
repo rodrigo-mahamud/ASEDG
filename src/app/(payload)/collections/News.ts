@@ -148,7 +148,7 @@ const News: CollectionConfig = {
       label: 'Contenido de la noticia:',
       type: 'richText',
     },
-    lexicalHTML('richtxtcontent', { name: 'richtxtcontent_html' }),
+
     {
       name: 'attachments',
       type: 'array',

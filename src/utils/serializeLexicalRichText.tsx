@@ -1,9 +1,10 @@
-import React, { Fragment, ReactNode, useMemo } from 'react'
+import React, { Fragment, ReactNode } from 'react'
 import { slugify } from '@/utils/slugify'
 import { IconCheckbox, IconSquare } from '@tabler/icons-react'
 import Image from 'next/image'
 import escapeHTML from 'escape-html'
 import RenderBlocks from '@/components/RenderBlocks'
+import IconList from '@/app/(payload)/blocks/RTBlocks/IconList/Component'
 
 // Define constants for text formats
 const IS_BOLD = 1
@@ -189,61 +190,53 @@ const renderParagraphNode = (node: Node, i: number, parentNode: Node): ReactNode
 
 // Main function
 const SerializeLexicalRichText: React.FC<SerializeProps> = ({ children, parentNode }) => {
-  return useMemo(() => {
-    return children
-      ?.map((node, i) => {
-        if (!node) return null
+  return children
+    ?.map((node, i) => {
+      if (!node) return null
 
-        switch (node.type) {
-          case 'text':
-            return <Fragment key={i}>{renderTextNode(node)}</Fragment>
-          case 'heading':
-            return renderHeadingNode(node, i)
-          case 'list':
-            return renderListNode(node, i, parentNode!)
-          case 'listitem':
-            return renderListItemNode(node, i, parentNode!)
-          case 'upload':
-            return renderUploadNode(node, i)
-          case 'paragraph':
-          case undefined:
-            return renderParagraphNode(node, i, parentNode!)
-          case 'quote':
-            return (
-              <blockquote className={classNames.get('blockquote') || ''} key={i}>
-                &quot;{SerializeLexicalRichText({ children: node.children || [] })}&quot;
-              </blockquote>
-            )
-          case 'link':
-            return (
-              <a
-                className={classNames.get('a') || ''}
-                href={escapeHTML(node.fields?.linkType === 'custom' ? node?.fields?.url : '')}
-                target={node.fields?.newTab ? '_blank' : '_self'}
-                key={i}
-              >
-                {SerializeLexicalRichText({ children: node.children || [] })}
-              </a>
-            )
-          case 'block':
-            if (node.fields) {
-              const layout = {
-                block: node.fields,
-                blockType: node.fields.blockType || 'defaultBlockType',
-              }
-              return <RenderBlocks key={i} layout={[layout]} />
+      switch (node.type) {
+        case 'text':
+          return <Fragment key={i}>{renderTextNode(node)}</Fragment>
+        case 'heading':
+          return renderHeadingNode(node, i)
+        case 'list':
+          return renderListNode(node, i, parentNode!)
+        case 'listitem':
+          return renderListItemNode(node, i, parentNode!)
+        case 'upload':
+          return renderUploadNode(node, i)
+        case 'paragraph':
+          return renderParagraphNode(node, i, parentNode!)
+        case 'quote':
+          return (
+            <blockquote className={classNames.get('blockquote') || ''} key={i}>
+              &quot;{SerializeLexicalRichText({ children: node.children || [] })}&quot;
+            </blockquote>
+          )
+        case 'link':
+          return (
+            <a
+              className={classNames.get('a') || ''}
+              href={escapeHTML(node.fields?.linkType === 'custom' ? node?.fields?.url : '')}
+              target={node.fields?.newTab ? '_blank' : '_self'}
+              key={i}
+            >
+              {SerializeLexicalRichText({ children: node.children || [] })}
+            </a>
+          )
+        case 'block':
+          if (node.fields?.blockType === 'iconlist') {
+            const layout = {
+              block: node.fields,
+              blockType: node.fields.blockType || 'defaultBlockType',
             }
-            return null
-          default:
-            return node.children ? (
-              <Fragment key={i}>
-                {SerializeLexicalRichText({ children: node.children, parentNode: node })}
-              </Fragment>
-            ) : null
-        }
-      })
-      .filter(Boolean)
-  }, [children, parentNode])
+            return <IconList block={node.fields}></IconList>
+          }
+        default:
+          return null
+      }
+    })
+    .filter(Boolean)
 }
 
 export default SerializeLexicalRichText

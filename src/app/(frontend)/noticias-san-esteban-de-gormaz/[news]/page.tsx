@@ -1,5 +1,5 @@
 import React from 'react'
-import { Metadata } from 'next'
+
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import NewsHeader from '@/components/news/news-page/NewsHeader'
@@ -78,6 +78,7 @@ export default async function singleNewPage({ params }: NewsPageProps) {
     return hasAttachments || hasH2Tags
   }
   const shouldShowAside = hasAsides(page)
+  console.log(page.richtxtcontent.root.children)
 
   return (
     <>
@@ -85,8 +86,8 @@ export default async function singleNewPage({ params }: NewsPageProps) {
       <main>
         <Container className="flex gap-20">
           <article className={`${shouldShowAside ? 'w-[70%]' : 'w-[70%] mx-auto'}`}>
-            <div dangerouslySetInnerHTML={{ __html: page.richtxtcontent_html }} />
-            {/* <RichTextParser content={page.richtxtcontent}></RichTextParser> */}
+            {/* <PayloadLexicalReactRenderer content={page.richtxtcontent.root.children} /> */}
+            <RichTextParser content={page.richtxtcontent}></RichTextParser>
           </article>
           {shouldShowAside ? (
             <aside className="w-[30%]">
@@ -102,5 +103,3 @@ export default async function singleNewPage({ params }: NewsPageProps) {
     </>
   )
 }
-
-export const revalidate = 60 // Revalidate every 60 seconds
