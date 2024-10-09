@@ -1,4 +1,5 @@
 export interface StripeField {
+  halfWidth: boolean
   fieldName: string
   fieldLabel: string
   fieldType: string

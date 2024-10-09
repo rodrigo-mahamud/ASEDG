@@ -76,9 +76,7 @@ export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
                 Por favor, complete los detalles de pago a continuación.
               </DialogDescription>
             </DialogHeader>
-            <div className="p-4">
-              <StripeForm stripeInfo={stripeInfo} />
-            </div>
+            <StripeForm stripeInfo={stripeInfo} />
           </DialogContent>
         </Dialog>
       )}

@@ -99,6 +99,7 @@ const StripeTPV: Block = {
             plural: 'Campos del formulario',
           },
           fields: [
+            { type: 'checkbox', name: 'halfWidth', label: 'Ancho compacto' },
             {
               type: 'row',
               fields: [

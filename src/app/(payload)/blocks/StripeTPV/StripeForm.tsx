@@ -77,14 +77,17 @@ export default function StripeForm({ stripeInfo }: StripeFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 flex flex-wrap space-x-4 py-3"
+      >
         {stripeInfo.stripefields.map((field, index) => (
           <FormField
             key={index}
             control={form.control}
             name={field.fieldLabel}
             render={({ field: formField }) => (
-              <FormItem>
+              <FormItem className={`${field.halfWidth ? 'flex-1 !mt-0 ' : 'w-full !mx-0'}`}>
                 <FormControl>
                   <FloatingLabelInput
                     label={field.fieldLabel}
@@ -103,11 +106,11 @@ export default function StripeForm({ stripeInfo }: StripeFormProps) {
             )}
           />
         ))}
-        <PaymentElement />
-        <Button type="submit" disabled={!stripe || isLoading || formState !== 'success'}>
-          {isLoading ? 'Procesando...' : 'Pagar'}
-        </Button>
       </form>
+      <PaymentElement />
+      <Button type="submit" disabled={!stripe || isLoading || formState !== 'success'}>
+        {isLoading ? 'Procesando...' : 'Pagar'}
+      </Button>
       {formData.error && (
         <Alert variant="destructive" className="mt-4">
           <AlertDescription>{formData.error}</AlertDescription>
