@@ -1,93 +1,74 @@
 'use client'
+
 import React from 'react'
-import { useStripe, useElements, CardElement, PaymentElement } from '@stripe/react-stripe-js'
-import { createPaymentIntent } from '@/utils/stripeUtils'
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
+import { createPaymentIntent } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
 import { Button } from '@/components/lib/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/lib/form'
-import { Input } from '@/components/lib/input'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/lib/form'
 import { Alert, AlertDescription } from '@/components/lib/alert'
 import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+import { createStripeForm, FormDataTypes } from '@/utils/stripe/validateForm'
+import { StripeFormProps } from '@/types/types-stripe'
+import stripeState from '@/utils/stripe/stripeState'
 
-export default function StripeForm({ stripeInfo }: any) {
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
+export default function StripeForm({ stripeInfo }: StripeFormProps) {
   const stripe = useStripe()
   const elements = useElements()
+  const { formState, formData, isLoading, setFormState, updateFormData, setLoading } = stripeState()
 
-  // Crear un esquema de validación dinámico basado en los campos proporcionados
-  const formSchema = z.object(
-    stripeInfo.stripefields.reduce((acc: any, field: any) => {
-      let validator
-      switch (field.fieldType) {
-        case 'email':
-          validator = z.string().email({ message: 'Email inválido' })
-          break
-        case 'number':
-          validator = z.number().min(0, { message: 'Debe ser un número positivo' })
-          break
-        default:
-          validator = z.string().min(1, { message: 'Este campo es requerido' })
-      }
-      acc[field.fieldName] = validator
-      return acc
-    }, {}),
-  )
+  const { schema, type } = createStripeForm(stripeInfo.stripefields)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    // resolver: zodResolver(formSchema),
-    defaultValues: stripeInfo.stripefields.reduce((acc: any, field: any) => {
-      acc[field.fieldName] = ''
-      return acc
-    }, {}),
+  const form = useForm<typeof type>({
+    resolver: zodResolver(schema),
+    defaultValues: stripeInfo.stripefields.reduce(
+      (acc, field) => {
+        acc[field.fieldName] = ''
+        return acc
+      },
+      {} as Record<string, string>,
+    ),
   })
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setLoading(true)
-    setError(null)
-
+  const onSubmit = async (values: FormDataTypes<typeof schema>) => {
     if (!stripe || !elements) {
-      setError('Stripe no está cargado correctamente.')
-      setLoading(false)
+      updateFormData({ error: 'Stripe no está cargado correctamente.' })
       return
     }
 
+    setLoading(true)
+    updateFormData({ error: null })
+
     try {
-      const { nombre, apellidos, correo, cantidad } = values
-      const clientSecret = await createPaymentIntent(cantidad, nombre, apellidos, correo)
+      const formData = new FormData()
+      formData.append('amount', stripeInfo.price.toString())
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, value.toString())
+      })
 
-      const cardElement = elements.getElement(CardElement)
-      if (!cardElement) {
-        throw new Error('No se pudo obtener el elemento de tarjeta')
-      }
+      const { clientSecret } = await createPaymentIntent(formData)
 
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: {
-            name: `${nombre} ${apellidos}`,
-            email: correo,
-          },
+      const result = await stripe.confirmPayment({
+        elements,
+        clientSecret,
+        confirmParams: {
+          return_url: `${window.location.origin}/payment-confirmation`,
         },
       })
 
       if (result.error) {
-        setError(result.error.message || 'Error en el pago')
-      } else if (result.paymentIntent.status === 'succeeded') {
-        console.log('Pago completado con éxito')
-        // Aquí puedes manejar el éxito del pago, por ejemplo, mostrar un mensaje o redirigir
+        throw new Error(result.error.message || 'Error en el pago')
       }
+
+      // Éxito del pago
+      console.log('Pago completado con éxito')
+      setFormState('success')
+      // Aquí puedes manejar el éxito del pago, por ejemplo, mostrar un mensaje o redirigir
     } catch (err) {
-      setError('Ocurrió un error al procesar el pago.')
+      updateFormData({
+        error: err instanceof Error ? err.message : 'Ocurrió un error al procesar el pago.',
+      })
       console.error(err)
     } finally {
       setLoading(false)
@@ -97,22 +78,23 @@ export default function StripeForm({ stripeInfo }: any) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {stripeInfo.stripefields.map((item: any, index: number) => (
+        {stripeInfo.stripefields.map((field, index) => (
           <FormField
             key={index}
             control={form.control}
-            name={item.fieldLabel}
-            render={({ field }) => (
+            name={field.fieldLabel}
+            render={({ field: formField }) => (
               <FormItem>
                 <FormControl>
                   <FloatingLabelInput
-                    label={item.fieldLabel}
-                    type={item.fieldType === 'number' ? 'number' : 'text'}
-                    {...field}
+                    label={field.fieldLabel}
+                    type={field.fieldType === 'number' ? 'number' : 'text'}
+                    {...formField}
                     onChange={(e) => {
                       const value =
-                        item.fieldType === 'number' ? parseFloat(e.target.value) : e.target.value
-                      field.onChange(value)
+                        field.fieldType === 'number' ? parseFloat(e.target.value) : e.target.value
+                      formField.onChange(value)
+                      updateFormData({ [field.fieldName]: value })
                     }}
                   />
                 </FormControl>
@@ -122,13 +104,13 @@ export default function StripeForm({ stripeInfo }: any) {
           />
         ))}
         <PaymentElement />
-        <Button type="submit" disabled={!stripe || loading}>
-          {loading ? 'Procesando...' : 'Pagar'}
+        <Button type="submit" disabled={!stripe || isLoading || formState !== 'success'}>
+          {isLoading ? 'Procesando...' : 'Pagar'}
         </Button>
       </form>
-      {error && (
+      {formData.error && (
         <Alert variant="destructive" className="mt-4">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription>{formData.error}</AlertDescription>
         </Alert>
       )}
     </Form>

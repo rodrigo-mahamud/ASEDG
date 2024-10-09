@@ -2,7 +2,7 @@
 import DynamicIcon from '@/components/DynamicIcon'
 import { Button } from '@/components/lib/button'
 import React from 'react'
-import stripeState from './stripeState'
+import stripeState from '../../../../utils/stripe/stripeState'
 
 export default function StripeCardButton({ isExpired, icon, buttonText }: any) {
   const { setFormState } = stripeState()

@@ -20,7 +20,7 @@ import {
 } from '@/components/lib/drawer'
 import StripeForm from './StripeForm'
 import { Elements } from '@stripe/react-stripe-js'
-import stripeState from './stripeState'
+import stripeState from '../../../../utils/stripe/stripeState'
 import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 

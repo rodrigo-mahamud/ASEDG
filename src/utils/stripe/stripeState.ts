@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type FormState = 'closed' | 'open' | 'filled' | 'empty'
+type FormState = 'closed' | 'open' | 'success' | 'error'
 
 interface FormStore {
   formState: FormState
