@@ -1,14 +1,19 @@
 import React from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/lib/button'
-import { IconWallet } from '@tabler/icons-react'
+
 import DynamicIcon from '@/components/DynamicIcon'
 
-export default function StripeCard({ cardIncluded, cardDescription, cardTitle, stripeInfo }: any) {
-  const { expirationDate, price, stripefields } = stripeInfo
-  const currentDate = new Date()
-  const isExpired = new Date(expirationDate) < currentDate
+import StripeCardButton from './StripeCardButton'
 
+export default function StripeCard({
+  cardIncluded,
+  cardDescription,
+  cardTitle,
+  buttonText,
+  icon,
+  isExpired,
+  price,
+}: any) {
   return (
     <div className="w-full ">
       <div className="overflow-hidden rounded-lg shadow-lg flex">
@@ -36,27 +41,22 @@ export default function StripeCard({ cardIncluded, cardDescription, cardTitle, s
         </div>
         <div className="px-6 w-2/6 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
           <div className="flex items-center justify-center mt-4 text-5xl font-extrabold text-gray-900">
-            <span>${price}</span>
+            <span>{price}€</span>
           </div>
           <div className="mt-6">
             <div className="rounded-md shadow">
-              <Button
-                variant={'expandIcon'}
-                className="w-full rounded-md py-3 h-auto bg-primary text-white"
-                Icon={IconWallet}
-                iconPlacement="right"
-                iconClass="w-5 h-5"
-                disabled={isExpired}
-              >
-                Pagar
-              </Button>
+              <StripeCardButton
+                buttonText={buttonText}
+                icon={icon}
+                isExpired={isExpired}
+              ></StripeCardButton>
             </div>
           </div>
           {isExpired && (
             <p className="mt-2 text-sm text-red-600">Plazo de inscripción finalizado</p>
           )}
           <div className="mt-4 text-sm">
-            <Link href="/" className="font-medium text-muted hover:bg-gray-800 text-pretty">
+            <Link href="/" className="font-medium text-muted hover:text-gray-800 text-pretty">
               *Al realizar el pago aceptas los términos y condiciones
             </Link>
           </div>

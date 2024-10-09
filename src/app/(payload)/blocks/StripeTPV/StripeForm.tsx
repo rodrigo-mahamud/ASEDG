@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
+import { useStripe, useElements, CardElement, PaymentElement } from '@stripe/react-stripe-js'
 import { createPaymentIntent } from '@/utils/stripeUtils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -16,6 +16,7 @@ import {
 } from '@/components/lib/form'
 import { Input } from '@/components/lib/input'
 import { Alert, AlertDescription } from '@/components/lib/alert'
+import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 
 export default function StripeForm({ stripeInfo }: any) {
   const [loading, setLoading] = React.useState(false)
@@ -103,9 +104,9 @@ export default function StripeForm({ stripeInfo }: any) {
             name={item.fieldLabel}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{item.fieldLabel}</FormLabel>
                 <FormControl>
-                  <Input
+                  <FloatingLabelInput
+                    label={item.fieldLabel}
                     type={item.fieldType === 'number' ? 'number' : 'text'}
                     {...field}
                     onChange={(e) => {
@@ -120,7 +121,7 @@ export default function StripeForm({ stripeInfo }: any) {
             )}
           />
         ))}
-        <CardElement />
+        <PaymentElement />
         <Button type="submit" disabled={!stripe || loading}>
           {loading ? 'Procesando...' : 'Pagar'}
         </Button>

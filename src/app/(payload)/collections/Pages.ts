@@ -102,13 +102,13 @@ const Pages: CollectionConfig = {
                         },
                       })
 
-                      if (existingPage.totalDocs > 0 && value === 'newsPage') {
+                      if (existingPage.totalDocs > 1 && value === 'newsPage') {
                         return `Ya existe una página de Noticias. Este tipo de página debe ser única.`
                       }
-                      if (existingPage.totalDocs > 0 && value === 'indexPage') {
+                      if (existingPage.totalDocs > 1 && value === 'indexPage') {
                         return `Ya existe una página de inicio. Este tipo de página debe ser única.`
                       }
-                      if (existingPage.totalDocs > 0 && value === 'facilitiesPage') {
+                      if (existingPage.totalDocs > 1 && value === 'facilitiesPage') {
                         return `Ya existe una página de instalacciones deportivas. Este tipo de página debe ser única.`
                       }
                     }

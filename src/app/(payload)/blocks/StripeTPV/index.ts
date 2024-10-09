@@ -10,10 +10,22 @@ const StripeTPV: Block = {
   interfaceName: 'Pagos con Stripe',
   fields: [
     {
-      type: 'text',
-      name: 'cardTitle',
-      label: 'Titulo',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          type: 'text',
+          name: 'cardTitle',
+          label: 'Titulo',
+          required: true,
+        },
+        Icon,
+        {
+          name: 'buttonText',
+          type: 'text',
+          label: 'Texto del Botón',
+          required: true,
+        },
+      ],
     },
     {
       type: 'textarea',
