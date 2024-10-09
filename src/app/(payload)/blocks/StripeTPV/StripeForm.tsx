@@ -12,6 +12,7 @@ import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { createStripeForm, FormDataTypes } from '@/utils/stripe/validateForm'
 import { StripeFormProps } from '@/types/types-stripe'
 import stripeState from '@/utils/stripe/stripeState'
+import { IconCreditCardPay } from '@tabler/icons-react'
 
 export default function StripeForm({ stripeInfo }: StripeFormProps) {
   const stripe = useStripe()
@@ -79,7 +80,7 @@ export default function StripeForm({ stripeInfo }: StripeFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 flex flex-wrap space-x-4 py-3"
+        className="space-y-4 flex flex-wrap space-x-4 p-6"
       >
         {stripeInfo.stripefields.map((field, index) => (
           <FormField
@@ -91,6 +92,7 @@ export default function StripeForm({ stripeInfo }: StripeFormProps) {
                 <FormControl>
                   <FloatingLabelInput
                     label={field.fieldLabel}
+                    className="h-12"
                     type={field.fieldType === 'number' ? 'number' : 'text'}
                     {...formField}
                     onChange={(e) => {
@@ -107,12 +109,22 @@ export default function StripeForm({ stripeInfo }: StripeFormProps) {
           />
         ))}
       </form>
-      <PaymentElement />
-      <Button type="submit" disabled={!stripe || isLoading || formState !== 'success'}>
-        {isLoading ? 'Procesando...' : 'Pagar'}
-      </Button>
+      <div className="bg-gray-50 px-6 py-6">
+        <PaymentElement />
+        <Button
+          className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
+          type="submit"
+          variant={'expandIcon'}
+          Icon={IconCreditCardPay}
+          iconPlacement="right"
+          iconClass="w-5 h-5"
+          disabled={!stripe || isLoading || formState !== 'success'}
+        >
+          {isLoading ? 'Procesando...' : 'Pagar'}
+        </Button>
+      </div>
       {formData.error && (
-        <Alert variant="destructive" className="mt-4">
+        <Alert variant="destructive" className="mt-6">
           <AlertDescription>{formData.error}</AlertDescription>
         </Alert>
       )}

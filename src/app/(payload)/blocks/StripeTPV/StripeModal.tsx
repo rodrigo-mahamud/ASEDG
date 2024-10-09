@@ -42,8 +42,31 @@ export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
       options={{
         mode: 'payment',
         amount: convertToSubcurrency(stripeInfo.price),
+
         appearance: {
+          labels: 'floating',
           theme: 'flat',
+          variables: {
+            spacingUnit: '2px',
+            fontFamily: 'Ideal Sans, system-ui, sans-serif',
+            fontLineHeight: '1.5',
+            borderRadius: '6px',
+            colorBackground: '#ffffff00',
+            accessibleColorOnColorPrimary: '#262626',
+            colorTextPlaceholder: '#0a2642bf',
+            gridRowSpacing: '1rem',
+            gridColumnSpacing: '1rem',
+            fontSizeBase: '1.05rem',
+          },
+          rules: {
+            '.Input': {
+              border: '1px solid #0e3f7e1a',
+            },
+            '.Label--resting': {
+              fontSize: '.875rem',
+              color: '#0a2642bf',
+            },
+          },
         },
         currency: 'eur',
       }}
@@ -69,8 +92,8 @@ export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
         </Drawer>
       ) : (
         <Dialog open={formState === 'open'} onOpenChange={() => setFormState('closed')}>
-          <DialogContent>
-            <DialogHeader>
+          <DialogContent className="p-0 overflow-hidden gap-0">
+            <DialogHeader className="px-6 pt-6">
               <DialogTitle>Formulario de Pago</DialogTitle>
               <DialogDescription>
                 Por favor, complete los detalles de pago a continuación.
