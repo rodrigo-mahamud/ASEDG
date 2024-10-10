@@ -41,7 +41,8 @@ const StripeTPV: Block = {
         singular: 'Característica',
         plural: 'Características',
       },
-      required: true,
+      minRows: 1,
+      maxRows: 6,
       fields: [
         {
           type: 'row',
@@ -68,6 +69,7 @@ const StripeTPV: Block = {
             {
               type: 'number',
               name: 'price',
+              defaultValue: 1,
               label: 'Precio',
               required: true,
             },
@@ -86,6 +88,30 @@ const StripeTPV: Block = {
               required: true,
             },
           ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              type: 'text',
+              name: 'successMsg',
+              label: 'Mensaje pago exsitoso',
+              required: true,
+            },
+            {
+              type: 'text',
+              name: 'errorMsg',
+              label: 'Mensaje pago fallido',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'file',
+          type: 'upload',
+          label: 'PDF Términos y condiciones',
+          relationTo: 'media',
+          required: false,
         },
         {
           type: 'array',

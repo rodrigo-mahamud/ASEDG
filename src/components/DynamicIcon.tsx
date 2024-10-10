@@ -7,7 +7,11 @@ interface DynamicIconProps {
   stroke?: number
 }
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ iconName, className, stroke }) => {
+const DynamicIcon: React.FC<DynamicIconProps> = ({
+  iconName = 'IconMoodSearch',
+  className,
+  stroke,
+}) => {
   const IconComponent = dynamic<any>(
     async () => {
       const mod = (await import('@tabler/icons-react')) as any

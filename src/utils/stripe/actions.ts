@@ -24,13 +24,13 @@ export async function createPaymentIntent(blockId: string) {
   }
   const price = matchingBlock.stripeInfo?.price
 
-  if (!price || typeof price !== 'number' || price <= 0) {
+  if (!price || typeof price !== 'number') {
     throw new Error('La cantidad no es valida')
   }
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: convertToSubcurrency(price),
+      amount: convertToSubcurrency(price) || 0.1,
       currency: 'eur',
       automatic_payment_methods: { enabled: true },
     })
