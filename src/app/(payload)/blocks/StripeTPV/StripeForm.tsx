@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo } from 'react'
+import React, { memo, useCallback, useRef } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { createPaymentIntent } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,15 +15,15 @@ import stripeState from '@/utils/stripe/stripeState'
 import { IconCreditCardPay } from '@tabler/icons-react'
 import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
+import { useRouter, useSearchParams } from 'next/navigation'
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
-  console.log('me he render')
-
+  const formRef = useRef<HTMLFormElement>(null)
   const stripe = useStripe()
   const elements = useElements()
   const { formState, formData, isLoading, setFormState, updateFormData, setLoading } = stripeState()
-
   const { schema, type } = createStripeForm(stripeInfo.stripefields)
-
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const form = useForm<typeof type>({
     // resolver: zodResolver(schema),
     defaultValues: stripeInfo.stripefields.reduce(
@@ -34,6 +34,11 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       {} as Record<string, string>,
     ),
   })
+  const updateUrlParams = (status: 'success' | 'error') => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('paymentStatus', status)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }
 
   const onSubmit = async (values: FormDataTypes<typeof schema>, event: any) => {
     event.preventDefault()
@@ -60,23 +65,23 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
         clientSecret,
         confirmParams: {
           receipt_email: formData.email,
-          return_url: `${window.location.href}?paymentStatus=success`,
+          return_url: `${window.location.origin}${window.location.pathname}?paymentStatus=success`,
         },
-        redirect: 'always',
+        redirect: 'if_required',
       })
 
       if (result.error) {
-        toast.error('Error al realizar el pago.')
         throw new Error(result.error.message || 'Error en el pago')
       }
 
       // Éxito del pago
       console.log('Pago completado con éxito')
-      setFormState('success')
       toast.success('Pago completado con éxito')
+      updateUrlParams('success')
     } catch (err) {
-      toast.error('Error al realizar el pago.')
       console.error(err)
+      toast.error('Error al realizar el pago.')
+      updateUrlParams('error')
     } finally {
       setLoading(false)
     }
@@ -85,6 +90,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   return (
     <Form {...form}>
       <form
+        ref={formRef}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 flex flex-wrap space-x-4 p-6"
       >
@@ -111,16 +117,6 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       </form>
       <div className="bg-gray-50 px-6 py-6">
         <PaymentElement />
-        <Button
-          className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
-          type="submit"
-          variant={'expandIcon'}
-          Icon={IconCreditCardPay}
-          iconPlacement="right"
-          iconClass="w-5 h-5"
-        >
-          Cerrar
-        </Button>
       </div>
       {formData.error && (
         <Alert variant="destructive" className="mt-6">
