@@ -1,6 +1,6 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import type { MetadataRoute } from 'next'
 import configPromise from '@payload-config'
+import type { MetadataRoute } from 'next'
 export default async function sitemap() {
   const baseUrl = `https://${process.env.ROOT_DOMAIN}`
   const payload = await getPayloadHMR({ config: configPromise })

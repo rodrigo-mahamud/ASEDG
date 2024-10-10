@@ -8,7 +8,7 @@ interface BookingSuccessProps {
 }
 
 export function BookingSuccess({ message }: BookingSuccessProps) {
-  const [play] = useSound('/success.mp3', { volume: 0.4 })
+  const [play] = useSound('/success.mp3', { volume: 0.3 })
 
   const handleClick = () => {
     const duration = 4.5 * 1000

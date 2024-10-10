@@ -23,11 +23,15 @@ import { Elements } from '@stripe/react-stripe-js'
 import stripeState from '../../../../utils/stripe/stripeState'
 import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
+import StripeSuccess from './StripeSuccess'
+import { useSearchParams } from 'next/navigation'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
-export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
+export default function StripeModal({ stripeInfo, blockId }: any) {
   const [isMobile, setIsMobile] = useState(false)
+  const params = useSearchParams()
+  const status = params.get('paymentStatus')
   const checkIsMobile = () => {
     setIsMobile(window.innerWidth < 768)
   }
@@ -81,7 +85,7 @@ export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
               </DrawerDescription>
             </DrawerHeader>
             <div className="p-4">
-              <StripeForm stripeInfo={stripeInfo} />
+              <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
@@ -99,7 +103,11 @@ export default function StripeModal({ isOpen, setIsOpen, stripeInfo }: any) {
                 Por favor, complete los detalles de pago a continuación.
               </DialogDescription>
             </DialogHeader>
-            <StripeForm stripeInfo={stripeInfo} />
+            {status === 'success' ? (
+              <StripeSuccess></StripeSuccess>
+            ) : (
+              <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+            )}
           </DialogContent>
         </Dialog>
       )}

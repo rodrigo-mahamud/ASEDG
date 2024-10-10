@@ -1,23 +1,40 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
+import convertToSubcurrency from '../convertToSubcurrency'
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-export async function createPaymentIntent(formData: FormData) {
-  const amount = formData.get('amount')
+export async function createPaymentIntent(formData: FormData, blockId: string) {
+  const payload = await getPayloadHMR({ config: configPromise })
+  const result = await payload.find({
+    collection: 'pages',
+    where: {
+      'body.layout.id': {
+        equals: blockId,
+      },
+    },
+  })
+  const matchingBlock = result.docs[0]?.body?.layout?.find(
+    (item: any) => item.id === blockId,
+  ) as any
+  if (!matchingBlock) {
+    throw new Error('Bloque de StripeTPV no encontrado')
+  }
+  const price = matchingBlock.stripeInfo?.price
 
-  if (!amount || typeof amount !== 'string') {
-    throw new Error('Amount is required and must be a string')
+  if (!price || typeof price !== 'number' || price <= 0) {
+    throw new Error('La cantidad no es valida')
   }
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: parseInt(amount),
-      currency: 'usd',
+      amount: convertToSubcurrency(price),
+      currency: 'eur',
       automatic_payment_methods: { enabled: true },
     })
 
-    revalidatePath('/payments') // Adjust this path as needed
     return { clientSecret: paymentIntent.client_secret }
   } catch (error) {
     console.error('Internal Error:', error)

@@ -6,8 +6,8 @@ export interface StripeField {
 }
 
 export interface StripeFormProps {
+  blockId: string
   stripeInfo: {
     stripefields: StripeField[]
-    price: number
   }
 }

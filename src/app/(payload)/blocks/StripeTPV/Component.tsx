@@ -9,13 +9,15 @@ export default function StripePaymentComponent({
   cardTitle,
   buttonText,
   icon,
+  id,
 }: any) {
   const currentDate = new Date()
   const isExpired = new Date(stripeInfo.expirationDate) < currentDate
+  console.log(id)
 
   return (
     <Container>
-      {isExpired ? ' ' : <StripeModal stripeInfo={stripeInfo} />}
+      {isExpired ? ' ' : <StripeModal stripeInfo={stripeInfo} blockId={id} />}
       <StripeCard
         cardTitle={cardTitle}
         price={stripeInfo.price}
