@@ -5,7 +5,7 @@ export const createFormSchema = (fields: StripeField[]) => {
   const schemaFields = fields.reduce(
     (acc, field) => {
       let validator
-      switch (field.fieldType) {
+      switch (field.fieldLabel) {
         case 'email':
           validator = z.string().email({ message: 'Email inválido' })
           break

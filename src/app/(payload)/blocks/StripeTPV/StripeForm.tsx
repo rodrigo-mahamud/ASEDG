@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useCallback, useEffect, useRef } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { createPaymentIntent } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,14 +17,18 @@ import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
 import StripeSkeleton from './StripeSkeleton'
+
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const stripe = useStripe()
   const elements = useElements()
   const { formData, updateFormData, setLoading, isLoading } = stripeState()
+  const [isDisabled, setIsdisabled] = useState(true)
   const { schema, type } = createStripeForm(stripeInfo.stripefields)
   const searchParams = useSearchParams()
   const router = useRouter()
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+
   const form = useForm<typeof type>({
     // resolver: zodResolver(schema),
     defaultValues: stripeInfo.stripefields.reduce(
@@ -35,16 +39,35 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       {} as Record<string, string>,
     ),
   })
+
   const updateUrlParams = (status: 'success' | 'error') => {
     const params = new URLSearchParams(searchParams.toString())
     params.set('paymentStatus', status)
     router.replace(`?${params.toString()}`, { scroll: false })
   }
 
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      setLoading(true)
+      try {
+        const formData = normaliceFormKeys(form.getValues())
+        const { clientSecret: secret } = await createPaymentIntent(blockId)
+        setClientSecret(secret)
+      } catch (error) {
+        console.error('Error fetching client secret:', error)
+        updateFormData({ error: 'Error al inicializar el pago.' })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchClientSecret()
+  }, [blockId, form, setLoading, updateFormData])
+
   const onSubmit = async (values: FormDataTypes<typeof schema>, event: any) => {
     event.preventDefault()
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
       updateFormData({ error: 'La pasarela de pago no se ha cargado correctamente.' })
       return
     }
@@ -59,8 +82,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
         throw new Error(stipreElements.error.message || 'Error al enviar los detalles de pago')
       }
 
-      const formData = normaliceFormKeys(values)
-      const { clientSecret } = await createPaymentIntent(formData, blockId)
+      const formData = normaliceFormKeys(values) //llamar a payload
       const result = await stripe.confirmPayment({
         elements,
         clientSecret,
@@ -116,10 +138,22 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
           />
         ))}
       </form>
-      <div className="bg-gray-50 px-6 py-6 min-h-72">
-        {isLoading ? <StripeSkeleton /> : <PaymentElement />}
+      <div className="bg-gray-50 px-6 py-6 min-h-80 flex flex-col justify-between">
+        <div className="relative w-full h-full mb-6">
+          {isLoading && <StripeSkeleton className="w-full absolute z-10 h-full" />}
+          {clientSecret && (
+            <PaymentElement
+              onChange={(e) => {
+                if (e.complete) {
+                  setIsdisabled(false)
+                }
+              }}
+            />
+          )}
+        </div>
+
         <Button
-          className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
+          className="w-full flex items-center rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
           type="submit"
           onClick={(e) => {
             e.preventDefault()
@@ -129,8 +163,9 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
           Icon={IconCreditCardPay}
           iconPlacement="right"
           iconClass="w-5 h-5"
+          disabled={isDisabled}
         >
-          Pagar {stripeInfo.price}
+          <span className="leading-[0]">Pagar {stripeInfo.price}€</span>
         </Button>
       </div>
       {formData.error && (
@@ -141,4 +176,5 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
     </Form>
   )
 }
+
 export default memo(StripeForm)

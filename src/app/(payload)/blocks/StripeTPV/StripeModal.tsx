@@ -45,6 +45,7 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
     <Elements
       stripe={stripePromise}
       options={{
+        loader: 'always',
         mode: 'payment',
         amount: convertToSubcurrency(stripeInfo.price),
 

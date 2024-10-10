@@ -6,7 +6,7 @@ import configPromise from '@payload-config'
 import convertToSubcurrency from '../convertToSubcurrency'
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-export async function createPaymentIntent(formData: FormData, blockId: string) {
+export async function createPaymentIntent(blockId: string) {
   const payload = await getPayloadHMR({ config: configPromise })
   const result = await payload.find({
     collection: 'pages',
