@@ -1,12 +1,9 @@
 'use client'
 import React, { useEffect } from 'react'
-import useSound from 'use-sound'
 import confetti from 'canvas-confetti'
 import { IconCheck } from '@tabler/icons-react'
 
 const StripeSuccess = () => {
-  const [play] = useSound('/success.mp3', { volume: 0.3 })
-
   const handleClick = () => {
     const duration = 3.5 * 1000
     const animationEnd = Date.now() + duration
@@ -37,34 +34,47 @@ const StripeSuccess = () => {
     }, 250)
   }
   useEffect(() => {
-    play()
     handleClick()
-  }, [play])
+  }, [])
 
   return (
-    <div className="relative">
-      <div className="pb-7 flex flex-col items-center">
-        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-          <IconCheck className="h-10 w-10 text-green-500" />
+    <div className="relative w-full px-6 pt-6">
+      <div className=" flex flex-col gap-6 items-center">
+        <div className="flex flex-col gap-3 justify-center items-center">
+          <div className="inline-flex p-3 w-fit items-center justify-center rounded-full bg-green-100">
+            <IconCheck className="h-10 w-10 text-green-500" />
+          </div>
+
+          <h3 className="font-bold text-3xl">¡Pago exsitoso!</h3>
+          <h4 className=" text-base text-pretty text-center text-muted-foreground">
+            Thank you for your payment. Your transaction was completed successfully.
+          </h4>
         </div>
-        <div className="text-center">
-          <h3 className="font-bold text-lg mb-2">¡Pago exsitoso!</h3>
-          <p>Asdfs</p>
-          <div className="mt-8 space-y-4">
-            <div className="rounded-md border border-muted p-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-muted-foreground">Amount Paid</p>
-                <p className="text-lg font-semibold text-foreground">$99.99</p>
-              </div>
-              <div className="mt-2 flex items-center justify-between">
-                <p className="text-sm font-medium text-muted-foreground">Payment Method</p>
-                <p className="text-sm text-muted-foreground">Visa **** 1234</p>
-              </div>
-              <div className="mt-2 flex items-center justify-between">
-                <p className="text-sm font-medium text-muted-foreground">Transaction ID</p>
-                <p className="text-sm text-muted-foreground">123456789</p>
-              </div>
-            </div>
+
+        <div className="rounded-md border border-border p-4 w-full flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Nombre y apellidos</p>
+            <p className="text-sm text-muted-foreground">Rod</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">dasd</p>
+            <p className="text-sm text-muted-foreground">$99.99</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
+            <p className="text-sm text-muted-foreground">$99.99</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
+            <p className="text-sm text-muted-foreground">$99.99</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Metodo de pago</p>
+            <p className="text-sm text-muted-foreground">Visa **** 1234</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-muted-foreground">Transaction ID</p>
+            <p className="text-sm text-muted-foreground">123456789</p>
           </div>
         </div>
       </div>

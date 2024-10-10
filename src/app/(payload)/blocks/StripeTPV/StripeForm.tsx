@@ -108,20 +108,20 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
             )}
           />
         ))}
-        <div className="bg-gray-50 px-6 py-6">
-          <PaymentElement />
-          <Button
-            className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
-            type="submit"
-            variant={'expandIcon'}
-            Icon={IconCreditCardPay}
-            iconPlacement="right"
-            iconClass="w-5 h-5"
-          >
-            {isLoading ? 'Procesando...' : 'Pagar'}
-          </Button>
-        </div>
       </form>
+      <div className="bg-gray-50 px-6 py-6">
+        <PaymentElement />
+        <Button
+          className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
+          type="submit"
+          variant={'expandIcon'}
+          Icon={IconCreditCardPay}
+          iconPlacement="right"
+          iconClass="w-5 h-5"
+        >
+          Cerrar
+        </Button>
+      </div>
       {formData.error && (
         <Alert variant="destructive" className="mt-6">
           <AlertDescription>{formData.error}</AlertDescription>

@@ -25,6 +25,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import StripeSuccess from './StripeSuccess'
 import { useSearchParams } from 'next/navigation'
+import { IconCreditCardPay } from '@tabler/icons-react'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
@@ -97,16 +98,18 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
       ) : (
         <Dialog open={formState === 'open'} onOpenChange={() => setFormState('closed')}>
           <DialogContent className="p-0 overflow-hidden gap-0">
-            <DialogHeader className="px-6 pt-6">
-              <DialogTitle>Formulario de Pago</DialogTitle>
-              <DialogDescription>
-                Por favor, complete los detalles de pago a continuación.
-              </DialogDescription>
-            </DialogHeader>
             {status === 'success' ? (
               <StripeSuccess></StripeSuccess>
             ) : (
-              <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+              <>
+                <DialogHeader className="px-6 pt-6">
+                  <DialogTitle className="text-2xl">Formulario de Pago</DialogTitle>
+                  <DialogDescription className="text-sm">
+                    Por favor, complete los detalles de pago a continuación.
+                  </DialogDescription>
+                </DialogHeader>
+                <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+              </>
             )}
           </DialogContent>
         </Dialog>
