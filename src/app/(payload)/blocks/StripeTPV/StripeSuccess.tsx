@@ -1,7 +1,10 @@
 'use client'
 import React, { useEffect } from 'react'
 import confetti from 'canvas-confetti'
-import { IconCheck } from '@tabler/icons-react'
+import { IconCheck, IconX } from '@tabler/icons-react'
+import { Button } from '@/components/lib/button'
+import stripeState from '@/utils/stripe/stripeState'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const StripeSuccess = () => {
   const handleClick = () => {
@@ -36,9 +39,18 @@ const StripeSuccess = () => {
   useEffect(() => {
     handleClick()
   }, [])
+  const { setFormState } = stripeState()
 
+  const pathname = usePathname()
+  const router = useRouter()
+  const handleClose = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setFormState('closed')
+    // Eliminar todos los parámetros de la URL
+    router.replace(pathname, { scroll: false })
+  }
   return (
-    <div className="relative w-full px-6 pt-6">
+    <div className="relative w-full p-6">
       <div className=" flex flex-col gap-6 items-center">
         <div className="flex flex-col gap-3 justify-center items-center">
           <div className="inline-flex p-3 w-fit items-center justify-center rounded-full bg-green-100">
@@ -77,6 +89,17 @@ const StripeSuccess = () => {
             <p className="text-sm text-muted-foreground">123456789</p>
           </div>
         </div>
+        <Button
+          className="w-full rounded-md py-3 h-auto text-white bg-secondaryAlt"
+          type="submit"
+          onClick={handleClose}
+          variant={'expandIcon'}
+          Icon={IconX}
+          iconPlacement="right"
+          iconClass="w-5 h-5"
+        >
+          Cerrar
+        </Button>
       </div>
     </div>
   )

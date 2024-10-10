@@ -85,14 +85,10 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
                 Por favor, complete los detalles de pago a continuación.
               </DrawerDescription>
             </DrawerHeader>
-            <div className="p-4">
-              <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
-            </div>
-            <DrawerFooter>
-              <DrawerClose asChild>
-                <Button variant="outline">Cerrar</Button>
-              </DrawerClose>
-            </DrawerFooter>
+
+            <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+
+            <DrawerFooter></DrawerFooter>
           </DrawerContent>
         </Drawer>
       ) : (

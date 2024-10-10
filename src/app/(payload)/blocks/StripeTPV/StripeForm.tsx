@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useCallback, useRef } from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { createPaymentIntent } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,11 +16,12 @@ import { IconCreditCardPay } from '@tabler/icons-react'
 import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
+import StripeSkeleton from './StripeSkeleton'
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const stripe = useStripe()
   const elements = useElements()
-  const { formState, formData, isLoading, setFormState, updateFormData, setLoading } = stripeState()
+  const { formData, updateFormData, setLoading, isLoading } = stripeState()
   const { schema, type } = createStripeForm(stripeInfo.stripefields)
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -115,8 +116,22 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
           />
         ))}
       </form>
-      <div className="bg-gray-50 px-6 py-6">
-        <PaymentElement />
+      <div className="bg-gray-50 px-6 py-6 min-h-72">
+        {isLoading ? <StripeSkeleton /> : <PaymentElement />}
+        <Button
+          className="w-full mt-6 rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault()
+            formRef?.current?.requestSubmit()
+          }}
+          variant={'expandIcon'}
+          Icon={IconCreditCardPay}
+          iconPlacement="right"
+          iconClass="w-5 h-5"
+        >
+          Pagar {stripeInfo.price}
+        </Button>
       </div>
       {formData.error && (
         <Alert variant="destructive" className="mt-6">
