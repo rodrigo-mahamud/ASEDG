@@ -96,7 +96,7 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
         <Dialog open={formState === 'open'} onOpenChange={() => setFormState('closed')}>
           <DialogContent className="p-0 overflow-hidden gap-0">
             {status === 'success' ? (
-              <StripeSuccess></StripeSuccess>
+              <StripeSuccess stripeInfo={stripeInfo}></StripeSuccess>
             ) : (
               <>
                 <DialogHeader className="px-6 pt-6">

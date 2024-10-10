@@ -6,7 +6,7 @@ import { Button } from '@/components/lib/button'
 import stripeState from '@/utils/stripe/stripeState'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const StripeSuccess = () => {
+const StripeSuccess = ({ stripeInfo }: any) => {
   const handleClick = () => {
     const duration = 3.5 * 1000
     const animationEnd = Date.now() + duration
@@ -39,7 +39,8 @@ const StripeSuccess = () => {
   useEffect(() => {
     handleClick()
   }, [])
-  const { setFormState } = stripeState()
+  const { setFormState, formData } = stripeState()
+  console.log(formData)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -65,20 +66,12 @@ const StripeSuccess = () => {
 
         <div className="rounded-md border border-border p-4 w-full flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Nombre y apellidos</p>
-            <p className="text-sm text-muted-foreground">Rod</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">dasd</p>
-            <p className="text-sm text-muted-foreground">$99.99</p>
+            <p className="text-sm font-medium text-muted-foreground">Correo Electrónico</p>
+            <p className="text-sm text-muted-foreground">{formData.email}</p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
-            <p className="text-sm text-muted-foreground">$99.99</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
-            <p className="text-sm text-muted-foreground">$99.99</p>
+            <p className="text-sm text-muted-foreground">{stripeInfo.price}€</p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-muted-foreground">Metodo de pago</p>

@@ -109,31 +109,6 @@ const StripeTPV: Block = {
                   label: 'Nombre del campo',
                   required: true,
                 },
-                {
-                  type: 'select',
-                  name: 'fieldType',
-                  label: 'Tipo de campo',
-                  options: [
-                    {
-                      label: 'Texto',
-                      value: 'text',
-                    },
-                    {
-                      label: 'Numero',
-                      value: 'number',
-                    },
-                    {
-                      label: 'DNI',
-                      value: 'idCard',
-                    },
-                    {
-                      label: 'Email',
-                      value: 'mail',
-                    },
-                  ],
-                  defaultValue: 'text',
-                  required: true,
-                },
               ],
             },
           ],

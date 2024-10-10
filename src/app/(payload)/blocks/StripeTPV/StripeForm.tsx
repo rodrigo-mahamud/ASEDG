@@ -17,6 +17,7 @@ import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
 import StripeSkeleton from './StripeSkeleton'
+import StripeFormErrors from './StripeFormErrors'
 
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -30,14 +31,19 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
 
   const form = useForm<typeof type>({
-    // resolver: zodResolver(schema),
-    defaultValues: stripeInfo.stripefields.reduce(
-      (acc, field) => {
-        acc[field.fieldLabel] = ''
-        return acc
-      },
-      {} as Record<string, string>,
-    ),
+    resolver: zodResolver(schema),
+    mode: 'onBlur',
+    defaultValues: {
+      ...stripeInfo.stripefields.reduce(
+        (acc, field) => {
+          acc[field.fieldLabel] = ''
+          return acc
+        },
+        {} as Record<string, string>,
+      ),
+      email: '',
+      dni: '',
+    },
   })
 
   const updateUrlParams = (status: 'success' | 'error') => {
@@ -50,19 +56,17 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
     const fetchClientSecret = async () => {
       setLoading(true)
       try {
-        const formData = normaliceFormKeys(form.getValues())
         const { clientSecret: secret } = await createPaymentIntent(blockId)
         setClientSecret(secret)
       } catch (error) {
         console.error('Error fetching client secret:', error)
-        updateFormData({ error: 'Error al inicializar el pago.' })
       } finally {
         setLoading(false)
       }
     }
 
     fetchClientSecret()
-  }, [blockId, form, setLoading, updateFormData])
+  }, [blockId, setLoading])
 
   const onSubmit = async (values: FormDataTypes<typeof schema>, event: any) => {
     event.preventDefault()
@@ -83,6 +87,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       }
 
       const formData = normaliceFormKeys(values) //llamar a payload
+
       const result = await stripe.confirmPayment({
         elements,
         clientSecret,
@@ -98,6 +103,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       }
 
       // Éxito del pago
+      updateFormData(formData)
       console.log('Pago completado con éxito')
       toast.success('Pago completado con éxito')
       updateUrlParams('success')
@@ -128,19 +134,45 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
                   <FloatingLabelInput
                     label={field.fieldLabel}
                     className="h-12"
-                    type={field.fieldType === 'number' ? 'number' : 'text'}
+                    type={'text'}
                     {...formField}
                   />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
         ))}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field: formField }) => (
+            <FormItem className="w-full !ml-0">
+              <FormControl>
+                <FloatingLabelInput
+                  label="Correo Electrónico"
+                  className="h-12 "
+                  type="email"
+                  {...formField}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="dni"
+          render={({ field: formField }) => (
+            <FormItem className="w-full !ml-0">
+              <FormControl>
+                <FloatingLabelInput label="D.N.I" className="h-12 " type="text" {...formField} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </form>
       <div className="bg-gray-50 px-6 py-6 min-h-80 flex flex-col justify-between">
         <div className="relative w-full h-full mb-6">
-          {isLoading && <StripeSkeleton className="w-full absolute z-10 h-full" />}
+          {!clientSecret && <StripeSkeleton className="w-full absolute z-10 h-full" />}
           {clientSecret && (
             <PaymentElement
               onChange={(e) => {
@@ -151,6 +183,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
             />
           )}
         </div>
+        <StripeFormErrors form={form}></StripeFormErrors>
 
         <Button
           className="w-full flex items-center rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"

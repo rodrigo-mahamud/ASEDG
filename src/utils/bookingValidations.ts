@@ -18,7 +18,7 @@ const prohibitedDomains = [
 ]
 
 // Función para validar el DNI/NIE español
-function validateDNINIE(value: string): boolean {
+export function validateDNINIE(value: string): boolean {
   const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i
   const nieRegex = /^[XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/i
 
@@ -77,7 +77,7 @@ export const bookingSchema = z.object({
       (email) => !prohibitedDomains.some((domain) => email.toLowerCase().endsWith(`@${domain}`)),
       {
         message:
-          'Por favor, utiliza tu dirección de correo personal no se admiten mails temporales',
+          'Por favor, utiliza tu dirección de correo personal no se admiten emails temporales',
       },
     ),
   telefono: z.string().regex(/^(\+34|0034|34)?[6789]\d{8}$/, 'Número de teléfono español inválido'),
