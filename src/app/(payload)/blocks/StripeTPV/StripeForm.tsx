@@ -2,7 +2,7 @@
 
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { createPaymentIntent } from '@/utils/stripe/actions'
+import { createPaymentIntent, getCard } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/lib/button'
@@ -80,16 +80,13 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
     event.preventDefault()
 
     if (!stripe || !elements || !clientSecret) {
-      updateFormData({ error: 'La pasarela de pago no se ha cargado correctamente.' })
+      console.log('Error al cargar Stripe')
       return
     }
-
     setLoading(true)
-    updateFormData({ error: null })
 
     try {
       const stipreElements = await elements.submit()
-
       if (stipreElements.error) {
         throw new Error(stipreElements.error.message || 'Error al enviar los detalles de pago')
       }
@@ -115,10 +112,22 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
 
       // Éxito del pago
       updateFormData(formData)
-      console.log('Pago completado con éxito')
       toast.success('Pago completado con éxito')
       updateUrlParams('success')
       savePaidRecently()
+      if (result.paymentIntent && result.paymentIntent.payment_method) {
+        const cardResponse = await getCard(result.paymentIntent.payment_method as string)
+        if (cardResponse.success) {
+          updateFormData({ ...formData, cardInfo: cardResponse.cardInfo })
+        } else {
+          console.error('Error al obtener la información de la tarjeta:', cardResponse.error)
+        }
+      }
+      const transactionId = result.paymentIntent?.id
+      updateFormData({
+        ...formData,
+        transactionId: transactionId,
+      })
     } catch (err) {
       console.error(err)
       toast.error('Error al realizar el pago.')

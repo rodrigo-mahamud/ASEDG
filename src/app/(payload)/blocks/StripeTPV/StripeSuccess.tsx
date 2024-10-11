@@ -50,6 +50,8 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     // Eliminar todos los parámetros de la URL
     router.replace(pathname, { scroll: false })
   }
+
+  console.log(formData)
   return (
     <div className="relative w-full p-6">
       <div className=" flex flex-col gap-6 items-center">
@@ -66,21 +68,27 @@ const StripeSuccess = ({ stripeInfo }: any) => {
 
         <div className="rounded-md border border-border p-4 w-full flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Correo Electrónico</p>
-            <p className="text-sm text-muted-foreground">{formData.email}</p>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
+            <p className="text-sm font-normal text-muted-foreground">Cantidad:</p>
             <p className="text-sm text-muted-foreground">{stripeInfo.price}€</p>
           </div>
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Metodo de pago</p>
-            <p className="text-sm text-muted-foreground">Visa **** 1234</p>
+            <p className="text-sm font-normal text-muted-foreground">Correo Electrónico:</p>
+            <p className="text-sm text-muted-foreground">{formData.email}</p>
           </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Transaction ID</p>
-            <p className="text-sm text-muted-foreground">123456789</p>
-          </div>
+          {formData.cardInfo && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-normal text-muted-foreground">Metodo de pago:</p>
+              <p className="text-sm text-muted-foreground capitalize">
+                {formData.cardInfo.brand} **** {formData.cardInfo.last4}
+              </p>
+            </div>
+          )}
+          {formData.transactionId && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-normal text-muted-foreground">ID de la transacción:</p>
+              <p className="text-sm text-muted-foreground line-clamp-1">{formData.transactionId}</p>
+            </div>
+          )}
         </div>
         <Button
           className="w-full rounded-md py-3 h-auto text-white bg-secondaryAlt"

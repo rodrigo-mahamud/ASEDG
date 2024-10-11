@@ -24,9 +24,10 @@ import stripeState from '../../../../utils/stripe/stripeState'
 import { loadStripe } from '@stripe/stripe-js'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import StripeSuccess from './StripeSuccess'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { IconCreditCardPay } from '@tabler/icons-react'
 import StripeError from './StripeError'
+import { useRouter } from 'next/navigation'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
@@ -34,6 +35,8 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
   const [isMobile, setIsMobile] = useState(false)
   const params = useSearchParams()
   const status = params.get('paymentStatus')
+  const pathname = usePathname()
+  const router = useRouter()
   const checkIsMobile = () => {
     setIsMobile(window.innerWidth < 768)
   }
@@ -41,6 +44,7 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
     checkIsMobile()
     window.addEventListener('resize', checkIsMobile)
   }, [])
+
   const { formState, setFormState } = stripeState()
   return (
     <Elements
@@ -94,8 +98,20 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={formState === 'open'} onOpenChange={() => setFormState('closed')}>
-          <DialogContent className="p-0 overflow-hidden gap-0">
+        <Dialog
+          open={formState === 'open'}
+          onOpenChange={() => {
+            setFormState('closed'), router.replace(pathname, { scroll: false })
+          }}
+        >
+          <DialogContent
+            onInteractOutside={(e) => {
+              e.preventDefault()
+              setFormState('closed')
+              router.replace(pathname, { scroll: false })
+            }}
+            className="p-0 overflow-hidden gap-0"
+          >
             {status === 'success' ? (
               <StripeSuccess stripeInfo={stripeInfo} />
             ) : status === 'error' ? (

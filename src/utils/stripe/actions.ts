@@ -41,3 +41,27 @@ export async function createPaymentIntent(blockId: string) {
     throw new Error(`Internal Server Error: ${error}`)
   }
 }
+export async function getCard(methodId: string) {
+  try {
+    const paymentMethod = await stripe.paymentMethods.retrieve(methodId)
+
+    if (paymentMethod.type === 'card' && paymentMethod.card) {
+      const { last4, brand, exp_month, exp_year } = paymentMethod.card
+      return {
+        success: true,
+        cardInfo: { last4, brand, exp_month, exp_year },
+      }
+    } else {
+      return {
+        success: false,
+        error: 'No se encontró información de la tarjeta',
+      }
+    }
+  } catch (error) {
+    console.error('Error al recuperar la información de la tarjeta:', error)
+    return {
+      success: false,
+      error: 'Error al recuperar la información de la tarjeta',
+    }
+  }
+}
