@@ -40,7 +40,6 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     handleFiesta()
   }, [])
   const { setFormState, formData } = stripeState()
-  console.log(formData)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -51,7 +50,6 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     router.replace(pathname, { scroll: false })
   }
 
-  console.log(formData)
   return (
     <div className="relative w-full p-6">
       <div className=" flex flex-col gap-6 items-center">

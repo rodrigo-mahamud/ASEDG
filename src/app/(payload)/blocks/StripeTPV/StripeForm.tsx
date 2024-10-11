@@ -24,7 +24,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const stripe = useStripe()
   const elements = useElements()
-  const { formData, updateFormData, setLoading, isLoading } = stripeState()
+  const { formData, updateFormData, setLoading, isLoading, formState } = stripeState()
   const [isDisabled, setIsdisabled] = useState(true)
   const { schema, type } = createStripeForm(stripeInfo.stripefields)
   const searchParams = useSearchParams()
@@ -61,20 +61,19 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   }
 
   useEffect(() => {
-    const fetchClientSecret = async () => {
-      setLoading(true)
-      try {
-        const { clientSecret: secret } = await createPaymentIntent(blockId)
-        setClientSecret(secret)
-      } catch (error) {
-        console.error('Error fetching client secret:', error)
-      } finally {
-        setLoading(false)
+    if (formState === 'open') {
+      console.log('render')
+      const fetchClientSecret = async () => {
+        try {
+          const { clientSecret: secret } = await createPaymentIntent('67081a7aab6d060624d2ac62')
+          setClientSecret(secret)
+        } catch (error) {
+          console.error('Error fetching client secret:', error)
+        }
       }
+      fetchClientSecret()
     }
-
-    fetchClientSecret()
-  }, [blockId, setLoading])
+  }, [formState])
 
   const onSubmit = async (values: FormDataTypes<typeof schema>, event: any) => {
     event.preventDefault()
@@ -216,7 +215,12 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
           Icon={IconCreditCardPay}
           iconPlacement="right"
           iconClass="w-5 h-5"
-          disabled={isDisabled || isLoading || Object.keys(form.formState.errors).length > 0}
+          disabled={
+            isDisabled ||
+            isLoading ||
+            !clientSecret ||
+            Object.keys(form.formState.errors).length > 0
+          }
         >
           {isLoading ? (
             <Skeleton className="w-40 h-4 rounded-sm bg-indigo-300"></Skeleton>
