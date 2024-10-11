@@ -113,7 +113,7 @@ const StripeTPV: Block = {
           ],
         },
         {
-          name: 'file',
+          name: 'termsFile',
           type: 'upload',
           label: 'PDF Términos y condiciones',
           relationTo: 'media',

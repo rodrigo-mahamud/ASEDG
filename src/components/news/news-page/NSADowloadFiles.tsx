@@ -4,6 +4,7 @@ import { Button } from '../../lib/button'
 import { IconDownload } from '@tabler/icons-react'
 import { IconDisplay } from '../../IconDisplay'
 import { DownloadAttachmentsProps, FileAttachment } from '@/types/types'
+import downloadFiles from '@/utils/downloadFiles'
 
 const getFileIcon = (mimeType: string): string => {
   switch (true) {
@@ -37,22 +38,6 @@ function NSADownloadFiles({ attachments }: DownloadAttachmentsProps) {
     return null
   }
 
-  const handleDownload = (fileUrl: string, fileName: string): void => {
-    fetch(fileUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.style.display = 'none'
-        a.href = url
-        a.download = fileName
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(url)
-      })
-      .catch((error) => console.error('Error al descargar el archivo:', error))
-  }
-
   return (
     <div className="bg-secondary rounded-lg overflow-hidden border border-border">
       <h2 className="text-lg font-semibold pl-5 py-5">Archivos adjuntos</h2>
@@ -60,7 +45,7 @@ function NSADownloadFiles({ attachments }: DownloadAttachmentsProps) {
         <Button
           key={attachment.id}
           variant={'outline'}
-          onClick={() => handleDownload(attachment.file.url, attachment.file.filename)}
+          onClick={() => downloadFiles(attachment.file.url, attachment.file.filename)}
           className="justify-between flex items-center w-full bg-transparent border-x-0 border-b-0 p-5 h-fit hover:bg-border"
         >
           <div className="flex items-center w-4/5 overflow-hidden">

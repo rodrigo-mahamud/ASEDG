@@ -10,7 +10,6 @@ export default function StripePaymentComponent({
   buttonText,
   icon,
   id,
-  expiratedMsg,
 }: any) {
   const currentDate = new Date()
   const isExpired = new Date(stripeInfo.expirationDate) < currentDate
@@ -25,6 +24,7 @@ export default function StripePaymentComponent({
         cardIncluded={cardIncluded}
         buttonText={buttonText}
         expiratedMsg={stripeInfo.expiratedMsg}
+        termsFile={stripeInfo.termsFile}
         icon={icon}
         isExpired={isExpired}
       />

@@ -4,6 +4,9 @@ import DynamicIcon from '@/components/DynamicIcon'
 import StripeCardButton from './StripeCardButton'
 import BlurFade from '@/components/lib/blurFade'
 import { IconInfoCircle, IconLock, IconLockAccessOff } from '@tabler/icons-react'
+import { Button } from '@/components/lib/button'
+import downloadFiles from '@/utils/downloadFiles'
+import StripeTerms from './StripeTerms'
 
 export default function StripeCard({
   cardIncluded,
@@ -14,6 +17,7 @@ export default function StripeCard({
   isExpired,
   price,
   expiratedMsg,
+  termsFile,
 }: any) {
   return (
     <BlurFade delay={0.1} inView>
@@ -65,12 +69,11 @@ export default function StripeCard({
                     ></StripeCardButton>
                   </div>
                 </div>
-
-                <div className="mt-4 text-sm">
-                  <Link href="/" className="font-medium text-muted hover:text-gray-800 text-pretty">
-                    *Al realizar el pago aceptas los términos y condiciones
-                  </Link>
-                </div>
+                {termsFile && (
+                  <div className="mt-4 text-sm">
+                    <StripeTerms termsFile={termsFile}></StripeTerms>
+                  </div>
+                )}
               </>
             )}
           </div>
