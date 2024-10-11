@@ -1,6 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import convertToSubcurrency from '../convertToSubcurrency'
@@ -64,4 +63,14 @@ export async function getCard(methodId: string) {
       error: 'Error al recuperar la información de la tarjeta',
     }
   }
+}
+export async function addToPayload(formData: any) {
+  console.log(formData)
+
+  const payload = await getPayloadHMR({ config: configPromise })
+  const result = await payload.create({
+    collection: 'payments',
+    data: formData,
+  })
+  console.log(result)
 }

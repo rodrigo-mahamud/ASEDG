@@ -19,6 +19,8 @@ const prohibitedDomains = [
 ]
 export const createFormSchema = (fields: StripeField[]) => {
   const schemaFields: Record<string, z.ZodTypeAny> = {
+    name: z.string().min(2, { message: `Revisa Nombre, esta incompleto` }),
+    surname: z.string().min(2, { message: `Revisa Apellido, esta incompleto` }),
     email: z
       .string()
       .email('Correo electrónico inválido')

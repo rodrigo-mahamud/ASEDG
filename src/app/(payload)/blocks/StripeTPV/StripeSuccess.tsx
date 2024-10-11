@@ -49,6 +49,7 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     // Eliminar todos los parámetros de la URL
     router.replace(pathname, { scroll: false })
   }
+  console.log(formData)
 
   return (
     <div className="relative w-full p-6">
@@ -66,18 +67,24 @@ const StripeSuccess = ({ stripeInfo }: any) => {
 
         <div className="rounded-md border border-border p-4 w-full flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-normal text-muted-foreground">Cantidad:</p>
-            <p className="text-sm text-muted-foreground">{stripeInfo.price}€</p>
+            <p className="text-sm font-normal text-muted-foreground">Nombre y Apellidos:</p>
+            <p className="text-sm text-muted-foreground line-clamp-1">
+              {formData.name} {formData.surname}
+            </p>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm font-normal text-muted-foreground">Correo Electrónico:</p>
             <p className="text-sm text-muted-foreground">{formData.email}</p>
           </div>
-          {formData.cardInfo && (
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-normal text-muted-foreground">Cantidad:</p>
+            <p className="text-sm text-muted-foreground">{stripeInfo.price}€</p>
+          </div>
+          {formData.cardBrand && formData.cardNumbrer && (
             <div className="flex items-center justify-between">
               <p className="text-sm font-normal text-muted-foreground">Metodo de pago:</p>
               <p className="text-sm text-muted-foreground capitalize">
-                {formData.cardInfo.brand} **** {formData.cardInfo.last4}
+                {formData.cardBrand} {formData.cardNumbrer}
               </p>
             </div>
           )}

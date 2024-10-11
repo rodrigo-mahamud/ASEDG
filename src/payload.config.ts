@@ -17,13 +17,14 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { stripePlugin } from '@payloadcms/plugin-stripe'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import Categorias from './app/(payload)/collections/Categorias'
 import News from './app/(payload)/collections/News'
 import Media from './app/(payload)/collections/Media'
 import Pages from './app/(payload)/collections/Pages'
 import Users from './app/(payload)/collections/Users'
-import { stripePlugin } from '@payloadcms/plugin-stripe'
-import { seoPlugin } from '@payloadcms/plugin-seo'
+import Payments from './app/(payload)/collections/Payments'
 import Settings from './app/(payload)/globals/Settings'
 import Header from './app/(payload)/globals/Header'
 import Facilities from './app/(payload)/collections/Facilities'
@@ -35,7 +36,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  collections: [Users, Pages, Media, News, Facilities, Sports, Categorias],
+  collections: [Users, Pages, Media, News, Facilities, Sports, Categorias, Payments],
   globals: [Settings, Header],
   upload: {
     limits: {

@@ -62,6 +62,10 @@ const StripeTPV: Block = {
       type: 'group',
       name: 'stripeInfo',
       label: 'Formulario de pago',
+      admin: {
+        description:
+          'IMPORTANTE: Por defecto en el formulario aparecerán los campos: Nombre, Apellidos, DNI y Correo electrónico.',
+      },
       fields: [
         {
           type: 'row',

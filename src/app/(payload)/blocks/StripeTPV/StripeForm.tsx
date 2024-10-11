@@ -2,7 +2,7 @@
 
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { createPaymentIntent, getCard } from '@/utils/stripe/actions'
+import { addToPayload, createPaymentIntent, getCard } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/lib/button'
@@ -19,6 +19,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import StripeSkeleton from './StripeSkeleton'
 import StripeFormErrors from './StripeFormErrors'
 import { Skeleton } from '@/components/lib/skeleton'
+import { date } from 'zod'
 
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -42,6 +43,8 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
         },
         {} as Record<string, string>,
       ),
+      name: '',
+      surname: '',
       email: '',
       dni: '',
     },
@@ -90,7 +93,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
         throw new Error(stipreElements.error.message || 'Error al enviar los detalles de pago')
       }
 
-      const formData = normaliceFormKeys(values) //llamar a payload
+      const formData = normaliceFormKeys(values)
 
       const result = await stripe.confirmPayment({
         elements,
@@ -110,23 +113,38 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       }
 
       // Éxito del pago
-      updateFormData(formData)
-      toast.success('Pago completado con éxito')
-      updateUrlParams('success')
-      savePaidRecently()
+      let cardInfo = null
+      const transactionId = result.paymentIntent?.id || ' '
+      const paymentDate = result.paymentIntent?.created || Math.floor(Date.now() / 1000)
+      const formatDate = (unixTimestamp: number): string => {
+        const date = new Date(unixTimestamp * 1000)
+        return date.toISOString()
+      }
       if (result.paymentIntent && result.paymentIntent.payment_method) {
         const cardResponse = await getCard(result.paymentIntent.payment_method as string)
         if (cardResponse.success) {
-          updateFormData({ ...formData, cardInfo: cardResponse.cardInfo })
+          cardInfo = cardResponse.cardInfo
         } else {
           console.error('Error al obtener la información de la tarjeta:', cardResponse.error)
         }
       }
-      const transactionId = result.paymentIntent?.id
-      updateFormData({
+
+      const transactionData = {
         ...formData,
-        transactionId: transactionId,
-      })
+        transactionId,
+        cardBrand: cardInfo?.brand,
+        cardExpDate: `${cardInfo?.exp_month}/${cardInfo?.exp_year}`,
+        cardNumbrer: `****${cardInfo?.last4}`,
+        date: formatDate(paymentDate),
+        paymentStatus: 'completed',
+        amount: result.paymentIntent?.amount,
+        currency: 'eur',
+      }
+      updateFormData(transactionData)
+      await addToPayload(transactionData)
+      toast.success('Pago completado con éxito')
+      updateUrlParams('success')
+      savePaidRecently()
     } catch (err) {
       console.error(err)
       toast.error('Error al realizar el pago.')
@@ -142,6 +160,61 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 flex flex-wrap space-x-4 p-6"
       >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field: formField }) => (
+            <FormItem className="flex-1 !mt-0 ">
+              <FormControl>
+                <FloatingLabelInput label="Nombre" className="h-12 " type="text" {...formField} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="surname"
+          render={({ field: formField }) => (
+            <FormItem className="flex-1 !mt-0 ">
+              <FormControl>
+                <FloatingLabelInput
+                  label="Apellidos"
+                  className="h-12 "
+                  type="text"
+                  {...formField}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="dni"
+          render={({ field: formField }) => (
+            <FormItem className="w-full !ml-0">
+              <FormControl>
+                <FloatingLabelInput label="D.N.I" className="h-12 " type="text" {...formField} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field: formField }) => (
+            <FormItem className="w-full !ml-0">
+              <FormControl>
+                <FloatingLabelInput
+                  label="Correo Electrónico"
+                  className="h-12 "
+                  type="email"
+                  {...formField}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         {stripeInfo.stripefields.map((field, index) => (
           <FormField
             key={index}
@@ -161,33 +234,6 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
             )}
           />
         ))}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field: formField }) => (
-            <FormItem className="w-full !ml-0">
-              <FormControl>
-                <FloatingLabelInput
-                  label="Correo Electrónico"
-                  className="h-12 "
-                  type="email"
-                  {...formField}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="dni"
-          render={({ field: formField }) => (
-            <FormItem className="w-full !ml-0">
-              <FormControl>
-                <FloatingLabelInput label="D.N.I" className="h-12 " type="text" {...formField} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
       </form>
       <div className="bg-gray-50 px-6 py-6 min-h-80 flex flex-col justify-between">
         <div className="relative w-full h-full mb-6">
