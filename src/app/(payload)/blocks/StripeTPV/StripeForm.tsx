@@ -2,7 +2,7 @@
 
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
-import { addToPayload, createPaymentIntent, getCard } from '@/utils/stripe/actions'
+import { addToPayload, createPaymentIntent, getCard, sendTPVEmail } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/lib/button'
@@ -142,6 +142,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       }
       updateFormData(transactionData)
       await addToPayload(transactionData)
+      await sendTPVEmail(transactionData)
       toast.success('Pago completado con éxito')
       updateUrlParams('success')
       savePaidRecently()

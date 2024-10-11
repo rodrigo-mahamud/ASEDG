@@ -3,6 +3,8 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import convertToSubcurrency from '../convertToSubcurrency'
+import StripeTPVEmail from '@/emails/StripeTPVEmail'
+import { render } from '@react-email/components'
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 export async function createPaymentIntent(blockId: string) {
@@ -73,4 +75,30 @@ export async function addToPayload(formData: any) {
     data: formData,
   })
   console.log(result)
+}
+export async function sendTPVEmail(formData: any) {
+  try {
+    let emailHtml: string
+    let subject: string
+
+    emailHtml = render(
+      StripeTPVEmail({
+        nombre: formData.name,
+      }),
+    )
+    subject = 'Registro exitoso en el gimnasio.'
+
+    const payload = await getPayloadHMR({ config: configPromise })
+
+    await payload.sendEmail({
+      to: formData.email,
+      subject: subject,
+      html: emailHtml,
+    })
+
+    console.log('Correo electrónico enviado con éxito')
+  } catch (emailError) {
+    console.error('Error al enviar el correo electrónico:', emailError)
+    throw new Error('Failed to send email')
+  }
 }
