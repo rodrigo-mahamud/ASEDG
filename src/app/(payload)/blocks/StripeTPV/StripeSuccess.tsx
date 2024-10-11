@@ -7,7 +7,7 @@ import stripeState from '@/utils/stripe/stripeState'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const StripeSuccess = ({ stripeInfo }: any) => {
-  const handleClick = () => {
+  const handleFiesta = () => {
     const duration = 3.5 * 1000
     const animationEnd = Date.now() + duration
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
@@ -37,7 +37,7 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     }, 250)
   }
   useEffect(() => {
-    handleClick()
+    handleFiesta()
   }, [])
   const { setFormState, formData } = stripeState()
   console.log(formData)
@@ -60,7 +60,7 @@ const StripeSuccess = ({ stripeInfo }: any) => {
 
           <h3 className="font-bold text-3xl">¡Pago exsitoso!</h3>
           <h4 className=" text-base text-pretty text-center text-muted-foreground">
-            Thank you for your payment. Your transaction was completed successfully.
+            {stripeInfo.successMsg}
           </h4>
         </div>
 

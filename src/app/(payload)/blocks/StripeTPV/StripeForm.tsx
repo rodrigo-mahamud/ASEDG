@@ -12,12 +12,13 @@ import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { createStripeForm, FormDataTypes } from '@/utils/stripe/validateForm'
 import { StripeFormProps } from '@/types/types-stripe'
 import stripeState from '@/utils/stripe/stripeState'
-import { IconCreditCardPay } from '@tabler/icons-react'
+import { IconCreditCardPay, IconRefresh } from '@tabler/icons-react'
 import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
 import StripeSkeleton from './StripeSkeleton'
 import StripeFormErrors from './StripeFormErrors'
+import { Skeleton } from '@/components/lib/skeleton'
 
 function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -32,7 +33,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
 
   const form = useForm<typeof type>({
     resolver: zodResolver(schema),
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       ...stripeInfo.stripefields.reduce(
         (acc, field) => {
@@ -45,6 +46,13 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       dni: '',
     },
   })
+  const savePaidRecently = () => {
+    const paidRecentlyData = {
+      timestamp: new Date().getTime(),
+      url: window.location.href,
+    }
+    localStorage.setItem('paidRecently', JSON.stringify(paidRecentlyData))
+  }
 
   const updateUrlParams = (status: 'success' | 'error') => {
     const params = new URLSearchParams(searchParams.toString())
@@ -99,7 +107,10 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || 'Error en el pago')
+        console.error(result.error.message || 'Error en el pago')
+        updateUrlParams('error')
+        toast.error('Error al realizar el pago.')
+        setLoading(false)
       }
 
       // Éxito del pago
@@ -107,11 +118,11 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       console.log('Pago completado con éxito')
       toast.success('Pago completado con éxito')
       updateUrlParams('success')
+      savePaidRecently()
     } catch (err) {
       console.error(err)
       toast.error('Error al realizar el pago.')
       updateUrlParams('error')
-    } finally {
       setLoading(false)
     }
   }
@@ -196,9 +207,13 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
           Icon={IconCreditCardPay}
           iconPlacement="right"
           iconClass="w-5 h-5"
-          disabled={isDisabled}
+          disabled={isDisabled || isLoading || Object.keys(form.formState.errors).length > 0}
         >
-          <span className="leading-[0]">Pagar {stripeInfo.price}€</span>
+          {isLoading ? (
+            <Skeleton className="w-40 h-4 rounded-sm bg-indigo-300"></Skeleton>
+          ) : (
+            <span className="text-base">Pagar {stripeInfo.price}€</span>
+          )}
         </Button>
       </div>
       {formData.error && (

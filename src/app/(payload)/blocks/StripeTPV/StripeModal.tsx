@@ -26,6 +26,7 @@ import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import StripeSuccess from './StripeSuccess'
 import { useSearchParams } from 'next/navigation'
 import { IconCreditCardPay } from '@tabler/icons-react'
+import StripeError from './StripeError'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
@@ -96,7 +97,9 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
         <Dialog open={formState === 'open'} onOpenChange={() => setFormState('closed')}>
           <DialogContent className="p-0 overflow-hidden gap-0">
             {status === 'success' ? (
-              <StripeSuccess stripeInfo={stripeInfo}></StripeSuccess>
+              <StripeSuccess stripeInfo={stripeInfo} />
+            ) : status === 'error' ? (
+              <StripeError stripeInfo={stripeInfo} />
             ) : (
               <>
                 <DialogHeader className="px-6 pt-6">

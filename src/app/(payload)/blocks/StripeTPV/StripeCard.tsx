@@ -7,6 +7,7 @@ import { IconInfoCircle, IconLock, IconLockAccessOff } from '@tabler/icons-react
 import { Button } from '@/components/lib/button'
 import downloadFiles from '@/utils/downloadFiles'
 import StripeTerms from './StripeTerms'
+import StripeRecently from './StripeRecently'
 
 export default function StripeCard({
   cardIncluded,
@@ -17,6 +18,7 @@ export default function StripeCard({
   isExpired,
   price,
   expiratedMsg,
+  errorMsg,
   termsFile,
 }: any) {
   return (
@@ -45,7 +47,7 @@ export default function StripeCard({
               </ul>
             </div>
           </div>
-          <div className="px-6 relative w-2/6 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
+          <div className="px-6 relative w-2/6 gap-4 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
             {isExpired ? (
               <div className="flex flex-col gap-6 justify-center items-center">
                 <div className="bg-indigo-100 p-4 w-fit rounded-full">
@@ -57,23 +59,21 @@ export default function StripeCard({
               </div>
             ) : (
               <>
-                <div className="flex items-center justify-center mt-4 text-5xl font-extrabold text-gray-900">
+                <div className="flex items-center justify-center">
+                  <StripeRecently></StripeRecently>
+                </div>
+                <div className="flex items-center justify-center text-5xl font-extrabold text-gray-900">
                   <span>{price}€</span>
                 </div>
-                <div className="mt-6">
-                  <div className="rounded-md shadow">
-                    <StripeCardButton
-                      buttonText={buttonText}
-                      icon={icon}
-                      isExpired={isExpired}
-                    ></StripeCardButton>
-                  </div>
+
+                <div className="rounded-md shadow">
+                  <StripeCardButton
+                    buttonText={buttonText}
+                    icon={icon}
+                    isExpired={isExpired}
+                  ></StripeCardButton>
                 </div>
-                {termsFile && (
-                  <div className="mt-4 text-sm">
-                    <StripeTerms termsFile={termsFile}></StripeTerms>
-                  </div>
-                )}
+                {termsFile && <StripeTerms termsFile={termsFile}></StripeTerms>}
               </>
             )}
           </div>

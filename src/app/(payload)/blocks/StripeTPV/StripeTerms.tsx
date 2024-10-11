@@ -8,7 +8,7 @@ export default function StripeTerms({ termsFile }: any) {
     <button
       key={termsFile.id}
       onClick={() => downloadFiles(termsFile.url, termsFile.filename)}
-      className="w-full text-muted-foreground hover:text-gray-900 ease-in-out transition-generic"
+      className="w-full text-sm text-muted-foreground hover:text-gray-900 transition-generic"
     >
       *Al realizar el pago aceptas los términos y condiciones
     </button>
