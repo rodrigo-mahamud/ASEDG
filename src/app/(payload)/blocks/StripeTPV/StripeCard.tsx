@@ -3,6 +3,7 @@ import Link from 'next/link'
 import DynamicIcon from '@/components/DynamicIcon'
 import StripeCardButton from './StripeCardButton'
 import BlurFade from '@/components/lib/blurFade'
+import { IconInfoCircle, IconLock, IconLockAccessOff } from '@tabler/icons-react'
 
 export default function StripeCard({
   cardIncluded,
@@ -12,6 +13,7 @@ export default function StripeCard({
   icon,
   isExpired,
   price,
+  expiratedMsg,
 }: any) {
   return (
     <BlurFade delay={0.1} inView>
@@ -39,27 +41,38 @@ export default function StripeCard({
               </ul>
             </div>
           </div>
-          <div className="px-6 w-2/6 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
-            <div className="flex items-center justify-center mt-4 text-5xl font-extrabold text-gray-900">
-              <span>{price}€</span>
-            </div>
-            <div className="mt-6">
-              <div className="rounded-md shadow">
-                <StripeCardButton
-                  buttonText={buttonText}
-                  icon={icon}
-                  isExpired={isExpired}
-                ></StripeCardButton>
+          <div className="px-6 relative w-2/6 py-8 text-center bg-gray-50 lg:flex-shrink-0 lg:flex lg:flex-col lg:justify-center lg:p-12">
+            {isExpired ? (
+              <div className="flex flex-col gap-6 justify-center items-center">
+                <div className="bg-indigo-100 p-4 w-fit rounded-full">
+                  <IconLock className="w-10 h-10 text-primary"></IconLock>
+                </div>
+                <div className="flex items-center justify-center mt-4 text-2xl font-semibold text-gray-900">
+                  <span className="line-clamp-2">{expiratedMsg}</span>
+                </div>
               </div>
-            </div>
-            {isExpired && (
-              <p className="mt-2 text-sm text-red-600">Plazo de inscripción finalizado</p>
+            ) : (
+              <>
+                <div className="flex items-center justify-center mt-4 text-5xl font-extrabold text-gray-900">
+                  <span>{price}€</span>
+                </div>
+                <div className="mt-6">
+                  <div className="rounded-md shadow">
+                    <StripeCardButton
+                      buttonText={buttonText}
+                      icon={icon}
+                      isExpired={isExpired}
+                    ></StripeCardButton>
+                  </div>
+                </div>
+
+                <div className="mt-4 text-sm">
+                  <Link href="/" className="font-medium text-muted hover:text-gray-800 text-pretty">
+                    *Al realizar el pago aceptas los términos y condiciones
+                  </Link>
+                </div>
+              </>
             )}
-            <div className="mt-4 text-sm">
-              <Link href="/" className="font-medium text-muted hover:text-gray-800 text-pretty">
-                *Al realizar el pago aceptas los términos y condiciones
-              </Link>
-            </div>
           </div>
         </div>
       </div>

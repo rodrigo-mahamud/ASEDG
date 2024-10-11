@@ -87,6 +87,12 @@ const StripeTPV: Block = {
               },
               required: true,
             },
+            {
+              type: 'text',
+              name: 'expiratedMsg',
+              label: 'Mensaje fuera de plazo',
+              required: true,
+            },
           ],
         },
         {
