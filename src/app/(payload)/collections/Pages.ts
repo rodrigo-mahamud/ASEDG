@@ -26,6 +26,16 @@ const Pages: CollectionConfig = {
       },
     },
   },
+  hooks: {
+    beforeChange: [
+      (args) => {
+        const stripeTPV = args.data.body.layout.blockType
+        if (stripeTPV > 1) {
+          return `Solamente puedes añadir un TPV por página.`
+        }
+      },
+    ],
+  },
   admin: {
     useAsTitle: 'adminPanelTitle',
     preview: (doc) => {
@@ -42,15 +52,6 @@ const Pages: CollectionConfig = {
       type: 'text',
       admin: {
         hidden: true,
-      },
-      hooks: {
-        beforeChange: [
-          ({ data }) => {
-            if (data) {
-              return data.header?.title || ''
-            }
-          },
-        ],
       },
     },
     {
@@ -185,6 +186,7 @@ const Pages: CollectionConfig = {
               name: 'description',
               label: 'Descripción',
               type: 'textarea',
+
               admin: {
                 width: '100%',
               },
@@ -213,6 +215,7 @@ const Pages: CollectionConfig = {
                 singular: 'Seccion',
                 plural: 'Secciones',
               },
+
               type: 'blocks',
               blocks: [
                 TabsBlock,
@@ -227,6 +230,18 @@ const Pages: CollectionConfig = {
                 StickyTextImages,
                 StripeTPV,
               ],
+              validate: async (value, { data }: any) => {
+                if (data && data.body && Array.isArray(data.body.layout)) {
+                  const stripeTpvCount = data.body.layout.filter((block: any) => {
+                    return block.blockType.toLowerCase() === 'stripetpv'
+                  }).length
+
+                  if (stripeTpvCount > 1) {
+                    return 'Solo se permite un bloque StripeTPV por página.'
+                  }
+                }
+                return true
+              },
             },
           ],
         },
@@ -250,6 +265,7 @@ const Pages: CollectionConfig = {
         position: 'sidebar',
         readOnly: true, // Siempre será de solo lectura en la interfaz de administración
       },
+
       hooks: {
         beforeValidate: [
           (args) => {
