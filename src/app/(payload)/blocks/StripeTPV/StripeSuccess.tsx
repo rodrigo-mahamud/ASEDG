@@ -49,7 +49,6 @@ const StripeSuccess = ({ stripeInfo }: any) => {
     // Eliminar todos los parámetros de la URL
     router.replace(pathname, { scroll: false })
   }
-  console.log(formData)
 
   return (
     <div className="relative w-full p-6">

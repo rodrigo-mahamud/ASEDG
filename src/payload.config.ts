@@ -19,6 +19,9 @@ import sharp from 'sharp'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { stripePlugin } from '@payloadcms/plugin-stripe'
 import { seoPlugin } from '@payloadcms/plugin-seo'
+import { en } from '@payloadcms/translations/languages/en'
+import { es } from '@payloadcms/translations/languages/es'
+
 import Categorias from './app/(payload)/collections/Categorias'
 import News from './app/(payload)/collections/News'
 import Media from './app/(payload)/collections/Media'
@@ -140,6 +143,9 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
+  i18n: {
+    supportedLanguages: { en, es },
+  },
   plugins: [
     seoPlugin({
       collections: ['pages', 'news'],
