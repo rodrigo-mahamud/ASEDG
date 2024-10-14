@@ -31,16 +31,16 @@ export async function generateMetadata() {
   const settings = await getSettings()
 
   return {
-    title: seoData.title,
+    title: seoData.title || settings.defaultTitle || ' ',
     description: seoData.description,
     icons: {
       icon: [
         {
-          url: settings.faviconLight.url || ' ',
+          url: settings.faviconLight ? settings.faviconLight.url : '/faviconPlaceholder.png',
           media: '(prefers-color-scheme: light)',
         },
         {
-          url: settings.faviconDark.url || ' ',
+          url: settings.faviconDark ? settings.faviconDark.url : '/faviconPlaceholder.png',
           media: '(prefers-color-scheme: dark)',
         },
       ],
@@ -95,7 +95,7 @@ export default async function singleNewPage({ params }: NewsPageProps) {
             ''
           )}
         </Container>
-        <NewsRelated newsRelated={page.newsRelated} />
+        {page.newsRelated && <NewsRelated newsRelated={page.newsRelated} />}
       </main>
       <Toaster />
     </>

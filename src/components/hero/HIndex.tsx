@@ -36,7 +36,7 @@ export default function HIndex({ data }: IndexHeroTypes) {
             </BlurFade>
           </div>
         </Container>
-        <HICarrousel data={data.newsFour} />
+        {data.newsFour && <HICarrousel data={data.newsFour} />}
         <AnimatedGridPattern
           numSquares={30}
           maxOpacity={0.1}

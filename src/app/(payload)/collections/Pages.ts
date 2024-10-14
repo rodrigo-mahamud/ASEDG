@@ -26,16 +26,6 @@ const Pages: CollectionConfig = {
       },
     },
   },
-  hooks: {
-    beforeChange: [
-      (args) => {
-        const stripeTPV = args.data.body.layout.blockType
-        if (stripeTPV > 1) {
-          return `Solamente puedes añadir un TPV por página.`
-        }
-      },
-    ],
-  },
   admin: {
     useAsTitle: 'adminPanelTitle',
     preview: (doc) => {
@@ -156,7 +146,7 @@ const Pages: CollectionConfig = {
                         'instalaciones deportivas san esteban de gormaz',
                         'instalaciones-deportivas-san-esteban-de-gormaz',
                       ]
-                      if (forbiddenTitles.includes(value.toLowerCase().trim())) {
+                      if (value && forbiddenTitles.includes(value.toLowerCase().trim())) {
                         return 'Este título está reservado y no puede ser utilizado.'
                       }
                     }

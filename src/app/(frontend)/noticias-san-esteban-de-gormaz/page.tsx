@@ -41,11 +41,11 @@ export async function generateMetadata() {
     icons: {
       icon: [
         {
-          url: settings.faviconLight.url || ' ',
+          url: settings.faviconLight ? settings.faviconLight.url : '/faviconPlaceholder.png',
           media: '(prefers-color-scheme: light)',
         },
         {
-          url: settings.faviconDark.url || ' ',
+          url: settings.faviconDark ? settings.faviconDark.url : '/faviconPlaceholder.png',
           media: '(prefers-color-scheme: dark)',
         },
       ],
