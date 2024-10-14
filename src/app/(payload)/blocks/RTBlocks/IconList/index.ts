@@ -26,7 +26,7 @@ const IconList: Block = {
     {
       name: 'list',
       type: 'array',
-      maxRows: 3,
+      maxRows: 9,
       label: ' ',
       admin: {
         initCollapsed: true,

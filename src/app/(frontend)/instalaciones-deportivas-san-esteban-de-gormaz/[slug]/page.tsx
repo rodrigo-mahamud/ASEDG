@@ -4,9 +4,12 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import { Toaster } from 'sonner'
 import ImagesMasonry from '@/components/ImagesMasonry'
-import BookingSection from '@/components/BookingSection'
 import Container from '@/components/Container'
 import { Facility } from '@/payload-types'
+import FacilitieInfo from '@/components/facilities/FacilitieInfo'
+import BookingSticky from '@/components/BookingSticky'
+import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
+import { Separator } from '@/components/lib/separator'
 
 type PageProps = {
   params: { slug: string }
@@ -92,7 +95,12 @@ export default async function BookingPage({ params }: PageProps) {
       <Toaster />
       <Container>
         <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />
-        <BookingSection data={page}></BookingSection>
+        <div className="w-full flex gap-24 relative my-12">
+          <FacilitieInfo data={page}></FacilitieInfo>
+          <BookingSticky data={page.bookingOptions}></BookingSticky>
+        </div>
+        <Separator></Separator>
+        <FacilitieLocationMap></FacilitieLocationMap>
       </Container>
     </main>
   )

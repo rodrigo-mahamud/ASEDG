@@ -1,12 +1,7 @@
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import config from '@payload-config'
-import { RefreshRouteOnSave } from '@/components/RefreshRouteOnSave'
-import RenderBlocks from '@/components/RenderBlocks'
-import Hero from '@/components/hero/Hero'
 import { Toaster } from 'sonner'
 import { notFound } from 'next/navigation'
-import { Alert } from '@/components/lib/alert'
-import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react'
 import NewsHeader from '@/components/news/news-page/NewsHeader'
 import Container from '@/components/Container'
 import RichTextParser from '@/utils/richTextParser'
@@ -34,6 +29,8 @@ export default async function PreviewPage({ params }: { params: { id: string } }
     return hasAttachments || hasH2Tags
   }
   const shouldShowAside = hasAsides(page)
+  console.log(page)
+
   return (
     <>
       <NewsHeader data={page} />
@@ -50,7 +47,7 @@ export default async function PreviewPage({ params }: { params: { id: string } }
             ''
           )}
         </Container>
-        {page.newsRelated && <NewsRelated newsRelated={page.newsRelated} />}
+        {page.newsRelated ? <NewsRelated newsRelated={page.newsRelated} /> : ''}
       </main>
       <Toaster />
     </>

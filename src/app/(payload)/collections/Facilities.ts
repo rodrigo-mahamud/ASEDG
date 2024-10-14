@@ -88,9 +88,9 @@ const Facilities: CollectionConfig = {
       ],
     },
     {
-      name: 'summary',
+      name: 'description',
       type: 'textarea',
-      label: 'Resumen',
+      label: 'Descripción',
       required: true,
     },
     {
@@ -138,6 +138,11 @@ const Facilities: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    {
+      name: 'richtxtcontent',
+      label: 'Contenido de la noticia:',
+      type: 'richText',
     },
     {
       name: 'bookingOptions',

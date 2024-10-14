@@ -54,7 +54,7 @@ export default function BookingSticky({ data }: any) {
   }
 
   return (
-    <aside className=" bg-white p-5 w-2/6 sticky top-28 rounded-lg h-fit shadow-lg">
+    <aside className=" bg-white p-5 w-[35%] sticky top-28 rounded-lg h-fit shadow-lg">
       {formState !== 'success' && (
         <>
           <h2 className="text-xl font-semibold "> Reservar gimnasio municipal</h2>

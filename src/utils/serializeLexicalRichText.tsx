@@ -232,6 +232,12 @@ const SerializeLexicalRichText: React.FC<SerializeProps> = ({ children, parentNo
             }
             return <IconList block={node.fields}></IconList>
           }
+        case 'horizontalrule':
+          return (
+            <div className="py-4">
+              <hr className="border-border border"></hr>
+            </div>
+          )
         default:
           return null
       }
