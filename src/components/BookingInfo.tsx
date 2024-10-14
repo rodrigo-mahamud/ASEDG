@@ -4,7 +4,7 @@ import React from 'react'
 export default function BookingInfo() {
   return (
     <div className="w-4/6">
-      <div className="flex flex-col p-8 rounded-lg btnShadow">
+      <div className="flex flex-col p-8 rounded-lg">
         <h1 className="text-2xl font-cal">Gimnasio Municipal</h1>
         <div className="flex">
           <IconMapPinExclamation></IconMapPinExclamation> Centro juvenil san esteban de gormaz

@@ -5,7 +5,7 @@ import BookingInfo from './BookingInfo'
 
 export default function BookingSection({ data }: any) {
   return (
-    <div className="w-full flex gap-9 relative mt-8">
+    <div className="w-full flex gap-10 relative mt-10">
       <BookingInfo></BookingInfo>
       <BookingSticky data={data.bookingOptions}></BookingSticky>
     </div>

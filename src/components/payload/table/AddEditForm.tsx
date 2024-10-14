@@ -36,12 +36,14 @@ const AddEditForm = React.memo(function AddEditForm() {
     try {
       setIsLoading((prevState) => ({ ...prevState, periods: true }))
       const data = await getPayload()
-      form.setValue('schedule_id', data.regularSchedule.scheduleID)
+      form.setValue('schedule_id', data?.regularSchedule?.scheduleID)
       setData(data)
     } catch (err) {
       console.error('Error fetching periods:', err)
-      toast.error('Error al consultar los horarios de la instalación')
-      setError('Error al consultar los horarios de la instalación')
+      toast.error('Error al consultar los horarios de la instalación.')
+      setError(
+        'Error al consultar los horarios de la instalación, recuerda que la instalación debe tener horario de apertura configurado, para ello ve a instalacciones > selecciona la instalaccion > horario de apertura',
+      )
     } finally {
       setIsLoading((prevState) => ({ ...prevState, periods: false }))
     }

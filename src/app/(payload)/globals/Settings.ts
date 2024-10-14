@@ -53,7 +53,7 @@ const Settings: GlobalConfig = {
       relationTo: 'media',
       label: 'Icono del sitio - modo claro',
       validate: validateImageDimensions,
-      required: true,
+      required: false,
       admin: {
         description:
           'Para dispositivos con el navegador en modo claro. Debe ser una imagen PNG de 195x195 píxeles.',
@@ -65,7 +65,7 @@ const Settings: GlobalConfig = {
       relationTo: 'media',
       label: 'Icono del sitio - modo oscuro',
       validate: validateImageDimensions,
-      required: true,
+      required: false,
       admin: {
         description:
           'Para dispositivos con el navegador en modo oscuro. Debe ser una imagen PNG de 195x195 píxeles.',
@@ -76,7 +76,7 @@ const Settings: GlobalConfig = {
       type: 'upload',
       relationTo: 'media',
       label: 'Imagen por defecto del sitio.',
-      required: true,
+      required: false,
     },
   ],
 }

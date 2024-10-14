@@ -8,6 +8,8 @@ import {
   editHolidayGroup,
   editSchedule,
 } from '@/utils/dashboard/actions'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
 
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },
@@ -30,10 +32,60 @@ const Facilities: CollectionConfig = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      label: 'Título',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Título',
+          required: true,
+        },
+        {
+          name: 'facilitieType',
+          label: 'Tipo de instalacción',
+          type: 'select',
+          options: [
+            {
+              label: 'Gimnasio Municipal',
+              value: 'gym',
+            },
+            {
+              label: 'Polideportivo',
+              value: 'sportsCenter',
+            },
+            {
+              label: 'Pista de padel',
+              value: 'padelField',
+            },
+          ],
+          defaultValue: 'gym',
+          required: true,
+          validate: async (value: any) => {
+            const payload = await getPayloadHMR({ config: configPromise })
+
+            const existingPage = await payload.find({
+              collection: 'pages',
+              where: {
+                'header.pagetype': {
+                  equals: 'newsPage',
+                },
+              },
+            })
+
+            if (existingPage.totalDocs > 1 && value === 'gym') {
+              return `Ya existe una instalacion de tipo gimnasio, solo puede haber una instalaccion de este tipo.`
+            }
+            if (existingPage.totalDocs > 1 && value === 'sportsCenter') {
+              return `Ya existe una instalacion de tipo polideportivo, solo puede haber una instalaccion de este tipo.`
+            }
+            if (existingPage.totalDocs > 1 && value === 'padelField') {
+              return `Ya existe una instalacion de tipo padel, solo puede haber una instalaccion de este tipo.`
+            }
+
+            return true
+          },
+        },
+      ],
     },
     {
       name: 'summary',
@@ -42,19 +94,48 @@ const Facilities: CollectionConfig = {
       required: true,
     },
     {
-      name: 'images',
-      type: 'array',
-      label: 'Imágenes cabecera.',
+      type: 'group',
+      name: 'facilitieImages',
+      label: 'Imágnes de la instalacción',
       admin: {
-        initCollapsed: true,
+        className: 'masonry-image-group',
+        condition: (data) => data.style === 'masonry',
       },
-      maxRows: 5,
       fields: [
         {
-          name: 'image',
+          name: 'facilitieImage1',
           type: 'upload',
+          label: '',
           relationTo: 'media',
-          label: 'Imagen',
+          required: true,
+        },
+        {
+          name: 'facilitieImage2',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'facilitieImage3',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'facilitieImage4',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'facilitieImage5',
+          type: 'upload',
+          label: '',
+          relationTo: 'media',
+          required: true,
         },
       ],
     },

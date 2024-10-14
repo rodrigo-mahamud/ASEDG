@@ -19,6 +19,10 @@ import { getPayloadHMR } from '@payloadcms/next/utilities'
 
 const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: 'Página',
+    plural: 'Páginas',
+  },
   versions: {
     drafts: {
       autosave: {
@@ -42,6 +46,17 @@ const Pages: CollectionConfig = {
       type: 'text',
       admin: {
         hidden: true,
+      },
+      hooks: {
+        beforeChange: [
+          ({ data }) => {
+            if (data && data.header.title) {
+              return data.header.title
+            } else {
+              return ' '
+            }
+          },
+        ],
       },
     },
     {
