@@ -21,7 +21,7 @@ import StripeFormErrors from './StripeFormErrors'
 import { Skeleton } from '@/components/lib/skeleton'
 import { date } from 'zod'
 
-function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
+function StripeForm({ stripeInfo, cardTitle, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const stripe = useStripe()
   const elements = useElements()
@@ -68,7 +68,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       console.log('render')
       const fetchClientSecret = async () => {
         try {
-          const { clientSecret: secret } = await createPaymentIntent('67081a7aab6d060624d2ac62')
+          const { clientSecret: secret } = await createPaymentIntent(blockId)
           setClientSecret(secret)
         } catch (error) {
           console.error('Error fetching client secret:', error)
@@ -76,7 +76,7 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       }
       fetchClientSecret()
     }
-  }, [formState])
+  }, [formState, blockId])
 
   const onSubmit = async (values: FormDataTypes<typeof schema>, event: any) => {
     event.preventDefault()
@@ -114,7 +114,11 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
 
       // Éxito del pago
       let cardInfo = null
-      const transactionId = result.paymentIntent?.id || ' '
+      let amount = null
+      const transactionId = result.paymentIntent?.id || 'xx'
+      if (result.paymentIntent?.amount) {
+        amount = result.paymentIntent?.amount * 0.01 || 'xx'
+      }
       const paymentDate = result.paymentIntent?.created || Math.floor(Date.now() / 1000)
       const formatDate = (unixTimestamp: number): string => {
         const date = new Date(unixTimestamp * 1000)
@@ -132,12 +136,13 @@ function StripeForm({ stripeInfo, blockId }: StripeFormProps) {
       const transactionData = {
         ...formData,
         transactionId,
+        tpvname: cardTitle,
         cardBrand: cardInfo?.brand,
         cardExpDate: `${cardInfo?.exp_month}/${cardInfo?.exp_year}`,
         cardNumbrer: `****${cardInfo?.last4}`,
         date: formatDate(paymentDate),
         paymentStatus: 'completed',
-        amount: result.paymentIntent?.amount,
+        amount: amount,
         currency: 'eur',
       }
       updateFormData(transactionData)

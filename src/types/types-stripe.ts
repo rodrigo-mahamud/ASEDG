@@ -7,6 +7,7 @@ export interface StripeField {
 
 export interface StripeFormProps {
   blockId: string
+  cardTitle: string
   stripeInfo: {
     price: number
     expirationDate: string

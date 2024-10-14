@@ -16,6 +16,10 @@ const Payments: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'tpvname',
+      type: 'text',
+    },
+    {
       name: 'surname',
       type: 'text',
     },

@@ -31,7 +31,7 @@ import { useRouter } from 'next/navigation'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
-export default function StripeModal({ stripeInfo, blockId }: any) {
+export default function StripeModal({ stripeInfo, blockId, cardTitle }: any) {
   const [isMobile, setIsMobile] = useState(false)
   const params = useSearchParams()
   const status = params.get('paymentStatus')
@@ -124,7 +124,7 @@ export default function StripeModal({ stripeInfo, blockId }: any) {
                     Por favor, complete los detalles de pago a continuación.
                   </DialogDescription>
                 </DialogHeader>
-                <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+                <StripeForm stripeInfo={stripeInfo} blockId={blockId} cardTitle={cardTitle} />
               </>
             )}
           </DialogContent>

@@ -16,7 +16,7 @@ export default function StripePaymentComponent({
 
   return (
     <Container>
-      {isExpired ? ' ' : <StripeModal stripeInfo={stripeInfo} blockId={id} />}
+      {isExpired ? ' ' : <StripeModal stripeInfo={stripeInfo} blockId={id} cardTitle={cardTitle} />}
       <StripeCard
         cardTitle={cardTitle}
         price={stripeInfo.price}
