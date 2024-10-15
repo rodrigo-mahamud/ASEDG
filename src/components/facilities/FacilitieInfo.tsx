@@ -14,7 +14,7 @@ export default function FacilitieInfo({ data }) {
           <h2 className="my-2 text-base">{data.description}</h2>
         </div>
         <RichTextParser content={data.richtxtcontent}></RichTextParser>
-        <FacilitiesRelated></FacilitiesRelated>
+        <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
       </div>
       <BookingSticky
         className="w-[35%] sticky top-28 h-fit"

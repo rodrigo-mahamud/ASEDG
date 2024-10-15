@@ -11,6 +11,7 @@ import BookingSticky from '@/components/BookingSticky'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
 import { Separator } from '@/components/lib/separator'
 import { FacilitiesRelated } from '@/components/facilities/FacilitiesRelated'
+import { BreadcrumbSeparator } from '@/components/lib/breadcrumb'
 
 type PageProps = {
   params: { slug: string }
@@ -84,6 +85,9 @@ export default async function BookingPage({ params }: PageProps) {
       <Container>
         {images.length > 0 && <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />}
         <FacilitieInfo data={page}></FacilitieInfo>
+        <div className="pt-16 pb-14">
+          <Separator></Separator>
+        </div>
         <FacilitieLocationMap address="Centro juvenil san esteban de gormaz"></FacilitieLocationMap>
       </Container>
     </main>

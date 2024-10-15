@@ -5,6 +5,7 @@ import Image from 'next/image'
 import escapeHTML from 'escape-html'
 import RenderBlocks from '@/components/RenderBlocks'
 import IconList from '@/app/(payload)/blocks/RTBlocks/IconList/Component'
+import { Separator } from '@/components/lib/separator'
 
 // Define constants for text formats
 const IS_BOLD = 1
@@ -234,8 +235,8 @@ const SerializeLexicalRichText: React.FC<SerializeProps> = ({ children, parentNo
           }
         case 'horizontalrule':
           return (
-            <div className="py-6">
-              <hr className="border-border border"></hr>
+            <div className="py-8">
+              <Separator></Separator>
             </div>
           )
         default:

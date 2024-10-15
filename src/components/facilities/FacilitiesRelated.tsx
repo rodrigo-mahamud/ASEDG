@@ -8,32 +8,28 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/lib/carousel'
+import FRCard from './FRCard'
 
-export function FacilitiesRelated() {
+export function FacilitiesRelated({ data }) {
   return (
     <Carousel
       opts={{
         align: 'start',
       }}
-      className="w-full my-2"
+      className="w-full"
     >
-      <div className="w-full flex items-center justify-between mb-4 ">
-        <h2 className="text-3xl font-semibold line-clamp-1">Te puede interesar</h2>
+      <div className="w-full flex items-center justify-between mb-4 mt-2">
+        <h2 className="text-2xl font-medium line-clamp-1">Te puede interesar</h2>
+
         <div className="flex gap-2">
-          <CarouselPrevious className="bg-transparent border border-border shadow disabled:shadow-none" />
-          <CarouselNext className="bg-transparent border border-border shadow disabled:shadow-none" />
+          <CarouselPrevious className="bg-transparent border border-border shadow disabled:shadow-none h-8 w-8" />
+          <CarouselNext className="bg-transparent border border-border shadow disabled:shadow-none h-8 w-8" />
         </div>
       </div>
-      <CarouselContent className="w-full">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2">
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-video items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </div>
+      <CarouselContent className="w-full ">
+        {data.map((item, index) => (
+          <CarouselItem key={index} className="md:basis-[49%] first:ml-4">
+            <FRCard data={item}></FRCard>
           </CarouselItem>
         ))}
       </CarouselContent>

@@ -6,9 +6,6 @@ export default function FacilitieLocationMap({ address, zoom = 16 }) {
   const src = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed&disableDefaultUI=true&maptype=`
   return (
     <>
-      <div className="py-12">
-        <Separator></Separator>
-      </div>
       <div className="w-full">
         <h2 className="text-3xl mb-4 font-semibold">¿Cómo puedo llegar hasta ahi?</h2>
         <iframe
