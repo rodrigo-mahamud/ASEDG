@@ -46,6 +46,29 @@ const BookingsBlock: Block = {
       label: 'NAme',
       name: 'texs',
     },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          label: 'Título de noticias fijadas',
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+          required: true,
+          label: 'Subtítulo de noticias fijadas',
+        },
+      ],
+    },
+    {
+      name: 'allFacilities',
+      type: 'relationship',
+      hasMany: true,
+      relationTo: 'facilities',
+    },
   ],
 }
 export default BookingsBlock

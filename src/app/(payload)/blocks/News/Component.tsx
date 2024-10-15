@@ -1,8 +1,8 @@
 import React from 'react'
 import { NewsBlockProps } from '.'
-import configPromise from '@payload-config'
 import News from '@/components/news/News'
 import NewsPinged from '@/components/news/NewsPinged'
+import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 
 export default async function NewsBlock({
