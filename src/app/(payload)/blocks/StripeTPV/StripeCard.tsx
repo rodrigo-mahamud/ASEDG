@@ -1,13 +1,10 @@
 import React from 'react'
-import Link from 'next/link'
 import DynamicIcon from '@/components/DynamicIcon'
 import StripeCardButton from './StripeCardButton'
 import BlurFade from '@/components/lib/blurFade'
-import { IconInfoCircle, IconLock, IconLockAccessOff } from '@tabler/icons-react'
-import { Button } from '@/components/lib/button'
-import downloadFiles from '@/utils/downloadFiles'
-import StripeTerms from './StripeTerms'
+import { IconLock } from '@tabler/icons-react'
 import StripeRecently from './StripeRecently'
+import DownloadTerms from '@/components/DownloadTerms'
 
 export default function StripeCard({
   cardIncluded,
@@ -73,7 +70,15 @@ export default function StripeCard({
                     isExpired={isExpired}
                   ></StripeCardButton>
                 </div>
-                {termsFile && <StripeTerms termsFile={termsFile}></StripeTerms>}
+                {termsFile && (
+                  <DownloadTerms
+                    className="text-sm text-muted-foreground hover:text-gray-900"
+                    termsFile={termsFile}
+                    target="_blank"
+                  >
+                    *Al realizar el pago aceptas los términos y condiciones
+                  </DownloadTerms>
+                )}
               </>
             )}
           </div>

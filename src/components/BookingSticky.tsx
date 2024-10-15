@@ -9,8 +9,12 @@ import { Button } from './lib/button'
 import { useBookingHandlers } from '@/utils/bookingHandlers'
 import { BookingError } from './BookingError'
 import { BookingPrice } from './BookingPrice'
+import Link from 'next/link'
+import DownloadTerms from './DownloadTerms'
 
-export default function BookingSticky({ data }: any) {
+export default function BookingSticky({ data, termsFile, className }: any) {
+  console.log(data)
+
   const { formState, errorDetails, successMessage, clientSecret, isLoading } = useBookingState()
 
   const {
@@ -54,35 +58,57 @@ export default function BookingSticky({ data }: any) {
   }
 
   return (
-    <aside className=" bg-white p-5 w-[35%] sticky top-28 rounded-lg h-fit shadow-lg">
-      {formState !== 'success' && (
-        <>
-          <h2 className="text-xl font-semibold "> Reservar gimnasio municipal</h2>
-          <h3 className="text-sm opacity-75">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </h3>
-        </>
-      )}
-      {renderContent()}
-      {formState !== 'success' && <BookingPrice />}
-      <div className="flex gap-2">
-        {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
-          <div className="flex items-center">
-            <Button
-              type="button"
-              variant="arrowReversed"
-              onClick={handleGoBack}
-              iconClass="w-3 h-3"
-              className="bg-secondary rounded-md py-3 px-4 h-full"
-            ></Button>
-          </div>
+    <aside className={className}>
+      <div className="bg-white p-5 rounded-lg shadow-lg">
+        {formState !== 'success' && (
+          <>
+            <h2 className="text-xl font-semibold "> Reservar gimnasio municipal</h2>
+            <h3 className="text-sm opacity-75">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </h3>
+          </>
         )}
-        <BookingButton
-          onDataSubmit={handleDataSubmit}
-          onPaymentSubmit={handlePaymentSubmit}
-          clientSecret={clientSecret}
-        />
+        {renderContent()}
+        {formState !== 'success' && <BookingPrice />}
+        <div className="flex gap-2">
+          {formState !== 'empty' && formState !== 'data' && formState !== 'success' && (
+            <div className="flex items-center">
+              <Button
+                type="button"
+                variant="arrowReversed"
+                onClick={handleGoBack}
+                iconClass="w-3 h-3"
+                className="bg-secondary rounded-md py-3 px-4 h-full"
+              ></Button>
+            </div>
+          )}
+          <BookingButton
+            onDataSubmit={handleDataSubmit}
+            onPaymentSubmit={handlePaymentSubmit}
+            clientSecret={clientSecret}
+          />
+        </div>
       </div>
+
+      <DownloadTerms
+        className="mt-10 mb-2 group p-5 border border-border rounded-lg flex items-center"
+        termsFile={termsFile}
+        target="_blank"
+      >
+        <div className="flex flex-col w-11/12 items-start">
+          <h2 className="text-base font-semibold mb-1">Términos y condiciones</h2>
+          <h3 className="text-sm line-clamp-2 text-pretty text-muted-foreground text-start">
+            Recuerda echar un vistazo a los terminos y condiciones
+          </h3>
+        </div>
+        <div className="w-1/12 flex justify-center items-center">
+          <Button
+            variant="arrow"
+            iconClass="w-3 h-3"
+            className="text-foreground bg-border/35 w-10 h-10"
+          ></Button>
+        </div>
+      </DownloadTerms>
     </aside>
   )
 }

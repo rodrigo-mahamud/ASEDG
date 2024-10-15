@@ -10,6 +10,7 @@ import FacilitieInfo from '@/components/facilities/FacilitieInfo'
 import BookingSticky from '@/components/BookingSticky'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
 import { Separator } from '@/components/lib/separator'
+import { FacilitiesRelated } from '@/components/facilities/FacilitiesRelated'
 
 type PageProps = {
   params: { slug: string }
@@ -82,11 +83,7 @@ export default async function BookingPage({ params }: PageProps) {
       <Toaster />
       <Container>
         {images.length > 0 && <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />}
-        <div className="w-full flex gap-24 relative my-12">
-          <FacilitieInfo data={page}></FacilitieInfo>
-          <BookingSticky data={page.bookingOptions}></BookingSticky>
-        </div>
-        <Separator></Separator>
+        <FacilitieInfo data={page}></FacilitieInfo>
         <FacilitieLocationMap address="Centro juvenil san esteban de gormaz"></FacilitieLocationMap>
       </Container>
     </main>

@@ -234,7 +234,7 @@ const SerializeLexicalRichText: React.FC<SerializeProps> = ({ children, parentNo
           }
         case 'horizontalrule':
           return (
-            <div className="py-4">
+            <div className="py-6">
               <hr className="border-border border"></hr>
             </div>
           )

@@ -9,7 +9,7 @@ interface ImagesMasonryProps {
 export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryProps) {
   return (
     <div className="grid grid-cols-4 grid-rows-4 gap-2 h-[35rem]">
-      <div className="col-span-2 row-span-4 relative overflow-hidden rounded-xl">
+      <div className="col-span-2 row-span-4 relative overflow-hidden rounded-l-xl">
         <Image
           src={imageSrcs[0]}
           fill
@@ -19,7 +19,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           alt={imageAlts[0]}
         />
       </div>
-      <div className="row-span-2 col-start-3 relative h-full overflow-hidden rounded-xl">
+      <div className="row-span-2 col-start-3 relative h-full overflow-hidden ">
         <Image
           src={imageSrcs[1]}
           fill
@@ -29,7 +29,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           alt={imageAlts[1]}
         />
       </div>
-      <div className="row-span-2 col-start-3 row-start-3 relative h-full overflow-hidden rounded-xl">
+      <div className="row-span-2 col-start-3 row-start-3 relative h-full overflow-hidden ">
         <Image
           src={imageSrcs[2]}
           fill
@@ -39,7 +39,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           alt={imageAlts[2]}
         />
       </div>
-      <div className="row-span-2 col-start-4 row-start-1 relative h-full overflow-hidden rounded-xl">
+      <div className="row-span-2 col-start-4 row-start-1 relative h-full overflow-hidden rounded-tr-xl">
         <Image
           src={imageSrcs[3]}
           fill
@@ -49,7 +49,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           alt={imageAlts[3]}
         />
       </div>
-      <div className="row-span-2 col-start-4 row-start-3 relative h-full overflow-hidden rounded-xl">
+      <div className="row-span-2 col-start-4 row-start-3 relative h-full overflow-hidden rounded-br-xl">
         <Image
           src={imageSrcs[4]}
           fill

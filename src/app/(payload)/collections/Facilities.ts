@@ -141,6 +141,14 @@ const Facilities: CollectionConfig = {
       type: 'richText',
     },
     {
+      name: 'facilitiesRelated',
+      label: 'Instalacciones similares',
+      type: 'relationship',
+      relationTo: 'facilities',
+      hasMany: true,
+      maxRows: 4,
+    },
+    {
       name: 'bookingOptions',
       type: 'array',
       label: 'Opciones de reserva',
@@ -365,6 +373,16 @@ const Facilities: CollectionConfig = {
       ],
     },
     slug,
+    {
+      name: 'termsFile',
+      type: 'upload',
+      label: 'Archivo',
+      relationTo: 'media',
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
   hooks: {
     beforeChange: [
