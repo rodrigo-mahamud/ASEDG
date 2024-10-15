@@ -3,7 +3,6 @@ import {
   AlignFeature,
   BlocksFeature,
   FixedToolbarFeature,
-  HTMLConverterFeature,
   HeadingFeature,
   HorizontalRuleFeature,
   LinkFeature,

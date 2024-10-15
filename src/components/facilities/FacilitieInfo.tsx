@@ -5,15 +5,18 @@ import { FacilitiesRelated } from './FacilitiesRelated'
 import { Separator } from '../lib/separator'
 import BookingSticky from '../BookingSticky'
 
-export default function FacilitieInfo({ data }) {
+export default function FacilitieInfo({ data }: any) {
   return (
     <section className="w-full flex gap-24 relative pt-12">
       <div className="w-[65%]">
         <div className="flex flex-col">
-          <h1 className="text-3xl font-semibold line-clamp-1 mb-2">{data.title}</h1>
+          <h1 className="text-3xl font-semibold line-clamp-1 mb-2 tracking-tight">{data.title}</h1>
           <h2 className="my-2 text-base">{data.description}</h2>
         </div>
         <RichTextParser content={data.richtxtcontent}></RichTextParser>
+        <div className="py-14">
+          <Separator></Separator>
+        </div>
         <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
       </div>
       <BookingSticky

@@ -2,7 +2,6 @@ import { CollectionConfig } from 'payload'
 import updateNews from '@/utils/updateNews'
 
 import slug from '../fields/slug'
-import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
 
 const News: CollectionConfig = {
   slug: 'news',

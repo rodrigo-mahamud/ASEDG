@@ -2,9 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function FRCard({ data }) {
+export default function FRCard({ data }: any) {
   return (
-    <Link href={`/noticias-san-esteban-de-gormaz/${data.slug}`} className=" h-64 flex group p-2">
+    <Link href={`/noticias-san-esteban-de-gormaz/${data.slug}`} className=" h-64 flex group pr-3">
       <div className="flex relative w-full h-full items-end transitionAlt hover:rounded-xl rounded-lg overflow-hidden">
         <div className="absolute w-full h-full blurMaskAlt z-10"></div>
         <div className="absolute z-10 p-6 flex flex-col items-start w-full translate-y-4 group-hover:translate-y-0 transition-generic">

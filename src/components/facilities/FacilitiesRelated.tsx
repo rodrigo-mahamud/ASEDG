@@ -10,7 +10,7 @@ import {
 } from '@/components/lib/carousel'
 import FRCard from './FRCard'
 
-export function FacilitiesRelated({ data }) {
+export function FacilitiesRelated({ data }: any) {
   return (
     <Carousel
       opts={{
@@ -18,8 +18,8 @@ export function FacilitiesRelated({ data }) {
       }}
       className="w-full"
     >
-      <div className="w-full flex items-center justify-between mb-4 mt-2">
-        <h2 className="text-2xl font-medium line-clamp-1">Te puede interesar</h2>
+      <div className="w-full flex items-center justify-between mb-4 ">
+        <h2 className="text-2xl font-semibold line-clamp-1">Te puede interesar</h2>
 
         <div className="flex gap-2">
           <CarouselPrevious className="bg-transparent border border-border shadow disabled:shadow-none h-8 w-8" />
@@ -27,7 +27,7 @@ export function FacilitiesRelated({ data }) {
         </div>
       </div>
       <CarouselContent className="w-full ">
-        {data.map((item, index) => (
+        {data.map((item: any, index: any) => (
           <CarouselItem key={index} className="md:basis-[49%] first:ml-4">
             <FRCard data={item}></FRCard>
           </CarouselItem>

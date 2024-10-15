@@ -76,8 +76,8 @@ export default async function BookingPage({ params }: PageProps) {
     return notFound()
   }
   const images = Object.values(page.facilitieImages).filter((img) => img !== null)
-  const imageSrcs = images.map((img) => img.url)
-  const imageAlts = images.map((img) => img.alt || 'Imagen de la instalación')
+  const imageSrcs = images.map((img: any) => img.url)
+  const imageAlts = images.map((img: any) => img.alt || 'Imagen de la instalación')
 
   return (
     <main>
