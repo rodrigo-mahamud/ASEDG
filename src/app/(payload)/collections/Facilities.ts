@@ -88,19 +88,9 @@ const Facilities: CollectionConfig = {
       ],
     },
     {
-      name: 'description',
-      type: 'textarea',
-      label: 'Descripción',
-      required: true,
-    },
-    {
       type: 'group',
       name: 'facilitieImages',
       label: 'Imágnes de la instalacción',
-      admin: {
-        className: 'masonry-image-group',
-        condition: (data) => data.style === 'masonry',
-      },
       fields: [
         {
           name: 'facilitieImage1',
@@ -140,8 +130,14 @@ const Facilities: CollectionConfig = {
       ],
     },
     {
+      name: 'description',
+      type: 'textarea',
+      label: 'Descripción',
+      required: true,
+    },
+    {
       name: 'richtxtcontent',
-      label: 'Contenido de la noticia:',
+      label: ' ',
       type: 'richText',
     },
     {

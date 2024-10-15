@@ -15,7 +15,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           fill
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+          sizes="(max-width: 768px) 15vw, (max-width: 1200px) 35vw, 50vw"
           alt={imageAlts[0]}
         />
       </div>
@@ -25,7 +25,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           fill
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+          sizes="(max-width: 768px) 15vw, (max-width: 1200px) 35vw, 50vw"
           alt={imageAlts[1]}
         />
       </div>
@@ -35,7 +35,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           fill
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+          sizes="(max-width: 768px) 15vw, (max-width: 1200px) 35vw, 50vw"
           alt={imageAlts[2]}
         />
       </div>
@@ -45,7 +45,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           fill
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+          sizes="(max-width: 768px) 15vw, (max-width: 1200px) 35vw, 50vw"
           alt={imageAlts[3]}
         />
       </div>
@@ -55,7 +55,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts }: ImagesMasonryPro
           fill
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+          sizes="(max-width: 768px) 15vw, (max-width: 1200px) 35vw, 50vw"
           alt={imageAlts[4]}
         />
       </div>

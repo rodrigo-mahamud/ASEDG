@@ -73,34 +73,21 @@ export default async function BookingPage({ params }: PageProps) {
   if (!page) {
     return notFound()
   }
-
-  const imageSrcs = [
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-  ]
-
-  const imageAlts = [
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-    '/placeholder.jpg',
-  ]
+  const images = Object.values(page.facilitieImages).filter((img) => img !== null)
+  const imageSrcs = images.map((img) => img.url)
+  const imageAlts = images.map((img) => img.alt || 'Imagen de la instalación')
 
   return (
     <main>
       <Toaster />
       <Container>
-        <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />
+        {images.length > 0 && <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />}
         <div className="w-full flex gap-24 relative my-12">
           <FacilitieInfo data={page}></FacilitieInfo>
           <BookingSticky data={page.bookingOptions}></BookingSticky>
         </div>
         <Separator></Separator>
-        <FacilitieLocationMap></FacilitieLocationMap>
+        <FacilitieLocationMap address="Centro juvenil san esteban de gormaz"></FacilitieLocationMap>
       </Container>
     </main>
   )
