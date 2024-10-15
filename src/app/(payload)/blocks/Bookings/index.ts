@@ -42,11 +42,6 @@ const BookingsBlock: Block = {
   slug: 'bookingsblock',
   fields: [
     {
-      type: 'text',
-      label: 'NAme',
-      name: 'texs',
-    },
-    {
       type: 'row',
       fields: [
         {
@@ -65,6 +60,7 @@ const BookingsBlock: Block = {
     },
     {
       name: 'allFacilities',
+      label: 'Instalacciones',
       type: 'relationship',
       hasMany: true,
       relationTo: 'facilities',

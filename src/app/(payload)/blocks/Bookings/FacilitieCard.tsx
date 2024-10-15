@@ -1,54 +1,12 @@
 import { Button } from '@/components/lib/button'
 import ShareButton from '@/components/lib/shareButton'
-import {
-  Icon360View,
-  IconArrowRight,
-  IconBible,
-  IconClock,
-  IconClock24,
-  IconUser,
-} from '@tabler/icons-react'
+import { IconArrowRight, IconClock, IconTag } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { format, parseISO } from 'date-fns'
-import { toZonedTime } from 'date-fns-tz'
-const obtenerRangoPrecios = (bookingOptions) => {
-  if (!bookingOptions || bookingOptions.length === 0) {
-    return 'No hay opciones disponibles'
-  }
+import { getPriceRange, getOpenHours } from '@/utils/facilitiesHelper'
 
-  const precios = bookingOptions.map((option) => option.price)
-  const precioMinimo = Math.min(...precios)
-
-  return `Desde: ${precioMinimo.toFixed(2)}€/día`
-}
-const calcularHorasApertura = (horarios) => {
-  if (!horarios || horarios.length === 0) {
-    return 'No hay horarios disponibles'
-  }
-
-  // Encontrar el período con más días
-  const periodoMasDias = horarios.reduce(
-    (max, horario) => (horario.days.length > max.days.length ? horario : max),
-    horarios[0],
-  )
-
-  // Calcular las horas de apertura para este período
-  const apertura = new Date(periodoMasDias.open)
-  const cierre = new Date(periodoMasDias.close)
-
-  // Calculamos la diferencia en milisegundos
-  const diferencia = cierre - apertura
-
-  // Convertimos la diferencia a horas
-  const horas = diferencia / (1000 * 60 * 60)
-
-  return `Abierto: ${horas.toFixed(2)}h/dia`
-}
-export default function FacilitieCard({ data }) {
-  console.log()
-
+export default function FacilitieCard({ data }: any) {
   return (
     <div className="group relative rounded-xl btnShadow overflow-hidden h-full">
       <div className="h-full w-full flex flex-col gap-5 sm:flex-row sm:items-center">
@@ -62,18 +20,22 @@ export default function FacilitieCard({ data }) {
         </div>
 
         <div className="w-3/5 h-full flex flex-col justify-between py-5 pr-5 gap-4">
-          <h2 className="text-xl font-semibold">{data.title}</h2>
-          <h3 className="text-pretty text-sm line-clamp-3 leading-relaxed">{data.description}</h3>
+          <h2 className="text-xl font-semibold leading-none">{data.title}</h2>
+          <h3 className="text-pretty text-sm line-clamp-3 ">{data.description}</h3>
           <div className="flex flex-col w-full gap-2">
             <div className="flex gap-1 items-center">
               <IconClock stroke={1.5} className="w-4 h-4"></IconClock>
-              <span className="text-sm">
-                {calcularHorasApertura(data.regularSchedule.schedule)}
+              <span className="text-sm"> Abierto:</span>
+
+              <span className="text-sm font-medium">
+                {getOpenHours(data.regularSchedule.schedule)}
               </span>
             </div>
             <div className="flex gap-1 items-center">
-              <IconBible stroke={1.5} className="w-4 h-4"></IconBible>
-              <span className="text-sm">{obtenerRangoPrecios(data.bookingOptions)}</span>
+              <IconTag stroke={1.5} className="w-4 h-4"></IconTag>
+              <span className="text-sm"> Desde:</span>
+
+              <span className="text-sm font-medium">{getPriceRange(data.bookingOptions)}</span>
             </div>
           </div>
 
@@ -86,11 +48,13 @@ export default function FacilitieCard({ data }) {
               iconPlacement="right"
               className="flex gap-1 bg-secondaryAlt hover:bg-secondaryAlt/90 rounded-md w-full h-full"
             >
-              <Link href={`noticias-san-esteban-de-gormaz/${data.slug}`}>Reservar</Link>
+              <Link href={`instalaciones-deportivas-san-esteban-de-gormaz/${data.slug}`}>
+                Reservar
+              </Link>
             </Button>
             <ShareButton
               className="w-1/5 h-full outline-none bg-secondary border-border border hover:bg-secondaryAlt/5 flex justify-center items-center rounded-md"
-              url={`noticias-san-esteban-de-gormaz/${data.slug}`}
+              url={`instalaciones-deportivas-san-esteban-de-gormaz/${data.slug}`}
             />
           </div>
         </div>
