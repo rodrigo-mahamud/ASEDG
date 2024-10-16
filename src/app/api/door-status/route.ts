@@ -7,10 +7,13 @@ let doorStatus = 'Cerrada'
 export async function GET() {
   try {
     const ws = (await connectWebSocket()) as any
+    let isStreamClosed = false
 
     const stream = new ReadableStream({
       start(controller) {
         handleWebSocketMessages(ws, (message: wsMsgTypes) => {
+          if (isStreamClosed) return
+
           if (message.event === 'access.data.device.remote_unlock') {
             doorStatus = 'Abierta'
           } else if (message.event === 'access.data.device.update') {
@@ -22,11 +25,20 @@ export async function GET() {
             }
           }
 
-          // Enviar solo el estado de la puerta al cliente
-          controller.enqueue(`data: ${JSON.stringify({ doorStatus })}\n\n`)
+          try {
+            controller.enqueue(`data: ${JSON.stringify({ doorStatus })}\n\n`)
+          } catch (error) {
+            console.error('Error enqueueing data:', error)
+            if (!isStreamClosed) {
+              isStreamClosed = true
+              controller.close()
+              ws.close()
+            }
+          }
         })
       },
       cancel() {
+        isStreamClosed = true
         ws.close()
       },
     })

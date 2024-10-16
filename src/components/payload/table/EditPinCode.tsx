@@ -53,8 +53,6 @@ export function EditPinCode() {
   }, [form])
 
   const handleSave = async (data: VisitorFormValues) => {
-    console.log('hola me has clickado')
-
     if (clientToEdit && data.pin_code) {
       setIsSaving(true)
       try {

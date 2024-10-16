@@ -22,8 +22,6 @@ import {
 import { toast } from '@payloadcms/ui'
 
 export default function ActionsTable({ visitor }: { visitor: VisitorData }) {
-  console.log(visitor)
-
   const { setIsOpen, setClientToEdit, setDialogOpen, setUsersToDelete } = useDashboardStore()
   return (
     <DropdownMenu>

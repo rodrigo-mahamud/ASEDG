@@ -16,7 +16,6 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { stripePlugin } from '@payloadcms/plugin-stripe'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { en } from '@payloadcms/translations/languages/en'
 import { es } from '@payloadcms/translations/languages/es'
@@ -149,8 +148,8 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'news'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc, collectionSlug }) => {
-        switch (collectionSlug) {
+      generateTitle: ({ doc, slug }) => {
+        switch (slug) {
           case 'pages':
             return doc.header.title
           case 'news':
@@ -159,8 +158,8 @@ export default buildConfig({
             return doc.header.title
         }
       },
-      generateDescription: ({ doc, collectionSlug }) => {
-        switch (collectionSlug) {
+      generateDescription: ({ doc, slug }) => {
+        switch (slug) {
           case 'pages':
             return doc.header.description
           case 'news':
@@ -170,9 +169,9 @@ export default buildConfig({
         }
       },
 
-      generateURL: ({ doc, collectionSlug }) => {
+      generateURL: ({ doc, slug }) => {
         const baseURL = `https://${process.env.ROOT_DOMAIN}`
-        switch (collectionSlug) {
+        switch (slug) {
           case 'pages':
             return `${baseURL}/${doc.slug}`
           case 'news':
@@ -181,10 +180,6 @@ export default buildConfig({
             return `${baseURL}/${doc.slug}`
         }
       },
-    }),
-    stripePlugin({
-      stripeSecretKey: process.env.STRIPE_SECRET_KEY as string,
-      rest: true, // Habilita el endpoint REST de Stripe
     }),
   ],
 })

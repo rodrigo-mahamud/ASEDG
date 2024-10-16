@@ -1,5 +1,5 @@
 {
-  "name": "new-beta",
+  "name": "nuevabeta",
   "version": "1.0.0",
   "description": "A blank template to get started with Payload 3.0",
   "license": "MIT",
@@ -18,11 +18,11 @@
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
     "@payloadcms/db-mongodb": "beta",
-    "@payloadcms/live-preview-react": "^3.0.0-beta.109",
+    "@payloadcms/live-preview-react": "^3.0.0-beta.114",
     "@payloadcms/next": "beta",
     "@payloadcms/plugin-cloud": "beta",
-    "@payloadcms/plugin-seo": "^3.0.0-beta.109",
-    "@payloadcms/plugin-stripe": "^3.0.0-beta.109",
+    "@payloadcms/plugin-seo": "^3.0.0-beta.114",
+    "@payloadcms/plugin-stripe": "^3.0.0-beta.114",
     "@payloadcms/richtext-lexical": "beta",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -63,14 +63,14 @@
     "i": "^0.3.7",
     "lenis": "^1.1.2",
     "mini-svg-data-uri": "^1.4.4",
-    "next": "15.0.0-canary.160",
+    "next": "15.0.0-canary.173",
     "npm": "^10.8.3",
     "payload": "beta",
-    "react": "19.0.0-rc-5dcb0097-20240918",
+    "react": "19.0.0-rc-3edc000d-20240926",
     "react-big-calendar": "^1.12.2",
     "react-confetti": "^6.1.0",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.0.0-rc-5dcb0097-20240918",
+    "react-dom": "19.0.0-rc-3edc000d-20240926",
     "react-hook-form": "^7.52.0",
     "react-html-parser": "^2.0.2",
     "react-lite-youtube-embed": "^2.4.0",
@@ -109,7 +109,7 @@
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "eslint": "^8",
-    "eslint-config-next": "15.0.0-canary.160",
+    "eslint-config-next": "15.0.0-canary.173",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^24.1.1",
@@ -130,7 +130,7 @@
   },
   "overrides": {
     "recharts": {
-      "react-is": "19.0.0-rc-5dcb0097-20240918"
+      "react-is": "19.0.0-rc-3edc000d-20240926"
     },
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
