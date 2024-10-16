@@ -92,7 +92,7 @@ export default function StripeModal({ stripeInfo, blockId, cardTitle }: any) {
               </DrawerDescription>
             </DrawerHeader>
 
-            <StripeForm stripeInfo={stripeInfo} blockId={blockId} />
+            <StripeForm stripeInfo={stripeInfo} blockId={blockId} cardTitle={cardTitle} />
 
             <DrawerFooter></DrawerFooter>
           </DrawerContent>
