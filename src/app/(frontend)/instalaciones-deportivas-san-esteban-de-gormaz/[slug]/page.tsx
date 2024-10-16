@@ -7,11 +7,8 @@ import ImagesMasonry from '@/components/ImagesMasonry'
 import Container from '@/components/Container'
 import { Facility } from '@/payload-types'
 import FacilitieInfo from '@/components/facilities/FacilitieInfo'
-import BookingSticky from '@/components/BookingSticky'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
 import { Separator } from '@/components/lib/separator'
-import { FacilitiesRelated } from '@/components/facilities/FacilitiesRelated'
-import { BreadcrumbSeparator } from '@/components/lib/breadcrumb'
 
 type PageProps = {
   params: { slug: string }
