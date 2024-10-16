@@ -77,13 +77,20 @@ export default async function BookingPage({ params }: PageProps) {
   }
   const images = Object.values(page.facilitieImages).filter((img) => img !== null)
   const imageSrcs = images.map((img: any) => img.url)
+  const thumbnailSrcs = images.map((img: any) => img.sizes.thumbnail.url)
   const imageAlts = images.map((img: any) => img.alt || 'Imagen de la instalación')
 
   return (
     <main>
       <Toaster />
       <Container>
-        {images.length > 0 && <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />}
+        {images.length > 0 && (
+          <ImagesMasonry
+            imageSrcs={imageSrcs}
+            imageAlts={imageAlts}
+            thumbnailSrcs={thumbnailSrcs}
+          />
+        )}
         <FacilitieInfo data={page}></FacilitieInfo>
         <div className="pt-16 pb-14">
           <Separator></Separator>

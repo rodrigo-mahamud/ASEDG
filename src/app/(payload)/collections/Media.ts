@@ -8,6 +8,25 @@ const Media: CollectionConfig = {
   },
   upload: {
     staticDir: 'media',
+    imageSizes: [
+      {
+        name: 'thumbnail',
+        width: 10,
+        height: 10,
+
+        formatOptions: {
+          format: 'webp',
+          options: {
+            quality: 2,
+          },
+        },
+
+        generateImageName: ({ height, sizeName, extension, width, originalName }) => {
+          return `${originalName}-${sizeName}${height}X${width}.${extension}`
+        },
+      },
+    ],
+
     mimeTypes: ['image/*', 'application/pdf'],
   },
   fields: [
