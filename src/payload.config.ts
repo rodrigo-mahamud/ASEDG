@@ -148,8 +148,8 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages', 'news'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc, slug }) => {
-        switch (slug) {
+      generateTitle: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
           case 'pages':
             return doc.header.title
           case 'news':
@@ -158,8 +158,8 @@ export default buildConfig({
             return doc.header.title
         }
       },
-      generateDescription: ({ doc, slug }) => {
-        switch (slug) {
+      generateDescription: ({ doc, collectionSlug }) => {
+        switch (collectionSlug) {
           case 'pages':
             return doc.header.description
           case 'news':
@@ -169,9 +169,9 @@ export default buildConfig({
         }
       },
 
-      generateURL: ({ doc, slug }) => {
+      generateURL: ({ doc, collectionSlug }) => {
         const baseURL = `https://${process.env.ROOT_DOMAIN}`
-        switch (slug) {
+        switch (collectionSlug) {
           case 'pages':
             return `${baseURL}/${doc.slug}`
           case 'news':
