@@ -29,7 +29,6 @@ export default async function PreviewPage({ params }: { params: { id: string } }
     return hasAttachments || hasH2Tags
   }
   const shouldShowAside = hasAsides(page)
-  console.log(page)
 
   return (
     <>

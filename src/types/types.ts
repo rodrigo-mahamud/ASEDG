@@ -51,6 +51,7 @@ export interface NewsItemBase {
 
 // Tipo para imágenes de masonry
 export interface MasonryImage extends Image {
+  sizes: any
   id: string
   filename: string
   mimeType: string

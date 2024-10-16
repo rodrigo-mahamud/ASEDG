@@ -65,7 +65,6 @@ function StripeForm({ stripeInfo, cardTitle, blockId }: StripeFormProps) {
 
   useEffect(() => {
     if (formState === 'open') {
-      console.log('render')
       const fetchClientSecret = async () => {
         try {
           const { clientSecret: secret } = await createPaymentIntent(blockId)

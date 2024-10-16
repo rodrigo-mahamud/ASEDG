@@ -45,33 +45,36 @@ export default function NHVertical({ data, currentUrl }: NHVerticalProps) {
                 <span className="text-xs">May 20, 2021 · 2 min read</span>
               </div>
             </div>
-
-            <div className="flex">
-              <div className="flex gap-2 pr-3 border-r border-border h-10">
-                {data.categories.map((cat, index) => (
-                  <Badge key={index} variant={'outline'} className="bg-secondary h-10 px-4">
-                    {cat.title}
-                  </Badge>
-                ))}
+            {data.categories && (
+              <div className="flex">
+                <div className="flex gap-2 pr-3 border-r border-border h-10">
+                  {data.categories.map((cat, index) => (
+                    <Badge key={index} variant={'outline'} className="bg-secondary h-10 px-4">
+                      {cat.title}
+                    </Badge>
+                  ))}
+                </div>
+                <ShareButton
+                  iconStroke="1.5"
+                  className="w-10 h-10 ml-3 outline-none bg-secondary hover:bg-secondaryAlt/10 border-border border flex justify-center items-center rounded-full"
+                  url={currentUrl}
+                />
               </div>
-              <ShareButton
-                iconStroke="1.5"
-                className="w-10 h-10 ml-3 outline-none bg-secondary hover:bg-secondaryAlt/10 border-border border flex justify-center items-center rounded-full"
-                url={currentUrl}
-              />
-            </div>
+            )}
           </div>
         </div>
 
         <div className="relative w-full aspect-video mt-10">
-          <Image
-            src={data.image.url}
-            fill
-            className=" w-full object-cover rounded-2xl"
-            quality={50}
-            sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
-            alt={data.image.alt}
-          />
+          {data.image && (
+            <Image
+              src={data.image.url}
+              fill
+              className=" w-full object-cover rounded-2xl"
+              quality={50}
+              sizes="(max-width: 768px) 35vw, (max-width: 1200px) 50vw, 75vw"
+              alt={data.image.alt}
+            />
+          )}
         </div>
       </Container>
     </>

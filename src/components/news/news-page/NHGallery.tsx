@@ -15,26 +15,29 @@ interface NHGalleryProps {
   currentUrl: string
 }
 
-export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
-  const imageSrcs = data.masonryImages
-    ? [
-        data.masonryImages.masonryImage1.url,
-        data.masonryImages.masonryImage2.url,
-        data.masonryImages.masonryImage3.url,
-        data.masonryImages.masonryImage4.url,
-        data.masonryImages.masonryImage5.url,
-      ]
-    : []
+interface MasonryImage {
+  url: string
+  alt: string
+  thumbnail: string
+}
 
-  const imageAlts = data.masonryImages
-    ? [
-        data.masonryImages.masonryImage1.alt,
-        data.masonryImages.masonryImage2.alt,
-        data.masonryImages.masonryImage3.alt,
-        data.masonryImages.masonryImage4.alt,
-        data.masonryImages.masonryImage5.alt,
-      ]
-    : []
+export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
+  const extractMasonryImages = (masonryImages: NewsItemFull['masonryImages']): MasonryImage[] => {
+    if (!masonryImages) return []
+
+    return Object.keys(masonryImages)
+      .filter((key) => key.startsWith('masonryImage'))
+      .map((key) => {
+        const image = masonryImages[key as keyof typeof masonryImages]
+        return {
+          url: image.url,
+          alt: image.alt,
+          thumbnail: image.sizes.thumbnail.url,
+        }
+      })
+  }
+
+  const masonryImages = extractMasonryImages(data.masonryImages)
 
   return (
     <>
@@ -67,23 +70,31 @@ export default function NHGallery({ data, currentUrl }: NHGalleryProps) {
                 </span>
               </div>
             </div>
-            <div className="flex">
-              <div className="flex gap-2 pr-3 border-r border-border h-10">
-                {data.categories.map((cat, index) => (
-                  <Badge key={index} variant={'outline'} className="bg-secondary h-10 px-4">
-                    {cat.title}
-                  </Badge>
-                ))}
+            {data.categories && (
+              <div className="flex">
+                <div className="flex gap-2 pr-3 border-r border-border h-10">
+                  {data.categories.map((cat, index) => (
+                    <Badge key={index} variant={'outline'} className="bg-secondary h-10 px-4">
+                      {cat.title}
+                    </Badge>
+                  ))}
+                </div>
+                <ShareButton
+                  iconStroke="1.5"
+                  className="w-10 h-10 ml-3 outline-none bg-secondary hover:bg-secondaryAlt/10 border-border border flex justify-center items-center rounded-full"
+                  url={currentUrl}
+                />
               </div>
-              <ShareButton
-                iconStroke="1.5"
-                className="w-10 h-10 ml-3 outline-none bg-secondary hover:bg-secondaryAlt/10 border-border border flex justify-center items-center rounded-full"
-                url={currentUrl}
-              />
-            </div>
+            )}
           </div>
         </div>
-        <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} />
+        {masonryImages.length > 0 && (
+          <ImagesMasonry
+            imageSrcs={masonryImages.map((img) => img.url)}
+            imageAlts={masonryImages.map((img) => img.alt)}
+            thumbnailSrcs={masonryImages.map((img) => img.thumbnail)}
+          />
+        )}
       </Container>
     </>
   )
