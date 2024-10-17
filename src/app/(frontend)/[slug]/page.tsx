@@ -1,16 +1,11 @@
 // app/[slug]/page.tsx
 import React from 'react'
-import { Metadata } from 'next'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 import Hero from '@/components/hero/Hero'
 import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
 import { notFound } from 'next/navigation'
-
-type PageProps = {
-  params: { slug: string }
-}
 
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -23,7 +18,8 @@ async function getPageData() {
 
 export async function generateStaticParams() {
   const allPages = await getPageData()
-  return allPages.map((page: any) => ({
+
+  return allPages.docs.map((page: any) => ({
     slug: page.slug,
   }))
 }
@@ -74,7 +70,7 @@ export async function generateMetadata() {
   }
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: any) {
   const data = await getPageData()
 
   const page = data.docs.find((page: any) => page.slug === params.slug)

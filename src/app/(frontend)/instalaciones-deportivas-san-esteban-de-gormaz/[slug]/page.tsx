@@ -65,7 +65,7 @@ export async function generateMetadata() {
     },
   }
 }
-export default async function BookingPage({ params }: PageProps) {
+export default async function BookingPage({ params }: any) {
   const data = await getPageData()
 
   const page = data.docs.find((page: Facility) => page.slug === params.slug)

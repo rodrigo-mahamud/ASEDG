@@ -9,7 +9,7 @@ import NewsStickyAside from '@/components/news/news-page/NewsStickyAside'
 import { NewsItemFull } from '@/types/types'
 import NewsRelated from '@/components/news/news-page/NewsRelated'
 
-export default async function PreviewPage({ params }: { params: { id: string } }) {
+export default async function PreviewPage({ params }: any) {
   const payload = await getPayloadHMR({ config })
 
   const page = (await payload.findByID({

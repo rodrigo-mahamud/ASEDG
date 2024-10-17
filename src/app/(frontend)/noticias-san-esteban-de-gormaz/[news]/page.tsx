@@ -63,7 +63,7 @@ export async function generateMetadata() {
     },
   }
 }
-export default async function singleNewPage({ params }: NewsPageProps) {
+export default async function singleNewPage({ params }: any) {
   const data = await getPageData()
 
   const page = data.docs.find((page: NewsItemFull) => page.slug === params.news)

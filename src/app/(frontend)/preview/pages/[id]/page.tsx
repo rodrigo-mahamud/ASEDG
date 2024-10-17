@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation'
 import { Alert } from '@/components/lib/alert'
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react'
 
-export default async function PreviewPage({ params }: { params: { id: string } }) {
+export default async function PreviewPage({ params }: any) {
   const payload = await getPayloadHMR({ config })
 
   const data = await payload.findByID({
