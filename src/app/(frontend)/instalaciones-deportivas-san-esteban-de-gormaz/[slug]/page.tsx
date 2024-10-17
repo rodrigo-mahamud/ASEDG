@@ -11,14 +11,22 @@ import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
 import { Separator } from '@/components/lib/separator'
 
 type PageProps = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
+
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
   const allPagesData = (await payload.find({
     collection: 'facilities',
+    draft: false,
   })) as any
   return allPagesData
+}
+export async function generateStaticParams() {
+  const allPages = await getPageData()
+  return allPages.docs.map((page: any) => ({
+    slug: page.slug,
+  }))
 }
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -27,9 +35,12 @@ async function getSettings() {
   })) as any
   return settings
 }
-export async function generateMetadata() {
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params
   const data = await getPageData()
-  const seoData = data.meta || ({} as any)
+  const page = data.docs.find((page: Facility) => page.slug === slug)
+  const seoData = page?.meta || ({} as any)
   const settings = await getSettings()
 
   return {
@@ -65,10 +76,12 @@ export async function generateMetadata() {
     },
   }
 }
-export default async function BookingPage({ params }: any) {
+
+export default async function BookingPage({ params }: PageProps) {
+  const { slug } = await params
   const data = await getPageData()
 
-  const page = data.docs.find((page: Facility) => page.slug === params.slug)
+  const page = data.docs.find((page: Facility) => page.slug === slug)
   if (!page) {
     return notFound()
   }
@@ -98,17 +111,4 @@ export default async function BookingPage({ params }: any) {
   )
 }
 
-// // Configura la regeneración estática incremental
-// export const revalidate = 60 // Revalidate every 60 seconds
-
-// export async function generateStaticParams() {
-//   const payload = await getPayloadHMR({ config: configPromise })
-
-//   const bookings = (await payload.find({
-//     collection: 'bookings',
-//   })) as any
-
-//   return bookings.docs.map((booking: any) => ({
-//     slug: booking.slug,
-//   }))
-// }
+export const revalidate = 60

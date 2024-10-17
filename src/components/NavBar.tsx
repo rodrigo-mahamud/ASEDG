@@ -109,7 +109,15 @@ export default function NavBar({ data }: NavBarTypes) {
           className="container flex items-center justify-between mx-auto "
         >
           <Link href="/">
-            <Image src="/logo.png" alt="Logo San Esteban de Gormaz" width={125} height={125} />
+            <Image
+              priority
+              src="/logo.png"
+              alt="Logo San Esteban de Gormaz"
+              width={125}
+              height={125}
+              quality={15}
+              sizes="(max-width: 768px) 35vw, (max-width: 1200px) 25vw, 15vw"
+            />
           </Link>
           <NavigationMenuList className="flex justify-center items-center w-full">
             {data.map((menuItem, index) => (

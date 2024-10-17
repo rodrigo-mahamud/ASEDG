@@ -71,7 +71,6 @@ export async function generateMetadata() {
 export default async function NewsMainPage() {
   try {
     const data = await getPageData()
-
     return (
       <main>
         <Hero data={data} />
@@ -80,7 +79,7 @@ export default async function NewsMainPage() {
     )
   } catch (error) {
     console.error('Error al cargar la página principal de noticias:', error)
-    return <div>Error al cargar la página. Por favor, intente más tarde.</div>
+    return <div>No exsiste página principal de noticias por favor recuerda crearla.</div>
   }
 }
 export const revalidate = 60

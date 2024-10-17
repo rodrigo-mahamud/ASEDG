@@ -23,7 +23,7 @@ const DynamicIcon: React.FC<DynamicIconProps> = ({
       {
         ssr: false,
         loading: () => (
-          <span className={cn(`animate-pulse bg-neutral-300/50 rounded-sm ${className}`)}></span>
+          <span className={cn(`animate-pulse bg-neutral-300/50 rounded-full ${className}`)}></span>
         ),
       },
     )

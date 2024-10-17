@@ -227,10 +227,6 @@ const SerializeLexicalRichText: React.FC<SerializeProps> = ({ children, parentNo
           )
         case 'block':
           if (node.fields?.blockType === 'iconlist') {
-            const layout = {
-              block: node.fields,
-              blockType: node.fields.blockType || 'defaultBlockType',
-            }
             return <IconList block={node.fields}></IconList>
           }
         case 'horizontalrule':

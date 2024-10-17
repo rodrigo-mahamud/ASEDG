@@ -8,8 +8,6 @@ interface ImagesMasonryProps {
 }
 
 export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: ImagesMasonryProps) {
-  console.log(thumbnailSrcs)
-
   return (
     <div className="grid grid-cols-4 grid-rows-4 gap-2 h-[35rem]">
       <div className="col-span-2 row-span-4 relative overflow-hidden rounded-l-xl">

@@ -15,6 +15,8 @@ export default function FacilitieCard({ data }: any) {
             src={data.facilitieImages.facilitieImage1.url}
             alt={data.facilitieImages.facilitieImage1.alt}
             fill
+            quality={15}
+            sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
             className="object-cover"
           ></Image>
         </div>

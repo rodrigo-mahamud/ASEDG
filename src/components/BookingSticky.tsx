@@ -13,8 +13,6 @@ import Link from 'next/link'
 import DownloadTerms from './DownloadTerms'
 
 export default function BookingSticky({ data, termsFile, className }: any) {
-  console.log(data)
-
   const { formState, errorDetails, successMessage, clientSecret, isLoading } = useBookingState()
 
   const {

@@ -18,7 +18,6 @@ async function getPageData() {
 
 export async function generateStaticParams() {
   const allPages = await getPageData()
-
   return allPages.docs.map((page: any) => ({
     slug: page.slug,
   }))
