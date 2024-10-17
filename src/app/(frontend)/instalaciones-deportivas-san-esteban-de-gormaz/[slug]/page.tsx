@@ -15,10 +15,10 @@ type PageProps = {
 }
 async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const singleNewsPage = (await payload.find({
+  const allPagesData = (await payload.find({
     collection: 'facilities',
   })) as any
-  return singleNewsPage
+  return allPagesData
 }
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })

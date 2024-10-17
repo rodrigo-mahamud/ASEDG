@@ -8,67 +8,58 @@ import RenderBlocks from '@/components/RenderBlocks'
 import { Toaster } from 'sonner'
 import { notFound } from 'next/navigation'
 
-interface PageProps {
+type PageProps = {
   params: { slug: string }
 }
 
-async function getPageBySlug(slug: string) {
+async function getPageData() {
   const payload = await getPayloadHMR({ config: configPromise })
-  const page = await payload.find({
+  const allPagesData = (await payload.find({
     collection: 'pages',
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
-
-  return page.docs[0]
+    draft: false,
+  })) as any
+  return allPagesData
 }
 
-async function getAllPageSlugs() {
-  const payload = await getPayloadHMR({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    limit: 1000,
-    where: {
-      slug: {
-        not_equals: null,
-      },
-    },
-  })
-  return pages.docs.map((page: any) => page.slug)
+export async function generateStaticParams() {
+  const allPages = await getPageData()
+  return allPages.map((page: any) => ({
+    slug: page.slug,
+  }))
 }
 
 async function getSettings() {
   const payload = await getPayloadHMR({ config: configPromise })
-  return await payload.findGlobal({ slug: 'settings' })
+  const settings = (await payload.findGlobal({
+    slug: 'settings',
+  })) as any
+  return settings
 }
-
-export async function generateStaticParams() {
-  const slugs = await getAllPageSlugs()
-  return slugs.map((slug: string) => ({ slug }))
-}
-
-export async function generateMetadata({ params }: PageProps) {
-  const page = await getPageBySlug(params.slug)
-  const settings = (await getSettings()) as any
-  const seoData = page?.meta || ({} as any)
+export async function generateMetadata() {
+  const data = await getPageData()
+  const seoData = data.meta || ({} as any)
+  const settings = await getSettings()
 
   return {
-    title: seoData.title || settings.defaultTitle,
-    description: seoData.description || settings.defaultDescription,
+    title: seoData.title || settings.defaultTitle || ' ',
+    description: seoData.description,
     icons: {
       icon: [
-        { url: settings.faviconLight?.url || ' ', media: '(prefers-color-scheme: light)' },
-        { url: settings.faviconDark?.url || ' ', media: '(prefers-color-scheme: dark)' },
+        {
+          url: settings.faviconLight ? settings.faviconLight.url : '/faviconPlaceholder.png',
+          media: '(prefers-color-scheme: light)',
+        },
+        {
+          url: settings.faviconDark ? settings.faviconDark.url : '/faviconPlaceholder.png',
+          media: '(prefers-color-scheme: dark)',
+        },
       ],
     },
     openGraph: {
       locale: 'es_ES',
       title: seoData.title || settings.defaultTitle || ' ',
       siteName: settings.defaultTitle,
-      url: `https://${process.env.ROOT_DOMAIN}/${params.slug}`,
+      url: `https://${process.env.ROOT_DOMAIN}/instalaciones-deportivas-san-esteban-de-gormaz`,
       description: seoData.description || settings.defaultDescription,
       images: seoData?.image?.url || settings.defaultOgImage,
       type: 'website',
@@ -84,17 +75,18 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function Page({ params }: PageProps) {
-  const page = await getPageBySlug(params.slug)
+  const data = await getPageData()
 
+  const page = data.docs.find((page: any) => page.slug === params.slug)
   if (!page) {
     return notFound()
   }
 
   return (
     <main>
+      <Toaster />
       <Hero data={page} />
       {page.body && <RenderBlocks layout={page.body.layout} />}
-      <Toaster />
     </main>
   )
 }

@@ -11,7 +11,7 @@ const Sports: CollectionConfig = {
     components: {
       views: {
         list: {
-          Component: '@/components/payload/SportsDashboard',
+          Component: 'src/components/payload/SportsDashboard.tsx',
         },
       },
     },

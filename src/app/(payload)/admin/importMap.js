@@ -29,7 +29,7 @@ import { MetaTitleComponent as MetaTitleComponent_27 } from '@payloadcms/plugin-
 import { MetaDescriptionComponent as MetaDescriptionComponent_28 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_29 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_30 } from '@payloadcms/plugin-seo/client'
-import { default as default_31 } from '@/components/payload/SportsDashboard'
+import { default as default_31 } from 'src/components/payload/SportsDashboard.tsx'
 
 export const importMap = {
   "@/app/(payload)/fields/Icons/Component#default": default_0,
@@ -63,5 +63,5 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_28,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_29,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_30,
-  "@/components/payload/SportsDashboard#default": default_31
+  "src/components/payload/SportsDashboard.tsx#default": default_31
 }
