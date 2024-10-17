@@ -78,8 +78,7 @@ export default async function NewsMainPage() {
       </main>
     )
   } catch (error) {
-    console.error('Error al cargar la página principal de noticias:', error)
-    return <div>No exsiste página principal de noticias por favor recuerda crearla.</div>
+    return notFound()
   }
 }
 export const revalidate = 60

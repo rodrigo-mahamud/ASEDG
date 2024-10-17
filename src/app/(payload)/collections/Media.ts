@@ -6,6 +6,9 @@ const Media: CollectionConfig = {
   admin: {
     description: 'Media files like images, videos, etc.',
   },
+  access: {
+    read: () => true, // Esto permite el acceso de lectura público
+  },
   upload: {
     staticDir: 'media',
     imageSizes: [
