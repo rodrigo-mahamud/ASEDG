@@ -15,6 +15,7 @@ import {
   NavigationMenuViewport,
 } from '@/components/lib/navigation-menu'
 import { MotionDiv } from './MotionDiv'
+
 interface ChildTypes {
   id: string
   linkType: string
@@ -38,6 +39,7 @@ interface ChildTypes {
     }
   }
 }
+
 interface NavMenuItem {
   id: string
   item: {
@@ -46,8 +48,30 @@ interface NavMenuItem {
   }
 }
 
+interface NavMenuLogo {
+  id: string
+  alt: string
+  filename: string
+  mimeType: string
+  filesize: number
+  width: number
+  height: number
+  focalX: number
+  focalY: number
+  sizes: {
+    thumbnail: object
+  }
+  createdAt: string
+  updatedAt: string
+  url: string
+  thumbnailURL: string | null
+}
+
 interface NavBarTypes {
-  data: NavMenuItem[]
+  data: {
+    navMenu: NavMenuItem[]
+    navMenuLogo: NavMenuLogo | null
+  }
 }
 
 export default function NavBar({ data }: NavBarTypes) {
@@ -58,7 +82,6 @@ export default function NavBar({ data }: NavBarTypes) {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       if (currentScrollY > 75) {
-        // Ajusta este valor según tus necesidades
         setIsFixed(true)
       } else {
         setIsFixed(false)
@@ -71,6 +94,7 @@ export default function NavBar({ data }: NavBarTypes) {
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
   const variants = {
     down: {
       y: [-100, 0],
@@ -111,16 +135,16 @@ export default function NavBar({ data }: NavBarTypes) {
           <Link href="/">
             <Image
               priority
-              src="/logo.png"
-              alt="Logo San Esteban de Gormaz"
-              width={125}
-              height={125}
+              src={data.navMenuLogo?.url || '/logoPlaceholder.png'}
+              alt={data.navMenuLogo?.alt || 'Logo placeholder'}
+              width={data.navMenuLogo?.width || 125}
+              height={data.navMenuLogo?.height || 52}
               quality={15}
               sizes="(max-width: 768px) 35vw, (max-width: 1200px) 25vw, 15vw"
             />
           </Link>
           <NavigationMenuList className="flex justify-center items-center w-full">
-            {data.map((menuItem, index) => (
+            {data.navMenu.map((menuItem, index) => (
               <NavigationMenuItem key={index}>
                 <NavigationMenuTrigger>{menuItem.item.label}</NavigationMenuTrigger>
                 <NavigationMenuContent>

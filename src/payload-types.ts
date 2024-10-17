@@ -683,6 +683,7 @@ export interface Setting {
  */
 export interface Header {
   id: string;
+  navMenuLogo?: (string | null) | Media;
   navMenu?:
     | {
         item: {

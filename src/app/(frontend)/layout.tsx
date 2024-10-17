@@ -25,14 +25,11 @@ export default async function RootLayout({
 }>) {
   const payload = await getPayloadHMR({ config: configPromise })
   const header = (await payload.findGlobal({ slug: 'header' })) as any
-  const settings = (await payload.findGlobal({ slug: 'settings' })) as any
-  console.log(settings)
-
   return (
     <html lang="es" className={`${SequelSans.variable}`}>
       <body className="overflow-x-hidden useTw bg-[#f8f8f8]">
         <SmoothScrolling>
-          <NavBar data={header.navMenu} />
+          <NavBar data={header} />
           {children}
           <Footer></Footer>
         </SmoothScrolling>
