@@ -1,7 +1,7 @@
 import { GlobalConfig } from 'payload'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { toast } from '@payloadcms/ui'
+
 import { Validate } from 'payload'
 
 const validateImageDimensions: Validate<any, any> = async (value) => {
@@ -24,7 +24,6 @@ const validateImageDimensions: Validate<any, any> = async (value) => {
     }
     return true
   } catch (error) {
-    toast.error(`Error al validar la imagen`)
     return 'Error al validar la imagen'
   }
 }

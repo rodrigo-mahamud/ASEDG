@@ -44,6 +44,7 @@ export interface Config {
     facilities: Facility;
     sports: Sport;
     cat: Cat;
+    payments: Payment;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -103,7 +104,7 @@ export interface Page {
   id: string;
   adminPanelTitle?: string | null;
   header: {
-    pagetype: 'indexPage' | 'newsPage' | 'facilitiesPage' | 'standarPage';
+    pagetype: 'standarPage' | 'indexPage' | 'newsPage' | 'facilitiesPage';
     style: 'index' | 'glow' | 'grid';
     title: string;
     pretitle: string;
@@ -159,8 +160,11 @@ export interface Page {
               link?:
                 | {
                     linkType: 'internal' | 'external' | 'mail' | 'location' | 'tel';
+                    linkStyle: 'basic' | 'secondary' | 'highlighted' | 'withicon' | 'shine';
+                    gIcon?: {
+                      icon?: string | null;
+                    };
                     linkText?: string | null;
-                    linkIcon?: string | null;
                     mail?: string | null;
                     location?: string | null;
                     tel?: string | null;
@@ -195,18 +199,21 @@ export interface Page {
           | {
               isReversed?: boolean | null;
               title: string;
-              body: string;
-              icon?: string | null;
-              list?:
-                | {
-                    isblold?: boolean | null;
-                    text: string;
-                    listImage?: (string | null) | Media;
-                    id?: string | null;
-                  }[]
-                | null;
-              linkText?: string | null;
-              link?: (string | null) | Page;
+              text: {
+                root: {
+                  type: string;
+                  children: {
+                    type: string;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              };
               image: string | Media;
               id?: string | null;
               blockName?: string | null;
@@ -227,8 +234,11 @@ export interface Page {
                       link?:
                         | {
                             linkType: 'internal' | 'external' | 'mail' | 'location' | 'tel';
+                            linkStyle: 'basic' | 'secondary' | 'highlighted' | 'withicon' | 'shine';
+                            gIcon?: {
+                              icon?: string | null;
+                            };
                             linkText?: string | null;
-                            linkIcon?: string | null;
                             mail?: string | null;
                             location?: string | null;
                             tel?: string | null;
@@ -258,11 +268,62 @@ export interface Page {
               blockType: 'newsblock';
             }
           | {
-              texs?: string | null;
+              title: string;
+              subtitle: string;
+              allFacilities?: (string | Facility)[] | null;
               id?: string | null;
               blockName?: string | null;
               blockType: 'bookingsblock';
             }
+          | {
+              richtxtcontent?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: string;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'richtext';
+            }
+          | {
+              title?: string | null;
+              description?: string | null;
+              faqsGoup?:
+                | {
+                    question: string;
+                    answer: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'faqs';
+            }
+          | {
+              sections?:
+                | {
+                    pretitle: string;
+                    title: string;
+                    text: string;
+                    image: string | Media;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+              blockName?: string | null;
+              blockType: 'stickytextimages';
+            }
+          | PagosConStripe
         )[]
       | null;
   };
@@ -295,7 +356,7 @@ export interface News {
     masonryImage4: string | Media;
     masonryImage5: string | Media;
   };
-  newsRelated: (string | News)[];
+  newsRelated?: (string | News)[] | null;
   richtxtcontent?: {
     root: {
       type: string;
@@ -320,7 +381,7 @@ export interface News {
   fixed?: boolean | null;
   categories: (string | Cat)[];
   publishedDate: string;
-  slug?: string | null;
+  slug: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -328,6 +389,7 @@ export interface News {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -347,6 +409,16 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -386,13 +458,31 @@ export interface Autobus {
 export interface Facility {
   id: string;
   title: string;
-  summary: string;
-  images?:
-    | {
-        image?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
+  facilitieType: 'gym' | 'sportsCenter' | 'padelField';
+  facilitieImages: {
+    facilitieImage1: string | Media;
+    facilitieImage2: string | Media;
+    facilitieImage3: string | Media;
+    facilitieImage4: string | Media;
+    facilitieImage5: string | Media;
+  };
+  description: string;
+  richtxtcontent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  facilitiesRelated?: (string | Facility)[] | null;
   bookingOptions?:
     | {
         periodType: 'fixed' | 'hours' | 'days' | 'months';
@@ -411,9 +501,45 @@ export interface Facility {
   holidayschedule?: {
     schedule?: HorarioDeVacaciones;
   };
-  slug?: string | null;
+  slug: string;
+  termsFile: string | Media;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Pagos con Stripe".
+ */
+export interface PagosConStripe {
+  cardTitle: string;
+  icon?: string | null;
+  buttonText: string;
+  cardDescription: string;
+  cardIncluded?:
+    | {
+        icon?: string | null;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  stripeInfo: {
+    price: number;
+    expirationDate: string;
+    expiratedMsg: string;
+    successMsg: string;
+    errorMsg: string;
+    termsFile?: (string | null) | Media;
+    stripefields?:
+      | {
+          halfWidth?: boolean | null;
+          fieldLabel: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stripetpv';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -422,7 +548,37 @@ export interface Facility {
 export interface Sport {
   id: string;
   title: string;
-  slug?: string | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: string;
+  source?: string | null;
+  name?: string | null;
+  tpvname?: string | null;
+  surname?: string | null;
+  dni?: string | null;
+  email?: string | null;
+  amount: number;
+  cardBrand?: string | null;
+  cardExpDate?: string | null;
+  cardNumbrer?: string | null;
+  transactionId: string;
+  date: string;
+  aditionalfields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -460,6 +616,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'cat';
         value: string | Cat;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: string | Payment;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -511,9 +671,9 @@ export interface Setting {
   id: string;
   defaultTitle: string;
   defaultDescription: string;
-  faviconLight: string | Media;
-  faviconDark: string | Media;
-  defaultOgImage: string | Media;
+  faviconLight?: (string | null) | Media;
+  faviconDark?: (string | null) | Media;
+  defaultOgImage?: (string | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
