@@ -34,7 +34,7 @@ const Pages: CollectionConfig = {
     useAsTitle: 'adminPanelTitle',
     preview: (doc) => {
       if (doc?.id) {
-        return `http://${process.env.ROOT_DOMAIN}/preview/pages/${doc.id}`
+        return `https://${process.env.ROOT_DOMAIN}/preview/pages/${doc.id}`
       }
       return null
     },

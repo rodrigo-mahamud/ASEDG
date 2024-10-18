@@ -1,7 +1,5 @@
 'use client'
-
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/lib/button'
 import {
   Dialog,
   DialogContent,
@@ -21,7 +19,7 @@ import {
 import StripeForm from './StripeForm'
 import { Elements } from '@stripe/react-stripe-js'
 import stripeState from '../../../../utils/stripe/stripeState'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js/pure'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import StripeSuccess from './StripeSuccess'
 import { usePathname, useSearchParams } from 'next/navigation'

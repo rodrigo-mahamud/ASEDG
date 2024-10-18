@@ -20,7 +20,7 @@ const News: CollectionConfig = {
     useAsTitle: 'title',
     preview: (doc) => {
       if (doc?.id) {
-        return `http://${process.env.ROOT_DOMAIN}/preview/news/${doc.id}`
+        return `https://${process.env.ROOT_DOMAIN}/preview/news/${doc.id}`
       }
       return null
     },

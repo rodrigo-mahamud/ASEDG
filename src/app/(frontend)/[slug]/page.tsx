@@ -81,6 +81,7 @@ export default async function Page({ params }: any) {
     <main>
       <Toaster />
       <Hero data={page} />
+
       {page.body && <RenderBlocks layout={page.body.layout} />}
     </main>
   )

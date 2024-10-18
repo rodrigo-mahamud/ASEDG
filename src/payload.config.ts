@@ -47,7 +47,7 @@ export default buildConfig({
   admin: {
     livePreview: {
       url: ({ collectionConfig, data }) => {
-        const baseURL = `http://${process.env.ROOT_DOMAIN}`
+        const baseURL = `https://${process.env.ROOT_DOMAIN}`
         switch (collectionConfig?.slug) {
           case 'pages':
             return `${baseURL}/preview/pages/${data.id}`
