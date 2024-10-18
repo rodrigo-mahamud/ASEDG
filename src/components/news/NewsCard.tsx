@@ -149,12 +149,12 @@ export default function NewsCard({ data, className }: NewsCardProps) {
         </CardContent>
       ) : (
         <CardContent className="p-5">
-          <time className=" text-xs text-muted" dateTime={data.publishedDate}>
+          <time className="text-xs text-muted-foreground" dateTime={data.publishedDate}>
             {formatDate(data.publishedDate)}
           </time>
-          <CardTitle className="line-clamp-1 text-xl">{data.title}</CardTitle>
-          <CardDescription className="line-clamp-3 mt-1 mb-3">{data.summary}</CardDescription>
-          <div className="flex items-center gap-3  h-10">
+          <CardTitle className="line-clamp-1 text-xl mt-1">{data.title}</CardTitle>
+          <CardDescription className="line-clamp-3 mt-2 mb-3">{data.summary}</CardDescription>
+          <div className="flex items-center gap-3 h-10">
             <Button
               asChild
               variant="expandIcon"

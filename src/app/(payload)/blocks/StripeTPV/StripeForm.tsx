@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { addToPayload, createPaymentIntent, getCard, sendTPVEmail } from '@/utils/stripe/actions'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,14 +12,14 @@ import { FloatingLabelInput } from '@/components/lib/floatinglabel'
 import { createStripeForm, FormDataTypes } from '@/utils/stripe/validateForm'
 import { StripeFormProps } from '@/types/types-stripe'
 import stripeState from '@/utils/stripe/stripeState'
-import { IconCreditCardPay, IconRefresh } from '@tabler/icons-react'
+import { IconCreditCardPay } from '@tabler/icons-react'
 import normaliceFormKeys from '@/utils/stripe/normaliceFormKeys'
 import { toast } from 'sonner'
 import { useRouter, useSearchParams } from 'next/navigation'
 import StripeSkeleton from './StripeSkeleton'
 import StripeFormErrors from './StripeFormErrors'
 import { Skeleton } from '@/components/lib/skeleton'
-import { date } from 'zod'
+import { DialogDescription, DialogHeader, DialogTitle } from '@/components/lib/dialog'
 
 function StripeForm({ stripeInfo, cardTitle, blockId }: StripeFormProps) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -159,133 +159,141 @@ function StripeForm({ stripeInfo, cardTitle, blockId }: StripeFormProps) {
   }
 
   return (
-    <Form {...form}>
-      <form
-        ref={formRef}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 flex flex-wrap space-x-4 p-6"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field: formField }) => (
-            <FormItem className="flex-1 !mt-0 ">
-              <FormControl>
-                <FloatingLabelInput label="Nombre" className="h-12 " type="text" {...formField} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="surname"
-          render={({ field: formField }) => (
-            <FormItem className="flex-1 !mt-0 ">
-              <FormControl>
-                <FloatingLabelInput
-                  label="Apellidos"
-                  className="h-12 "
-                  type="text"
-                  {...formField}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="dni"
-          render={({ field: formField }) => (
-            <FormItem className="w-full !ml-0">
-              <FormControl>
-                <FloatingLabelInput label="D.N.I" className="h-12 " type="text" {...formField} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field: formField }) => (
-            <FormItem className="w-full !ml-0">
-              <FormControl>
-                <FloatingLabelInput
-                  label="Correo Electrónico"
-                  className="h-12 "
-                  type="email"
-                  {...formField}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        {stripeInfo.stripefields.map((field, index) => (
+    <>
+      <DialogHeader className="px-6 pt-6">
+        <DialogTitle className="text-2xl">Formulario de Pago</DialogTitle>
+        <DialogDescription className="text-sm">
+          Por favor, complete los detalles de pago a continuación.
+        </DialogDescription>
+      </DialogHeader>
+      <Form {...form}>
+        <form
+          ref={formRef}
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 flex flex-wrap space-x-4 p-6"
+        >
           <FormField
-            key={index}
             control={form.control}
-            name={field.fieldLabel}
+            name="name"
             render={({ field: formField }) => (
-              <FormItem className={`${field.halfWidth ? 'flex-1 !mt-0 ' : 'w-full !mx-0'}`}>
+              <FormItem className="flex-1 !mt-0 ">
+                <FormControl>
+                  <FloatingLabelInput label="Nombre" className="h-12 " type="text" {...formField} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="surname"
+            render={({ field: formField }) => (
+              <FormItem className="flex-1 !mt-0 ">
                 <FormControl>
                   <FloatingLabelInput
-                    label={field.fieldLabel}
-                    className="h-12"
-                    type={'text'}
+                    label="Apellidos"
+                    className="h-12 "
+                    type="text"
                     {...formField}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-        ))}
-      </form>
-      <div className="bg-gray-50 px-6 py-6 min-h-80 flex flex-col justify-between">
-        <div className="relative w-full h-full mb-6">
-          {!clientSecret && <StripeSkeleton className="w-full absolute z-10 h-full" />}
-          {clientSecret && (
-            <PaymentElement
-              onChange={(e) => {
-                if (e.complete) {
-                  setIsdisabled(false)
-                }
-              }}
-            />
-          )}
-        </div>
-        <StripeFormErrors form={form}></StripeFormErrors>
 
-        <Button
-          className="w-full flex items-center rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault()
-            formRef?.current?.requestSubmit()
-          }}
-          variant={'expandIcon'}
-          Icon={IconCreditCardPay}
-          iconPlacement="right"
-          iconClass="w-5 h-5"
-          disabled={
-            isDisabled ||
-            isLoading ||
-            !clientSecret ||
-            Object.keys(form.formState.errors).length > 0
-          }
-        >
-          {isLoading ? (
-            <Skeleton className="w-40 h-4 rounded-sm bg-indigo-300"></Skeleton>
-          ) : (
-            <span className="text-base">Pagar {stripeInfo.price}€</span>
-          )}
-        </Button>
-      </div>
-      {formData.error && (
-        <Alert variant="destructive" className="mt-6">
-          <AlertDescription>{formData.error}</AlertDescription>
-        </Alert>
-      )}
-    </Form>
+          <FormField
+            control={form.control}
+            name="dni"
+            render={({ field: formField }) => (
+              <FormItem className="w-full !ml-0">
+                <FormControl>
+                  <FloatingLabelInput label="D.N.I" className="h-12 " type="text" {...formField} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field: formField }) => (
+              <FormItem className="w-full !ml-0">
+                <FormControl>
+                  <FloatingLabelInput
+                    label="Correo Electrónico"
+                    className="h-12 "
+                    type="email"
+                    {...formField}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {stripeInfo.stripefields.map((field, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={field.fieldLabel}
+              render={({ field: formField }) => (
+                <FormItem className={`${field.halfWidth ? 'flex-1 !mt-0 ' : 'w-full !mx-0'}`}>
+                  <FormControl>
+                    <FloatingLabelInput
+                      label={field.fieldLabel}
+                      className="h-12"
+                      type={'text'}
+                      {...formField}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          ))}
+        </form>
+        <div className="bg-gray-50 px-6 py-6 min-h-80 flex flex-col justify-between">
+          <div className="relative w-full h-full mb-6">
+            {!clientSecret && <StripeSkeleton className="w-full absolute z-10 h-full" />}
+            {clientSecret && (
+              <PaymentElement
+                onChange={(e) => {
+                  if (e.complete) {
+                    setIsdisabled(false)
+                  }
+                }}
+              />
+            )}
+          </div>
+          <StripeFormErrors form={form}></StripeFormErrors>
+
+          <Button
+            className="w-full flex items-center rounded-md py-3 h-auto text-white hover:bg-primary/90 hover:animate-none animate-shine bg-gradient-to-r from-primary via-primary/85 to-primary bg-[length:200%_100%]"
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault()
+              formRef?.current?.requestSubmit()
+            }}
+            variant={'expandIcon'}
+            Icon={IconCreditCardPay}
+            iconPlacement="right"
+            iconClass="w-5 h-5"
+            disabled={
+              isDisabled ||
+              isLoading ||
+              !clientSecret ||
+              Object.keys(form.formState.errors).length > 0
+            }
+          >
+            {isLoading ? (
+              <Skeleton className="w-40 h-4 rounded-sm bg-indigo-300"></Skeleton>
+            ) : (
+              <span className="text-base">Pagar {stripeInfo.price}€</span>
+            )}
+          </Button>
+        </div>
+        {formData.error && (
+          <Alert variant="destructive" className="mt-6">
+            <AlertDescription>{formData.error}</AlertDescription>
+          </Alert>
+        )}
+      </Form>
+    </>
   )
 }
 

@@ -27,9 +27,9 @@ export default function StripeRecently() {
       {recentlyPurchased && (
         <Badge
           variant="default"
-          className="rounded-full flex gap-1 items-center py-1 px-3 w-fit bg-indigo-50 text-indigo-500 border-0"
+          className="rounded-full flex gap-1 items-center py-1 px-3 w-fit bg-indigo-50 text-indigo-500 border-0 hover:bg-indigo-50"
         >
-          <IconInfoCircle className="w-3 h-3 !text-indigo-500" stroke={1.75}></IconInfoCircle>
+          <IconInfoCircle className="w-3 h-3 !text-indigo-500 " stroke={1.75}></IconInfoCircle>
           <span className="text-xs font-normal">Pagado hoy</span>
         </Badge>
       )}

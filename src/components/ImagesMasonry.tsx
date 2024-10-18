@@ -17,8 +17,8 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
           placeholder="blur"
           blurDataURL={thumbnailSrcs[0]}
           className="w-full object-cover"
-          quality={15}
-          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
+          quality={50}
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 35vw"
           alt={imageAlts[0]}
         />
       </div>
@@ -30,7 +30,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
           blurDataURL={thumbnailSrcs[1]}
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 35vw"
           alt={imageAlts[1]}
         />
       </div>
@@ -42,7 +42,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
           blurDataURL={thumbnailSrcs[2]}
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 35vw"
           alt={imageAlts[2]}
         />
       </div>
@@ -54,7 +54,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
           blurDataURL={thumbnailSrcs[3]}
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 35vw"
           alt={imageAlts[3]}
         />
       </div>
@@ -66,7 +66,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
           blurDataURL={thumbnailSrcs[4]}
           className="w-full object-cover"
           quality={15}
-          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 25vw"
+          sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 35vw"
           alt={imageAlts[4]}
         />
       </div>

@@ -116,12 +116,6 @@ export default function StripeModal({ stripeInfo, blockId, cardTitle }: any) {
               <StripeError stripeInfo={stripeInfo} />
             ) : (
               <>
-                <DialogHeader className="px-6 pt-6">
-                  <DialogTitle className="text-2xl">Formulario de Pago</DialogTitle>
-                  <DialogDescription className="text-sm">
-                    Por favor, complete los detalles de pago a continuación.
-                  </DialogDescription>
-                </DialogHeader>
                 <StripeForm stripeInfo={stripeInfo} blockId={blockId} cardTitle={cardTitle} />
               </>
             )}

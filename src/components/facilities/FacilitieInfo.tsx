@@ -14,11 +14,13 @@ export default function FacilitieInfo({ data }: any) {
           <h2 className="my-2 text-base">{data.description}</h2>
         </div>
         <RichTextParser content={data.richtxtcontent}></RichTextParser>
-        <div className="py-14">
-          <Separator></Separator>
-        </div>
         {data.facilitiesRelated && (
-          <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
+          <>
+            <div className="py-14">
+              <Separator></Separator>
+            </div>
+            <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
+          </>
         )}
       </div>
       <BookingSticky
