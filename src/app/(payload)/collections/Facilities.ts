@@ -149,6 +149,16 @@ const Facilities: CollectionConfig = {
       maxRows: 4,
     },
     {
+      name: 'location',
+      label: 'Ubicación de la instalacción',
+      type: 'text',
+      required: true,
+      admin: {
+        description:
+          'Para asegurar que la ubicación es correcta debes indicar la población al final',
+      },
+    },
+    {
       name: 'bookingOptions',
       type: 'array',
       label: 'Opciones de reserva',

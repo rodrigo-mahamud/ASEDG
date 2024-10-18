@@ -105,7 +105,7 @@ export default async function BookingPage({ params }: PageProps) {
         <div className="pt-16 pb-14">
           <Separator></Separator>
         </div>
-        <FacilitieLocationMap address="Centro juvenil san esteban de gormaz"></FacilitieLocationMap>
+        <FacilitieLocationMap address={page.location}></FacilitieLocationMap>
       </Container>
     </main>
   )

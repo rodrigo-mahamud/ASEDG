@@ -17,7 +17,9 @@ export default function FacilitieInfo({ data }: any) {
         <div className="py-14">
           <Separator></Separator>
         </div>
-        <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
+        {data.facilitiesRelated && (
+          <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>
+        )}
       </div>
       <BookingSticky
         className="w-[35%] sticky top-28 h-fit"

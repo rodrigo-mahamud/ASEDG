@@ -483,6 +483,7 @@ export interface Facility {
     [k: string]: unknown;
   } | null;
   facilitiesRelated?: (string | Facility)[] | null;
+  location: string;
   bookingOptions?:
     | {
         periodType: 'fixed' | 'hours' | 'days' | 'months';

@@ -1,7 +1,10 @@
 import React from 'react'
 import { Separator } from '../lib/separator'
 
-export default function FacilitieLocationMap({ address, zoom = 16 }: any) {
+export default function FacilitieLocationMap({
+  address = 'ayuntamiento san esteban de gormaz',
+  zoom = 16,
+}: any) {
   const encodedAddress = encodeURIComponent(address)
   const src = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed&disableDefaultUI=true&maptype=`
   return (
