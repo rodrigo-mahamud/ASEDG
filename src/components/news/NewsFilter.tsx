@@ -1,7 +1,7 @@
 'use client'
 import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/lib/select'
 import useEmblaCarousel from 'embla-carousel-react'
 import { Cat } from '@/payload-types'
 

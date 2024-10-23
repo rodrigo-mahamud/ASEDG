@@ -6,9 +6,9 @@ import { es } from 'date-fns/locale'
 import { DateRange } from 'react-day-picker'
 
 import { cn } from '@/utils/utils'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@/components/lib/button'
+import { Calendar } from '@/components/lib/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/lib/popover'
 import { IconCalendar } from '@tabler/icons-react'
 import {
   Select,
@@ -16,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/lib/select'
 
 interface DatePickerWithRangeProps {
   className?: string

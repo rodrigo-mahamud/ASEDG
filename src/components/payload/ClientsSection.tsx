@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../lib/card'
 import AddEditVisitor from './table/AddEditVisitor'
 import { DeleteVisitor } from './table/DeleteVisitor'
 import { TableVisitorsWrapper } from './table/TableVisitorsWrapper'

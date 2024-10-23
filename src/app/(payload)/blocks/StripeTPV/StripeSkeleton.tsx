@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@/components/lib/skeleton'
 import { cn } from '@/utils/utils'
 import React from 'react'
 

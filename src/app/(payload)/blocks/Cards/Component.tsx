@@ -1,12 +1,12 @@
 'use client'
 import * as React from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/lib/button'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/lib/card'
 import Image from 'next/image'
 import Container from '@/components/Container'
-import Title from '@/components/ui/title'
+import Title from '@/components/lib/title'
 import { Type } from '.'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/lib/badge'
 import CardButtons from './CardButtons' // Asegúrate de ajustar la ruta según tu estructura de carpetas
 
 export default function CardsBlock({ cards, title, description, filter }: Type) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import DynamicIcon from '@/components/DynamicIcon'
 import StripeCardButton from './StripeCardButton'
-import BlurFade from '@/components/ui/blurFade'
+import BlurFade from '@/components/lib/blurFade'
 import { IconLock } from '@tabler/icons-react'
 import StripeRecently from './StripeRecently'
 import DownloadTerms from '@/components/DownloadTerms'

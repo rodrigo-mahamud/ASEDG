@@ -1,7 +1,7 @@
 import React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/lib/tabs'
 import RenderBlocks from '@/components/RenderBlocks'
-import Title from '@/components/ui/title'
+import Title from '@/components/lib/title'
 import Container from '@/components/Container'
 
 type Props = {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import {
   Card,
   CardContent,
@@ -7,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/components/lib/card'
 import Image from 'next/image'
-import { Badge } from '@/components/ui/badge'
-import ShareButton from '@/components/ui/shareButton'
+import { Badge } from '@/components/lib/badge'
+import ShareButton from '@/components/lib/shareButton'
 interface NewsCardTypes {
   className?: string
   badgeClass?: string

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/lib/card'
 import AreaGraph from './charts/AreaGraph'
 import { getActivityLogs, getRevenue } from '@/utils/dashboard/actions'
 import AreaSellsChart from './charts/AreaRevenue'

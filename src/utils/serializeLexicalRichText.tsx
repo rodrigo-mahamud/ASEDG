@@ -5,7 +5,7 @@ import Image from 'next/image'
 import escapeHTML from 'escape-html'
 import RenderBlocks from '@/components/RenderBlocks'
 import IconList from '@/app/(payload)/blocks/RTBlocks/IconList/Component'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@/components/lib/separator'
 
 // Define constants for text formats
 const IS_BOLD = 1

@@ -7,15 +7,15 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
+} from '@/components/lib/select'
+import { Button } from '@/components/lib/button'
 import {
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
 } from '@tabler/icons-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/lib/badge'
 import { SelectGroup, SelectLabel } from '@radix-ui/react-select'
 
 interface DataTablePaginationProps<TData> {

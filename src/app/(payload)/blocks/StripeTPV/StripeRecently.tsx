@@ -1,6 +1,6 @@
 'use client'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription } from '@/components/lib/alert'
+import { Badge } from '@/components/lib/badge'
 import { IconInfoCircle } from '@tabler/icons-react'
 import React, { useEffect, useState } from 'react'
 

@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import 'react-big-calendar/ui/css/react-big-calendar.css'
 import '@/app/(frontend)/styles/calendar.css'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import CalendarDrawer from '../Calendar/Drawer'
 

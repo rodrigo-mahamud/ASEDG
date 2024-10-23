@@ -5,7 +5,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@/components/lib/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -14,8 +14,8 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
+} from '@/components/lib/drawer'
+import { Button } from '@/components/lib/button'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import {

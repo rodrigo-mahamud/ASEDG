@@ -3,9 +3,9 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { Type } from '.'
 import Container from '@/components/Container'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import { IconArrowRight } from '@tabler/icons-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@/components/lib/badge'
 
 export default function StickyTextImages({ sections }: Type) {
   const containerRef = useRef<HTMLDivElement>(null)
