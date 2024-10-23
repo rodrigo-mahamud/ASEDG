@@ -95,16 +95,12 @@ export default async function BookingPage({ params }: PageProps) {
     <main>
       <Toaster />
       <FacilitiesBarMobile data={page}></FacilitiesBarMobile>
+      {images.length > 0 && (
+        <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} thumbnailSrcs={thumbnailSrcs} />
+      )}
       <Container>
-        {images.length > 0 && (
-          <ImagesMasonry
-            imageSrcs={imageSrcs}
-            imageAlts={imageAlts}
-            thumbnailSrcs={thumbnailSrcs}
-          />
-        )}
         <FacilitieInfo data={page}></FacilitieInfo>
-        <div className="pt-8 pb-7 md:pt-16 md:pb-14">
+        <div className="pt-4 pb-8 md:pt-16 md:pb-14">
           <Separator></Separator>
         </div>
         <FacilitieLocationMap address={page.location}></FacilitieLocationMap>

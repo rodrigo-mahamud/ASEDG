@@ -4,14 +4,14 @@ import DynamicIcon from '@/components/DynamicIcon'
 export default function IconList({ block }: any) {
   return (
     <div className="flex items-start w-full">
-      <ul className="py-6 grid grid-cols-2 grid-rows-3 w-full">
+      <ul className="py-3 md:py-6 grid md:grid-cols-2 md:grid-rows-3 w-full">
         {block.list.map((item: any, index: any) => {
           return (
             <li key={index} className="my-2 flex items-center">
               {item.icon && (
                 <DynamicIcon
                   stroke={1.5}
-                  className="mr-2 h-7 w-7 md:mr-1.5 md:h-5 md:w-5"
+                  className="mr-2 size-5 md:mr-1.5 "
                   iconName={item.icon || ''}
                 />
               )}

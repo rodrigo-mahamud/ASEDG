@@ -5,5 +5,5 @@ interface containerTypes {
   className?: string
 }
 export default function Container({ children, className }: containerTypes) {
-  return <div className={cn(' container relative py-24', className)}>{children}</div>
+  return <div className={cn(' container relative py-12 md:py-24', className)}>{children}</div>
 }

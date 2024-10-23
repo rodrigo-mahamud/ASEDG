@@ -9,7 +9,7 @@ import { Button } from '../lib/button'
 
 export default function FacilitieInfo({ data }: any) {
   return (
-    <section className="w-full flex flex-col md:flex-row gap-24 relative pt-12">
+    <section className="w-full flex flex-col md:flex-row gap-24 relative md:pt-12">
       <div className="md:w-[65%]">
         <div className="flex flex-col">
           <h1 className="text-3xl font-semibold line-clamp-1 mb-2 tracking-tight">{data.title}</h1>

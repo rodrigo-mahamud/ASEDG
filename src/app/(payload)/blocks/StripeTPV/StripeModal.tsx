@@ -1,15 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/lib/dialog'
+import { Dialog, DialogContent } from '@/components/lib/dialog'
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -23,7 +16,6 @@ import { loadStripe } from '@stripe/stripe-js/pure'
 import convertToSubcurrency from '@/utils/convertToSubcurrency'
 import StripeSuccess from './StripeSuccess'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { IconCreditCardPay } from '@tabler/icons-react'
 import StripeError from './StripeError'
 import { useRouter } from 'next/navigation'
 
