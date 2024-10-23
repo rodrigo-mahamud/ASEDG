@@ -16,8 +16,8 @@ import BookingSticky from '../BookingSticky'
 export default function FacilitiesBarMobile({ data }: any) {
   return (
     <Drawer>
-      <DrawerTrigger className="fixed bottom-0 w-full py-4 bg-red-700 z-50 md:hidden">
-        Open
+      <DrawerTrigger className="fixed bottom-0 w-full py-4 bg-white z-50 md:hidden">
+        Reservar
       </DrawerTrigger>
       <DrawerContent className="pb-4">
         <DrawerHeader className="p-4 flex flex-col justify-start">
