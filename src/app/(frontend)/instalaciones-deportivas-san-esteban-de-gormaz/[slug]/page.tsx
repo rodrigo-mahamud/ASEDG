@@ -98,7 +98,7 @@ export default async function BookingPage({ params }: PageProps) {
       {images.length > 0 && (
         <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} thumbnailSrcs={thumbnailSrcs} />
       )}
-      <Container>
+      <Container className="md:pt-0">
         <FacilitieInfo data={page}></FacilitieInfo>
         <div className="pt-4 pb-8 md:pt-16 md:pb-14">
           <Separator></Separator>

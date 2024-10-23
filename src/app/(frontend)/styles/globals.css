@@ -80,7 +80,15 @@
     @apply bg-background text-foreground;
   }
 }
+.mi-boton {
+  transition: transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
 
+.mi-boton:active {
+  transform: scale(0.9);
+}
 .clip-path {
   clip-path: inset(2px);
 }

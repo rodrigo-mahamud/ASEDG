@@ -486,6 +486,7 @@ export interface Facility {
   location: string;
   bookingOptions?:
     | {
+        icon?: string | null;
         periodType: 'fixed' | 'hours' | 'days' | 'months';
         name: string;
         periodLength?: number | null;

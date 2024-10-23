@@ -10,6 +10,7 @@ import {
 } from '@/utils/dashboard/actions'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
+import Icon from '../fields/Icons'
 
 const daysOfWeek = [
   { label: 'Lunes', value: 'monday' },
@@ -167,17 +168,24 @@ const Facilities: CollectionConfig = {
       },
       fields: [
         {
-          name: 'periodType',
-          type: 'select',
-          label: 'Tipo de Reserva',
-          options: [
-            { label: 'Precio fijo', value: 'fixed' },
-            { label: 'Por Horas', value: 'hours' },
-            { label: 'Por Días', value: 'days' },
-            { label: 'Por Meses', value: 'months' },
+          type: 'row',
+          fields: [
+            Icon,
+            {
+              name: 'periodType',
+              type: 'select',
+              label: 'Tipo de Reserva',
+              options: [
+                { label: 'Precio fijo', value: 'fixed' },
+                { label: 'Por Horas', value: 'hours' },
+                { label: 'Por Días', value: 'days' },
+                { label: 'Por Meses', value: 'months' },
+              ],
+              required: true,
+            },
           ],
-          required: true,
         },
+
         {
           type: 'row',
           fields: [

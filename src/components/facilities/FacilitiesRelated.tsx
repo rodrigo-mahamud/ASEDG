@@ -28,7 +28,7 @@ export function FacilitiesRelated({ data }: any) {
       </div>
       <CarouselContent className="w-full ">
         {data.map((item: any, index: any) => (
-          <CarouselItem key={index} className="md:basis-[49%] first:ml-4">
+          <CarouselItem key={index} className="basis-[75%] md:basis-[49%] first:ml-4">
             <FRCard data={item}></FRCard>
           </CarouselItem>
         ))}

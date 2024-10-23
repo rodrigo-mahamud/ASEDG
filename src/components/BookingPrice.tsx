@@ -17,7 +17,7 @@ export function BookingPrice() {
   const endDate = dayjs().add(daysAmount, 'day').format('DD/MM/YYYY')
 
   return (
-    <div className="mt-0 mb-5 p-5 bg-secondary rounded-md">
+    <div className="mt-0 mb-6 md:mb-5 p-4 md:p-5 bg-secondary rounded-md">
       <div className="flex justify-between mb-1 text-sm">
         <span>Finaliza el :</span>
         <span>{endDate}</span>
