@@ -2,10 +2,10 @@ import RichTextParser from '@/utils/richTextParser'
 import { IconMapPinExclamation } from '@tabler/icons-react'
 import React from 'react'
 import { FacilitiesRelated } from './FacilitiesRelated'
-import { Separator } from '../lib/separator'
+import { Separator } from '../ui/separator'
 import BookingSticky from '../BookingSticky'
 import DownloadTerms from '../DownloadTerms'
-import { Button } from '../lib/button'
+import { Button } from '../ui/button'
 
 export default function FacilitieInfo({ data }: any) {
   return (

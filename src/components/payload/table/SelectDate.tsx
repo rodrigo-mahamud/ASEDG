@@ -9,9 +9,9 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from '@/components/lib/select'
-import { FormControl, FormItem, FormMessage } from '@/components/lib/form'
-import { Skeleton } from '@/components/lib/skeleton'
+} from '@/components/ui/select'
+import { FormControl, FormItem, FormMessage } from '@/components/ui/form'
+import { Skeleton } from '@/components/ui/skeleton'
 import { DatePeriodPickerProps } from '@/utils/dashboard/types'
 import { SelectLabel } from '@radix-ui/react-select'
 

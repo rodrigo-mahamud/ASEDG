@@ -2,10 +2,10 @@
 import React, { useEffect } from 'react'
 import confetti from 'canvas-confetti'
 import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react'
-import { Button } from '@/components/lib/button'
+import { Button } from '@/components/ui/button'
 import stripeState from '@/utils/stripe/stripeState'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { DialogDescription, DialogHeader, DialogTitle } from '@/components/lib/dialog'
+import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export default function StripeError({ stripeInfo }: any) {
   const pathname = usePathname()

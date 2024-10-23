@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from 'react-hook-form'
-import { Alert, AlertTitle, AlertDescription } from '@/components/lib/alert'
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 
 interface FormErrorsProps<T extends FieldValues> {
   form: UseFormReturn<T>

@@ -5,8 +5,8 @@ import {
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogFooter,
-} from '@/components/lib/alert-dialog'
-import { Button } from '@/components/lib/button'
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
 import { IconLoader2 } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { handleDoor } from '@/utils/dashboard/actions'

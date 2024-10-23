@@ -9,17 +9,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/lib/alert-dialog'
-import { Button } from '@/components/lib/button'
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/actions'
 import { toast } from '@payloadcms/ui'
-import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { pinCodeSchema, VisitorFormValues, visitorSchema } from '@/utils/dashboard/validationSchema'
-import { FloatingLabelInput } from '@/components/lib/floatinglabel'
+import { FloatingLabelInput } from '@/components/ui/floatinglabel'
 import { FormErrors } from './FormErrors'
 
 export function EditPinCode() {

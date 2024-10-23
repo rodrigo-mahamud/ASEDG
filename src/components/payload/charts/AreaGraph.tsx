@@ -6,7 +6,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/lib/chart'
+} from '@/components/ui/chart'
 import { format, isValid, setDefaultOptions } from 'date-fns'
 import { es } from 'date-fns/locale'
 

@@ -1,7 +1,7 @@
 import Container from '@/components/Container'
 import ReservationsCard from './FacilitieCard'
 import React from 'react'
-import Title from '@/components/lib/title'
+import Title from '@/components/ui/title'
 import BookingsCard from './FacilitieCard'
 import FacilitieCard from './FacilitieCard'
 

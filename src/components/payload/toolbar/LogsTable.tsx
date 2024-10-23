@@ -6,13 +6,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/lib/table'
+} from '@/components/ui/table'
 import { getActivityLogs } from '@/utils/dashboard/actions'
 import { LogsTypes, Column, FormattedLog } from '@/utils/dashboard/types'
 import { LogsDetails } from './LogsDetails'
 import { IconDisplay } from '@/components/IconDisplay'
 import { formatLogData } from '@/utils/dashboard/logsTableFormat'
-import { Badge } from '@/components/lib/badge'
+import { Badge } from '@/components/ui/badge'
 
 const COLUMNS: Column[] = [
   { key: 'timestamp', label: 'Fecha' },

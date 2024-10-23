@@ -11,8 +11,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
-import { Button } from '@/components/lib/button'
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
 import {
   IconAdjustmentsHorizontal,
   IconDoor,

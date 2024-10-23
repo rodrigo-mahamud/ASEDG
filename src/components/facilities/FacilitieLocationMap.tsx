@@ -1,5 +1,5 @@
 import React from 'react'
-import { Separator } from '../lib/separator'
+import { Separator } from '../ui/separator'
 
 export default function FacilitieLocationMap({
   address = 'ayuntamiento san esteban de gormaz',

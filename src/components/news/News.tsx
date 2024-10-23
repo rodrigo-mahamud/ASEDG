@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import Container from '@/components/Container'
-import Title from '@/components/lib/title'
+import Title from '@/components/ui/title'
 import NewsFilter from './NewsFilter'
 import NewsGrid from './NewsGrid'
 import { News as NewsType, Cat } from '@/payload-types'

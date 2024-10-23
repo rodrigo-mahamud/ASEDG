@@ -1,13 +1,13 @@
 import * as React from 'react'
 
-import { Card, CardContent } from '@/components/lib/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/lib/carousel'
+} from '@/components/ui/carousel'
 import FRCard from './FRCard'
 
 export function FacilitiesRelated({ data }: any) {
@@ -28,7 +28,7 @@ export function FacilitiesRelated({ data }: any) {
       </div>
       <CarouselContent className="w-full ">
         {data.map((item: any, index: any) => (
-          <CarouselItem key={index} className="basis-[75%] md:basis-[49%] first:ml-4">
+          <CarouselItem key={index} className="md:basis-[49%] first:ml-4">
             <FRCard data={item}></FRCard>
           </CarouselItem>
         ))}

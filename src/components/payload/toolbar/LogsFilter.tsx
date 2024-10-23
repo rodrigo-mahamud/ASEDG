@@ -8,7 +8,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from '@/components/lib/select'
+} from '@/components/ui/select'
 import { IconFilter } from '@tabler/icons-react'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import React from 'react'

@@ -8,7 +8,7 @@ import Container from '@/components/Container'
 import { Facility } from '@/payload-types'
 import FacilitieInfo from '@/components/facilities/FacilitieInfo'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
-import { Separator } from '@/components/lib/separator'
+import { Separator } from '@/components/ui/separator'
 import FacilitiesBarMobile from '@/components/facilities/FacilitiesBarMobile'
 
 type PageProps = {
@@ -98,7 +98,7 @@ export default async function BookingPage({ params }: PageProps) {
       {images.length > 0 && (
         <ImagesMasonry imageSrcs={imageSrcs} imageAlts={imageAlts} thumbnailSrcs={thumbnailSrcs} />
       )}
-      <Container className="md:pt-0">
+      <Container>
         <FacilitieInfo data={page}></FacilitieInfo>
         <div className="pt-4 pb-8 md:pt-16 md:pb-14">
           <Separator></Separator>
