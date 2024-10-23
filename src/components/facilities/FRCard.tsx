@@ -25,8 +25,8 @@ export default function FRCard({ data }: any) {
             </div>
             <Image
               src={data.facilitieImages.facilitieImage1.url}
-              quality={5}
-              sizes="(max-width: 1200px) 10vw, 35vw"
+              quality={25}
+              sizes="(max-width: 1200px) 50vw, 35vw"
               alt={data.facilitieImages.facilitieImage1.alt}
               width={500}
               height={500}

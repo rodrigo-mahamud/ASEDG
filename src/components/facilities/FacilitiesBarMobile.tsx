@@ -20,8 +20,8 @@ export default function FacilitiesBarMobile({ data }: any) {
         Reservar
       </DrawerTrigger>
       <DrawerContent className="pb-4">
-        <DrawerHeader className="p-4 flex flex-col justify-start">
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+        <DrawerHeader className="p-4 flex flex-col justify-start items-start text-start">
+          <DrawerTitle>Selecciona periodo e introduce tu informacion</DrawerTitle>
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <BookingSticky

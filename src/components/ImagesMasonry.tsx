@@ -51,7 +51,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
         >
           <CarouselContent className="w-full">
             {imageSrcs.map((src, index) => (
-              <CarouselItem key={index} className="relative h-[28rem] w-full">
+              <CarouselItem key={index} className="relative h-96 w-full">
                 <Image
                   src={src}
                   fill
@@ -59,7 +59,7 @@ export default function ImagesMasonry({ imageSrcs, imageAlts, thumbnailSrcs }: I
                   blurDataURL={thumbnailSrcs[index]}
                   className="object-cover w-full"
                   quality={50}
-                  sizes="100vw"
+                  sizes="(max-width: 1200px) 50vw, 35vw"
                   alt={imageAlts[index]}
                 />
               </CarouselItem>
