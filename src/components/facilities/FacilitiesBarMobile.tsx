@@ -7,10 +7,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/lib/drawer'
+} from '@/components/ui/drawer'
 
 import React from 'react'
-import { Button } from '../lib/button'
+import { Button } from '../ui/button'
 import BookingSticky from '../BookingSticky'
 
 export default function FacilitiesBarMobile({ data }: any) {

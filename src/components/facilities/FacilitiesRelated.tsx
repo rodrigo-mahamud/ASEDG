@@ -1,13 +1,13 @@
 import * as React from 'react'
 
-import { Card, CardContent } from '@/components/lib/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/lib/carousel'
+} from '@/components/ui/carousel'
 import FRCard from './FRCard'
 
 export function FacilitiesRelated({ data }: any) {

@@ -9,15 +9,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/lib/form'
-import { Checkbox } from '@/components/lib/checkbox'
+} from '@/components/ui/form'
+import { Checkbox } from '@/components/ui/checkbox'
 import { BookingPeriods } from './BookingPeriods'
-import { FloatingLabelInput } from './lib/floatinglabel'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/lib/collapsible'
+import { FloatingLabelInput } from './ui/floatinglabel'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { IconChevronDown } from '@tabler/icons-react'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 import useFormStore from '@/utils/useBookingState'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './lib/accordion'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion'
 
 interface BookingFormProps {
   onSubmit: (data: BookingFormTypes) => void

@@ -8,7 +8,7 @@ import Container from '@/components/Container'
 import { Facility } from '@/payload-types'
 import FacilitieInfo from '@/components/facilities/FacilitieInfo'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
-import { Separator } from '@/components/lib/separator'
+import { Separator } from '@/components/ui/separator'
 import FacilitiesBarMobile from '@/components/facilities/FacilitiesBarMobile'
 
 type PageProps = {

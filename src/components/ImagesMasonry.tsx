@@ -1,8 +1,8 @@
 'use client'
 import Image from 'next/image'
 import React, { useState, useEffect } from 'react'
-import { Carousel, CarouselContent, CarouselItem } from '@/components/lib/carousel'
-import { type CarouselApi } from '@/components/lib/carousel'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import { type CarouselApi } from '@/components/ui/carousel'
 
 interface ImagesMasonryProps {
   imageSrcs: string[]

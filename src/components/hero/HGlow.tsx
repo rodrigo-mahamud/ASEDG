@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import dayjs from 'dayjs'
-import { AuroraBackground } from '../lib/auroraBackground'
+import { AuroraBackground } from '../ui/auroraBackground'
 import Container from '../Container'
 import { BreadcrumbDemo } from '../BreadcrumbDemo'
 import { HeroGlowTypes } from '@/types/types'

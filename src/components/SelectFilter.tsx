@@ -7,7 +7,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/lib/select'
+} from '@/components/ui/select'
 
 type Option = {
   label: string

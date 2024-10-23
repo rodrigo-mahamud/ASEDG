@@ -1,14 +1,14 @@
 'use client'
 import * as React from 'react'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { Button } from '@/components/lib/button'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/lib/dialog'
+} from '@/components/ui/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -17,7 +17,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/lib/drawer'
+} from '@/components/ui/drawer'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import LogsSearch from './LogsSearch'
 import LogsFilter from './LogsFilter'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from './lib/button'
+import { Button } from './ui/button'
 import {
   IconArrowRight,
   IconCreditCard,

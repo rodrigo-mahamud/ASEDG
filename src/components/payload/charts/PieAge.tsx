@@ -6,7 +6,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/lib/chart'
+} from '@/components/ui/chart'
 import { PieAgeProps } from '@/utils/dashboard/types'
 
 const chartConfig = {

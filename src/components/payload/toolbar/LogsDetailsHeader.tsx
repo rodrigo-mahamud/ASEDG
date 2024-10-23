@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
 import { VisitorData } from '@/utils/dashboard/types'
-import { DialogClose, DialogHeader, DialogTitle } from '@/components/lib/dialog'
-import { Button } from '@/components/lib/button'
+import { DialogClose, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { IconChevronLeft, IconChevronRight, IconX } from '@tabler/icons-react'
 import { LogsDetailsMenu } from './LogsDetailsMenu'
 import { IconDisplay } from '@/components/IconDisplay'
-import { Badge } from '@/components/lib/badge'
+import { Badge } from '@/components/ui/badge'
 
 export function LogsDetailsHeader({
   handleNavigation,

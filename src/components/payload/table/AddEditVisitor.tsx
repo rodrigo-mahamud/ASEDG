@@ -5,8 +5,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from '@/components/lib/sheet'
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/lib/drawer'
+} from '@/components/ui/sheet'
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import AddEditForm from './AddEditForm'

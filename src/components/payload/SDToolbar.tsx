@@ -10,7 +10,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from '../lib/select'
+} from '../ui/select'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import SettingsMenu from './toolbar/SettingsMenu'
 import { CloseConfirm } from './toolbar/CloseConfirm'

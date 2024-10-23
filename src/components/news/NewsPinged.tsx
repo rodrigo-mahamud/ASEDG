@@ -6,12 +6,12 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/lib/carousel'
-import { Button } from '@/components/lib/button'
-import Title from '@/components/lib/title'
+} from '@/components/ui/carousel'
+import { Button } from '@/components/ui/button'
+import Title from '@/components/ui/title'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Alert } from '@/components/lib/alert'
+import { Alert } from '@/components/ui/alert'
 import { News, Media, Cat } from '@/payload-types'
 
 interface NewsPingedProps {

@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/lib/card'
+} from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
@@ -17,7 +17,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/lib/chart'
+} from '@/components/ui/chart'
 import { IconTrendingUp } from '@tabler/icons-react'
 const chartData = [
   { month: 'January', desktop: 186, mobile: 80 },

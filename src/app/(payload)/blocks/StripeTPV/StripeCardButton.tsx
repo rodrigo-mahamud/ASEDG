@@ -1,6 +1,6 @@
 'use client'
 import DynamicIcon from '@/components/DynamicIcon'
-import { Button } from '@/components/lib/button'
+import { Button } from '@/components/ui/button'
 import React from 'react'
 import stripeState from '@/utils/stripe/stripeState'
 

@@ -1,15 +1,15 @@
 import { Table } from '@tanstack/react-table'
-import { Input } from '@/components/lib/input'
-import { Button } from '@/components/lib/button'
-import { Badge } from '@/components/lib/badge'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
-import { SelectSeparator } from '@/components/lib/select'
+import { SelectSeparator } from '@/components/ui/select'
 import {
   IconAdjustmentsHorizontal,
   IconUserPlus,

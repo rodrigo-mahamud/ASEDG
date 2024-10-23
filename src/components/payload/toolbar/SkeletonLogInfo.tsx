@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/lib/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export function SkeletonLogInfo() {
   return (

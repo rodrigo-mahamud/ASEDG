@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from '@/utils/utils'
-import { Input } from '@/components/lib/input'
-import { Label } from '@/components/lib/label'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export interface FloatingLabelInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string

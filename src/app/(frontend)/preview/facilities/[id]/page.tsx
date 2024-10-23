@@ -5,7 +5,7 @@ import RenderBlocks from '@/components/RenderBlocks'
 import Hero from '@/components/hero/Hero'
 import { Toaster } from 'sonner'
 import { notFound } from 'next/navigation'
-import { Alert } from '@/components/lib/alert'
+import { Alert } from '@/components/ui/alert'
 import { IconAlertTriangle, IconInfoCircle } from '@tabler/icons-react'
 import { Facility } from '@/payload-types'
 

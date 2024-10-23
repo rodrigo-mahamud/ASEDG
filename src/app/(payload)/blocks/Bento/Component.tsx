@@ -1,6 +1,6 @@
 import React from 'react'
 import BentoGridItem from './BentoItem'
-import Title from '@/components/lib/title'
+import Title from '@/components/ui/title'
 import { Type } from '.'
 
 export default function BentoBlock({ tarjeta, title, description }: Type) {

@@ -8,7 +8,7 @@ import {
   IconDots,
 } from '@tabler/icons-react'
 
-import { Button } from '@/components/lib/button'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { toast } from '@payloadcms/ui'
 

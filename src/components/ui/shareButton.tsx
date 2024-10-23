@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/lib/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { toast } from 'sonner'
 
 interface ShareTypes {
