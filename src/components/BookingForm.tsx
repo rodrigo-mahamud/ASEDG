@@ -59,7 +59,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className=" pb-4 md:py-5">
         <FormField
           control={form.control}
           name={'daysAmount'}
@@ -72,7 +72,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
           onOpenChange={setIsOpen}
           className="border-x border-b border-input rounded-b-md overflow-hidden"
         >
-          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 hover:bg-secondary ease-in-out px-5 py-3 duration-200">
+          <CollapsibleTrigger className="w-full flex justify-between items-center gap-2 hover:bg-secondary ease-in-out px-4 py-2 md:px-5 md:py-3 duration-200">
             <div className="flex flex-col text-start justify-start w-10/12">
               <h3 className="text-base font-semibold">Datos Personales</h3>
               <h4 className="text-sm text-muted-foreground">Completa tus datos personales.</h4>
@@ -87,7 +87,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-4 pt-2 px-4 pb-6">
-            <div className="flex gap-4">
+            <div className="flex md:flex-row flex-col gap-4">
               <FormField
                 control={form.control}
                 name="nombre"
@@ -95,7 +95,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                   <FormItem>
                     <FormControl>
                       <FloatingLabelInput
-                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                         label="Nombre"
                         {...field}
                       />
@@ -111,7 +111,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                   <FormItem>
                     <FormControl>
                       <FloatingLabelInput
-                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                         label="Apellidos"
                         {...field}
                       />
@@ -129,7 +129,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                   <FormItem className="w-3/4">
                     <FormControl>
                       <FloatingLabelInput
-                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                         label="D.N.I"
                         {...field}
                       />
@@ -146,7 +146,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                     <FormControl>
                       <FloatingLabelInput
                         label="Edad"
-                        className="rounded-sm focus-visible:border-secondaryAlt"
+                        className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                         type="number"
                         {...field}
                         onChange={(e) =>
@@ -166,7 +166,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                 <FormItem>
                   <FormControl>
                     <FloatingLabelInput
-                      className="rounded-sm focus-visible:border-secondaryAlt"
+                      className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                       label="Correo Electrónico"
                       {...field}
                     />
@@ -182,7 +182,7 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                 <FormItem>
                   <FormControl>
                     <FloatingLabelInput
-                      className="rounded-sm focus-visible:border-secondaryAlt"
+                      className="rounded-sm h-12 md:h-10 focus-visible:border-secondaryAlt"
                       label="Teléfono"
                       {...field}
                     />

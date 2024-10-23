@@ -10,12 +10,12 @@ export default function FacilitieLocationMap({
   return (
     <>
       <div className="w-full">
-        <h2 className="text-3xl mb-4 font-semibold tracking-tight">
+        <h2 className="text-xl md:text-3xl mb-4 font-semibold tracking-tight">
           ¿Cómo puedo llegar hasta ahi?
         </h2>
         <iframe
           title="Google Maps"
-          className="h-[580px] rounded-xl"
+          className="h-96 md:h-[580px] rounded-xl"
           src={src}
           width="100%"
           height="100%"

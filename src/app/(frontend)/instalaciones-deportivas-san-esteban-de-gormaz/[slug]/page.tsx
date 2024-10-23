@@ -9,6 +9,7 @@ import { Facility } from '@/payload-types'
 import FacilitieInfo from '@/components/facilities/FacilitieInfo'
 import FacilitieLocationMap from '@/components/facilities/FacilitieLocationMap'
 import { Separator } from '@/components/lib/separator'
+import FacilitiesBarMobile from '@/components/facilities/FacilitiesBarMobile'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -93,6 +94,7 @@ export default async function BookingPage({ params }: PageProps) {
   return (
     <main>
       <Toaster />
+      <FacilitiesBarMobile data={page}></FacilitiesBarMobile>
       <Container>
         {images.length > 0 && (
           <ImagesMasonry
@@ -102,7 +104,7 @@ export default async function BookingPage({ params }: PageProps) {
           />
         )}
         <FacilitieInfo data={page}></FacilitieInfo>
-        <div className="pt-16 pb-14">
+        <div className="pt-8 pb-7 md:pt-16 md:pb-14">
           <Separator></Separator>
         </div>
         <FacilitieLocationMap address={page.location}></FacilitieLocationMap>
