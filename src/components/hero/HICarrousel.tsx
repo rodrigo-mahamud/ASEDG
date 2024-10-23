@@ -7,9 +7,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel'
+} from '@/components/lib/carousel'
 import NRCard from '@/components/news/news-page/NRCard'
-import BlurFade from '@/components/ui/blurFade'
+import BlurFade from '@/components/lib/blurFade'
 import { IndexHighlightedNewProps } from '@/types/types'
 
 export function HICarrousel({ data }: IndexHighlightedNewProps) {

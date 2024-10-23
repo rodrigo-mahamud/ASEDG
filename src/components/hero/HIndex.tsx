@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import Container from '@/components/Container'
 import { IconArrowRight } from '@tabler/icons-react'
-import AnimatedGridPattern from '@/components/ui/animatedGridPattern'
+import AnimatedGridPattern from '@/components/lib/animatedGridPattern'
 import { cn } from '@/utils/utils'
-import BlurFade from '@/components/ui/blurFade'
+import BlurFade from '@/components/lib/blurFade'
 import { IndexHeroTypes } from '@/types/types'
 import { HICarrousel } from './HICarrousel'
 

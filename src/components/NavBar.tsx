@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-} from '@/components/ui/navigation-menu'
+} from '@/components/lib/navigation-menu'
 import { MotionDiv } from './MotionDiv'
 
 interface ChildTypes {

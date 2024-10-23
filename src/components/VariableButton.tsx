@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from './ui/button'
+import { Button } from './lib/button'
 import Link from 'next/link'
 import { cn } from '@/utils/utils'
 import * as TablerIcons from '@tabler/icons-react'

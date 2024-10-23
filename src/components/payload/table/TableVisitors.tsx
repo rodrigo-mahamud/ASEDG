@@ -21,10 +21,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/lib/table'
 
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Checkbox } from '@/components/lib/checkbox'
 import { Visitor, VisitorData } from '@/utils/dashboard/types'
 import { Pagination } from './Pagination'
 import { ToolbarTable } from './ToolbarTable'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { stripePromise } from '@/utils/stripeUtils'
 import { BookingCheckout } from './BookingCheckout'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '@/components/lib/skeleton'
 import useFormStore from '@/utils/useBookingState'
 
 interface BookingPaymentProps {

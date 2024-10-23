@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Badge } from '../ui/badge'
+import { Badge } from '../lib/badge'
 import { IconExclamationCircle, IconLockCheck } from '@tabler/icons-react'
 
 export default function SDDoorStatus() {

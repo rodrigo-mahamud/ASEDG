@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
-import ShareButton from '@/components/ui/shareButton'
+import { Button } from '@/components/lib/button'
+import ShareButton from '@/components/lib/shareButton'
 import { IconArrowRight, IconClock, IconTag } from '@tabler/icons-react'
 import Image from 'next/image'
 import Link from 'next/link'

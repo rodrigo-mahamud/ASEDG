@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import confetti from 'canvas-confetti'
 import { IconCheck, IconX } from '@tabler/icons-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import stripeState from '@/utils/stripe/stripeState'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 

@@ -1,7 +1,7 @@
 'use client'
 import { Visitor, VisitorData } from '@/utils/dashboard/types'
 import { ColumnDef } from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/lib/button'
 import {
   IconArrowsUpDown,
   IconCheck,
@@ -9,8 +9,8 @@ import {
   IconCircleX,
   IconExternalLink,
 } from '@tabler/icons-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/lib/avatar'
+import { Badge } from '@/components/lib/badge'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import ActionsTable from './ActionsTable'

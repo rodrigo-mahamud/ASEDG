@@ -8,7 +8,7 @@ export default function FRCard({ data }: any) {
       {data.facilitieImages && (
         <Link
           href={`/instalaciones-deportivas-san-esteban-de-gormaz/${data.slug}`}
-          className=" h-64 flex group pr-3"
+          className="h-52 md:h-64 flex group pr-3"
         >
           <div className="flex relative w-full h-full items-end transitionAlt hover:rounded-xl rounded-lg overflow-hidden">
             <div className="absolute w-full h-full blurMaskAlt z-10"></div>

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/lib/card'
 import { getActivityLogs, getRevenue } from '@/utils/dashboard/actions'
 import { IconLogin } from '@tabler/icons-react'
 

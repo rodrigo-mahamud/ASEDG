@@ -4,8 +4,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import Title from '@/components/ui/title'
+} from '@/components/lib/accordion'
+import Title from '@/components/lib/title'
 
 import { Type } from '.'
 

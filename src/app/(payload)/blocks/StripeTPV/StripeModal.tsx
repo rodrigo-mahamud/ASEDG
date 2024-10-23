@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent } from '@/components/lib/dialog'
 import {
   Drawer,
   DrawerContent,
@@ -8,7 +8,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
+} from '@/components/lib/drawer'
 import StripeForm from './StripeForm'
 import { Elements } from '@stripe/react-stripe-js'
 import stripeState from '../../../../utils/stripe/stripeState'

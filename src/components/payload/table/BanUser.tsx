@@ -9,8 +9,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+} from '@/components/lib/alert-dialog'
+import { Button } from '@/components/lib/button'
 import { IconLoader2, IconRefresh } from '@tabler/icons-react'
 import { useDashboardStore } from '@/utils/dashboard/dashboardStore'
 import { generatePinCode, sendEmail, updateVisitor } from '@/utils/dashboard/actions'
@@ -18,8 +18,8 @@ import { toast } from '@payloadcms/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { reportReason, ReportReasonTypes } from '@/utils/dashboard/validationSchema'
-import { Textarea } from '@/components/ui/textarea'
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { Textarea } from '@/components/lib/textarea'
+import { Form, FormControl, FormField, FormItem } from '@/components/lib/form'
 import { FormErrors } from './FormErrors'
 
 export function BanUser() {
