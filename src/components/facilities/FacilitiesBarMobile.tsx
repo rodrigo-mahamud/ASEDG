@@ -25,7 +25,7 @@ export default function FacilitiesBarMobile({ data }: any) {
           <DrawerDescription>This action cannot be undone.</DrawerDescription>
         </DrawerHeader>
         <BookingSticky
-          className="md:w-[35%] sticky top-28 h-fit"
+          className="md:w-[35%] sticky top-28 h-fit overflow-scroll"
           data={data.bookingOptions}
           termsFile={data.termsFile}
         ></BookingSticky>

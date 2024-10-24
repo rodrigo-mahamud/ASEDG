@@ -16,7 +16,7 @@ interface BookingButtonProps {
 }
 
 export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: BookingButtonProps) {
-  const { formState, isLoading } = useFormStore()
+  const { formState, isLoading, isStripeValid } = useFormStore()
 
   const handleClick = () => {
     switch (formState) {
@@ -35,7 +35,7 @@ export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: B
   const getButtonProps = () => {
     const baseProps = {
       type: 'button' as 'button',
-      className: 'w-full rounded-md py-3 h-auto bg-primary text-white',
+      className: 'w-full rounded-md py-4 md:py-3 h-auto bg-primary text-white',
       variant: 'expandIcon' as const,
       iconClass: 'w-5 h-5',
       iconPlacement: 'right' as const,
@@ -60,7 +60,7 @@ export function BookingButton({ onDataSubmit, onPaymentSubmit, clientSecret }: B
         return {
           ...baseProps,
           form: 'stripe-form',
-          disabled: isLoading || !clientSecret,
+          disabled: isLoading || !clientSecret || !isStripeValid,
           children: isLoading ? 'Procesando...' : 'Pagar',
           Icon: isLoading ? IconLoader2 : IconCreditCardPay,
         }

@@ -13,6 +13,8 @@ interface FormStore {
   errorDetails: string | null
   successMessage: string | null
   clientSecret: string | null
+  isStripeValid: boolean
+  selectedPeriodId: string | null
   setFormState: (newState: FormState) => void
   setEmptyState: () => void
   setDataState: () => void
@@ -26,6 +28,8 @@ interface FormStore {
   setErrorDetails: (details: string | null) => void
   setSuccessMessage: (message: string | null) => void
   setClientSecret: (secret: string | null) => void
+  setStripeValid: (valid: boolean) => void
+  setSelectedPeriodId: (id: string | null) => void
 }
 
 const useBookingState = create<FormStore>((set) => ({
@@ -36,6 +40,8 @@ const useBookingState = create<FormStore>((set) => ({
   errorDetails: null,
   successMessage: null,
   clientSecret: null,
+  isStripeValid: false,
+  selectedPeriodId: null,
 
   setFormState: (newState) => set({ formState: newState }),
   setEmptyState: () => set({ formState: 'empty' }),
@@ -54,12 +60,16 @@ const useBookingState = create<FormStore>((set) => ({
       errorDetails: null,
       successMessage: null,
       clientSecret: null,
+      isStripeValid: false,
+      selectedPeriodId: null,
     }),
   setLoading: (loading) => set({ isLoading: loading }),
   setPrice: (price) => set({ price }),
   setErrorDetails: (details) => set({ errorDetails: details }),
   setSuccessMessage: (message) => set({ successMessage: message }),
   setClientSecret: (secret) => set({ clientSecret: secret }),
+  setStripeValid: (valid) => set({ isStripeValid: valid }),
+  setSelectedPeriodId: (id) => set({ selectedPeriodId: id }),
 }))
 
 export default useBookingState

@@ -38,7 +38,7 @@ export function BookingPayment({ clientSecret, onPaymentComplete, onError }: Boo
   )
 
   return (
-    <div className="min-h-[252px] h-fit transition-all duration-300">
+    <div className="min-h-[259px] h-fit transition-all duration-300">
       {!stripeReady ? renderSkeleton() : renderStripeForm()}
     </div>
   )

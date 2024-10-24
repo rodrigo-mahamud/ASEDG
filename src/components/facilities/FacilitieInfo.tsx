@@ -18,7 +18,7 @@ export default function FacilitieInfo({ data }: any) {
         <RichTextParser content={data.richtxtcontent}></RichTextParser>
         {data.facilitiesRelated && (
           <>
-            <div className="md:py-14 py-6">
+            <div className="md:py-14 py-7">
               <Separator></Separator>
             </div>
             <FacilitiesRelated data={data.facilitiesRelated}></FacilitiesRelated>

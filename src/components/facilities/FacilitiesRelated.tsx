@@ -18,10 +18,10 @@ export function FacilitiesRelated({ data }: any) {
       }}
       className="w-full"
     >
-      <div className="w-full flex items-center justify-between mb-4 ">
-        <h2 className="text-2xl font-semibold line-clamp-1">Te puede interesar</h2>
+      <div className="w-full flex items-center justify-between mb-4">
+        <h2 className="text-xl md:text-2xl font-semibold line-clamp-1">Te puede interesar</h2>
 
-        <div className="flex gap-2">
+        <div className="md:flex gap-2 hidden">
           <CarouselPrevious className="bg-transparent border border-border shadow disabled:shadow-none h-8 w-8" />
           <CarouselNext className="bg-transparent border border-border shadow disabled:shadow-none h-8 w-8" />
         </div>

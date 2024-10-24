@@ -4,7 +4,7 @@ import DynamicIcon from '@/components/DynamicIcon'
 export default function IconList({ block }: any) {
   return (
     <div className="flex items-start w-full">
-      <ul className="py-3 md:py-6 grid md:grid-cols-2 md:grid-rows-3 w-full">
+      <ul className="py-0 md:py-6 grid md:grid-cols-2 md:grid-rows-3 w-full">
         {block.list.map((item: any, index: any) => {
           return (
             <li key={index} className="my-2 flex items-center">

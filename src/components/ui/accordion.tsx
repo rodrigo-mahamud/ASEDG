@@ -36,7 +36,7 @@ const AccordionTrigger = React.forwardRef<
       {children}
 
       <IconChevronDown
-        className="rounded-full w-9 h-9 p-1.5 bg-secondary border border-border shrink-0 transition-transform duration-200"
+        className="rounded-full size-7 p-1 md:size-9 md:p-1.5 bg-secondary border border-border shrink-0 transition-transform duration-200"
         size={24}
         stroke={1.5}
       />

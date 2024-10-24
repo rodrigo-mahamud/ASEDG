@@ -2,19 +2,10 @@
 import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Checkbox } from '@/components/ui/checkbox'
 import { BookingPeriods } from './BookingPeriods'
 import { FloatingLabelInput } from './ui/floatinglabel'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { IconChevronDown } from '@tabler/icons-react'
 import { bookingSchema, BookingFormTypes } from '@/utils/bookingValidations'
 import useFormStore from '@/utils/useBookingState'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion'
@@ -60,27 +51,27 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className=" py-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="py-6 md:py-5">
         <FormField
           control={form.control}
           name={'daysAmount'}
-          render={({ field }) => (
-            <BookingPeriods field={field} data={data} initiallyOpen={!!formData.daysAmount} />
-          )}
+          render={({ field }) => <BookingPeriods field={field} data={data} />}
         />
         <Accordion
           type="single"
           collapsible
-          className="border border-input rounded-md overflow-hidden"
+          className="border border-border rounded-md overflow-hidden"
         >
           <AccordionItem value="item-1">
-            <AccordionTrigger className="w-full flex justify-between items-center gap-2 md:hover:bg-secondary  px-5 py-3 duration-200">
+            <AccordionTrigger className="w-full flex justify-between items-center gap-2 md:hover:bg-secondary px-4 py-3 duration-200">
               <div className="flex flex-col text-start justify-start w-10/12">
                 <h3 className="text-base font-semibold">Datos Personales</h3>
-                <h4 className="text-xs text-muted-foreground">Completa tus datos personales.</h4>
+                <span className="text-xs text-muted-foreground">
+                  Completa tus datos personales.
+                </span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="space-y-4 pt-2 px-4 pb-6">
+            <AccordionContent className="space-y-6 md:space-y-4 pt-2 px-4 pb-6">
               <div className="flex md:flex-row flex-col gap-4">
                 <FormField
                   control={form.control}
@@ -189,17 +180,15 @@ export function BookingForm({ onSubmit, data }: BookingFormProps) {
                 control={form.control}
                 name="terminos"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-2 space-y-0 ">
+                  <FormItem className="flex flex-row items-center space-x-2 space-y-0 ">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
-                        className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-sm"
+                        className="data-[state=checked]:bg-secondaryAlt border-secondaryAlt rounded-full"
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Acepto los términos y condiciones</FormLabel>
-                    </div>
+                    <div className="space-y-1 leading-none">Acepto los términos y condiciones</div>
                   </FormItem>
                 )}
               />

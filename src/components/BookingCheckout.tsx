@@ -16,7 +16,7 @@ export function BookingCheckout({
 }: BookingCheckoutProps) {
   const stripe = useStripe()
   const elements = useElements()
-  const { setSuccessState, setErrorState, setLoading } = useFormStore()
+  const { setSuccessState, setErrorState, setLoading, setStripeValid } = useFormStore()
   const [isProcessing, setIsProcessing] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +64,11 @@ export function BookingCheckout({
 
   return (
     <form id="stripe-form" onSubmit={handleSubmit} className="bg-white py-5 rounded-md">
-      <PaymentElement />
+      <PaymentElement
+        onChange={(e) => {
+          setStripeValid(e.complete)
+        }}
+      />
     </form>
   )
 }
